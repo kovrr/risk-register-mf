@@ -42,6 +42,7 @@
 		--fill-brand-primary: #5551f7;
 		--fill-brand-primary-transparent: rgba(84, 82, 247, 0.2);
 		--fill-brand-secondary: #8b9ff8;
+		--fill-brand-success: #00bf79;
 
 		--fill-specific-tooltip: rgba(28, 28, 30, 0.9);
 		--fill-specific-background: #eaf1fc;
@@ -97,7 +98,7 @@
 
 		--viz-event-attritional: #8a8da9;
 		--viz-event-databreach: #ff9900;
-		--viz-event-interruption: #0dc783;
+		--viz-event-interruption: #098e5d;
 		--viz-event-ransomware: #de5b58;
 
 		--viz-impact-ransomware: #154dab;
@@ -111,19 +112,27 @@
 		--viz-impact-tags-significant: #ff802e;
 		--viz-impact-tags-moderate: #fbbc09;
 		--viz-impact-tags-minor: #7cd011;
-		--viz-impact-tags-negligible: #0dc783;
+		--viz-impact-tags-negligible: #098e5d;
 
 		--viz-likelihood-tags-expected: #eb491f;
 		--viz-likelihood-tags-likely: #ff802e;
 		--viz-likelihood-tags-possible: #fbbc09;
 		--viz-likelihood-tags-unlikely: #7cd011;
-		--viz-likelihood-tags-rare: #0dc783;
+		--viz-likelihood-tags-rare: #098e5d;
 
 		--viz-priority-tags-low: #7cd011;
 		--viz-priority-tags-medium: #fbbc09;
 		--viz-priority-tags-high: #ff802e;
 		--viz-priority-tags-critical: #eb491f;
+
+		/* Maturity Level Colors */
+		--viz-maturity-levels-0: #eb491f;
+		--viz-maturity-levels-1: #ff802e;
+		--viz-maturity-levels-2: #fbbc09;
+		--viz-maturity-levels-3: #7cd011;
+		--viz-maturity-levels-4: #098e5d;
 	}
+
 	.dark {
 		--background: 0 0% 3.9%;
 		--foreground: 0 0% 98%;
@@ -151,10 +160,12 @@
 		--chart-5: 340 75% 55%;
 	}
 }
+
 @layer base {
 	* {
 		@apply border-border;
 	}
+
 	body {
 		@apply bg-background text-foreground;
 	}
@@ -162,6 +173,7 @@
 
 @layer base {
 	body {
-		@apply bg-background text-foreground;
+		@apply text-foreground;
+		background-color: var(--fill-specific-background);
 	}
 }

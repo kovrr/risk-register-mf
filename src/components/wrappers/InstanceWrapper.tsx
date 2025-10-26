@@ -1,8 +1,8 @@
-import { useAuthUser } from '@frontegg/react';
-import type { AxiosInstance } from 'axios';
-import React, { useEffect } from 'react';
+// import { useAuthUser } from '@frontegg/react';
 import { configureAxiosInstance } from '@/services/configureAxiosInstance';
 import { HttpClientContext } from '@/state/HttpClientContext';
+import type { AxiosInstance } from 'axios';
+import React, { useEffect } from 'react';
 
 type Props = {
 	children: React.ReactNode;
@@ -10,24 +10,25 @@ type Props = {
 };
 
 export const InstanceWrapper = ({ children, instance }: Props) => {
-	const user = useAuthUser();
+	// const user = useAuthUser();
 
 	// This stores the current jwt in the same *mutable* variable
-	const jwtRef = React.useRef(user?.accessToken || '');
+	// const jwtRef = React.useRef(user?.accessToken || '');
+	const jwtRef = React.useRef('test-jwt');
 	const axiosRef = React.useRef(
 		instance || configureAxiosInstance(() => jwtRef.current, '/'),
 	);
 
 	useEffect(() => {
-		if (user?.accessToken) {
-			jwtRef.current = user.accessToken;
-		}
-	}, [user?.accessToken]);
+		// if (user?.accessToken) {
+		// 	jwtRef.current = user.accessToken;
+		// }
+	}, []);
 
 	// Wait for user to be loaded before proceeding
-	if (!user) {
-		return <div>Loading...</div>;
-	}
+	// if (!user) {
+	// 	return <div>Loading...</div>;
+	// }
 
 	return (
 		<HttpClientContext.Provider

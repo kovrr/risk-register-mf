@@ -23,7 +23,6 @@
     "commitlint": "commitlint"
   },
   "dependencies": {
-    "@frontegg/react": "7.0.13",
     "@radix-ui/react-slot": "^1.2.3",
     "@tanstack/react-query": "^5.83.0",
     "axios": "^1.10.0",

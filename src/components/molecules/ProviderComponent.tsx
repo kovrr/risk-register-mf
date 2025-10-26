@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useState } from 'react';
 import '@/globals.css';
-import { useAuthUser } from '@frontegg/react';
+// import { useAuthUser } from '@frontegg/react';
 import { Button } from '../atoms/button';
 import {
 	Card,
@@ -13,12 +13,12 @@ import {
 } from '../atoms/card';
 
 const Provider: React.FC = () => {
-	const user = useAuthUser();
+	// const user = useAuthUser();
 	const [count, setCount] = useState(0);
 	return (
 		<Card className='w-80 h-80 bg-fill-base-1'>
 			<CardHeader>
-				<CardTitle className='title'>Hello, {user?.email}</CardTitle>
+				<CardTitle className='title'>Hello, test-user</CardTitle>
 				<CardDescription className='title'>
 					This is Module Federation 2.0
 				</CardDescription>
