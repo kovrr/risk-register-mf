@@ -1,0 +1,81 @@
+{
+  "name": "risk-register-mf",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "rsbuild dev --open",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "lint:ci": "biome ci --error-on-warnings",
+    "test": "cypress run",
+    "test:open": "cypress open",
+    "test:component": "cypress run --component",
+    "test:e2e": "cypress run --e2e",
+    "test:ci": "cypress run --headless",
+    "format": "biome format --write",
+    "format:check": "biome format",
+    "clean": "rm -rf dist node_modules/.cache",
+    "start": "rsbuild preview --port 3003",
+    "start:ci": "rsbuild preview --port 3003 --host 0.0.0.0",
+    "prepare": "husky install",
+    "release": "semantic-release",
+    "commitlint": "commitlint"
+  },
+  "dependencies": {
+    "@frontegg/react": "7.0.13",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@tanstack/react-query": "^5.83.0",
+    "axios": "^1.10.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.525.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "6.25.0",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.2",
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@module-federation/rsbuild-plugin": "^0.16.0",
+    "@rsbuild/core": "^1.2.15",
+    "@rsbuild/plugin-react": "^1.1.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.7",
+    "@semantic-release/npm": "^12.0.2",
+    "@tanstack/react-query-devtools": "^5.83.0",
+    "@types/cypress": "^1.1.6",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "~18.3.1",
+    "autoprefixer": "^10.4.21",
+    "cypress": "^14.5.2",
+    "cypress-rspack-dev-server": "^1.1.0",
+    "cypress-split": "^1.24.20",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "postcss": "^8.5.6",
+    "postcss-loader": "^8.1.1",
+    "semantic-release": "^24.2.7",
+    "tailwindcss": "^3",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.7.2",
+    "webpack": "^5.100.2"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --files-ignore-unknown=true",
+      "biome check --write --no-errors-on-unmatched",
+      "biome check --write --organize-imports-enabled=false --no-errors-on-unmatched",
+      "biome check --write --unsafe --no-errors-on-unmatched",
+      "biome format --write --no-errors-on-unmatched",
+      "biome lint --write --no-errors-on-unmatched"
+    ],
+    "*": [
+      "biome check --no-errors-on-unmatched --files-ignore-unknown=true"
+    ]
+  },
+  "packageManager": "yarn@4.6.0+sha512.5383cc12567a95f1d668fbe762dfe0075c595b4bfff433be478dbbe24e05251a8e8c3eb992a986667c1d53b6c3a9c85b8398c35a960587fbd9fa3a0915406728"
+}

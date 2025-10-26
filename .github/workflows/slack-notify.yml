@@ -1,0 +1,33 @@
+name: "Slack Notify"
+on:
+  workflow_call:
+    inputs:
+      message:
+        type: string
+      color:
+        type: string
+      icon:
+        type: string
+      repo-url:
+        type: string
+      repo-name:
+        type: string
+    secrets:
+      slack-webhook:
+        required: true
+
+jobs:
+  send-notification:
+    name: Slack Notification
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Integration Test Failed
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.slack-webhook }}
+          SLACK_CHANNEL: "platform-integration-tests"
+          SLACK_USERNAME: Kingtegration Tests
+          SLACK_ICON_EMOJI: ${{inputs.icon}}
+          SLACK_FOOTER: <${{ inputs.repo-url }}|${{ inputs.repo-name }}>
+          SLACK_MESSAGE: ${{ inputs.message }}
+          SLACK_COLOR: ${{ inputs.color }} 

@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 0 0% 3.9%;
+		--card: 0 0% 100%;
+		--card-foreground: 0 0% 3.9%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 0 0% 3.9%;
+		--primary: 0 0% 9%;
+		--primary-foreground: 0 0% 98%;
+		--secondary: 0 0% 96.1%;
+		--secondary-foreground: 0 0% 9%;
+		--muted: 0 0% 96.1%;
+		--muted-foreground: 0 0% 45.1%;
+		--accent: 0 0% 96.1%;
+		--accent-foreground: 0 0% 9%;
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 0 0% 89.8%;
+		--input: 0 0% 89.8%;
+		--ring: 0 0% 3.9%;
+		--chart-1: 12 76% 61%;
+		--chart-2: 173 58% 39%;
+		--chart-3: 197 37% 24%;
+		--chart-4: 43 74% 66%;
+		--chart-5: 27 87% 67%;
+		--radius: 0.5rem;
+
+		/* Fill Colors */
+		--fill-base-n1: #f8f8f8;
+		--fill-base-0: #ffffff;
+		--fill-base-1: #f5f7ff;
+		--fill-base-2: #eaf4ff;
+		--fill-base-3: #eaf1fc;
+		--fill-base-4: #dce5f2;
+		--fill-base-5: #ced7de;
+
+		--fill-brand-primary: #5551f7;
+		--fill-brand-primary-transparent: rgba(84, 82, 247, 0.2);
+		--fill-brand-secondary: #8b9ff8;
+
+		--fill-specific-tooltip: rgba(28, 28, 30, 0.9);
+		--fill-specific-background: #eaf1fc;
+		--fill-specific-divider: #dce5f2;
+		--fill-specific-sidebar-primary: #303045;
+		--fill-specific-sidebar-child: #1c1c2d;
+		--fill-specific-icon-default: #7a7f86;
+		--fill-specific-icon-hover: #f8f8f8;
+		--fill-specific-icon-onpress: #f1f1f1;
+
+		--fill-information-error: #eb491f;
+		--fill-information-warning: #fbbc09;
+		--fill-information-success: #0dc783;
+		--fill-information-info: #154dab;
+
+		/* Text Colors */
+		--text-base-primary: #303045;
+		--text-base-secondary: #7a7f86;
+		--text-base-tertiary: #a9b4bc;
+		--text-base-invert: #ffffff;
+
+		--text-brand-primary: #5551f7;
+		--text-brand-secondary: #8b9ff8;
+
+		--text-specific-sidebar-idle: #a9b4bc;
+		--text-specific-sidebar-hover: #ced7de;
+		--text-specific-sidebar-active: #ffffff;
+		--text-specific-external-scan-score: #0dc783;
+
+		--text-information-error: #eb491f;
+		--text-information-success: #0dc783;
+		--text-information-info: #154dab;
+
+		--text-functional-m1: #7a7f86;
+		--text-functional-0: #303045;
+		--text-functional-1: #7a7f86;
+
+		/* Stroke Colors */
+		--stroke-base-0: #ced7de;
+		--stroke-base-1: #a9b4bc;
+		--stroke-base-2: #7a7f86;
+
+		--stroke-brand-primary: #5551f7;
+		--stroke-brand-secondary: #8b9ff8;
+
+		--stroke-information-error: #eb491f;
+
+		/* Visualization Colors */
+		--viz-base-primary: #5551f7;
+		--viz-base-secondary: #eaf1fc;
+		--viz-base-tertiary: #1c1c2d;
+		--viz-base-market: #eb491f;
+
+		--viz-event-attritional: #8a8da9;
+		--viz-event-databreach: #ff9900;
+		--viz-event-interruption: #0dc783;
+		--viz-event-ransomware: #de5b58;
+
+		--viz-impact-ransomware: #154dab;
+		--viz-impact-interruption: #5551f7;
+		--viz-impact-provider: #bbbafc;
+		--viz-impact-liability: #9f3c00;
+		--viz-impact-databreach: #ff802e;
+		--viz-impact-regulation: #fcd4a4;
+
+		--viz-impact-tags-severe: #eb491f;
+		--viz-impact-tags-significant: #ff802e;
+		--viz-impact-tags-moderate: #fbbc09;
+		--viz-impact-tags-minor: #7cd011;
+		--viz-impact-tags-negligible: #0dc783;
+
+		--viz-likelihood-tags-expected: #eb491f;
+		--viz-likelihood-tags-likely: #ff802e;
+		--viz-likelihood-tags-possible: #fbbc09;
+		--viz-likelihood-tags-unlikely: #7cd011;
+		--viz-likelihood-tags-rare: #0dc783;
+
+		--viz-priority-tags-low: #7cd011;
+		--viz-priority-tags-medium: #fbbc09;
+		--viz-priority-tags-high: #ff802e;
+		--viz-priority-tags-critical: #eb491f;
+	}
+	.dark {
+		--background: 0 0% 3.9%;
+		--foreground: 0 0% 98%;
+		--card: 0 0% 3.9%;
+		--card-foreground: 0 0% 98%;
+		--popover: 0 0% 3.9%;
+		--popover-foreground: 0 0% 98%;
+		--primary: 0 0% 98%;
+		--primary-foreground: 0 0% 9%;
+		--secondary: 0 0% 14.9%;
+		--secondary-foreground: 0 0% 98%;
+		--muted: 0 0% 14.9%;
+		--muted-foreground: 0 0% 63.9%;
+		--accent: 0 0% 14.9%;
+		--accent-foreground: 0 0% 98%;
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 0 0% 14.9%;
+		--input: 0 0% 14.9%;
+		--ring: 0 0% 83.1%;
+		--chart-1: 220 70% 50%;
+		--chart-2: 160 60% 45%;
+		--chart-3: 30 80% 55%;
+		--chart-4: 280 65% 60%;
+		--chart-5: 340 75% 55%;
+	}
+}
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+
+@layer base {
+	body {
+		@apply bg-background text-foreground;
+	}
+}

@@ -1,0 +1,179 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master, dev, main]
+  release:
+    types:
+      - published
+
+# https://stackoverflow.com/questions/66335225/how-to-cancel-previous-runs-in-the-pr-when-you-push-new-commitsupdate-the-curre/67939898#67939898
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  package_name: kovrr-mf-template-rspack
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Private Kovrr Action Repo
+        uses: actions/checkout@v4
+        with:
+          repository: Kovrr/kovrr_github_actions
+          ref: v3.1.0
+          token: ${{ secrets.SA_TOKEN }}
+          path: .github/actions/kovrr_actions
+      - name: Check Branch Name Action Step
+        uses: ./.github/actions/kovrr_actions/check_branch_name
+        if: startsWith(github.ref, 'refs/tags/') != true
+        with:
+          head_ref: ${{ github.head_ref }}
+          ref: ${{ github.ref }}
+          event_name: ${{ github.event_name }}
+
+  pre-commit-checks:
+    runs-on: ubuntu-24.04
+    needs: [check-branch]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Enable corepack
+        run: corepack enable
+      - name: Set yarn version
+        run: yarn set version stable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Run lint-staged
+        run: yarn lint-staged
+      - name: Check formatting
+        run: yarn format:check
+      - name: Run linting
+        run: yarn lint:ci
+
+  download_cypress_timings_file:
+    runs-on: ubuntu-24.04
+    needs: [check-branch, pre-commit-checks]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: 'mf_rspack_template_cypress_timings.json'
+          sparse-checkout-cone-mode: false
+          path: foqus_fe_cypress_timings
+          repository: Kovrr/foqus_fe_cypress_timings
+          ref: main
+          token: ${{ secrets.SA_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mf_rspack_template_cypress_timings.json
+          path: |
+            foqus_fe_cypress_timings/mf_rspack_template_cypress_timings.json
+          if-no-files-found: ignore
+
+  test_e2e_and_component:
+    # https://github.com/bahmutov/cypress-workflows
+    needs: [download_cypress_timings_file]
+    uses: ./.github/workflows/cypress-split.yml
+    with:
+      nE2E: 1
+      nComponent: 1
+      # use timings to split E2E specs across N machines efficiently
+      split-file: 'mf_rspack_template_cypress_timings.json'
+      browser: chrome
+      build: yarn build
+      start: yarn start:ci
+      install-command: yarn install --immutable
+
+  test_results:
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    name: Final Results
+    needs: [test_e2e_and_component]
+    steps:
+      - run: exit 1
+        if: >-
+          ${{
+                contains(needs.*.result, 'failure')
+            || contains(needs.*.result, 'cancelled')
+          }}
+
+  # this job grab the output for the `split` workflow
+  # and writes it into a JSON file "timings.json"
+  # and then commits the updated file to the repository
+  commit-updated-timings:
+    runs-on: ubuntu-24.04
+    needs: [test_e2e_and_component, test_results]
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+        with:
+          repository: Kovrr/foqus_fe_cypress_timings
+          ref: main
+          path: foqus_fe_cypress_timings
+          token: ${{ secrets.SA_TOKEN }}
+      - name: Show merged timings 🖨️
+        run: |
+          echo '${{ needs.test_e2e_and_component.outputs.merged-timings }}'
+      - name: Write updated timings 💾
+        # pretty-print json string into a file
+        run: echo '${{ needs.test_e2e_and_component.outputs.merged-timings }}' > foqus_fe_cypress_timings/mf_rspack_template_cypress_timings.json
+      - name: Commit changed spec timings ⏱️
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'mf_rspack_template_cypress_timings.json'
+          default_author: user_info
+          message: 'ci: automated update of mf_rspack_template_cypress_timings.json'
+          tag_push: '--force'
+          cwd: foqus_fe_cypress_timings
+
+  build:
+    needs: [test_results]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Enable corepack
+        run: corepack enable
+      - name: Set yarn version
+        run: yarn set version stable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Build application
+        run: yarn build
+      - name: Set environment variables
+        run: |
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+            echo "BUCKET_PATH=mf-builds/mf-rspack-template/${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          else
+            echo "VERSION=sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
+            echo "BUCKET_PATH=mf-builds/mf-rspack-template/sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
+          fi
+      - name: Login to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SHARED_KEY }}'
+      - name: Upload build to GCS bucket
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: dist
+          destination: ${{ env.BUCKET_PATH }}
+      - name: Create version file
+        run: |
+          echo '{"version": "${{ env.VERSION }}", "timestamp": "${{ github.event.head_commit.timestamp }}", "commit": "${{ github.sha }}"}' > version.json
+      - name: Upload version file to GCS
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: version.json
+          destination: ${{ env.BUCKET_PATH }}/version.json

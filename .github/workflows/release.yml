@@ -1,0 +1,21 @@
+name: Release
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+  build:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Tag
+        uses: krogon/semver-release-action@master
+        with:
+          release_branch: master
+          default_increment: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.SA_TOKEN }}

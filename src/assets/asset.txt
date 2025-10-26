@@ -1,0 +1,1 @@
+We use this directory for all Static assets like images, fonts, icons, etc.
