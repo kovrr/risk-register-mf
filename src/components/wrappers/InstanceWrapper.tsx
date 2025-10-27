@@ -1,42 +1,39 @@
-// import { useAuthUser } from '@frontegg/react';
-import { configureAxiosInstance } from '@/services/configureAxiosInstance';
-import { HttpClientContext } from '@/state/HttpClientContext';
-import type { AxiosInstance } from 'axios';
 import React, { useEffect } from 'react';
+import { useAuthUser } from '@frontegg/react';
+import { configureAxiosInstance } from '@/services/service';
+import { HttpClientContext } from '@/state/HttpClientContext';
+import { AxiosInstance } from 'axios';
 
 type Props = {
-	children: React.ReactNode;
-	instance?: AxiosInstance; // we allow the injection of an instance for testing purposes
+  children: React.ReactNode;
+  instance?: AxiosInstance; // we allow the injection of an instance for testing purposes
 };
 
 export const InstanceWrapper = ({ children, instance }: Props) => {
-	// const user = useAuthUser();
+  const user = useAuthUser();
+  const jwt: string = user.accessToken;
 
-	// This stores the current jwt in the same *mutable* variable
-	// const jwtRef = React.useRef(user?.accessToken || '');
-	const jwtRef = React.useRef('test-jwt');
-	const axiosRef = React.useRef(
-		instance || configureAxiosInstance(() => jwtRef.current, '/'),
-	);
+  // This stores the current jwt in the same *mutable* variable
+  const jwtRef = React.useRef(jwt);
+  const axiosRef = React.useRef(
+    instance || configureAxiosInstance(() => jwtRef.current)
+  );
+  const nextAxiosRef = React.useRef(
+    instance || configureAxiosInstance(() => jwtRef.current, '/')
+  );
 
-	useEffect(() => {
-		// if (user?.accessToken) {
-		// 	jwtRef.current = user.accessToken;
-		// }
-	}, []);
+  useEffect(() => {
+    jwtRef.current = jwt;
+  }, [jwt]);
 
-	// Wait for user to be loaded before proceeding
-	// if (!user) {
-	// 	return <div>Loading...</div>;
-	// }
-
-	return (
-		<HttpClientContext.Provider
-			value={{
-				axiosInstance: axiosRef.current,
-			}}
-		>
-			{children}
-		</HttpClientContext.Provider>
-	);
+  return (
+    <HttpClientContext.Provider
+      value={{
+        axiosInstance: axiosRef.current,
+        nextAxiosInstance: nextAxiosRef.current,
+      }}
+    >
+      {children}
+    </HttpClientContext.Provider>
+  );
 };

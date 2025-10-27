@@ -2,7 +2,7 @@ import { FronteggProvider } from "@frontegg/react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { fronteggAuthServerUrl } from "./commands-lib/mock-frontegg";
 import { FakeParamsRouter } from "./test-utils";
-import { InstanceWrapper } from "@/components/wrappers/InstanceWrapper";
+import { InstanceWrapper } from "../../src/components/wrappers/InstanceWrapper";
 
 export interface CustomOptions {
   companyId?: string;
