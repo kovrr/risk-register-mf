@@ -1,11 +1,8 @@
-// Simplified integration input types for Risk Register microfrontend
-export interface IntegrationTile {
-  id: string;
-  name: string;
-  type: string;
-  description?: string;
-  enabled: boolean;
-}
+import type { resources } from '../i18n';
+
+// Using the actual i18n resources for type safety
+export type IntegrationTile =
+  (typeof resources.en)['roci']['companyCreation']['steps']['stepFour']['form']['fields']['integrationType']['integrations'][number];
 
 export const ROCIIntegrationTypes = {
   ALLOY: 'alloyscanlite',
