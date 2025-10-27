@@ -10,61 +10,60 @@ module.exports = {
 				sm: 'calc(var(--radius) - 4px)',
 			},
 			colors: {
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
+				background: 'var(--background)',
+				foreground: 'var(--foreground)',
 				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))',
+					DEFAULT: 'var(--card)',
+					foreground: 'var(--card-foreground)',
 				},
 				popover: {
-					DEFAULT: 'hsl(var(--popover))',
-					foreground: 'hsl(var(--popover-foreground))',
+					DEFAULT: 'var(--popover)',
+					foreground: 'var(--popover-foreground)',
 				},
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))',
+					DEFAULT: 'var(--primary)',
+					foreground: 'var(--primary-foreground)',
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))',
+					DEFAULT: 'var(--secondary)',
+					foreground: 'var(--secondary-foreground)',
 				},
 				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))',
+					DEFAULT: 'var(--muted)',
+					foreground: 'var(--muted-foreground)',
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))',
+					DEFAULT: 'var(--accent)',
+					foreground: 'var(--accent-foreground)',
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))',
+					DEFAULT: 'var(--destructive)',
+					foreground: 'var(--destructive-foreground)',
 				},
-				border: 'hsl(var(--border))',
-				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',
+				border: 'var(--border)',
+				input: 'var(--input)',
+				ring: 'var(--ring)',
 				chart: {
-					1: 'hsl(var(--chart-1))',
-					2: 'hsl(var(--chart-2))',
-					3: 'hsl(var(--chart-3))',
-					4: 'hsl(var(--chart-4))',
-					5: 'hsl(var(--chart-5))',
+					1: 'var(--chart-1)',
+					2: 'var(--chart-2)',
+					3: 'var(--chart-3)',
+					4: 'var(--chart-4)',
+					5: 'var(--chart-5)',
 				},
 				fill: {
 					base: {
+						n1: 'var(--fill-base-n1)',
 						0: 'var(--fill-base-0)',
 						1: 'var(--fill-base-1)',
 						2: 'var(--fill-base-2)',
 						3: 'var(--fill-base-3)',
 						4: 'var(--fill-base-4)',
 						5: 'var(--fill-base-5)',
-						n1: 'var(--fill-base-n1)',
 					},
 					brand: {
 						primary: 'var(--fill-brand-primary)',
 						'primary-transparent': 'var(--fill-brand-primary-transparent)',
 						secondary: 'var(--fill-brand-secondary)',
-						success: 'var(--fill-brand-success)',
 					},
 					specific: {
 						tooltip: 'var(--fill-specific-tooltip)',
@@ -106,8 +105,8 @@ module.exports = {
 						info: 'var(--text-information-info)',
 					},
 					functional: {
-						0: 'var(--text-functional-0)',
 						m1: 'var(--text-functional-m1)',
+						0: 'var(--text-functional-0)',
 					},
 				},
 				stroke: {
@@ -169,23 +168,14 @@ module.exports = {
 							critical: 'var(--viz-priority-tags-critical)',
 						},
 					},
-					maturity: {
-						levels: {
-							0: 'var(--viz-maturity-levels-0)',
-							1: 'var(--viz-maturity-levels-1)',
-							2: 'var(--viz-maturity-levels-2)',
-							3: 'var(--viz-maturity-levels-3)',
-							4: 'var(--viz-maturity-levels-4)',
-						},
-					},
 				},
 			},
 			spacing: {
-				xs: '10px',
-				sm: '20px',
-				md: '32px',
-				lg: '48px',
-				xl: '64px',
+				xs: '10px', // For space-y-xs, p-xs, m-xs, gap-xs etc.
+				sm: '20px', // For space-y-sm, p-sm, m-sm, gap-sm etc.
+				md: '32px', // For space-y-md, p-md, m-md, gap-md etc.
+				lg: '48px', // For space-y-lg, p-lg, m-lg, gap-lg etc.
+				xl: '64px', // For space-y-xl, p-xl, m-xl, gap-xl etc.
 			},
 		},
 	},
