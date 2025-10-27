@@ -1,0 +1,2363 @@
+{
+  "editField": "Want to edit a custom field?",
+  "deleteField": "Want to delete a custom field?",
+  "addCustomField": "Add Custom Field",
+  "riskOverview.businessInterruption": "Business interruption caused by a system failure, leading to lost income and any additional costs incurred to mitigate damage and help the business continue",
+  "riskOverview.ransomWareExtortion": "Events in which a hacker infiltrates a computer system and threatens to commit a malicious act unless a ransom fee is paid. The scope extends to extortion payments made and expenses incurred in responding to those demands.",
+  "riskOverview.regulation&Compliance": "Costs resulting from fines or penalties imposed on a company by regulatory authorities. This includes legal fees associated with responding to regulatory actions.",
+  "riskOverview.thirdPartyServiceProviders": "Income losses and additional costs caused by a failure of a third-party service provider. In the event that the provider's system fails or is attacked, dependent income losses and additional costs of mitigating the service failure are captured.",
+  "riskOverview.thirdPartyLiability": "Covers the cost of negligent acts, errors, or omissions. Includes claims of third parties alleging failure to properly protect sensitive data stored on a computer system.",
+  "riskOverview.DataTheft&Privacy": "Covers first-party costs associated with an event in which a customer's or employee's sensitive data is compromised or exposed.",
+  "riskOverview.averageExposure": "The average of the 10,000 simulated years.",
+  "riskOverview.lowExposure": "There is a 98% chance that the company will suffer a loss that will exceed {{exposure}} in the next year from cyber events.",
+  "riskOverview.highExposure": "There is a 1% chance that the company will suffer a loss that will exceed {{exposure}} in the next year from cyber events.",
+  "pastQuantifications.overallExposure": "The following graph represents the trends in the average cost over a year (including the probability-weighted impact of the extreme events). This can help to better understand the overall difference between simulations, while taking into account both tail and less severe events",
+  "pastQuantifications.lossDriversBreakdown": "The following graph represents the trends in the average cost over a year (including the probability-weighted impact of the extreme events). This can help to better understand the overall difference between simulations, while taking into account both tail and less severe events.",
+  "riskOverview.averageAnnualLoss": "This loss is based on the result of a Monte Carlo simulation run. After the model runs, the damage of every simulated year is summed and divided by the number of simulations. This provides visibility into the expected loss.",
+  "riskOverview.topBusinessImpactScenarios": "This reflects the associated costs with scenarios that are most likely to affect your business.",
+  "riskOverview.controlsTier": "This calculation reflects the status of the company's {{framework}} controls maturity, by averaging implementation levels of all known controls, where maturity ranges between {{rangeMinimum}} and {{rangeMaximum}}.",
+  "riskOverview.immediateMitigationOptions": "These reflect recommendations of controls that have the largest impact on the expected loss if upgraded.",
+  "riskOverview.likelihoodOfTargetedEvents": "The sum of all frequencies from all types of targeted events.",
+  "inputs.hoursToRestore": "How many hours does it typically take to restore your critical business operations following a network interruption?",
+  "inputs.precentageOfProductivity": "What percentage of your productivity is reliant on your computer network?",
+  "inputs.precentageOfIncome": "What percentage of your income is reliant on your computer network?",
+  "inputs.outageDuration": "What outage duration (in hours) will cause a material impact on the organization?",
+  "inputs.endPointsInOrganization": "How many endpoints are there in the organization's infrastructure?",
+  "inputs.serviceProviders": "These are third-party service providers considered critical to operating the business. They are key inputs to the model and significantly contribute to losses caused by liability claims or business interruption that fail to deliver or have an outage.",
+  "inputs.technologies": "These are technologies considered critical to operating the business. They are key inputs to the model and have the most significant contribution to the resulting financial quantification.",
+  "sphere.welcome.startNow.title": "Welcome to your Company Sphere",
+  "sphere.welcome.startNow.description": "Represent your company IT stack, by mapping its assets and their associated security controls",
+  "sphere.welcome.startNow.button": "Start Now",
+  "sphere.regulations.regulatoryRequirements": "What regulations do your company need to comply with?",
+  "sphere.insuranceTerms.limit": "What is your company's cyber insurance limit?",
+  "sphere.insuranceTerms.deductible": "What is your company's cyber insurance deductible?",
+  "sphere.insuranceTerms.premium": "What is your company's cyber insurance premium?",
+  "sphere.employeesEndpoints.endpoints": "How many employee endpoints are in this asset group?",
+  "sphere.employeesEndpoints.os": "What operating systems are used on the employees' endpoints in this asset group?",
+  "sphere.employeesEndpoints.techs": "What technologies are used on the employee's endpoints in this asset group?",
+  "sphere.employeesEndpoints.dataRecords": "Can the following data be accessed from employees' endpoints in the asset group?",
+  "sphere.employeesEndpoints.productivity": "What percentage of productivity relies on this asset group?",
+  "sphere.employeesEndpoints.income": "What percentage of income relies on this asset group?",
+  "sphere.employeesEndpoints.productsDrawer.desc": "Kovrr detected the below list of products with a high probability of appearing on your employees' endpoints. You can delete and add products to compose your asset group's accurate list.",
+  "sphere.employeesEndpoints.assetGroupExplaination": "Asset groups allow you to reflect your company in various granularities. Create a new asset group for any business unit whose IT properties differ significantly from the other. For example, different departments.",
+  "sphere.infrastructure.os": "What operating systems are used on the infrastructure in this asset group?",
+  "sphere.infrastructure.techs": "What technologies are used on the infrastructure in this asset group?",
+  "sphere.infrastructure.dataRecords": "How many data records are stored in this asset group?",
+  "sphere.infrastructure.maxRecords": "What is the maximum number of records stored together?",
+  "sphere.infrastructure.productivity": "What percentage of productivity relies on this asset group?",
+  "sphere.infrastructure.income": "What percentage of income relies on this asset group?",
+  "sphere.cloud.paasProducts": "What Paas Cloud products are used in this asset group?",
+  "sphere.cloud.saasProducts": "What SaaS Cloud products are used in this asset group?",
+  "sphere.cloud.maxRecords": "What is the maximum number of records stored together?",
+  "sphere.cloud.cloudProducts": "What Paas/SaaS Cloud products are used in this asset group?",
+  "sphere.cloud.productivity": "What percentage of productivity relies on this asset group?",
+  "sphere.cloud.income": "What percentage of income relies on this asset group?",
+  "sphere.cloud.dataRecords": "How many data records are stored in this asset group?",
+  "sphere.ot.os": "What operating systems are used on the OT devices in this asset group?*",
+  "sphere.ot.techs": "What technologies are used on the OT devices in this asset group?*",
+  "sphere.ot.devicesConnected": "Are the devices connected to an internal network?*  ",
+  "sphere.ot.productivity": "What percentage of productivity relies on this asset group?",
+  "sphere.ot.income": "What percentage of income relies on this asset group?",
+  "sphere.ot.dataRecords": "How many data records are stored in this asset group?",
+  "sphere.ot.restoreHours": "How long does it typically take to restore your critical business operations following an interruption?",
+  "sphere.ot.deviceRestorationCost": "Is there a device-restoration cost associated with this asset group?*  ",
+  "sphere.ot.severity.min": "Minimum Damage*",
+  "sphere.ot.severity.average": "Average Damage*",
+  "sphere.ot.severity.max": "Maximum Damage*",
+  "sphere.ot.distributionType": "Distribution Type*",
+  "sphere.ot.collateralDamage": "Is there a collateral damage cost associated with this asset group, for example, inventory stock and other property?*",
+  "sphere.ot.potentialLiability": "Is there a potential liability cost associated with this asset group, for example, loss of safety or injury? *",
+  "sphere.ot.averageLifeCycle": "What is the average life cycle of critical devices in this asset group?",
+  "sphere.ot.qualityControlProcess": "Is there any quality control process associated with this asset group?",
+  "sphere.security.securityCertifications": "Select all security certifications that your company has obtained.",
+  "sphere.security.outageDuration": "What outage duration will cause a material impact on your company?",
+  "sphere.security.restoreHours": "How long does it typically take to restore your company's critical business operations following a network interruption?",
+  "sphere.security.microsoftRociPlan": "Does the company has one of the Microsoft Products Bundle?",
+  "sphere.triggerFq.invalidSphere": "It appears some of the required fields are missing or invalid, please check and try again. Please notice, sphere must contain at least one asset group.",
+  "sphere.triggerFq.sphereStepError": "The field {{fieldName}} in {{agName}} under {{errorGroup}} has an error: {{msg}}",
+  "sphere.triggerFq.generalError": "Could not trigger financial quantification, please contact support at support@kovrr.com",
+  "sphere.triggerFq.success": "Successfully triggered quantification, you will be notified once it is completed.",
+  "companyForm": {
+    "frameworkRadioModal": {
+      "title": "Switching Frameworks Will Delete Current Inputs",
+      "description": "This action will override current associated answers in the company sphere.",
+      "warning": "To keep a record, we recommend duplicating this company before switching.",
+      "proceed": "Proceed and switch framework",
+      "cancel": "Cancel"
+    }
+  },
+  "topBar": {
+    "modelingEntities": "Cyber Risk Quantification",
+    "riskRegister": "Risk Register",
+    "reports": "Reports Hub",
+    "selfAssessment": "Control Assessment"
+  },
+  "sphere": {
+    "menu": {
+      "assetGroups": "Asset Groups",
+      "employeeEndpoints": "Employee Endpoints",
+      "infra": "Infrastructure",
+      "cloud": "Cloud",
+      "security": "Security Profiles",
+      "damageTypes": "Damage Types",
+      "ot": "OT"
+    },
+    "damageTypes": {
+      "notification": {
+        "title": "The damage types that are modeled by a basic simulation are:"
+      }
+    },
+    "securityProfiles": {
+      "highLevelToggle": {
+        "warningText": "Are you sure you want to continue?",
+        "warningTitle": "Pay Attention! This action will delete all current answers.",
+        "warningOk": "Yes, I want to continue",
+        "warningCancel": "No, go back"
+      },
+      "modal": {
+        "title": "Some asset groups are not associated with any security profile.",
+        "description": "You must assign a security profile to each asset group\n before proceeding.",
+        "userChoiceMessage": "OK"
+      },
+      "nistV2": {
+        "title": "Assessment Settings",
+        "description": "Configure how you want to answer questions and score controls",
+        "answerBy": "Answer By",
+        "igLevels": "IG Levels",
+        "safeguards": "Safeguards",
+        "notApplicable": "Not Applicable",
+        "notApplicableDescription": "The safeguard is disabled or not applicable to this enviroment",
+        "byCategory": "Categories",
+        "bySubcategories": "Subcategories",
+        "granularity": "Granularity",
+        "scale": "Scale",
+        "inferredScore": "Inferred Score",
+        "level": "Level",
+        "score": "Score",
+        "autoCalculatedNote": "Auto-calculated from answered subcategories",
+        "averageScore": "Average Score",
+        "scaleChangeWarning": {
+          "title": "Scale Change Warning",
+          "message": "You are changing from {{currentScale}} scale to the CMMI scale. CMMI is a scale of five maturity levels that expect specific values, so any input you entered will be rounded to the nearest CMMI level.",
+          "optionsTitle": "Please choose an option:",
+          "option1": "Stay on the current scale.",
+          "option2": "Switch to CMMI and round my values.",
+          "option3": "Switch to CMMI and start fresh with a blank form (all values cleared).",
+          "stayButton": "Stay on {{currentScale}}",
+          "switchButton": "Switch & Round",
+          "clearButton": "Switch & Reset"
+        }
+      },
+      "cisV8": {
+        "answerBy": "Answer By",
+        "igLevels": "IG Levels",
+        "safeguards": "Safeguards",
+        "notApplicable": "Not Applicable",
+        "notApplicableDescription": "The safeguard is disabled or not applicable to this enviroment",
+        "answeredBox": {
+          "inferredScore": "Inferred Score",
+          "inferredIgLevel": "Inferred IG Level",
+          "autoCalculatedNote": "Auto-calculated from answered subcategories"
+        },
+        "cisControlPrefix": "CIS Control",
+        "controls": {
+          "1": {
+            "title": "Inventory and Control of Enterprise Assets",
+            "description": "Actively manage (inventory, track, and correct) all enterprise assets (end-user devices, including portable and mobile; network devices; non-computing/Internet of Things (IoT) devices; and servers) connected to the infrastructure physically, virtually, remotely, and those within cloud environments, to accurately know the totality of assets that need to be monitored and protected within the enterprise. This will also support identifying unauthorized and unmanaged assets to remove or remediate."
+          },
+          "2": {
+            "title": "Inventory and Control of Software Assets",
+            "description": "Actively manage (inventory, track, and correct) all software (operating systems and applications) on the network so that only authorized software is installed and can execute, and that unauthorized and unmanaged software is found and prevented from installation or execution."
+          },
+          "3": {
+            "title": "Data Protection",
+            "description": "Develop processes and technical controls to identify, classify, securely handle, retain, and dispose of data."
+          },
+          "4": {
+            "title": "Secure Configuration of Enterprise Assets and Software",
+            "description": "Establish and maintain the secure configuration of enterprise assets (end-user devices, including portable and mobile; network devices; non-computing/IoT devices; and servers) and software (operating systems and applications)."
+          },
+          "5": {
+            "title": "Account Management",
+            "description": "Use processes and tools to assign and manage authorization to credentials for user accounts, including administrator accounts, as well as service accounts, to enterprise assets and software."
+          },
+          "6": {
+            "title": "Access Control Management",
+            "description": "Use processes and tools to create, assign, manage, and revoke access credentials and privileges for user, administrator, and service accounts for enterprise assets and software."
+          },
+          "7": {
+            "title": "Continuous Vulnerability Management",
+            "description": "Develop a plan to continuously assess and track vulnerabilities on all enterprise assets within the enterprise's infrastructure, in order to remediate, and minimize, the window of opportunity for attackers. Monitor public and private industry sources for new threat and vulnerability information."
+          },
+          "8": {
+            "title": "Audit Log Management",
+            "description": "Collect, alert, review, and retain audit logs of events that could help detect, understand, or recover from an attack."
+          },
+          "9": {
+            "title": "Email and Web Browser Protections",
+            "description": "Improve protections and detections of threats from email and web vectors, as these are opportunities for attackers to manipulate human behavior through direct engagement."
+          },
+          "10": {
+            "title": "Malware Defenses",
+            "description": "Prevent or control the installation, spread, and execution of malicious applications, code, or scripts on enterprise assets."
+          },
+          "11": {
+            "title": "Data Recovery",
+            "description": "Establish and maintain data recovery practices sufficient to restore in-scope enterprise assets to a pre-incident and trusted state."
+          },
+          "12": {
+            "title": "Network Infrastructure Management",
+            "description": "Establish, implement, and actively manage (track, report, correct) network devices, in order to prevent attackers from exploiting vulnerable network services and access points."
+          },
+          "13": {
+            "title": "Network Monitoring and Defense",
+            "description": "Operate processes and tooling to establish and maintain comprehensive network monitoring and defense against security threats across the enterprise's network infrastructure and user base."
+          },
+          "14": {
+            "title": "Security Awareness and Skills Training",
+            "description": "Establish and maintain a security awareness program to influence behavior among the workforce to be security conscious and properly skilled to reduce cybersecurity risks to the enterprise."
+          },
+          "15": {
+            "title": "Service Provider Management",
+            "description": "Develop a process to evaluate service providers who hold sensitive data, or are responsible for an enterprise's critical IT platforms or processes, to ensure these providers are protecting those platforms and data appropriately."
+          },
+          "16": {
+            "title": "Application Software Security",
+            "description": "Manage the security life cycle of in-house developed, hosted, or acquired software to prevent, detect, and remediate security weaknesses before they can impact the enterprise."
+          },
+          "17": {
+            "title": "Incident Response Management",
+            "description": "Establish a program to develop and maintain an incident response capability (e.g., policies, plans, procedures, defined roles, training, and communications) to prepare, detect, and quickly respond to an attack."
+          },
+          "18": {
+            "title": "Penetration Testing",
+            "description": "Test the effectiveness and resiliency of enterprise assets through identifying and exploiting weaknesses in controls (people, processes, and technology), and simulating the objectives and actions of an attacker."
+          }
+        }
+      },
+      "cmmi": {
+        "title": "Pre-Filled Security Control Questions",
+        "description": [
+          "The next set of questions regarding security controls may be pre-filled with answers based on the certification selections you made when setting up the company profile.",
+          "We've pre-filled the answers to help you get started, but they can be adjusted as needed."
+        ]
+      },
+      "iso27001": {
+        "title": "ISO 27001 Controls",
+        "tabs": {
+          "byControlTheme": "By Control Theme",
+          "byControl": "By Control"
+        },
+        "confirmationModal": {
+          "title": "This Action Will Delete Previous Responses",
+          "desc": [
+            "If you choose {{implementationLevel}} for this category, all your previous responses to the controls in this category will be overridden.",
+            "Are you sure you want to proceed?"
+          ],
+          "yes": "Yes, Proceed",
+          "no": "No, Cancel"
+        },
+        "moreDetails": "More Details",
+        "batteryOptions": {
+          "0": "Not implemented",
+          "05": "Partially implemented",
+          "1": "Fully implemented",
+          "-1": "Inapplicable"
+        },
+        "categories": {
+          "Organizational": "Organizational",
+          "People": "People",
+          "Physical": "Physical",
+          "Technological": "Technological"
+        },
+        "sections": [
+          {
+            "title": "Organizational",
+            "sectionNumber": "5",
+            "questions": [
+              {
+                "title": "Policies for information security",
+                "description": "Information security policy and topic-specific policies shall be defined, approved by management, published, communicated to and acknowledged by relevant personnel and relevant interested parties, and reviewed at planned intervals and if significant changes occur."
+              },
+              {
+                "title": "Information security roles and responsibilities",
+                "description": "Information security roles and responsibilities shall be defined and allocated according to the organization needs."
+              },
+              {
+                "title": "Segregation of duties",
+                "description": "Conflicting duties and conflicting areas of responsibility shall be segregated."
+              },
+              {
+                "title": "Management responsibilities",
+                "description": "Management shall require all personnel to apply information security in accordance with the established information security policy, topic-specific policies and procedures of the organization."
+              },
+              {
+                "title": "Contact with authorities",
+                "description": "The organization shall establish and maintain contact with relevant authorities."
+              },
+              {
+                "title": "Contact with special interest groups",
+                "description": "The organization shall establish and maintain contact with special interest groups or other specialist security forums and professional associations."
+              },
+              {
+                "title": "Threat intelligence",
+                "description": "Information relating to information security threats shall be collected and analysed to produce threat intelligence."
+              },
+              {
+                "title": "Information security in project management",
+                "description": "Information security shall be integrated into project management."
+              },
+              {
+                "title": "Inventory of information and other associated assets",
+                "description": "An inventory of information and other associated assets, including owners, shall be developed and maintained."
+              },
+              {
+                "title": "Acceptable use of information and other associated assets",
+                "description": "Rules for the acceptable use and procedures for handling information and other associated assets shall be identified, documented and implemented."
+              },
+              {
+                "title": "Return of assets",
+                "description": "Personnel and other interested parties as appropriate shall return all the organization's assets in their possession upon change or termination of their employment, contract or agreement."
+              },
+              {
+                "title": "Classification of information",
+                "description": "Information shall be classified according to the information security needs of the organization based on confidentiality, integrity, availability and relevant interested party requirements."
+              },
+              {
+                "title": "Labelling of information",
+                "description": "An appropriate set of procedures for information labelling shall be developed and implemented in accordance with the information classification scheme adopted by the organization."
+              },
+              {
+                "title": "Information transfer",
+                "description": "Information transfer rules, procedures, or agreements shall be in place for all types of transfer facilities within the organization and between the organization and other parties."
+              },
+              {
+                "title": "Access control",
+                "description": "Rules to control physical and logical access to information and other associated assets shall be established and implemented based on business and information security requirements."
+              },
+              {
+                "title": "Identity management",
+                "description": "The full life cycle of identities shall be managed."
+              },
+              {
+                "title": "Authentication information",
+                "description": "Allocation and management of authentication information shall be controlled by a management process, including advising personnel on appropriate handling of authentication information."
+              },
+              {
+                "title": "Access rights",
+                "description": "Access rights to information and other associated assets shall be provisioned, reviewed, modified and removed in accordance with the organization's topic-specific policy on and rules for access control."
+              },
+              {
+                "title": "Information security in supplier relationships",
+                "description": "Processes and procedures shall be defined and implemented to manage the information security risks associated with the use of supplier's products or services."
+              },
+              {
+                "title": "Addressing information security within supplier agreements",
+                "description": "Relevant information security requirements shall be established and agreed with each supplier based on the type of supplier relationship."
+              },
+              {
+                "title": "Managing information security in the information and communication technology (ICT) supply chain",
+                "description": "Processes and procedures shall be defined and implemented to manage the information security risks associated with the ICT products and services supply chain."
+              },
+              {
+                "title": "Monitoring, review and change management of supplier services",
+                "description": "The organization shall regularly monitor, review, evaluate and manage change in supplier information security practices and service delivery."
+              },
+              {
+                "title": "Information security for use of cloud services",
+                "description": "Processes for acquisition, use, management and exit from cloud services shall be established in accordance with the organization's information security requirements."
+              },
+              {
+                "title": "Information security incident management planning and preparation",
+                "description": "The organization shall plan and prepare for managing information security incidents by defining, establishing and communicating information security incident management processes, roles and responsibilities."
+              },
+              {
+                "title": "Assessment and decision on information security events",
+                "description": "The organization shall assess information security events and decide if they are to be categorized as information security incidents."
+              },
+              {
+                "title": "Response to information security incidents",
+                "description": "Information security incidents shall be responded to in accordance with the documented procedures."
+              },
+              {
+                "title": "Learning from information security incidents",
+                "description": "Knowledge gained from information security incidents shall be used to strengthen and improve the information security controls."
+              },
+              {
+                "title": "Collection of evidence",
+                "description": "The organization shall establish and implement procedures for the identification, collection, acquisition and preservation of evidence related to information security events."
+              },
+              {
+                "title": "Information security during disruption",
+                "description": "The organization shall plan how to maintain information security at an appropriate level during disruption."
+              },
+              {
+                "title": "ICT readiness for business continuity",
+                "description": "ICT readiness shall be planned, implemented, maintained and tested based on business continuity objectives and ICT continuity requirements."
+              },
+              {
+                "title": "Legal, statutory, regulatory and contractual requirements",
+                "description": "Legal, statutory, regulatory and contractual requirements relevant to information security and the organization's approach to meet these requirements shall be identified, documented and kept up to date."
+              },
+              {
+                "title": "Intellectual property rights",
+                "description": "The organization shall implement appropriate procedures to protect intellectual property rights."
+              },
+              {
+                "title": "Protection of records",
+                "description": "Records shall be protected from loss, destruction, falsification, unauthorized access and unauthorized release."
+              },
+              {
+                "title": "Privacy and protection of personal identifiable information (PII)",
+                "description": "The organization shall identify and meet the requirements regarding the preservation of privacy and protection of PII according to applicable laws and regulations and contractual requirements."
+              },
+              {
+                "title": "Independent review of information security",
+                "description": "The organization's approach to managing information security and its implementation including people, processes and technologies shall be reviewed independently at planned intervals, or when significant changes occur."
+              },
+              {
+                "title": "Compliance with policies, rules and standards for information security",
+                "description": "Compliance with the organization's information security policy, topic-specific policies, rules and standards shall be regularly reviewed."
+              },
+              {
+                "title": "Documented operating procedures",
+                "description": "Operating procedures for information processing facilities shall be documented and made available to personnel who need them."
+              }
+            ]
+          },
+          {
+            "title": "People",
+            "sectionNumber": "6",
+            "questions": [
+              {
+                "title": "Screening",
+                "description": "Background verification checks on all candidates to become personnel shall be carried out prior to joining the organization and on an ongoing basis taking into consideration applicable laws, regulations and ethics and be proportional to the business requirements, the classification of the information to be accessed and the perceived risks."
+              },
+              {
+                "title": "Terms and conditions of employment",
+                "description": "The employment contractual agreements shall state the personnel's and the organization's responsibilities for information security."
+              },
+              {
+                "title": "Information security awareness, education and training",
+                "description": "Personnel of the organization and relevant interested parties shall receive appropriate information security awareness, education and training and regular updates of the organization's information security policy, topic-specific policies and procedures, as relevant for their job function."
+              },
+              {
+                "title": "Disciplinary process",
+                "description": "A disciplinary process shall be formalized and communicated to take actions against personnel and other relevant interested parties who have committed an information security policy violation."
+              },
+              {
+                "title": "Responsibilities after termination or change of employment",
+                "description": "Information security responsibilities and duties that remain valid after termination or change of employment shall be defined, enforced and communicated to relevant personnel and other interested parties."
+              },
+              {
+                "title": "Confidentiality or non-disclosure agreements",
+                "description": "Confidentiality or non-disclosure agreements reflecting the organization's needs for the protection of information shall be identified, documented, regularly reviewed and signed by personnel and other relevant interested parties."
+              },
+              {
+                "title": "Remote working",
+                "description": "Security measures shall be implemented when personnel are working remotely to protect information accessed, processed or stored outside the organization's premises."
+              },
+              {
+                "title": "Information security event reporting",
+                "description": "The organization shall provide a mechanism for personnel to report observed or suspected information security events through appropriate channels in a timely manner."
+              }
+            ]
+          },
+          {
+            "title": "Physical",
+            "sectionNumber": "7",
+            "questions": [
+              {
+                "title": "Physical security perimeters",
+                "description": "Security perimeters shall be defined and used to protect areas that contain information and other associated assets."
+              },
+              {
+                "title": "Physical entry",
+                "description": "Secure areas shall be protected by appropriate entry controls to ensure that only authorized personnel are allowed access."
+              },
+              {
+                "title": "Securing offices, rooms and facilities",
+                "description": "Physical security shall be applied to offices, rooms and facilities."
+              },
+              {
+                "title": "Physical security monitoring",
+                "description": "Physical security shall be monitored to detect potential unauthorized physical access."
+              },
+              {
+                "title": "Protecting against physical and environmental threats",
+                "description": "Protection against physical and environmental threats, such as natural disasters and other malicious attacks, shall be designed and implemented."
+              },
+              {
+                "title": "Working in secure areas",
+                "description": "Procedures for working in secure areas shall be designed and implemented."
+              },
+              {
+                "title": "Clear desk and clear screen",
+                "description": "The organization shall adopt clear desk and clear screen practices to reduce the risk of unauthorized access or damage to papers, media, and information processing facilities."
+              },
+              {
+                "title": "Equipment siting and protection",
+                "description": "Equipment shall be sited and protected to reduce the risks from environmental threats and hazards, and opportunities for unauthorized access."
+              },
+              {
+                "title": "Security of assets off-premises",
+                "description": "Security shall be applied to assets when off-premises."
+              },
+              {
+                "title": "Storage media",
+                "description": "Media shall be managed, controlled, transported, and disposed of to protect information from unauthorized disclosure, modification, removal, or destruction."
+              },
+              {
+                "title": "Supporting utilities",
+                "description": "The organization shall ensure the provision of necessary supporting utilities, such as electricity, water, sewage, heating/ventilation, and air conditioning, to meet its business continuity objectives."
+              },
+              {
+                "title": "Cabling security",
+                "description": "Power and telecommunications cabling carrying data or supporting information services shall be protected from interception, interference, or damage."
+              },
+              {
+                "title": "Equipment maintenance",
+                "description": "Equipment shall be correctly maintained to ensure its continued availability and integrity."
+              },
+              {
+                "title": "Secure disposal or re-use of equipment",
+                "description": "All items of equipment containing storage media shall be verified to ensure that any sensitive data and licensed software has been removed or securely overwritten prior to disposal or re-use."
+              }
+            ]
+          },
+          {
+            "title": "Technological",
+            "sectionNumber": "8",
+            "questions": [
+              {
+                "title": "User endpoint devices",
+                "description": "Controls shall be implemented to mitigate the risk of theft or loss of endpoint devices and unauthorized access to endpoint devices."
+              },
+              {
+                "title": "Privileged access rights",
+                "description": "The allocation and use of privileged access rights shall be restricted and controlled."
+              },
+              {
+                "title": "Information access restriction",
+                "description": "Access to information and other associated assets shall be restricted in accordance with the established access control policy."
+              },
+              {
+                "title": "Access to source code",
+                "description": "Access to source code shall be restricted and controlled."
+              },
+              {
+                "title": "Secure authentication",
+                "description": "Users shall be required to follow the organization's practices for secure authentication."
+              },
+              {
+                "title": "Capacity management",
+                "description": "The use of resources shall be monitored, tuned, and projections made of future capacity requirements to ensure the required system performance."
+              },
+              {
+                "title": "Protection against malware",
+                "description": "Detection, prevention, and recovery controls to protect against malware shall be implemented, combined with appropriate user awareness."
+              },
+              {
+                "title": "Management of technical vulnerabilities",
+                "description": "Information about technical vulnerabilities of information systems being used shall be obtained, the organization's exposure to such vulnerabilities evaluated, and appropriate measures taken to address the associated risk."
+              },
+              {
+                "title": "Configuration management",
+                "description": "Configuration management of information systems shall be implemented to prevent accidental or deliberate unauthorized changes."
+              },
+              {
+                "title": "Information deletion",
+                "description": "Information stored on information systems, devices, or in any other storage media shall be deleted when no longer required."
+              },
+              {
+                "title": "Data masking",
+                "description": "Data masking shall be used in accordance with the organization's topic-specific policy on access control and data protection."
+              },
+              {
+                "title": "Data leakage prevention",
+                "description": "Data leakage prevention measures shall be applied to systems, networks, and any other devices that process, store, or transmit sensitive information."
+              },
+              {
+                "title": "Information backup",
+                "description": "Backup copies of information, software and systems shall be maintained and regularly tested."
+              },
+              {
+                "title": "Redundancy of information processing facilities",
+                "description": "Information processing facilities shall be implemented with redundancy sufficient to meet availability requirements."
+              },
+              {
+                "title": "Logging",
+                "description": "Logging shall be enabled to record user activities, exceptions, faults and information security events."
+              },
+              {
+                "title": "Monitoring activities",
+                "description": "Information systems shall be monitored to detect anomalous behaviour and provide evidence of information security events."
+              },
+              {
+                "title": "Clock synchronization",
+                "description": "The clocks of information processing systems shall be synchronized to a single reference time source."
+              },
+              {
+                "title": "Use of privileged utility programs",
+                "description": "The use of utility programs that might be capable of overriding system and application controls shall be restricted and tightly controlled."
+              },
+              {
+                "title": "Installation of software on operational systems",
+                "description": "Procedures shall be implemented to control the installation of software on operational systems."
+              },
+              {
+                "title": "Networks security",
+                "description": "Networks and network services shall be secured, using controls such as firewalls, intrusion detection systems, and network segmentation."
+              },
+              {
+                "title": "Security of network services",
+                "description": "Security mechanisms, service levels, and management requirements of all network services shall be identified and included in network service agreements."
+              },
+              {
+                "title": "Segregation of networks",
+                "description": "Groups of information services, users, and information systems shall be segregated on networks."
+              },
+              {
+                "title": "Web filtering",
+                "description": "The organization shall implement web filtering to restrict access to inappropriate websites."
+              },
+              {
+                "title": "Use of cryptography",
+                "description": "Cryptographic controls shall be used to protect the confidentiality, authenticity, and integrity of information."
+              },
+              {
+                "title": "Secure development life cycle",
+                "description": "The organization shall establish a secure development life cycle that incorporates security requirements throughout the stages of development."
+              },
+              {
+                "title": "Application security requirements",
+                "description": "Security requirements for applications shall be defined, documented, and verified as part of the development and acquisition processes."
+              },
+              {
+                "title": "Secure system architecture and engineering principles",
+                "description": "Principles for engineering secure systems shall be established, documented, and applied to any information system implementation efforts."
+              },
+              {
+                "title": "Secure coding",
+                "description": "Secure coding practices shall be applied to software development."
+              },
+              {
+                "title": "Security testing in development and acceptance",
+                "description": "Information security testing shall be carried out during the development and acceptance phases of information systems."
+              },
+              {
+                "title": "Outsourced development",
+                "description": "The organization shall supervise and monitor the activity of outsourced system development."
+              },
+              {
+                "title": "Separation of development, test and production environments",
+                "description": "Development, testing, and operational environments shall be separated to reduce the risks of unauthorized access or changes to the operational environment."
+              },
+              {
+                "title": "Change management",
+                "description": "Changes to information processing facilities and systems shall be controlled."
+              },
+              {
+                "title": "Test information",
+                "description": "Test information shall be selected carefully and protected, in accordance with the organization's information security policies."
+              },
+              {
+                "title": "Protection of information systems during audit testing",
+                "description": "Audit tests shall be carefully planned and controlled to minimize disruptions to business processes and ensure the integrity of the information systems."
+              }
+            ]
+          }
+        ],
+        "drawer": {
+          "controlTheme": "Control Theme",
+          "controlType": "Control Type",
+          "cybersecurityConcept": "Cybersecurity Concept",
+          "controls": {
+            "Organizational-1": {
+              "title": "Policies for information security",
+              "description": "Information security policy and topic-specific policies should be defined, approved by management, published, communicated to and acknowledged by relevant personnel and relevant interested parties, and reviewed at planned intervals and if significant changes occur.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-2": {
+              "title": "Information security roles and responsibilities",
+              "description": "Information security roles and responsibilities should be defined and allocated according to the organization needs.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-3": {
+              "title": "Segregation of duties",
+              "description": "Conflicting duties and areas of responsibility should be segregated to reduce opportunities for unauthorized or unintentional modification or misuse of the organization's assets.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-4": {
+              "title": "Management responsibilities",
+              "description": "Management should require all relevant personnel to apply information security in accordance with the established information security policy and topic-specific policies of the organization.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-5": {
+              "title": "Contact with authorities",
+              "description": "The organization should establish and maintain contact with relevant authorities.",
+              "theme": ["Organizational"],
+              "type": ["Preventive", "Corrective"],
+              "concept": ["Identify", "Protect", "Respond", "Recover"]
+            },
+            "Organizational-6": {
+              "title": "Contact with special interest groups",
+              "description": "Appropriate contacts with special interest groups or other specialist security forums and professional associations should be maintained.",
+              "theme": ["Organizational"],
+              "type": ["Preventive", "Corrective"],
+              "concept": ["Respond", "Protect", "Recover"]
+            },
+            "Organizational-7": {
+              "title": "Threat intelligence",
+              "description": "Information on information security threats should be collected and analysed to produce threat intelligence.",
+              "theme": ["Organizational"],
+              "type": ["Preventive", "Corrective", "Detective"],
+              "concept": ["Identify", "Respond", "Detect"]
+            },
+            "Organizational-8": {
+              "title": "Information security in project management",
+              "description": "Information security should be addressed in project management, regardless of the type of the project.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify", "Protect"]
+            },
+            "Organizational-9": {
+              "title": "Inventory of information and other associated assets",
+              "description": "An inventory of information and other associated assets, including owners, should be established and maintained.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-10": {
+              "title": "Acceptable use of information and other associated assets",
+              "description": "Rules for the acceptable use of information and other associated assets should be identified, documented and implemented.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-11": {
+              "title": "Return of assets",
+              "description": "Personnel and other relevant interested parties should return all of the organization's assets in their possession upon change or termination of their employment, contract or agreement.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-12": {
+              "title": "Classification of information",
+              "description": "Information should be classified according to the information security needs of the organization based on confidentiality, integrity, availability and relevant interested party requirements.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-13": {
+              "title": "Labelling of information",
+              "description": "Information should be labelled to ensure it is handled according to its classification.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-14": {
+              "title": "Information transfer",
+              "description": "Security measures should be in place to protect information during transfer.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-15": {
+              "title": "Access control",
+              "description": "Rules to control physical and logical access to information and other associated assets should be established and implemented based on business and information security requirements.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-16": {
+              "title": "Identity management",
+              "description": "The organization should implement identity management processes to ensure that only authorized users have access to information and resources.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-17": {
+              "title": "Authentication information",
+              "description": "Authentication information should be securely managed and protected to ensure its confidentiality and integrity.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-18": {
+              "title": "Access rights",
+              "description": "Access rights to information and other associated assets should be provisioned, reviewed, modified, and removed in accordance with the organization's topic-specific policy on and rules for access control.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-19": {
+              "title": "Information security in supplier relationships",
+              "description": "Information security requirements should be established and managed with suppliers.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-20": {
+              "title": "Addressing information security within supplier agreements",
+              "description": "Supplier agreements should include requirements to address information security risks.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-21": {
+              "title": "Managing information security in the ICT supply chain)",
+              "description": "The organization should manage information security risks associated with its ICT supply chain.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-22": {
+              "title": "Monitoring, review, and change management of supplier services",
+              "description": "Supplier services should be monitored, reviewed, and managed to ensure that information security requirements are met.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-23": {
+              "title": "Information security for use of cloud services",
+              "description": "Security measures should be implemented to protect information when using cloud services.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Organizational-24": {
+              "title": "Information security incident management",
+              "description": "Processes should be in place to manage information security incidents.",
+              "theme": ["Organizational"],
+              "type": ["Corrective"],
+              "concept": ["Respond", "Recover"]
+            },
+            "Organizational-25": {
+              "title": "Assessment and decision on information security events",
+              "description": "The organization should assess information security events and decide if they are to be categorized as information security incidents.",
+              "theme": ["Organizational"],
+              "type": ["Detective"],
+              "concept": ["Detect", "Respond"]
+            },
+            "Organizational-26": {
+              "title": "Response to information security incidents",
+              "description": "Information security incidents should be responded to in accordance with the documented procedures.",
+              "theme": ["Organizational"],
+              "type": ["Corrective"],
+              "concept": ["Respond", "Recover"]
+            },
+            "Organizational-27": {
+              "title": "Learning from information security incidents",
+              "description": "Knowledge gained from analysing information security incidents should be used to strengthen and improve the information security controls.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify", "Protect"]
+            },
+            "Organizational-28": {
+              "title": "Collection of evidence",
+              "description": "The organization should define and apply procedures for the identification, collection, acquisition, and preservation of information, which can serve as evidence.",
+              "theme": ["Organizational"],
+              "type": ["Corrective"],
+              "concept": ["Respond", "Detect"]
+            },
+            "Organizational-29": {
+              "title": "Information security during disruption",
+              "description": "The organization should plan how to maintain information security at an appropriate level during disruption.",
+              "theme": ["Organizational"],
+              "type": ["Preventive", "Corrective"],
+              "concept": ["Protect", "Respond"]
+            },
+            "Organizational-30": {
+              "title": "ICT readiness for business continuity",
+              "description": "ICT readiness should be planned, implemented, maintained and tested based on business continuity objectives and ICT continuity requirements.",
+              "theme": ["Organizational"],
+              "type": ["Corrective"],
+              "concept": ["Respond"]
+            },
+            "Organizational-31": {
+              "title": "Legal, statutory, regulatory and contractual requirements",
+              "description": "Legal, statutory, regulatory and contractual requirements relevant to information security and the organization's approach to meet these requirements should be identified, documented and kept up to date.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-32": {
+              "title": "Intellectual property rights",
+              "description": "The organization should implement appropriate procedures to ensure compliance with legal, statutory, regulatory, and contractual requirements related to intellectual property rights.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Organizational-33": {
+              "title": "Protection of records",
+              "description": "Records should be protected from loss, destruction, falsification, unauthorized access and unauthorized release.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect", "Identify"]
+            },
+            "Organizational-34": {
+              "title": "Privacy and protection of personally identifiable information",
+              "description": "The organization should implement procedures to ensure the protection of personally identifiable information (PII) in line with relevant legislation and regulation.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Protect", "Identify"]
+            },
+            "Organizational-35": {
+              "title": "Independent review of information security",
+              "description": "The organizations approach to managing information security and its implementation, including people, processes, and technologies, should be reviewed independently at planned intervals or when significant changes occur.",
+              "theme": ["Organizational"],
+              "type": ["Preventive", "Corrective"],
+              "concept": ["Identify", "Protect"]
+            },
+            "Organizational-36": {
+              "title": "Compliance with policies, rules, and standards for information security",
+              "description": "Compliance with the organization's information security policy, rules, standards, and any other security requirements should be reviewed and audited regularly.",
+              "theme": ["Organizational"],
+              "type": ["Preventive"],
+              "concept": ["Identify", "Protect"]
+            },
+            "Organizational-37": {
+              "title": "Documented operating procedures",
+              "description": "Operating procedures for information processing facilities should be documented and made available to personnel who need them.",
+              "theme": ["Organizational"],
+              "type": ["Preventive", "Corrective"],
+              "concept": ["Recover", "Protect"]
+            },
+            "People-1": {
+              "title": "Screening",
+              "description": "Background verification checks on all candidates to become personnel should be carried out prior to joining the organization and on an ongoing basis taking into consideration applicable laws, regulations and ethics and be proportional to the business requirements, the classification of the information to be accessed and the perceived risks.",
+              "theme": ["People"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "People-2": {
+              "title": "Terms and conditions of employment",
+              "description": "The employment contractual agreements should state the personnel's and the organization's responsibilities for information security.",
+              "theme": ["People"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "People-3": {
+              "title": "Information security awareness, education and training",
+              "description": "Personnel of the organization and relevant interested parties should receive appropriate information security awareness, education and training and regular updates of the organization's information security policy, topic-specific policies and procedures, as relevant for their job function",
+              "theme": ["People"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "People-4": {
+              "title": "Disciplinary process",
+              "description": "A disciplinary process should be formalized and communicated to take actions against personnel and other relevant interested parties who have committed an information security policy violation.",
+              "theme": ["People"],
+              "type": ["Preventive", "Corrective"],
+              "concept": ["Protect", "Respond"]
+            },
+            "People-5": {
+              "title": "Responsibilities after termination or change of employment",
+              "description": "Information security responsibilities and duties that remain valid after termination or change of employment should be defined, enforced and communicated to relevant personnel and other interested parties.",
+              "theme": ["People"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "People-6": {
+              "title": "Confidentiality or non-disclosure agreements",
+              "description": "Confidentiality or non-disclosure agreements reflecting the organization's needs for the protection of information should be identified, documented, regularly reviewed and signed by personnel and other relevant interested parties.",
+              "theme": ["People"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "People-7": {
+              "title": "Remote working",
+              "description": "Security measures should be implemented when personnel are working remotely to protect information accessed, processed or stored outside the organization's premises.",
+              "theme": ["People"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "People-8": {
+              "title": "Information security event reporting",
+              "description": "The organization should provide a mechanism for personnel to report observed or suspected information security events through appropriate channels in a timely manner.",
+              "theme": ["People"],
+              "type": ["Detective"],
+              "concept": ["Detect"]
+            },
+            "Physical-1": {
+              "title": "Physical security perimeters",
+              "description": "Security perimeters should be defined and used to protect areas that contain information and other associated assets.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-2": {
+              "title": "Physical entry",
+              "description": "Secure areas should be protected by appropriate entry controls and access points.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-3": {
+              "title": "Securing offices, rooms and facilities",
+              "description": "Physical security for offices, rooms and facilities should be designed and implemented.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-4": {
+              "title": "Physical security monitoring",
+              "description": "Premises should be continuously monitored for unauthorized physical access.",
+              "theme": ["Physical"],
+              "type": ["Preventive", "Detective"],
+              "concept": ["Protect", "Detect"]
+            },
+            "Physical-5": {
+              "title": "Protecting against physical and environmental threats",
+              "description": "Protection against physical and environmental threats, such as natural disasters and other intentional or unintentional physical threats to infrastructure should be designed and implemented.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-6": {
+              "title": "Working in secure areas",
+              "description": "Security measures for working in secure areas should be designed and implemented.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-7": {
+              "title": "Clear desk and clear screen policy",
+              "description": "Clear desk rules for papers and removable storage media and clear screen rules for information processing facilities should be defined and appropriately enforced.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-8": {
+              "title": "Equipment siting and protection",
+              "description": "Equipment should be sited securely and protected.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-9": {
+              "title": "Security of assets off-premises",
+              "description": "Off-site assets should be protected.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-10": {
+              "title": "Storage media",
+              "description": "Storage media should be managed through their life cycle of acquisition, use, transportation and disposal in accordance with the organization's classification scheme and handling requirements.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-11": {
+              "title": "Supporting utilities",
+              "description": "Information processing facilities should be protected from power failures and other disruptions caused by failures in supporting utilities.",
+              "theme": ["Physical"],
+              "type": ["Preventive", "Detective"],
+              "concept": ["Protect", "Detect"]
+            },
+            "Physical-12": {
+              "title": "Cabling security",
+              "description": "Cables carrying power, data or supporting information services should be protected from interception, interference or damage.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-13": {
+              "title": "Equipment maintenance",
+              "description": "Equipment should be maintained correctly to ensure availability, integrity and confidentiality of information.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Physical-14": {
+              "title": "Secure disposal or re-use of equipment",
+              "description": "Items of equipment containing storage media should be verified to ensure that any sensitive data and licensed software has been removed or securely overwritten prior to disposal or re-use.",
+              "theme": ["Physical"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-1": {
+              "title": "User endpoint devices",
+              "description": "Information stored on, processed by or accessible via user endpoint devices should be protected.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-2": {
+              "title": "Privileged access rights",
+              "description": "The allocation and use of privileged access rights should be restricted and managed.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-3": {
+              "title": "Information access restriction",
+              "description": "Access to information and other associated assets should be restricted in accordance with the established topic-specific policy on access control.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-4": {
+              "title": "Access to source code",
+              "description": "Read and write access to source code, development tools and software libraries should be appropriately managed.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-5": {
+              "title": "Secure authentication",
+              "description": "Secure authentication technologies and procedures should be implemented based on information access restrictions and the topic-specific policy on access control.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-6": {
+              "title": "Capacity management",
+              "description": "The use of resources should be monitored, tuned, and projections made of future capacity requirements to ensure the required system performance.",
+              "theme": ["Technological"],
+              "type": ["Preventive", "Detective"],
+              "concept": ["Protect", "Detect", "Identify"]
+            },
+            "Technological-7": {
+              "title": "Protection from malware",
+              "description": "Detection, prevention, and recovery controls to protect against malware should be implemented, combined with appropriate user awareness.",
+              "theme": ["Technological"],
+              "type": ["Preventive", "Corrective", "Detective"],
+              "concept": ["Protect", "Detect"]
+            },
+            "Technological-8": {
+              "title": "Management of technical vulnerabilities",
+              "description": "Information about technical vulnerabilities of information systems being used should be obtained in a timely fashion, the organization's exposure to such vulnerabilities should be evaluated, and appropriate measures should be taken to address the associated risk.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect", "Identify"]
+            },
+            "Technological-9": {
+              "title": "Configuration management",
+              "description": "Configuration items should be identified, and baselines of configurations should be established and maintained.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-10": {
+              "title": "Information deletion",
+              "description": "Information stored on information systems, devices, or media should be securely deleted when no longer required.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-11": {
+              "title": "Data masking",
+              "description": "Data masking should be used in production and non-production environments where appropriate to limit the exposure of sensitive data.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-12": {
+              "title": "Data leakage prevention",
+              "description": "Data leakage prevention measures should be implemented to detect and prevent unauthorized disclosure of sensitive information.",
+              "theme": ["Technological"],
+              "type": ["Preventive", "Detective"],
+              "concept": ["Protect", "Detect"]
+            },
+            "Technological-13": {
+              "title": "Information backup",
+              "description": "Backup copies of information, software, and system images should be taken and tested regularly in accordance with an agreed backup policy.",
+              "theme": ["Technological"],
+              "type": ["Corrective"],
+              "concept": ["Recover"]
+            },
+            "Technological-14": {
+              "title": "Redundancy of information processing facilities",
+              "description": "Information processing facilities should be redundant to ensure availability and resilience.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-15": {
+              "title": "Logging",
+              "description": "Event logs recording user activities, exceptions, faults, and information security events should be produced, kept, and regularly reviewed.",
+              "theme": ["Technological"],
+              "type": ["Detective"],
+              "concept": ["Detect"]
+            },
+            "Technological-16": {
+              "title": "Monitoring activities",
+              "description": "Systems and networks should be monitored to detect anomalies and potential security events.",
+              "theme": ["Technological"],
+              "type": ["Detective", "Corrective"],
+              "concept": ["Detect", "Respond"]
+            },
+            "Technological-17": {
+              "title": "Clock synchronization",
+              "description": "The clocks of information processing systems used by the organization should be synchronized to approved time sources.",
+              "theme": ["Technological"],
+              "type": ["Detective"],
+              "concept": ["Protect", "Detect"]
+            },
+            "Technological-18": {
+              "title": "Use of privileged utility programs",
+              "description": "The use of utility programs that can be capable of overriding system and application controls should be restricted and tightly controlled.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-19": {
+              "title": "Installation of software on operational systems",
+              "description": "Procedures and measures should be implemented to securely manage software installation on operational systems.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-20": {
+              "title": "Networks security",
+              "description": "Networks and network devices should be secured, managed and controlled to protect information in systems and applications.",
+              "theme": ["Technological"],
+              "type": ["Preventive", "Detective"],
+              "concept": ["Protect", "Detect"]
+            },
+            "Technological-21": {
+              "title": "Security of network services",
+              "description": "Security mechanisms, service levels and service requirements of network services should be identified, implemented and monitored.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-22": {
+              "title": "Segregation of networks",
+              "description": "Groups of information services, users and information systems should be segregated in the organization's networks.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-23": {
+              "title": "Web filtering",
+              "description": "Access to external websites should be managed to reduce exposure to malicious content.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-24": {
+              "title": "Use of cryptography",
+              "description": "Rules for the effective use of cryptography, including cryptographic key management, should be defined and implemented.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-25": {
+              "title": "Secure development life cycle",
+              "description": "Rules for secure development of software and systems should be established and applied.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-26": {
+              "title": "Application security requirements",
+              "description": "Information security requirements should be identified, specified and approved when developing or acquiring applications.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-27": {
+              "title": "Secure system architecture and engineering principles",
+              "description": "Principles for engineering secure systems should be established, documented, maintained and applied to any information system development activities.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-28": {
+              "title": "Secure coding",
+              "description": "Secure coding principles should be applied to software development.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-29": {
+              "title": "Security testing in development and acceptance",
+              "description": "Security testing processes should be defined and implemented in the development life cycle.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Identify"]
+            },
+            "Technological-30": {
+              "title": "Outsourced development",
+              "description": "The organization should direct, monitor and review the activities related to outsourced system development.",
+              "theme": ["Technological"],
+              "type": ["Detective", "Preventive"],
+              "concept": ["Identify", "Protect", "Detect"]
+            },
+            "Technological-31": {
+              "title": "Separation of development, test and production environments",
+              "description": "Development, testing and production environments should be separated and secured.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-32": {
+              "title": "Change management",
+              "description": "Changes to information processing facilities and information systems should be subject to change management procedures.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-33": {
+              "title": "Test information",
+              "description": "Test information should be appropriately selected, protected and managed.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            },
+            "Technological-34": {
+              "title": "Protection of information systems during audit testing",
+              "description": "Audit tests and other assurance activities involving assessment of operational systems should be planned and agreed between the tester and appropriate management.",
+              "theme": ["Technological"],
+              "type": ["Preventive"],
+              "concept": ["Protect"]
+            }
+          }
+        }
+      },
+      "tisax": {
+        "title": "TISAX Controls",
+        "controls": {
+          "1.1.1": {
+            "title": "1.1.1",
+            "secondaryTitle": "To what extent are information security policies available?",
+            "desc": "To what extent are information security policies available?",
+            "classifications": ["Tisax"]
+          },
+          "1.2.1": {
+            "title": "1.2.1",
+            "secondaryTitle": "To what extent is information security managed within the organization?",
+            "desc": "To what extent is information security managed within the organization?",
+            "classifications": ["Tisax"]
+          },
+          "1.2.2": {
+            "title": "1.2.2",
+            "secondaryTitle": "To what extent are information security responsibilities organized?",
+            "desc": "To what extent are information security responsibilities organized?",
+            "classifications": ["Tisax"]
+          },
+          "1.2.3": {
+            "title": "1.2.3",
+            "secondaryTitle": "To what extent are information security requirements considered in projects?",
+            "desc": "To what extent are information security requirements considered in projects?",
+            "classifications": ["Tisax"]
+          },
+          "1.2.4": {
+            "title": "1.2.4",
+            "secondaryTitle": "To what extent are the responsibilities between external IT service providers and the own organization defined?",
+            "desc": "To what extent are the responsibilities between external IT service providers and the own organization defined?",
+            "classifications": ["Tisax"]
+          },
+          "1.3.1": {
+            "title": "1.3.1",
+            "secondaryTitle": "To what extent are information assets identified and recorded?",
+            "desc": "To what extent are information assets identified and recorded?",
+            "classifications": ["Tisax"]
+          },
+          "1.3.2": {
+            "title": "1.3.2",
+            "secondaryTitle": "To what extent are information assets classified and managed in terms of their protection needs?",
+            "desc": "To what extent are information assets classified and managed in terms of their protection needs?",
+            "classifications": ["Tisax"]
+          },
+          "1.3.3": {
+            "title": "1.3.3",
+            "secondaryTitle": "To what extent is it ensured that only evaluated and approved external IT services are used for processing the organization's information assets?",
+            "desc": "To what extent is it ensured that only evaluated and approved external IT services are used for processing the organization's information assets?",
+            "classifications": ["Tisax"]
+          },
+          "1.3.4": {
+            "title": "1.3.4",
+            "secondaryTitle": "To what extent is it ensured that only evaluated and approved software is used for processing the organization's information assets?",
+            "desc": "To what extent is it ensured that only evaluated and approved software is used for processing the organization's information assets?",
+            "classifications": ["Tisax"]
+          },
+          "1.4.1": {
+            "title": "1.4.1",
+            "secondaryTitle": "To what extent are information security risks managed?",
+            "desc": "To what extent are information security risks managed?",
+            "classifications": ["Tisax"]
+          },
+          "1.5.1": {
+            "title": "1.5.1",
+            "secondaryTitle": "To what extent is compliance with information security ensured in procedures and processes?",
+            "desc": "To what extent is compliance with information security ensured in procedures and processes?",
+            "classifications": ["Tisax"]
+          },
+          "1.5.2": {
+            "title": "1.5.2",
+            "secondaryTitle": "To what extent is the ISMS reviewed by an independent authority?",
+            "desc": "To what extent is the ISMS reviewed by an independent authority?",
+            "classifications": ["Tisax"]
+          },
+          "2.1.1": {
+            "title": "2.1.1",
+            "secondaryTitle": "To what extent are background verification checks carried out on all candidates prior to employment?",
+            "desc": "To what extent are background verification checks carried out on all candidates prior to employment?",
+            "classifications": ["Tisax"]
+          },
+          "2.1.2": {
+            "title": "2.1.2",
+            "secondaryTitle": "To what extent are the personnel's and the organization's responsibilities for information security stated in the employment contractual agreements?",
+            "desc": "To what extent are the personnel's and the organization's responsibilities for information security stated in the employment contractual agreements?",
+            "classifications": ["Tisax"]
+          },
+          "2.1.3": {
+            "title": "2.1.3",
+            "secondaryTitle": "To what extent do personnel of the organization and relevant interested parties receive appropriate information security awareness, education and training and regular updates of the organization's information security policy, topic-specific policies and procedures, as relevant for their job function?",
+            "desc": "To what extent do personnel of the organization and relevant interested parties receive appropriate information security awareness, education and training and regular updates of the organization's information security policy, topic-specific policies and procedures, as relevant for their job function?",
+            "classifications": ["Tisax"]
+          },
+          "2.1.4": {
+            "title": "2.1.4",
+            "secondaryTitle": "To what extent is a disciplinary process formalized and communicated to take actions against personnel and other relevant interested parties who have committed an information security policy violation?",
+            "desc": "To what extent is a disciplinary process formalized and communicated to take actions against personnel and other relevant interested parties who have committed an information security policy violation?",
+            "classifications": ["Tisax"]
+          },
+          "2.1.5": {
+            "title": "2.1.5",
+            "secondaryTitle": "To what extent are information security responsibilities and duties that remain valid after termination or change of employment defined, enforced and communicated to relevant personnel and other interested parties?",
+            "desc": "To what extent are information security responsibilities and duties that remain valid after termination or change of employment defined, enforced and communicated to relevant personnel and other interested parties?",
+            "classifications": ["Tisax"]
+          },
+          "2.1.6": {
+            "title": "2.1.6",
+            "secondaryTitle": "To what extent are confidentiality or non-disclosure agreements reflecting the organization's needs for the protection of information identified, documented, regularly reviewed and signed by personnel and other relevant interested parties?",
+            "desc": "To what extent are confidentiality or non-disclosure agreements reflecting the organization's needs for the protection of information identified, documented, regularly reviewed and signed by personnel and other relevant interested parties?",
+            "classifications": ["Tisax"]
+          },
+          "2.1.7": {
+            "title": "2.1.7",
+            "secondaryTitle": "To what extent are security measures implemented when personnel are working remotely to protect information accessed, processed or stored outside the organization's premises?",
+            "desc": "To what extent are security measures implemented when personnel are working remotely to protect information accessed, processed or stored outside the organization's premises?",
+            "classifications": ["Tisax"]
+          },
+          "2.1.8": {
+            "title": "2.1.8",
+            "secondaryTitle": "To what extent is a mechanism provided for personnel to report observed or suspected information security events through appropriate channels in a timely manner?",
+            "desc": "To what extent is a mechanism provided for personnel to report observed or suspected information security events through appropriate channels in a timely manner?",
+            "classifications": ["Tisax"]
+          },
+          "3.1.1": {
+            "title": "3.1.1",
+            "secondaryTitle": "To what extent are security perimeters defined and used to protect areas that contain information and other associated assets?",
+            "desc": "To what extent are security perimeters defined and used to protect areas that contain information and other associated assets?",
+            "classifications": ["Tisax"]
+          },
+          "3.1.2": {
+            "title": "3.1.2",
+            "secondaryTitle": "To what extent are secure areas protected by appropriate entry controls to ensure that only authorized personnel are allowed access?",
+            "desc": "To what extent are secure areas protected by appropriate entry controls to ensure that only authorized personnel are allowed access?",
+            "classifications": ["Tisax"]
+          },
+          "3.1.3": {
+            "title": "3.1.3",
+            "secondaryTitle": "To what extent is physical security applied to offices, rooms and facilities?",
+            "desc": "To what extent is physical security applied to offices, rooms and facilities?",
+            "classifications": ["Tisax"]
+          },
+          "3.1.4": {
+            "title": "3.1.4",
+            "secondaryTitle": "To what extent is physical security monitored to detect potential unauthorized physical access?",
+            "desc": "To what extent is physical security monitored to detect potential unauthorized physical access?",
+            "classifications": ["Tisax"]
+          },
+          "3.1.5": {
+            "title": "3.1.5",
+            "secondaryTitle": "To what extent is protection against physical and environmental threats, such as natural disasters and other malicious attacks, designed and implemented?",
+            "desc": "To what extent is protection against physical and environmental threats, such as natural disasters and other malicious attacks, designed and implemented?",
+            "classifications": ["Tisax"]
+          },
+          "3.1.6": {
+            "title": "3.1.6",
+            "secondaryTitle": "To what extent are procedures for working in secure areas designed and implemented?",
+            "desc": "To what extent are procedures for working in secure areas designed and implemented?",
+            "classifications": ["Tisax"]
+          },
+          "3.1.7": {
+            "title": "3.1.7",
+            "secondaryTitle": "To what extent does the organization adopt clear desk and clear screen practices to reduce the risk of unauthorized access or damage to papers, media, and information processing facilities?",
+            "desc": "To what extent does the organization adopt clear desk and clear screen practices to reduce the risk of unauthorized access or damage to papers, media, and information processing facilities?",
+            "classifications": ["Tisax"]
+          },
+          "3.2.1": {
+            "title": "3.2.1",
+            "secondaryTitle": "To what extent is equipment sited and protected to reduce the risks from environmental threats and hazards, and opportunities for unauthorized access?",
+            "desc": "To what extent is equipment sited and protected to reduce the risks from environmental threats and hazards, and opportunities for unauthorized access?",
+            "classifications": ["Tisax"]
+          },
+          "3.2.2": {
+            "title": "3.2.2",
+            "secondaryTitle": "To what extent is security applied to assets when off-premises?",
+            "desc": "To what extent is security applied to assets when off-premises?",
+            "classifications": ["Tisax"]
+          },
+          "3.2.3": {
+            "title": "3.2.3",
+            "secondaryTitle": "To what extent are media managed, controlled, transported, and disposed of to protect information from unauthorized disclosure, modification, removal, or destruction?",
+            "desc": "To what extent are media managed, controlled, transported, and disposed of to protect information from unauthorized disclosure, modification, removal, or destruction?",
+            "classifications": ["Tisax"]
+          },
+          "3.2.4": {
+            "title": "3.2.4",
+            "secondaryTitle": "To what extent does the organization ensure the provision of necessary supporting utilities, such as electricity, water, sewage, heating/ventilation, and air conditioning, to meet its business continuity objectives?",
+            "desc": "To what extent does the organization ensure the provision of necessary supporting utilities, such as electricity, water, sewage, heating/ventilation, and air conditioning, to meet its business continuity objectives?",
+            "classifications": ["Tisax"]
+          },
+          "3.2.5": {
+            "title": "3.2.5",
+            "secondaryTitle": "To what extent are power and telecommunications cabling carrying data or supporting information services protected from interception, interference, or damage?",
+            "desc": "To what extent are power and telecommunications cabling carrying data or supporting information services protected from interception, interference, or damage?",
+            "classifications": ["Tisax"]
+          },
+          "3.2.6": {
+            "title": "3.2.6",
+            "secondaryTitle": "To what extent is equipment correctly maintained to ensure its continued availability and integrity?",
+            "desc": "To what extent is equipment correctly maintained to ensure its continued availability and integrity?",
+            "classifications": ["Tisax"]
+          },
+          "3.2.7": {
+            "title": "3.2.7",
+            "secondaryTitle": "To what extent is equipment removed or disposed of securely?",
+            "desc": "To what extent is equipment removed or disposed of securely?",
+            "classifications": ["Tisax"]
+          },
+          "4.1.1": {
+            "title": "4.1.1",
+            "secondaryTitle": "To what extent are information security requirements for information systems defined?",
+            "desc": "To what extent are information security requirements for information systems defined?",
+            "classifications": ["Tisax"]
+          },
+          "4.1.2": {
+            "title": "4.1.2",
+            "secondaryTitle": "To what extent are information systems secured?",
+            "desc": "To what extent are information systems secured?",
+            "classifications": ["Tisax"]
+          },
+          "4.1.3": {
+            "title": "4.1.3",
+            "secondaryTitle": "To what extent are information systems protected from malware?",
+            "desc": "To what extent are information systems protected from malware?",
+            "classifications": ["Tisax"]
+          },
+          "4.1.4": {
+            "title": "4.1.4",
+            "secondaryTitle": "To what extent are information systems monitored for security events?",
+            "desc": "To what extent are information systems monitored for security events?",
+            "classifications": ["Tisax"]
+          },
+          "4.1.5": {
+            "title": "4.1.5",
+            "secondaryTitle": "To what extent are information systems backed up?",
+            "desc": "To what extent are information systems backed up?",
+            "classifications": ["Tisax"]
+          },
+          "4.2.1": {
+            "title": "4.2.1",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access?",
+            "desc": "To what extent are information systems protected from unauthorized access?",
+            "classifications": ["Tisax"]
+          },
+          "4.2.2": {
+            "title": "4.2.2",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized modification?",
+            "desc": "To what extent are information systems protected from unauthorized modification?",
+            "classifications": ["Tisax"]
+          },
+          "4.2.3": {
+            "title": "4.2.3",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized disclosure?",
+            "desc": "To what extent are information systems protected from unauthorized disclosure?",
+            "classifications": ["Tisax"]
+          },
+          "4.2.4": {
+            "title": "4.2.4",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized destruction?",
+            "desc": "To what extent are information systems protected from unauthorized destruction?",
+            "classifications": ["Tisax"]
+          },
+          "4.2.5": {
+            "title": "4.2.5",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized interruption?",
+            "desc": "To what extent are information systems protected from unauthorized interruption?",
+            "classifications": ["Tisax"]
+          },
+          "4.2.6": {
+            "title": "4.2.6",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized use?",
+            "desc": "To what extent are information systems protected from unauthorized use?",
+            "classifications": ["Tisax"]
+          },
+          "4.2.7": {
+            "title": "4.2.7",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system resources?",
+            "desc": "To what extent are information systems protected from unauthorized access to system resources?",
+            "classifications": ["Tisax"]
+          },
+          "4.3.1": {
+            "title": "4.3.1",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system files?",
+            "desc": "To what extent are information systems protected from unauthorized access to system files?",
+            "classifications": ["Tisax"]
+          },
+          "4.3.2": {
+            "title": "4.3.2",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system configuration?",
+            "desc": "To what extent are information systems protected from unauthorized access to system configuration?",
+            "classifications": ["Tisax"]
+          },
+          "4.4.1": {
+            "title": "4.4.1",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system logs?",
+            "desc": "To what extent are information systems protected from unauthorized access to system logs?",
+            "classifications": ["Tisax"]
+          },
+          "4.4.2": {
+            "title": "4.4.2",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system audit trails?",
+            "desc": "To what extent are information systems protected from unauthorized access to system audit trails?",
+            "classifications": ["Tisax"]
+          },
+          "4.4.3": {
+            "title": "4.4.3",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system monitoring data?",
+            "desc": "To what extent are information systems protected from unauthorized access to system monitoring data?",
+            "classifications": ["Tisax"]
+          },
+          "4.5.1": {
+            "title": "4.5.1",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system backup data?",
+            "desc": "To what extent are information systems protected from unauthorized access to system backup data?",
+            "classifications": ["Tisax"]
+          },
+          "4.5.2": {
+            "title": "4.5.2",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system recovery data?",
+            "desc": "To what extent are information systems protected from unauthorized access to system recovery data?",
+            "classifications": ["Tisax"]
+          },
+          "5.1.1": {
+            "title": "5.1.1",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system documentation?",
+            "desc": "To what extent are information systems protected from unauthorized access to system documentation?",
+            "classifications": ["Tisax"]
+          },
+          "5.1.2": {
+            "title": "5.1.2",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system procedures?",
+            "desc": "To what extent are information systems protected from unauthorized access to system procedures?",
+            "classifications": ["Tisax"]
+          },
+          "5.1.3": {
+            "title": "5.1.3",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system policies?",
+            "desc": "To what extent are information systems protected from unauthorized access to system policies?",
+            "classifications": ["Tisax"]
+          },
+          "5.1.4": {
+            "title": "5.1.4",
+            "secondaryTitle": "To what extent are information systems protected from unauthorized access to system standards?",
+            "desc": "To what extent are information systems protected from unauthorized access to system standards?",
+            "classifications": ["Tisax"]
+          },
+          "5.2.1": {
+            "title": "5.2.1",
+            "secondaryTitle": "To what extent are cryptographic controls used to protect the confidentiality, authenticity, and integrity of information?",
+            "desc": "To what extent are cryptographic controls used to protect the confidentiality, authenticity, and integrity of information?",
+            "classifications": ["Tisax"]
+          },
+          "6.1.1": {
+            "title": "6.1.1",
+            "secondaryTitle": "To what extent does the organization establish a secure development life cycle that incorporates security requirements throughout the stages of development?",
+            "desc": "To what extent does the organization establish a secure development life cycle that incorporates security requirements throughout the stages of development?",
+            "classifications": ["Tisax"]
+          },
+          "6.1.2": {
+            "title": "6.1.2",
+            "secondaryTitle": "To what extent are security requirements for applications defined, documented, and verified as part of the development and acquisition processes?",
+            "desc": "To what extent are security requirements for applications defined, documented, and verified as part of the development and acquisition processes?",
+            "classifications": ["Tisax"]
+          },
+          "6.1.3": {
+            "title": "6.1.3",
+            "secondaryTitle": "To what extent are principles for engineering secure systems established, documented, and applied to any information system implementation efforts?",
+            "desc": "To what extent are principles for engineering secure systems established, documented, and applied to any information system implementation efforts?",
+            "classifications": ["Tisax"]
+          },
+          "6.1.4": {
+            "title": "6.1.4",
+            "secondaryTitle": "To what extent are secure coding practices applied to software development?",
+            "desc": "To what extent are secure coding practices applied to software development?",
+            "classifications": ["Tisax"]
+          },
+          "6.1.5": {
+            "title": "6.1.5",
+            "secondaryTitle": "To what extent is information security testing carried out during the development and acceptance phases of information systems?",
+            "desc": "To what extent is information security testing carried out during the development and acceptance phases of information systems?",
+            "classifications": ["Tisax"]
+          },
+          "6.1.6": {
+            "title": "6.1.6",
+            "secondaryTitle": "To what extent does the organization supervise and monitor the activity of outsourced system development?",
+            "desc": "To what extent does the organization supervise and monitor the activity of outsourced system development?",
+            "classifications": ["Tisax"]
+          },
+          "6.2.1": {
+            "title": "6.2.1",
+            "secondaryTitle": "To what extent are development, testing, and operational environments separated to reduce the risks of unauthorized access or changes to the operational environment?",
+            "desc": "To what extent are development, testing, and operational environments separated to reduce the risks of unauthorized access or changes to the operational environment?",
+            "classifications": ["Tisax"]
+          },
+          "6.2.2": {
+            "title": "6.2.2",
+            "secondaryTitle": "To what extent are changes to information processing facilities and systems controlled?",
+            "desc": "To what extent are changes to information processing facilities and systems controlled?",
+            "classifications": ["Tisax"]
+          },
+          "6.2.3": {
+            "title": "6.2.3",
+            "secondaryTitle": "To what extent is test information selected carefully and protected, in accordance with the organization's information security policies?",
+            "desc": "To what extent is test information selected carefully and protected, in accordance with the organization's information security policies?",
+            "classifications": ["Tisax"]
+          },
+          "6.2.4": {
+            "title": "6.2.4",
+            "secondaryTitle": "To what extent are audit tests carefully planned and controlled to minimize disruptions to business processes and ensure the integrity of the information systems?",
+            "desc": "To what extent are audit tests carefully planned and controlled to minimize disruptions to business processes and ensure the integrity of the information systems?",
+            "classifications": ["Tisax"]
+          },
+          "7.1.1": {
+            "title": "7.1.1",
+            "secondaryTitle": "To what extent are information security incidents managed? (Please check specifically whether immediate remedial actions, evaluation, response and reporting processes have been established.)",
+            "desc": "To what extent are information security incidents managed? (Please check specifically whether immediate remedial actions, evaluation, response and reporting processes have been established.)",
+            "classifications": ["Tisax"]
+          },
+          "7.1.2": {
+            "title": "7.1.2",
+            "secondaryTitle": "To what extent are personnel able to recognize and report potential information security incidents?",
+            "desc": "To what extent are personnel able to recognize and report potential information security incidents?",
+            "classifications": ["Tisax"]
+          },
+          "7.1.3": {
+            "title": "7.1.3",
+            "secondaryTitle": "To what extent is formal incident response procedure available?",
+            "desc": "To what extent is formal incident response procedure available?",
+            "classifications": ["Tisax"]
+          },
+          "7.1.4": {
+            "title": "7.1.4",
+            "secondaryTitle": "To what extent is knowledge gained from analyzing information security incidents used to reduce the likelihood or impact of future incidents?",
+            "desc": "To what extent is knowledge gained from analyzing information security incidents used to reduce the likelihood or impact of future incidents?",
+            "classifications": ["Tisax"]
+          },
+          "7.1.5": {
+            "title": "7.1.5",
+            "secondaryTitle": "To what extent are digital forensics procedures available?",
+            "desc": "To what extent are digital forensics procedures available?",
+            "classifications": ["Tisax"]
+          },
+          "7.2.1": {
+            "title": "7.2.1",
+            "secondaryTitle": "To what extent are backup and restore procedures established for critical services, information and systems to ensure business continuity?",
+            "desc": "To what extent are backup and restore procedures established for critical services, information and systems to ensure business continuity?",
+            "classifications": ["Tisax"]
+          },
+          "7.2.2": {
+            "title": "7.2.2",
+            "secondaryTitle": "To what extent are redundancies for critical services, information and systems established to ensure business continuity?",
+            "desc": "To what extent are redundancies for critical services, information and systems established to ensure business continuity?",
+            "classifications": ["Tisax"]
+          },
+          "8.1.1": {
+            "title": "8.1.1",
+            "secondaryTitle": "To what extent are information security requirements complied with when operating in foreign countries?",
+            "desc": "To what extent are information security requirements complied with when operating in foreign countries?",
+            "classifications": ["Tisax"]
+          },
+          "8.1.2": {
+            "title": "8.1.2",
+            "secondaryTitle": "To what extent is the preservation of privacy and protection of PII ensured?",
+            "desc": "To what extent is the preservation of privacy and protection of PII ensured?",
+            "classifications": ["Tisax"]
+          },
+          "8.1.3": {
+            "title": "8.1.3",
+            "secondaryTitle": "To what extent are cryptographic controls considered when transferring PII across national borders (international data transfer)?",
+            "desc": "To what extent are cryptographic controls considered when transferring PII across national borders (international data transfer)?",
+            "classifications": ["Tisax"]
+          },
+          "8.1.4": {
+            "title": "8.1.4",
+            "secondaryTitle": "To what extent does the organization ensure compliance with relevant laws and regulations related to the use of copyrighted material?",
+            "desc": "To what extent does the organization ensure compliance with relevant laws and regulations related to the use of copyrighted material?",
+            "classifications": ["Tisax"]
+          },
+          "8.1.5": {
+            "title": "8.1.5",
+            "secondaryTitle": "To what extent is maintenance of records ensured to provide evidence of compliance with legal and contractual requirements?",
+            "desc": "To what extent is maintenance of records ensured to provide evidence of compliance with legal and contractual requirements?",
+            "classifications": ["Tisax"]
+          },
+          "8.1.6": {
+            "title": "8.1.6",
+            "secondaryTitle": "To what extent is the approach to managing information security independently reviewed at planned intervals or when significant changes occur?",
+            "desc": "To what extent is the approach to managing information security independently reviewed at planned intervals or when significant changes occur?",
+            "classifications": ["Tisax"]
+          },
+          "8.1.7": {
+            "title": "8.1.7",
+            "secondaryTitle": "To what extent is compliance with the organization's information security policies and standards regularly reviewed and monitored?",
+            "desc": "To what extent is compliance with the organization's information security policies and standards regularly reviewed and monitored?",
+            "classifications": ["Tisax"]
+          },
+          "8.2.1": {
+            "title": "8.2.1",
+            "secondaryTitle": "To what extent are operating procedures for the information processing systems documented and made available to all users who need them?",
+            "desc": "To what extent are operating procedures for the information processing systems documented and made available to all users who need them?",
+            "classifications": ["Tisax"]
+          },
+          "9.6.1": {
+            "title": "9.6.1",
+            "secondaryTitle": "To what extent are data subject requests processed?",
+            "desc": "To what extent are data subject requests processed?",
+            "classifications": ["Tisax"]
+          },
+          "9.6.2": {
+            "title": "9.6.2",
+            "secondaryTitle": "To what extent are data protection incidents processed?",
+            "desc": "To what extent are data protection incidents processed?",
+            "classifications": ["Tisax"]
+          },
+          "9.7.1": {
+            "title": "9.7.1",
+            "secondaryTitle": "To what extent are employees obliged to maintain confidentiality?",
+            "desc": "To what extent are employees obliged to maintain confidentiality?",
+            "classifications": ["Tisax"]
+          },
+          "9.7.2": {
+            "title": "9.7.2",
+            "secondaryTitle": "To what extent are employees trained in data protection?",
+            "desc": "To what extent are employees trained in data protection?",
+            "classifications": ["Tisax"]
+          },
+          "9.8.1": {
+            "title": "9.8.1",
+            "secondaryTitle": "To what extent are instructions of processing relationships of data protection implemented?",
+            "desc": "To what extent are instructions of processing relationships of data protection implemented?",
+            "classifications": ["Tisax"]
+          }
+        }
+      }
+    },
+    "exitModal": {
+      "title": "Are you sure you want to exit?",
+      "descriptionOpening": "Some mandatory fields are empty or invalid in the following:",
+      "descriptionEnding": "Warning: All changes will be lost if you proceed",
+      "stayInCurrentStep": "No, I wish to stay",
+      "proceed": "Yes, I want to exit"
+    }
+  },
+  "transparency.crimzon.description": "CRIMZONs™ (Cyber Risk Impact Zones) were established to provide an easy to use open framework to measure and understand cyber risk exposure. Analysis has shown a significant correlation between companies from the same location and industry tending to use the same third-party service providers and technologies, leaving them exposed to corresponding cyber attacks.",
+  "limitedUser.recommendations": "Upgrade to fully understand how you can reduce your risk",
+  "limitedUser.totalExposure": "Upgrade to get insight on your yearly risk broken down by probability and cost",
+  "limitedUser.lossBreakdown": "Upgrade to see the breakdown of components that contribute to your overall loss",
+  "limitedUser.highExposure": "Upgrade to see your High Exposure loss",
+  "limitedUser.byScenario.contingent_bi.title": "Third Party Service Provider Failure",
+  "limitedUser.byScenario.contingent_bi.text": "Losses caused by a failure in a third party provider or losses sustained due to a failure or attack to a network provider's system.",
+  "limitedUser.byScenario.liability.title": "Third Party Liability",
+  "limitedUser.byScenario.liability.text": "Losses incurred from negligent acts, errors, or omissions, including failure to properly protect sensitive data stored on a computer system.",
+  "limitedUser.byScenario.privacy.title": "Data Theft & Privacy",
+  "limitedUser.byScenario.privacy.text": "Losses derived from compromised or exposed customer data.",
+  "limitedUser.byScenario.regulatory.title": "Regulation & Compliance",
+  "limitedUser.byScenario.regulatory.text": "Regulatory requirements are the most important inputs to the model. They are key inputs to the model and have the most significant contribution to the resulting financial quantification.Losses due to fines or penalties imposed on a firm by regulatory agencies, including legal costs associated with response to a regulatory proceeding.",
+  "integrationModal": {
+    "companyCreated": "Company was created successfully!",
+    "description.1": "Company ",
+    "description.2": " was added to your organization and Kovrr is collecting data on the company's assets.",
+    "description.3": "Additionally, you can automatically populate data related to your company assets with our integration tool.",
+    "startIntegrationButton": "Start Integration",
+    "noThanksButton": "No thanks, I'm done!"
+  },
+  "integrationPage": {
+    "modalTitle": "Integrate for automatic sphere creation",
+    "modalDescription1": "Kovrr integrates with CMDB to gather internal customer data, including information on assets, technologies, services, vulnerabilities, and malware infections. This enriched dataset enhances Sphere, enabling a more sophisticated understanding and modeling of your organization's attack surfaces.",
+    "modalDescription2": "Assets are grouped into Asset Group objects based on various parameters like device tags and IP gateway. These groups are mutually exclusive to prevent double-counting asset risk in Kovrr's model.",
+    "successDescription": "Auto generated sphere will soon be available.",
+    "successCustom": "Internal data was successfully uploaded",
+    "successTanium": "Integration with Tanium was successfully triggered",
+    "successServicenow": "Integration with ServiceNow was successfully triggered",
+    "successTenable": "Integration with Tenable was successfully triggered",
+    "successMSSecurity": "Integration was successful",
+    "successCrowdStrike": "Integration with CrowdStrike was successfully triggered",
+    "successBitsight": "Integration with Bitsight was successfully triggered",
+    "successQualys": "Integration with Qualys was successfully triggered",
+    "successSecurityscorecard": "Integration with Security Scorecard was successfully triggered",
+    "failMSSecurity": "Integration Failed",
+    "forms": {
+      "crowdstrike": {
+        "title": "Integrate with CrowdStrike for automatic sphere creation",
+        "description1": "The Sphere data will be populated by querying the CrowdStrike API to retrieve endpoint details.",
+        "description2": "Before proceeding, please ensure that the user associated with the Client ID and Client Secret has the necessary read permissions for the required module: 'Hosts'.",
+        "description3": "Furthermore, we recommend configuring read permissions for additional modules to enable Kovrr to access enhanced data. These modules include 'Spotlight Vulnerabilities', 'Host Groups', 'Discover', 'Incidents', and 'Detections'.",
+        "url1": "CrowdStrike API documentation"
+      },
+      "bitsight": {
+        "title": "Integrate with BitSight for automatic sphere creation",
+        "description1": "The Sphere data will be populated by accessing the BitSight Companies API, under which several different endpoints are queried in order to collect asset and company data.",
+        "description2": "Before proceeding, please ensure that the user associated with the API token has read permissions for all the required endpoints:\n'Assets', 'Findings', 'Company Details', and 'Company Providers'.",
+        "url1": "BitSight API Token Management documentation",
+        "url2": "BitSight Companies API documentation"
+      },
+      "tanium": {
+        "title": "Integrate with Tanium for automatic sphere creation",
+        "description1": "The Sphere data will be populated by querying the Tanium API to retrieve endpoint details.",
+        "description2": "Before proceeding, please ensure the validity of the URL, and that the user associated with the API token has read permissions for the required module: 'Risk'.",
+        "description3": "Furthermore, we recommend configuring read permissions for additional modules to enable Kovrr to access enhanced data. These modules include: 'Comply', 'Patch', 'Enforce', and 'Reveal'.",
+        "url1": "Tanium API documenation",
+        "taniumUrlFormat": "The URL format for Tanium cloud installation is https://<customername>-api.cloud.tanium.com. In an on-premise installation, the url is custom and defined by the user."
+      },
+      "servicenow": {
+        "title": "Integrate with ServiceNow for automatic sphere creation",
+        "description1": "The Sphere data will be populated by querying the ServiceNow Table API.",
+        "description2": "We recommend configuring read permissions for several ServiceNow applications to enable Kovrr to access enhanced data. These applications include 'Vulnerability Response', and 'Application Portfolio Management'.",
+        "url1": "ServiceNow API documentation",
+        "servicenowUrlFormat": "The URL format for ServiceNow url is https://<customername>.service-now.com."
+      },
+      "qualys": {
+        "title": "Integrate with Qualys for automatic sphere creation",
+        "description1": "Assets and vulnerabilities are imported through the Hosts and Hosts Detections API endpoints in Qualys. In addition, data on asset groups is retrieved through the Asset Groups API endpoint.",
+        "description2": "Before proceeding, please ensure that the user associated with the credentials has read permissions for the required modules: 'Host', 'Host Detection', and 'Asset Groups'.",
+        "url1": "Qualys API documentation",
+        "qualysUrlFormat": "The URL format for Qualys url is https://qualysapi.<this can change>.com. (some APIs also have .com.au/ .co.uk etc)."
+      },
+      "securityscorecard": {
+        "title": "Integrate with Security Scorecard for automatic sphere creation",
+        "description1": "The Sphere data will be populated by querying the Security Scorecard API to retrieve endpoint details.",
+        "description2": "Before proceeding, please ensure that the api key associated with the API key has the necessary read permissions",
+        "portfolioLabel": "Portfolio",
+        "companyLabel": "Company",
+        "continueText": "Continue",
+        "authenticationFailure": "Authentication Failed",
+        "portfoliosNotFound": "No portfolios found.",
+        "companiesNotFound": "No companies found. To complete the process make sure you have companies associated with the portfolio.",
+        "linkText": "Security Scorecard API documentation",
+        "url": "https://securityscorecard.readme.io/reference/introduction"
+      },
+      "tenable": {
+        "title": "Integrate with Tenable.io for automatic sphere creation",
+        "description1": "The Sphere data will be populated by accessing API endpoints in Tenable.io.\nAssets and vulnerabilities are imported through the Export Assets and Export Vulnerabilities ",
+        "description2": "Before proceeding, please ensure that the user associated with the credentials has read permissions for the required endpoints: 'Export Assets', 'Export Vulnerabilities', and 'Export Compliance'.",
+        "url1": "Tenable API documentation"
+      },
+      "custom": {
+        "title": "Integrate with a custom integration"
+      }
+    },
+    "errors": {
+      "crowdstrike": {
+        "401": {
+          "title1": "Authentication Failed",
+          "title2": "Please check your credentials.",
+          "description1": "Ensure the validity of the credentials provided.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "403": {
+          "title1": "Authorization Failed",
+          "title2": "Please verify you have the required permissions.",
+          "description1": "Ensure that the user associated with the provided credentials has read permissions for the required module:\n'Hosts'.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "503": {
+          "title1": "Authentication Failed",
+          "title2": "An issue has been detected with your data provider.",
+          "description1": "If the problem persists, we recommend reaching out to Crowdstrike support for further assistance.",
+          "confirmation": "OK"
+        }
+      },
+      "bitsight": {
+        "401": {
+          "title1": "Authentication Failed",
+          "title2": "Please check your credentials.",
+          "description1": "Ensure the validity of the credentials and API token provided.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "403": {
+          "title1": "Authorization Failed",
+          "title2": "Please verify you have the required permissions.",
+          "description1": "Ensure that the user associated with the API token provided has read permissions for all the required endpoints:\n'Assets', 'Findings', 'Company Details', 'Company Details', and 'Company Providers'.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "503": {
+          "title1": "Authentication Failed",
+          "title2": "An issue has been detected with your data provider.",
+          "description1": "If the problem persists, we recommend reaching out to BitSight support for further assistance.",
+          "confirmation": "OK"
+        }
+      },
+      "tanium": {
+        "401": {
+          "title1": "Authentication Failed",
+          "title2": "Please check your credentials.",
+          "description1": "Ensure the validity of the credentials and API token provided.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "403": {
+          "title1": "Authorization Failed",
+          "title2": "Please verify you have the required permissions.",
+          "description1": "Ensure that the user associated with the API token provided has read permissions for the required module:\n'Risk'",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "503": {
+          "title1": "Authentication Failed",
+          "title2": "An issue has been detected with your data provider.",
+          "description1": "If the problem persists, we recommend reaching out to Tanium support for further assistance.",
+          "confirmation": "OK"
+        }
+      },
+      "servicenow": {
+        "401": {
+          "title1": "Authentication Failed",
+          "title2": "Please check your credentials.",
+          "description1": "Ensure the validity of the credentials provided.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "403": {
+          "title1": "Authorization Failed",
+          "title2": "Please verify you have the required permissions.",
+          "description1": "Ensure that the user associated with the API token provided has read permissions for the required tables:\n'cmdb_ci_server', 'cmdb_ci_computer'.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "503": {
+          "title1": "Authentication Failed",
+          "title2": "An issue has been detected with your data provider.",
+          "description1": "If the problem persists, we recommend reaching out to Service Now support for further assistance.",
+          "confirmation": "OK"
+        }
+      },
+      "qualys": {
+        "401": {
+          "title1": "Authentication Failed",
+          "title2": "Please check your credentials.",
+          "description1": "Ensure the validity of the credentials provided.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "403": {
+          "title1": "Authorization Failed",
+          "title2": "Please verify you have the required permissions.",
+          "description1": "Ensure that the user associated with the credentials provided has read permissions for all required modules:\n'Host', 'Host Detection', and 'Asset Groups'.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "503": {
+          "title1": "Authentication Failed",
+          "title2": "An issue has been detected with your data provider.",
+          "description1": "If the problem persists, we recommend reaching out to Qualys support for further assistance.",
+          "confirmation": "OK"
+        }
+      },
+      "tenable": {
+        "401": {
+          "title1": "Authentication Failed",
+          "title2": "Please check your credentials.",
+          "description1": "Ensure the validity of the credentials provided.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "403": {
+          "title1": "Authorization Failed",
+          "title2": "Please verify you have the required permissions.",
+          "description1": "Ensure that the user associated with the provided credentials has read permissions for all required endpoints:\n'Export Assets', 'Export Vulnerabilities', and 'Export Compliance'.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "503": {
+          "title1": "Authentication Failed",
+          "title2": "An issue has been detected with your data provider.",
+          "description1": "If the problem persists, we recommend reaching out to Tenable support for further assistance.",
+          "confirmation": "OK"
+        }
+      },
+      "securityscorecard": {
+        "400": {
+          "title1": "Authorization Failed",
+          "title2": "Please verify you have the required permissions.",
+          "description1": "Ensure that the user associated with the provided API key has read permissions",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "401": {
+          "title1": "Authentication Failed",
+          "title2": "Please check your credentials.",
+          "description1": "Ensure the validity of the credentials provided.",
+          "description2": "If issues persist, contact support for assistance.",
+          "confirmation": "OK"
+        },
+        "503": {
+          "title1": "Integration Failed",
+          "title2": "An issue has been detected with your data provider.",
+          "description1": "If the problem persists, we recommend reaching out to Security Scorecard support for further assistance.",
+          "confirmation": "OK"
+        }
+      }
+    }
+  },
+  "roiCalculator": {
+    "title": "Test ROI",
+    "subtitle": "What is the annualized cost of completing the action?",
+    "button": "Test",
+    "options.aal": "Average Effect",
+    "options.high": "High Effect",
+    "cost": "Mitigation Cost",
+    "savings": "Expected Savings",
+    "netRoi": "Net ROI"
+  },
+  "ig3.notAppearOnListInfo.title": "{{quantity}} CIS Controls were marked as",
+  "ig3.notAppearOnListInfo.subtitle": "CIS Controls marked as 'IG3' will not appear on the list.",
+  "ig3.notAppearOnListInfo.badge": "IG3",
+  "ig3.showIg3Controls": "Show CIS Controls that are within implementation group IG3",
+  "unknownCis.cannotGiveRecommendations.title": "{{quantity}} CIS Controls were marked as",
+  "unknownCis.cannotGiveRecommendations.subtitle": "We cannot give recommendations for CIS Controls if their implementation group was marked as 'Unknown'.",
+  "unknownCis.cannotGiveRecommendations.badge": "Unknown",
+  "unknownCis.showUnknownControls": "Show Missing Input",
+  "recommendations.oldVersion.title": "Pay Attention",
+  "recommendations.oldVersion.description": "You are viewing an older version of Kovrr. Mitigations are on the company level only.",
+  "financialExposure.aal": "Average Annual Loss",
+  "financialExposure.aalCaps": "AVERAGE ANNUAL LOSS",
+  "financialExposure.aalTitle": "Average Effect",
+  "financialExposure.lowExposurRatio": "98:100 Annual Loss",
+  "financialExposure.lowExposure": "Low Exposure Loss",
+  "financialExposure.lowExposureRatioCaps": "98:100 ANNUAL LOSS",
+  "financialExposure.lowExposureCaps": "LOW EXPOSURE LOSS",
+  "financialExposure.highExposureRatio": "1:100 Annual Loss",
+  "financialExposure.highExposure": "High Exposure Loss",
+  "financialExposure.highExposureCaps": "HIGH EXPOSURE LOSS",
+  "financialExposure.highExposureRatioCaps": "1:100 ANNUAL LOSS",
+  "financialExposure.highExposureTitle": "High Effect (1:100)",
+  "financialExposure.extremeLossScenario": "1:100 Annual Loss",
+  "emptyCis.notEnoughData.title": "We don't have enough data to show controls recommendations.",
+  "emptyCis.notEnoughData.description": "It looks like all of of the controls were marked as Unknown. If you wish to submit your answers, please edit your company sphere and trigger a new quantification.",
+  "cisEffect.breakdown.description": "Breakdown of the CIS Controls' overall effect to the specific controls.",
+  "insuranceTerms.description": "Understanding your current cyber insurance policy provides a useful reference point for understanding where there may be coverage gaps or price insights.",
+  "companyEdit.deleteProductModal.body": "{{productName}} will be automatically removed from all asset groups under which they currently appear in.",
+  "companyEdit.deleteProductModal.bodyContiued": "{{productName}} will be automatically removed from all asset groups under which they currently appear in:",
+  "companyEdit.deleteProductModal.assetGroups": "{{assetGroups}}.",
+  "thirdParty": {
+    "Highlights": {
+      "maximumDescription": "There is a 1% chance that the company will suffer losses derived from third party cyber risk that will exceed {{amount}} in the next year.",
+      "mediumDescription": "This loss is based on the result of a Monte Carlo simulation that only took into account damages resulting from third party risk. After the model runs, the third party damage of every simulated year is summed and divided by the number of simulations. This provides visibility into the expected loss.",
+      "minimumDescription": "There is a 98% chance that the company will suffer losses derived from third party cyber risk that will exceed {{amount}} in the next year."
+    },
+    "insights": {
+      "criticality": {
+        "startOfText": "Your input shows that",
+        "highlightedText.default": "the criticality of your cloud asset groups is {{differenceFullText}}",
+        "highlightedText.cloudZero": "the criticality of your cloud asset groups is 0% while the criticality of your infrastructure and employee endpoints asset groups is {{percentage}}.",
+        "highlightedText.otherZero": "the criticality of your cloud asset groups is {{percentage}} while the criticality of your infrastructure and employee endpoints asset groups is 0%.",
+        "highlightedText.bothZero": "the criticality of both your cloud asset groups, and the infrastructure and employee endpoints asset groups is 0%.",
+        "restOfText.equal": "compared to infrastructure asset groups. The severity of events associated with third party service providers may therefore be as high as other types of events.",
+        "restOfText.notEqual": "compared to infrastructure and employee endpoints asset groups. This may lead to {{criticalityDiffEffect}} in severity of events associated with third party service providers.",
+        "restOfText.cloudZero": "This may lead to a decrease in the severity of events associated with third-party service providers.",
+        "restOfText.otherZero": "This may lead to an increase in the severity of events associated with third-party service providers.",
+        "restOfText.bothZero": "The severity of events associated with third party service providers may therefore be as high as other types of events."
+      },
+      "numberOfRecords": {
+        "highlightedText.default": "{{differenceFullText}} data records are stored in your cloud asset groups",
+        "highlightedText.cloudZero": "0 data records are stored in your cloud asset groups, while {{numOfRecords}} records are stored in your infrastructure asset groups.",
+        "highlightedText.otherZero": "{{numOfRecords}} data records are stored in your cloud asset groups, while 0 records are stored in your infrastructure asset groups.",
+        "highlightedText.bothZero": "The number of data records stored both in your cloud asset groups and in the infrastructure asset groups is 0.",
+        "restOfText.equal": "compared to infrastructure asset groups. The severity of events associated with third party service providers may therefore be as high as other types of events.",
+        "restOfText.notEqual": "compared to infrastructure asset groups. This may lead to {{numOfRecordsDiffEffect}} in severity of events associated with third party service providers.",
+        "restOfText.cloudZero": "This may lead to a decrease in the severity of events associated with third-party service providers.",
+        "restOfText.otherZero": "This may lead to an increase in the severity of events associated with third-party service providers.",
+        "restOfText.bothZero": "The severity of events associated with third party service providers may therefore be as high as other types of events."
+      },
+      "technologicalFootPrintAndFrequencyScore.title": "Technological Footprint and Frequency Score",
+      "technologicalFootPrintAndFrequencyScore.description": " The specific vendors used by the company affect the probability of the company experiencing a third party event. Each vendor has a failure probability score that is determined by Kovrr's threat intelligence data which takes into account thousands of past cyber events and claims data. Higher vendor scores imply a higher chance of the company experiencing a third party event and a higher financial impact.",
+      "security.title": "Security",
+      "security.description": "The security controls a company applies to its asset groups may affect the risk probability of an attack and severity of the impact of the attack. This is also applicable for third party risks. For example: if your company's implementation of the control 'Incident Response and Management' is high, it can decrease the severity of related events."
+    }
+  },
+  "thirdParty.table.tooltip.likelihood": "This figure depicts the likelihood of your company to experience losses derived from third party risk involving the specific product.",
+  "thirdParty.table.tooltip.averageYearlyLoss": "This figure depicts the average annual loss of your company from experiencing losses derived from third party risk involving the specific product.",
+  "thirdParty.emptyState.title": "Sorry, we have nothing to show.",
+  "thirdParty.mainPage.title": "Vendors Analysis",
+  "thirdParty.emptyState.description": "The simulation resulted in no financial damage derived from a third party. It might be due to your company's low risk in this zone. \n This also might occur if there are no cloud asset groups in your company sphere.",
+  "thirdParty.frequencyScore.title": "Vendor Frequency Score",
+  "thirdParty.frequencyScore.description": "Vendors are assigned a score based on their likelihood to experience an event. The company's exposure to third party risk is calculated by averaging the vendor scores.",
+  "thirdParty.resultsExplained": "The company's third party risk is calculated by taking into account events solely involving third party service providers. This includes events occurring in the company caused by an exploitation of a provider weakness as well as events effecting the provider that can impact the company. Attritional events are excluded from this calculation.",
+  "thirdParty.eventTypesBreakdown.title": "Event Types Breakdown",
+  "thirdParty.eventTypesBreakdown.subtitle": "Based on Average Annual Loss",
+  "thirdParty.topThirdPartyServiceProviders.title": "Top Third Party Service Providers",
+  "thirdParty.topThirdPartyServiceProviders.subtitle": "Based on Average Annual Loss",
+  "dataTypeForm": {
+    "distribution.title": "Distribution of the Loss",
+    "distribution.description": "The parameters below refer to the amount of loss you estimate that may arise from a cyber event, reflected by the damage type.",
+    "distribution.max": "Maximum Damage",
+    "distribution.min": "Minimum Damage",
+    "distribution.mode": "Damage Most Likely to Occur",
+    "eventType.title": "Type of Event",
+    "eventType.description": "Please select from the below list what type of cyber event may result in your company suffering from the type of damage.",
+    "impact.title": "Business Impact Scenarios",
+    "impact.description": "Please select from the below list the business impact scenarios to which the damage type belongs.",
+    "error.nonNegative": "Must be larger or equal to zero",
+    "error.modeTooSmall": "Must be larger or equal to Minimum Damage",
+    "error.maxTooSmall": "Must be larger or equal to Damage Most Likely to Occur"
+  },
+  "mitigation.cis.title": "CIS Control Actions",
+  "mitigation.nist.title": "NIST CSF v1.1 Control Actions",
+  "mitigation.asb.title": "",
+  "mitigation.iso27001.title": "ISO 27001 Control Actions",
+  "mitigation": {
+    "tabs": {
+      "controls": "Asset Groups",
+      "whatIf": "Security Controls"
+    }
+  },
+  "mitigation.cis.description": "Using a different framework?",
+  "mitigation.cis.download": "Download Mapping",
+  "mitigation.nothingSelected": "There is no recommendation selected",
+  "controlsTable.averageEffect.title": "Average Effect",
+  "controlsTable.averageEffect": "Expected reduction in averaged annual cost of cyber incidents",
+  "controlsTable.highEffect": "Expected reduction in annual cost of cyber incidents in a high loss year (with 1% exceedance probability)",
+  "controlsTable.currentMinimum.title": "Current Minimum",
+  "controlsTable.currentMinimum": "This is the current minimum state of a security control. It takes into account different levels of implementation across an organization and considers the lowest level of implementation for quantification purposes.",
+  "controlsTable.targetMinimum.title": "Target Minimum",
+  "controlsTable.targetMinimumISO.title": "Target",
+  "controlsTable.targetMinimum": "The new level of controls across all asset groups after mitigation recommendations are taken.",
+  "controlsTable.currentControlScore.title": "Current Control Score",
+  "controlsTable.currentControlScore.info": "The average control score of all asset groups in the company",
+  "controlsTable.uponCompleting.title": "Upon Completing Action",
+  "controlsTable.averageReduction.title": "Average Reduction",
+  "controlsTable.highReduction.title": "High Reduction",
+  "controlsTable.actions.title": "Implementation Steps",
+  "controlsTable.actions.table.assetGroup": "Asset Group",
+  "controlsTable.actions.table.groupType": "Asset Group Type",
+  "controlsTable.actions.table.control": "Control",
+  "controlsTable.actions.table.action": "Action",
+  "controlsTable.actions.table.moveAssetGroups": "Move {{length}} Asset Groups",
+  "companyTable.exportButton.successMessage": "Exporting is in progress, you will receive an email notification once it is completed",
+  "companyTable.exportButton.failureMessage": "There was an error when exporting the fqs. Contact support at support@kovrr.com",
+  "assetTable": {
+    "securityscorecard": {
+      "title": "Security Scorecard Rating",
+      "description": "This rating is a reflection of your organization's cybersecurity health, hence it impacts its financial quantification results."
+    }
+  },
+  "runNewQuantificationModal": {
+    "title": "Run New Quantification",
+    "description": "How would you like to proceed?",
+    "finish": "Continue",
+    "options": {
+      "runAndUpdateScore": {
+        "title": "Run & Update Security Score",
+        "description": "Refresh the security score and run a new quantification with current sphere inputs"
+      },
+      "runWithCurrentData": {
+        "title": "Run with Current Data",
+        "description": "Use the current sphere inputs without any modifications, and without security score update"
+      },
+      "editSphere": {
+        "title": "Edit Sphere Details",
+        "description": "Adjust the inputs for the sphere before running the quantification"
+      }
+    }
+  },
+  "runNewQuantification": {
+    "refreshScoreCheckbox": "Update External Security Score"
+  },
+  "informationPopover": {
+    "content": "More information"
+  },
+  "invitationForm": {
+    "title": "Invite User",
+    "description": "Invite a user to join your company",
+    "submit": "Invite",
+    "fields": {
+      "firstname": {
+        "label": "First Name",
+        "placeholder": "Enter first name"
+      },
+      "lastname": {
+        "label": "Last Name",
+        "placeholder": "Enter last name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter email"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Enter phone"
+      }
+    }
+  },
+  "riskRegister": {
+    "customFields": {
+      "title": "Custom Fields",
+      "add": "Add Custom Field",
+      "wizard": {
+        "title": "Add Custom Fields",
+        "titleEdit": "Edit Custom Field",
+        "titleConfigure": "Configure {{type}} Field",
+        "subtitle": "Select the type of custom field you want to add",
+        "back": "Back",
+        "backToFieldTypes": "Back to field types",
+        "fieldNameLabel": "Field Name *",
+        "saveButton": "Save Field",
+        "updateButton": "Update Field",
+        "fieldTypes": {
+          "currency": {
+            "label": "Currency",
+            "subtitle": "Numeric Field with currency formatting"
+          },
+          "number": {
+            "label": "Numeric",
+            "subtitle": "Numeric Field"
+          },
+          "tags": {
+            "label": "Tags",
+            "subtitle": "Multiple selection custom tags"
+          },
+          "date": {
+            "label": "Date",
+            "subtitle": "Date picker field"
+          },
+          "text": {
+            "label": "Text",
+            "subtitle": "Simple text input field"
+          }
+        }
+      },
+      "fields": {
+        "tags": {
+          "placeholder": "tag1, tag2"
+        }
+      }
+    }
+  },
+  "errors": {
+    "companyValidation": "Problem loading this company’s details. Please contact support and share the company name or ID.",
+    "requiresAttention": "Requires Attention"
+  }
+}

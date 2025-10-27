@@ -1,0 +1,12 @@
+{
+  "demo.modal.yesText": "Book a demo",
+  "demo.modal.noText": "Later, I want to explore more.",
+  "demo.modal.desc": "Chat with us and we’ll help you set it up.",
+  "demo.modal.modifyCompany.title": "Ready to run a quantification on your company?",
+  "demo.modal.runFq.title": "Interested in running a quantification on your data?",
+  "demo.modal.editSphere.title": "Interested in editing the input with your own data?",
+  "demo.modal.riskRegister.title": "Ready to build customized loss scenarios?",
+  "demo.modal.upgrade.button.text": "Upgrade to Kovrr’s full CRQ Platform",
+  "demo.modal.upgrade.button.success.title": "Request Submitted",
+  "demo.modal.upgrade.button.success.desc": "Thank you for submitting your request. Our team will contact you about upgrading your platform."
+}

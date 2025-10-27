@@ -1,0 +1,39 @@
+{
+  "functions": {
+    "ID": {
+      "speedometer": {
+        "title": "IDENTIFY CONTROLS STATUS",
+        "popoverTitle": "",
+        "popoverText": "The Identify function assists in developing an organizational understanding of managing cybersecurity risk to systems, people, assets, data, and capabilities. Understanding the business context, the resources that support critical functions, and the related cybersecurity risks enables an organization to focus and prioritize its efforts, consistent with its risk management strategy and business needs."
+      }
+    },
+    "PR": {
+      "speedometer": {
+        "title": "PROTECT CONTROLS STATUS",
+        "popoverTitle": "",
+        "popoverText": "The Protect function outlines appropriate safeguards to ensure delivery of critical infrastructure services. The Protect Function supports the ability to limit or contain the impact of a potential cybersecurity event."
+      }
+    },
+    "DE": {
+      "speedometer": {
+        "title": "DETECT CONTROLS STATUS",
+        "popoverTitle": "",
+        "popoverText": "The Detect function defines the appropriate activities to identify the occurrence of a cybersecurity event. The Detect Function enables timely discovery of cybersecurity events."
+      }
+    },
+    "RS": {
+      "speedometer": {
+        "title": "RESPOND CONTROLS STATUS",
+        "popoverTitle": "",
+        "popoverText": "The Respond function includes appropriate activities to take action regarding a detected cybersecurity incident. The Respond Function supports the ability to contain the impact of a potential cybersecurity incident."
+      }
+    },
+    "RC": {
+      "speedometer": {
+        "title": "RECOVER CONTROLS STATUS ",
+        "popoverTitle": "",
+        "popoverText": "The Recover function identifies appropriate activities to maintain plans for resilience and to restore any capabilities or services that were impaired due to a cybersecurity incident. The Recover Function supports timely recovery to normal operations to reduce the impact from a cybersecurity incident."
+      }
+    }
+  }
+}

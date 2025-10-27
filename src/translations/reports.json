@@ -1,0 +1,189 @@
+{
+  "reportsHub": {
+    "title": "Reports Hub"
+  },
+  "customReport": {
+    "title": "Presentation Request",
+    "description": "Need something specific? ",
+    "info": "Custom report is tailored to your unique business needs, compliance requirements, or strategic priorities. Get tailored, quantified insights that align with your exact goal.",
+    "usecaseLabel": "Usecase",
+    "usecasePlaceholder": "What’s driving your need for this report? What deliverable are you expecting, and who is the intended audience?",
+    "inputsLabel": "Inputs",
+    "inputsPlaceholder": "What data do you already have that we can work with? Including internal inputs, assumptions, or key facts you'd like us to consider?"
+  },
+  "genericReport": {
+    "description": "Description",
+    "keyBenefits": "Key Benefits",
+    "reportPreview": "Report Preview",
+    "generateReport": "Order Report",
+    "openReport": "View Report",
+    "previewReport": "Preview Report",
+    "configureReport": "Configure Your Report",
+    "inputsRequired": "Inputs Required"
+  },
+  "modal": {
+    "companySelect": "Company",
+    "quantificationSelect": "Quantification",
+    "select": "Select...",
+    "loading": "Loading...",
+    "minimum": "Minimum 2 required",
+    "maximum": "Maximum 5 allowed",
+    "companiesSelected": "of 5 companies selected",
+    "addCompany": "Add Company",
+    "currentPolicy": "Current Cyber Insurance Policy",
+    "futurePolicy": "Future Cyber Insurance Policy",
+    "pastIncidents": "Past Cyber Incidents",
+    "limit": "Limit",
+    "deductible": "Deductible",
+    "premium": "Premium",
+    "optional": "Optional",
+    "thanksModal": {
+      "thanksModalTitle": "Thanks for your request",
+      "thanksModalSubtitle": "Your full report is on its way!",
+      "thanksModalDescription": "Our team will follow up shortly with your organization’s quantified risk insights.",
+      "thanksModalDescription1": "Have questions in the meantime? ",
+      "thanksModalDescription2": "Feel free to contact us at",
+      "thanksModalEmail": "contact@kovrr.com",
+      "ok": "OK",
+      "error": "Something went wrong"
+    }
+  },
+  "riskScenariosSelect": {
+    "label": "Risk Scenarios*",
+    "placeholder": "Select...",
+    "all": "All ({{count}} Scenarios)",
+    "selected": "{{count}} Selected",
+    "searchPlaceholder": "Search by",
+    "selectAllClearAll": "Select All / Clear All",
+    "noScenariosFound": "No scenarios found",
+    "loading": "Loading..."
+  },
+  "initiatives": [
+    "Email security",
+    "Encryption",
+    "Zero trust architecture",
+    "Vulnerability Management",
+    "Least privilege",
+    "Multi-factor authentication",
+    "Single sign-on",
+    "Endpoint detection and response (EDR)",
+    "Security information and event management (SIEM)",
+    "Intrusion detection/prevention system (IDS/IPS)",
+    "Breach attack simulation (BAS)",
+    "Attack surface management tools (ASM)",
+    "Exposure and Asset Management",
+    "Firewall",
+    "Data Loss Prevention (DLP)",
+    "Identity and Access Management (IAM)",
+    "Web Application Firewall (WAF)",
+    "Virtual Private Network (VPN)",
+    "Cloud Security"
+  ],
+  "rosiAnalysis": {
+    "entity": "Entity",
+    "quantification": "Quantification",
+    "initiative": "Product / Initiative",
+    "initiativePlaceholder": "Select...",
+    "additionalInfo": "Additional Info",
+    "additionalInfoOptional": "(Optional)",
+    "additionalCosts": "Additional Costs",
+    "additionalSavings": "Additional Savings",
+    "timeframe": "Timeframe"
+  },
+  "reports": [
+    {
+      "id": "board_ready_cyber_risk_summary",
+      "name": "Board-Ready Cyber Risk Summary",
+      "description": "Clearly quantify your cyber risk in financial terms, benchmark exposure against peers, and uncover your top risk reduction opportunities.",
+      "info": "This report translates your security posture into business-ready metrics, helping you prioritize controls by financial impact.",
+      "keyBenefits": [
+        "Understand and communicate your organization’s cyber risk in dollar terms",
+        "Justify and prioritize cybersecurity investments with ROI-backed recommendations."
+      ],
+      "inputsRequired": ["CRQ modeling results per entity (must)."]
+    },
+    {
+      "id": "materiality_threshold_analysis",
+      "name": "Materiality Threshold Analysis",
+      "description": "Identify which cyber events could trigger material impact thresholds, based on your organization's unique profile.",
+      "info": "This report supports informed decision-making, effective stakeholder communication, and targeted risk mitigation aligned with regulatory requirements.",
+      "keyBenefits": [
+        "Allowing to to assess the likelihood of financial damages exceeding specific thresholds during a cyber incident.",
+        "Support regulatory compliance efforts, including SEC reporting and other global disclosure mandates.",
+        "Enhance internal risk management by identifying and prioritizing potential material cyber risks and empower risk appetite and tolerance discussions with quantifiable estimates."
+      ],
+      "inputsRequired": [
+        "CRQ modeling results per entity (must).",
+        "Thresholds of material cyber incident by loss, number of data records compromised in an incident, and outage duration (optional)."
+      ]
+    },
+    {
+      "id": "portfolio_risk_aggregation",
+      "name": "Portfolio Risk Aggregation",
+      "description": "Gain a quantified, portfolio-wide view of cyber risk exposure.",
+      "info": "This report helps multi-entity organizations and investment firms identify concentrated risks, prioritize high-exposure entities, and uncover strategic opportunities for mitigation and resilience.",
+      "keyBenefits": [
+        "Conduct group-wide cyber loss forecasting (AAL, TVaR, and different return periods)",
+        "Identify the relative contribution to annual loss by entity varies by different return periods.",
+        "Recognize common risks that has the highest impact across the group",
+        "Benchmark entity-level loss-to-revenue ratios",
+        "Prioritize cyber investments based on entity contribution to group risk",
+        "Acknowledge of the correlation method between entities within the group."
+      ],
+      "inputsRequired": [
+        "CRQ modeling results per entity (must).",
+        "Correlation configuration across portfolio entities (optional)"
+      ]
+    },
+    {
+      "id": "insurance_tc_optimization",
+      "name": "Insurance T&C Optimization",
+      "description": "Align your cyber insurance coverage with real-world exposure.",
+      "info": "This report delivers risk-adjusted insights to help you identify coverage gaps, optimize policy terms, and ensure premiums reflect your actual risk profile.",
+      "keyBenefits": [
+        "Benchmark your loss estimates vs. policy structure to assess adequacy.",
+        "Identify optimal cyber insurance policy structure and coverage.",
+        "Simulate and compare multiple coverage postures (e.g. increased limits, lower deductibles)."
+      ],
+      "inputsRequired": [
+        "Current insurance policy and coverages terms (limit, deductible, premium) (must)",
+        "Future insurance policy and coverages terms (limit, deductible, premium) (must)",
+        "Historical cyber incident data (optional)"
+      ]
+    },
+    {
+      "id": "risk_register_visualization",
+      "name": "Risk Register Visualization",
+      "description": "This dashboard-style report consolidates your organization's cyber risk register into a clear, business-aligned view.",
+      "info": "Designed for executive audiences, this report highlights top risk scenarios and financial exposures to support transparent prioritization and informed board-level decision-making.",
+      "keyBenefits": [
+        "Executive Summary",
+        "Prioritization Matrix; visual heat map of risks by impact and likelihood and highlights critical and high-priority scenarios",
+        "Top Risks Snapshot",
+        "Response Plan Breakdown; Distribution of risks across Mitigate / Accept / Transfer / Avoid",
+        "Control Optimization Summary; Top recommended controls and estimate reduction in loss and likelihood"
+      ],
+      "inputsRequired": [
+        "CRQ modeling results per entity (must).",
+        "At least one cyber risk scenario in the register."
+      ]
+    },
+    {
+      "id": "rosi_analysis_for_security_initiative",
+      "name": "ROSI Analysis for Security Initiative",
+      "description": "Quantify the value of a security initiative before it's deployed.",
+      "info": "This report models potential risk reduction and calculates return on security investment (ROSI), turning 'what-if' scenarios into data-backed business cases.",
+      "keyBenefits": [
+        "Simulated Exposure Reduction",
+        "ROSI Calculation",
+        "Control Change Summary: List of impacted controls with maturity uplift",
+        "Cost vs. Savings Summary"
+      ],
+      "inputsRequired": [
+        "CRQ modeling results per entity (must).",
+        "Select a single security product or initiative for justification (must)",
+        "Your implementation costs, additional savings, and timeframe for advanced ROSI calculation."
+      ]
+    }
+  ]
+}

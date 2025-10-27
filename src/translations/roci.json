@@ -1,0 +1,1465 @@
+{
+  "companyCreation": {
+    "bundleSpecificSteps": {
+      "cspm": {
+        "stepThreeCloud": {
+          "previewPane": {
+            "title": "Reveal the best opportunities for reducing cyber risk."
+          },
+          "form": {
+            "step": "Step 3 Cloud",
+            "title": "Security posture cloud",
+            "description": "Answer a few questions about your company's Security Measures and Preparedness.",
+            "progress": {
+              "cspm": [100, 100, 100, 100, 0]
+            },
+            "fields": {
+              "scope": {
+                "answerBy": "Answer by"
+              },
+              "cis": {
+                "theme": {
+                  "assetsAndVendorsInventory": "Do you maintain a complete and updated inventory of all enterprise assets and third-party resources?",
+                  "accessAndIdentity": "Do you have secure processes to manage and monitor user accounts and access?",
+                  "threatAndVulnerability": "Do you continuously identify and address vulnerabilities in your systems?",
+                  "protectiveMeasuresAndDefenses": "Do you ensure all enterprise assets and software are securely configured?",
+                  "securityAwarenessAndTraining": "Do you conduct regular security awareness and skills training for all employees?",
+                  "incidentResponseManagement": "Do you have an effective incident response plan in place?",
+                  "controlLevelLabels": {
+                    "-1": "No",
+                    "1": "Minimally",
+                    "2": "Partially",
+                    "3": "Full Implementation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "steps": {
+      "stepOne": {
+        "previewPane": {
+          "title": "Unfold your company’s financial cyber risk and your mitigation opportunities."
+        },
+        "form": {
+          "step": "Step 1",
+          "title": "Confirm your company data",
+          "description": "Review and verify the information we've collected about your company.",
+          "progress": {
+            "ms_365": [100, 0, 0, 0],
+            "cspm": [100, 0, 0, 0, 0]
+          },
+          "fields": {
+            "name": {
+              "label": "Name",
+              "placeholder": "",
+              "hint": "",
+              "suffix": ""
+            },
+            "domains": {
+              "label": "Domain",
+              "placeholder": "",
+              "hint": "",
+              "suffix": ""
+            },
+            "industries": {
+              "label": "Industry of Operation",
+              "placeholder": "",
+              "hint": "",
+              "suffix": ""
+            },
+            "countries": {
+              "label": "Country of Operation",
+              "placeholder": "",
+              "hint": "",
+              "suffix": ""
+            },
+            "currency": {
+              "label": "Currency",
+              "placeholder": "",
+              "hint": "",
+              "suffix": ""
+            },
+            "revenue": {
+              "label": "Annual Revenue",
+              "placeholder": "",
+              "hint": "",
+              "suffix": ""
+            },
+            "employees": {
+              "label": "Number of Employees",
+              "placeholder": "",
+              "hint": "",
+              "suffix": ""
+            }
+          }
+        }
+      },
+      "stepTwo": {
+        "previewPane": {
+          "title": "Stop looking at security\nscores and start\nlooking at their\nfinancial impact."
+        },
+        "form": {
+          "step": "Step 2",
+          "title": "Data Management and Operational Continuity",
+          "description": "Answer a few questions about your company's infrastructure's storage capacities and disaster recovery strategies.",
+          "progress": {
+            "ms_365": [100, 100, 0, 0],
+            "cspm": [100, 100, 0, 0, 0]
+          },
+          "fields": {
+            "totalPersonalDataRecords": {
+              "label": "Amount of personal data records stored on the company’s systems",
+              "placeholder": "",
+              "hint": "",
+              "suffix": "Records"
+            },
+            "cloudInfraRatio": {
+              "label": "The relation between infra and cloud in terms of the amounts of data stored on each",
+              "placeholder": "",
+              "hint": "",
+              "suffix": "",
+              "leftEndLabel": "Cloud",
+              "rightEndLabel": "On-Prem"
+            },
+            "outageDuration": {
+              "label": "Outage duration to be considered material",
+              "placeholder": "",
+              "hint": "",
+              "suffix": "Hours"
+            },
+            "outageDurationCloud": {
+              "label": "Outage duration to be considered material in the cloud",
+              "placeholder": "",
+              "hint": "",
+              "suffix": "Hours"
+            },
+            "averageTimeToRecoverForOutage": {
+              "label": "Average time to recover from outage",
+              "placeholder": "",
+              "hint": "",
+              "suffix": "Hours"
+            },
+            "averageTimeToRecoverForOutageCloud": {
+              "label": "Average time to recover from outage in the cloud",
+              "placeholder": "",
+              "hint": "",
+              "suffix": "Hours"
+            },
+            "manualCloudProviders": {
+              "label": "Service providers used by the company",
+              "placeholder": "",
+              "hint": ""
+            }
+          }
+        }
+      },
+      "stepThree": {
+        "previewPane": {
+          "title": "Reveal the best opportunities for reducing cyber risk."
+        },
+        "form": {
+          "step": "Step 3",
+          "title": "Security posture",
+          "description": "Answer a few questions about your company's Security Measures and Preparedness.",
+          "progress": {
+            "ms_365": [100, 100, 100, 0],
+            "cspm": [100, 100, 100, 0, 0]
+          },
+          "fields": {
+            "scope": {
+              "answerBy": "Answer by"
+            },
+            "cis": {
+              "theme": {
+                "assetsAndVendorsInventory": "Do you maintain a complete and updated inventory of all enterprise assets and third-party resources?",
+                "accessAndIdentity": "Do you have secure processes to manage and monitor user accounts and access?",
+                "threatAndVulnerability": "Do you continuously identify and address vulnerabilities in your systems?",
+                "protectiveMeasuresAndDefenses": "Do you ensure all enterprise assets and software are securely configured?",
+                "securityAwarenessAndTraining": "Do you conduct regular security awareness and skills training for all employees?",
+                "incidentResponseManagement": "Do you have an effective incident response plan in place?",
+                "controlLevelLabels": {
+                  "-1": "Not Implemented",
+                  "1": "Minimally",
+                  "2": "Mostly",
+                  "3": "Fully"
+                }
+              },
+              "safeguards": {
+                "controlLevelLabels": {
+                  "notImplemented": "Not Implemented",
+                  "minimally": "Minimally",
+                  "partially": "Partially",
+                  "mostly": "Mostly",
+                  "fully": "Fully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "stepFour": {
+        "previewPane": {
+          "title": "Quantify Cyber Risk.\nMake Smart Business Decisions."
+        },
+        "form": {
+          "step": "Step 4",
+          "title": "Enhance your insights with more data",
+          "description": "Introduce us to more data about your company for tailored results.",
+          "progress": {
+            "ms_365": [100, 100, 100, 100],
+            "cspm": [100, 100, 100, 100, 100]
+          },
+          "fields": {
+            "integrationType": {
+              "label": "Integration Type",
+              "placeholder": "",
+              "hint": "",
+              "suffix": "",
+              "integrations": [
+                {
+                  "integrationSource": "alloyscanlite",
+                  "integrationValue": "alloyscanlite",
+                  "title": "Internal Scan with AlloyScan",
+                  "description": "Evaluate the security posture of your internal network thorough scans to detect weaknesses within your company's infrastructure.",
+                  "iconSrc": "/assets/images/roci/AlloyLogo.svg",
+                  "isDisabled": false,
+                  "isDefault": false
+                },
+                {
+                  "integrationSource": "kovrr",
+                  "integrationValue": "",
+                  "title": "Kovrr External Scan",
+                  "description": "Identify the technologies and third-party service providers your company utilizes, enhancing visibility into your external digital footprint.",
+                  "iconSrc": "/assets/images/roci/KovrrKLogo.svg",
+                  "isDisabled": true,
+                  "isDefault": true
+                }
+              ]
+            }
+          }
+        }
+      },
+      "integrations": {
+        "alloy": {
+          "previewPane": {
+            "title": "To enhance the visibility of our cyber risk quantification modeling to your company's complexities,  please follow these steps to provide us with your network information from AlloyScan.",
+            "explanationVideoLink": "https://www.youtube.com/embed/4i0lkCUwMnc?si=1dq_DrVyrNgKozDF"
+          },
+          "stepper": {
+            "title": "You're only a few steps away from your first quantification",
+            "logoSrc": "/assets/images/roci/AlloyLogo.svg",
+            "segmentType": {
+              "title": "Choose Segment Type",
+              "descriptions": [
+                "In the AlloyScan platform, locate and click on the Network page.",
+                "Select <strong><i>Agentless Audit via Segments</i></strong> from the available options.",
+                "Choose <strong><i>Address</i></strong> list or <strong><i>Domain</i></strong> as your segment type."
+              ]
+            },
+            "extractAndProvideKeys": {
+              "title": "Extract and Provide Keys",
+              "descriptions": [
+                "After completing the setup, insert the four unique keys provided by AlloyScan.",
+                "They can be retrieved by navigating to <strong><i>Admin Center</i></strong>, moving to <strong><i>Identity and Access Management - App Registrations Segment</i></strong>, and creating new API client named “Kovrr”."
+              ]
+            },
+            "completeSetup": {
+              "title": "Complete Setup",
+              "description": "Follow the instructions <LinkTag>here</LinkTag> to complete the setup.",
+              "link": "https://docs.alloysoftware.com/alloyscan/help/web/quick-start.htm"
+            }
+          },
+          "footer": {
+            "continueWithoutIntegration": {
+              "text": "To continue without completing the integration with Alloy Scan please click <ActionTag>here</ActionTag>."
+            },
+            "integrationDisclaimer": "If the integration is not completed within the next 72 hours, you will receive initial results based solely on Kovrr's internal scan tool, without the enhanced data from the external scan. You can still complete the integration later.",
+            "furtherInfo": {
+              "text": "For further information, please contact <LinkTag>Noventiq</LinkTag>.",
+              "link": "https://www.noventiq.com/"
+            },
+            "submit": "Complete Integration"
+          },
+          "form": {
+            "fields": {
+              "client_id": {
+                "label": "Client ID",
+                "placeholder": "",
+                "hint": ""
+              },
+              "client_secret": {
+                "label": "Client Secret",
+                "placeholder": "",
+                "hint": ""
+              },
+              "site_id": {
+                "label": "Site ID",
+                "placeholder": "",
+                "hint": ""
+              },
+              "domain": {
+                "label": "Domain",
+                "placeholder": "example.alloyscan.com",
+                "hint": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "footer": {
+      "back": "Go Back",
+      "next": "Next",
+      "submit": "Run Quantification",
+      "setupIntegration": "Set Up Integration"
+    }
+  },
+  "report": {
+    "emptyState": "Please run a new quantification to reveal this feature.",
+    "header": {
+      "runsManagement": {
+        "leftRuns": "You have {{remainingRuns}} runs left in your subscription",
+        "runQuantification": "Run New Quantification",
+        "newRunModal": {
+          "title": "Ready to Update Your Results?",
+          "description1": "Proceed to run a new analysis with the most up-to-date data, and replace the current report.",
+          "description2": "Your current report will be automatically saved as a PDF before proceeding.",
+          "description3": "Please choose how you'd like to continue:",
+          "options": {
+            "start": "Start New Analysis",
+            "cancel": "Cancel Update"
+          }
+        }
+      }
+    },
+
+    "title": "Board Report",
+    "export": "Download Report",
+    "changeComparison": {
+      "increase": "<Negative>Increase</Negative> in likelihood compared to benchmark",
+      "decrease": "<Positive>Decrease</Positive> in likelihood compared to benchmark"
+    },
+    "rociExplanationCard": {
+      "title": "WHAT GROUNDS THESE FINDINGS?"
+    },
+    "sidebar": {
+      "report": {
+        "title": "Report",
+        "pathName": "report",
+        "path": "report"
+      }
+    },
+    "pageFooter": "Confidential. All Rights Reserved {{year}} Kovrr Inc ⓒ.",
+    "pages": {
+      "intro": {
+        "poweredBy": "Powered by",
+        "mainTitle": "Cyber Risk Exposure Analysis Report",
+        "subtitleMs365": "Return on Cyber Risk Investment Assessment: MS 365 Bundles",
+        "subtitleCSPM": "Return on Cyber Risk Investment Assessment: MS CSPM Defender for Cloud",
+        "subtitleFoqus": "Prioritize based on financial business impact",
+        "tableOfContents": {
+          "title": "Table of Contents",
+          "chapters": {
+            "executiveSummary": "Executive Summary",
+            "currentCyberRiskExposure": "Current Cyber Risk Exposure",
+            "topRecommendations": "Top Control Recommendations",
+            "returnOnCyberRiskAssessment": "Return on Cyber Risk Investment Assessment: MS 365 Bundles",
+            "returnOnCyberRiskAssessmentCSPM": "Return on Cyber Risk Investment Assessment: MS CSPM Defender for Cloud",
+            "inDepthQuantificationExamination": "In-Depth Quantification Examination",
+            "extraChapters": {
+              "microsoftChapter": "Microsoft Defender CSPM Scan Results"
+            }
+          }
+        }
+      },
+      "executiveSummary": {
+        "title": "Executive Summary",
+        "keyInsights": {
+          "title": "Current Cyber Risk Exposure<Asterisk>*</Asterisk> - Key Insights",
+          "aal": {
+            "index": "1",
+            "title": "Average Annual Loss",
+            "description": "Risk combines the likelihood of unwanted events with their financial impact. The Average Annual Loss (AAL) reflects this by averaging the total financial losses from all simulated attacks, accounting for both high and low-loss attacks and their probabilities. In CRQ AAL is a key metric for assessing and comparing a company’s risk over time or against remediation plans."
+          },
+          "highExposureLoss": {
+            "index": "2",
+            "title": "1:100 Annual Loss <RegularText>(&lt;1% Probability)</RegularText>",
+            "description": "The 1:100 Annual Loss reflects a 1% chance of a loss occurring or being exceeded in the next year, showing maximum probable risk (rare, but still possible, and highly impactful). Along with AAL, it provides a full view of risk exposure, helping companies evaluate and track remediation efforts."
+          },
+          "remediationPlans": {
+            "index": "3",
+            "title": "Remediation Plans",
+            "description": "This report shows how Microsoft Defender CSPM reduces financial risk by lowering both the Average Annual Loss and 1:100 Annual Loss, comparing current risk with a profile that includes this product. Details on the simulation and results are on <AnchorLink target='chapter2'>Chapter 2</AnchorLink>.",
+            "chart": {
+              "legend": {
+                "currentRisk": "Current Risk",
+                "msProduct": "With Microsoft 365 Business Premium"
+              },
+              "aalChart": {
+                "chartLabel": [["Average", "Annual Loss"]],
+                "reductionLabel": "Reduction in Average Annual Loss"
+              },
+              "highLossChart": {
+                "chartLabel": [["1:100", "Annual Loss"]],
+                "chartLabelExtra": "(1% probability)",
+                "reductionLabel": "Reduction in 1:100 Annual Loss"
+              }
+            }
+          },
+          "cyberRiskExposureAsterisk": {
+            "text": "Cyber Risk Quantification (CRQ) estimates the potential financial impact of cyber incidents on your organization by leveraging vast amounts of data and extensive simulations. Powered by millions of continuously updated data points (see details on <PageLink target='{{pageId}}'>p.</PageLink>), Kovrr's risk model simulates all the attacks your company might experience in the next year. These simulations are run thousands of times to derive conclusions from the results, providing meaningful insights into your cyber risk exposure."
+          }
+        },
+        "crqProcess": {
+          "title": "How are these results generated - The CRQ Process",
+          "steps": {
+            "dataAugmentation": {
+              "title": "Data Augmentation",
+              "description": "Millions of data points",
+              "reference": "<PageLink target='{{pageId}}'>p.</PageLink>"
+            },
+            "dataNormalization": {
+              "title": "Data Normalization",
+              "description": "Model calibration",
+              "reference": "<PageLink target='{{pageId}}'>p.</PageLink>"
+            },
+            "attacksSimulation": {
+              "title": "Attacks Simulation",
+              "description": "Bespoke event catalog",
+              "reference": "<PageLink target='{{pageId}}'>p.</PageLink>"
+            },
+            "results": {
+              "title": "Results",
+              "description": "Report and track",
+              "reference": "cyber risk"
+            }
+          },
+          "baselineAnnualLikelihood": {
+            "index": "1",
+            "title": "Baseline Annual Likelihood of Cyber Loss Events",
+            "description": "This figure shows the baseline likelihood of a cyber loss in the next year, reflecting the company’s risk profile based on historical data, insurance claims, and modeling insights. More details on datasets and calibration are on <PageLink target='{{pageId1}}'>p.</PageLink> and <PageLink target='{{pageId2}}'>p.</PageLink>.",
+            "riskProfile": {
+              "title": "Baseline Risk Profile",
+              "profileCategories": {
+                "technographicProfile": "Technographic Profile",
+                "firmographicsProfile": "Firmographics Profile"
+              }
+            },
+            "baselineAnnualLikelihoodValue": {
+              "title": "Baseline Annual Likelihood"
+            }
+          },
+          "bespokeEventCatalog": {
+            "index": "3",
+            "title": "Bespoke Event Catalog and Monte Carlo Simulation",
+            "description": "The next year is simulated 10,000 times using a custom event catalog that generates synthetic cyber incidents based on various parameters and their likelihood of affecting the company. Each event represents a potential cyber threat.",
+            "table": {
+              "headers": ["Parameter", "Values", "Sampling"],
+              "rows": [
+                [
+                  "Event Type",
+                  ["Ransomware", "Data Breach", "Interruption"],
+                  [
+                    "Randomly sampled from distributions based on threat intelligence data (You can have a glimpse of this TI data on <PageLink target='eventTypeFindings'>p.</PageLink>), adjusted for the company's security posture (You can see these adjustments on <PageLink target='likelihoodBreakdown'>p.</PageLink>)."
+                  ]
+                ]
+              ],
+              "rowsContinued": [
+                [
+                  "Initial Vector",
+                  [
+                    "MITRE ATT&CK Framework vectors",
+                    "Human Errors",
+                    "Stolen Devices"
+                  ],
+                  [
+                    "Randomly sampled from distributions based on threat intelligence data (You can have a glimpse of this TI data on <PageLink target='attackVectorsDistribution'>p.</PageLink>), adjusted for the company's security posture (You can see these adjustments on <PageLink target='annualLikelihoodBreakdown'>p.</PageLink>)."
+                  ]
+                ],
+                [
+                  "Attack Surface",
+                  ["Technologies & Service Providers impacted by the event."],
+                  [
+                    "Randomly sampled based on threat, vulnerabilities (CVEs, EPSS), and outage data insights (You can have a glimpse of this TI data on <PageLink target='exploitedCves'>p.</PageLink> and <PageLink target='globalDowntime'>p.</PageLink>)"
+                  ]
+                ],
+                [
+                  "Duration",
+                  ["The length of time the event impacts the organization."],
+                  [
+                    "Randomly sampled from threat intelligence data distributions, adjusted by the company’s recovery abilities and resilience (reflected on <PageLink target='dataManagement'>p.</PageLink>).",
+                    "Intensity Parameter"
+                  ]
+                ],
+                [
+                  "Data Records Scale",
+                  [
+                    "The magnitude of the breach in terms of the number of records affected."
+                  ],
+                  [
+                    "Randomly sampled from impact distributions based on threat intelligence from similar company breaches.",
+                    "Intensity Parameter"
+                  ]
+                ]
+              ]
+            }
+          },
+          "residualAnnualLikelihood": {
+            "index": "2",
+            "title": "Specific (Residual) Annual Likelihood of Cyber Loss Events",
+            "description": "The baseline likelihood is refined by incorporating specific data from integrations, internal sources, and a security controls questionnaire. The primary driver of the shift from baseline to final risk is the company's security posture. Learn more on <PageLink target='{{pageId1}}'>p.</PageLink> and <PageLink target='{{pageId2}}'>p.</PageLink>."
+          },
+          "damageCalculation": {
+            "index": "4",
+            "title": "Damage Calculation",
+            "description": "For each sampled event, costs are broken down by damage type. calculated using historical data and modeling insights. Specific security controls are demonstrated to mitigate these costs, reducing the event’s overall impact."
+          },
+          "annualPerspective": {
+            "index": "5",
+            "title": "Annual Perspective",
+            "description": "After calculating each event’s financial impact, the total cost is determined for each simulation run. Most show minimal or no loss, while a few have significant losses. By plotting loss amounts against their probability, the <AnchorLink target='epCurve'>the EP curve</AnchorLink> is generated, visualizing the likelihood of different loss levels. The Average Annual Loss is the sum of total losses divided by the number of simulations, and the 1:100 Annual Loss is the 99th percentile value. Learn more about the full view of risk of the company on <PageLink target='{{pageId}}'>p.</PageLink>."
+          },
+          "whatIfScenarios": {
+            "index": "6",
+            "title": "What-If Scenarios: Remediation Plans",
+            "description": "To test a remediation plan, the simulation is rerun with the same inputs, adjusting only the security posture. This shows how the plan impacts risk, allowing comparison with the baseline to assess its effect on reducing event likelihood and severity."
+          }
+        }
+      },
+      "currentCyberRiskExposure": {
+        "chapterNumber": "01",
+        "title": "Current Cyber Risk Exposure",
+        "chapterIntro": [
+          "Understanding the quantifiable aspects of cyber risk exposure has become paramount for organizations seeking to fortify their security strategies.",
+          "The Cyber Risk Quantification (CRQ) methodology offers a unique, data-driven approach to assess, measure, and manage cyber risks effectively. By translating complex cyber threats into tangible financial metrics, CRQ empowers businesses to make informed decisions, allocate resources more efficiently, and tailor their cyber risk management efforts to their specific needs. This innovative methodology shifts cybersecurity discussions from vague hypotheticals to concrete figures, enabling organizations to communicate risk more effectively, prioritize mitigation efforts, and strengthen their company's cyber resilience in an increasingly complex threat landscape.",
+          "This chapter presents the key insights into your company's quantitative cyber risk exposure. By harnessing precise data, insightful modeling, and rigorous analysis, this analysis  illuminates the financial implications of cyber risks and paves the way for informed decision-making when evaluating your cybersecurity programs' return on investment."
+        ],
+        "aal": {
+          "title": "Average Annual Loss",
+          "description": "The \"average annual loss\" offers a clear picture of the typical monetary impact of cyber events, aiding organizations in gauging potential financial ramifications. This metric encapsulates both probability and severity of the cyber risk for the company. It is an essential reference point for devising effective risk management tactics as it serves as a benchmark against which various strategies can be evaluated and refined."
+        },
+        "extremeLoss": {
+          "title": "1:100 Annual Loss",
+          "description": "The \"1:100 Annual Loss\" represents the loss amount the company has a mere 1% probability of surpassing within an annual context. This value encapsulates \"tail events\", or those exceptional situations at the outermost edge of your company's overall cyber risk exposure spectrum."
+        }
+      },
+      "financialLossAndEventLikelihood": {
+        "financialLossCurve": {
+          "title": "Financial Loss Exceedance Probability Curve",
+          "description": [
+            "The exceedance probability curve below represents the relationship between the probability of experiencing a certain level of loss and the corresponding financial severity within a yearly context. The probability curve is based on the Monte Carlo simulation, generating 10,000 possible cyber risk scenarios for the upcoming year.",
+            "The curve provides valuable insights into your organization's potential financial losses due to specific cyber events, aiding in your team in setting appropriate risk tolerance levels. Moreover, the organization can more easily prioritize risk mitigation efforts, focusing on those risks which pose the highest loss potential, and determine appropriate insurance coverage levels. Finally, the curve also highlights critical loss thresholds or “tail events” with a low but non-zero probability occurring, allowing your organization to better understanding its overall threat landscape."
+          ]
+        },
+        "annualEventLikelihood": {
+          "title": "Annual Events Likelihood",
+          "description": [
+            "The ”annual events likelihood” rate refers to the probability of cyber events occurring in the company within the following year.",
+            "This rate encompasses the frequency at which cyber events are expected to happen based on the risks in the threat landscape, and accounts for the company’s attributes, structure, and security posture."
+          ]
+        }
+      },
+      "eventTypesBreakdownAndDefinition": {
+        "aalBreakdownByEventType": {
+          "title": "Average Annual Loss Breakdown by Event Types",
+          "description": [
+            "A breakdown of the average annual loss by event type offers a detailed understanding of the financial impact from different cyber events.",
+            "By categorizing events into these high-level threat types, organizations can understand their risk better and prioritize risk mitigation efforts accordingly."
+          ]
+        },
+        "eventTypeDefinitions": {
+          "title": "Event Definitions",
+          "eventTypes": {
+            "data_breach": {
+              "title": "Data Breach",
+              "definitions": [
+                "Events involving unauthorized access, acquisition, and potential disclosure of sensitive information, including regulated personal records (PII), health (PHI), or financial information (PCI).",
+                "Other confidential information can also be included such as intellectual property (IP) in this category using custom cost components. The primary impact of these events is a confidentiality compromise, leading to costs of notifications, monitoring services, regulatory, recovery expenses and more. Data breach events can impact availability by necessitating immediate actions such as system shutdowns or assessments of exposure extent."
+              ]
+            },
+            "interruption": {
+              "title": "Interruption",
+              "definitions": [
+                "Events that cause disruptions or impairments to target systems resulting in a loss of availability or denial of service (DoS).",
+                "These events arise from various malicious causes such as attacks, hardware or software failures induced by attackers, or network outages orchestrated by malicious actors. Their objective is to disrupt critical systems, services, or resources, leading to downtime and impeding regular business operations."
+              ]
+            },
+            "ransomware": {
+              "title": "Ransomware",
+              "definitions": [
+                "Events where there is a financial incentive targeted by the attacker in the form of an extortion payment.",
+                "This may take the form malicious software which encrypts critical data, blocking or disrupting access to computers systems and databases, or the threat of the public release of data, unless an amount is paid to the attacker. These incidents can significantly impact businesses in terms of their availability, confidentiality and integrity."
+              ]
+            },
+            "attritional": {
+              "title": "Attritional",
+              "definitions": [
+                "Under attritional, we model expected, recurring, or ongoing losses a company may face due to expected and frequent cyber incidents.",
+                "These losses can derive from unsuccessful phishing attempts, low-profile data breaches with limited data exposure, or minor cybersecurity incidents that are quickly addressed."
+              ]
+            }
+          }
+        }
+      },
+      "InitialVectorsAndCyberEventLoss": {
+        "InitialVectorAalBreakdown": {
+          "title": "Average Annual Loss Breakdown by Initial Vectors",
+          "description": "This breakdown of initial access vectors helps you understand the specific methods (as defined by MITRE ATT&CK framework) threat actors employ and routes they are most likely to take to gain unauthorized access into your company and their associated financial implications."
+        },
+        "cyberEventLoss": {
+          "title": "Loss From Cyber Events",
+          "mostLikelyLoss": {
+            "title": "Most Likely Loss From an Event",
+            "description": "The expected loss from a cyber event occurring to the company will likely be within this range (between the 40th and 60th percentiles)."
+          },
+          "extremeLoss": {
+            "title": "Loss From Severe Event",
+            "description": "The expected loss from a severe cyber event occurring to the company will likely be within this range (between the 95th and 99th percentiles)."
+          }
+        }
+      },
+      "findingBasis": {
+        "dataPointsAndLossEvents": {
+          "dataPoints": {
+            "top": "Over",
+            "middle": "250M",
+            "bottom": "Data Points"
+          },
+          "lossEvents": {
+            "top": "Over",
+            "middle": "500K",
+            "bottom": "Loss events from the past 8 years"
+          }
+        },
+        "findings": [
+          "Modeling the impacts of cyber events necessitates a deep understanding of the cyber threat landscape.",
+          "At the core of Kovrr's data pipeline lies a fusion of unique data sources, enhancing the insights used to construct the frequency and severity of cyber events in our models.",
+          "Kovrr's data collection technology aggregates data from numerous sources into Kovrr’s threat intelligence and cyber events databases. Access to certain data sources is facilitated through exclusive partnerships reserved for Kovrr, enhancing our modeling capabilities."
+        ],
+        "dataSources": {
+          "intro": "Kovrr's data sources can be categorized into four main groups:",
+          "sources": [
+            "<Bold>Cyber Events Data:</Bold> This encompasses data related to cyber events, including event types, attack vectors, event durations, impacts, and associated costs.",
+            "<Bold>Threat Landscape and Intelligence Data:</Bold> This includes information on actor activities and compromised resources. Examples include compromised personally identifiable information (PII), credentials, and trends in actor activities.",
+            "<Bold>Vulnerability and Exploits Data:</Bold> This data category covers vulnerable and exploited products, types of vulnerabilities and exploits, and trends in vulnerabilities and exploits (e.g., actively exploited vulnerabilities).",
+            "<Bold>Outage Data:</Bold> This data pertains to service provider outages, providing insights into which providers are more susceptible to outages and the average duration of such outages."
+          ]
+        }
+      },
+      "returnOnCyberRiskAssessment": {
+        "chapterNumber": "02",
+        "msBundles": {
+          "title": "Return on Cyber Risk Investment Assessment: <RegularText>Microsoft Security Products Bundles</RegularText>",
+          "description": "In the previous chapter, we outlined the company's current cyber risk profile based on its existing cybersecurity measures. To assess how the implementation of Microsoft Security Products Bundles would impact this risk, we conducted a new quantification, altering only one variable: the addition of a bundle. This allowed us to simulate the company's cyber risk landscape as if the product had been fully integrated into their operations. The analysis you will see in this chapter reflects the outcome of these adjustment, offering a comparative view of risk reduction.",
+          "msBusinessPremium": {
+            "intro": {
+              "index": "1",
+              "title": "Microsoft 365 Business Premium",
+              "description": "Microsoft 365 Business Premium is an all-in-one security and productivity solution designed to provide advanced protection and comprehensive tools for managing cyber threats. It integrates cloud security features, device management, and identity protection to offer a cohesive approach to safeguarding business data and systems."
+            },
+            "annualLossReduction": {
+              "title": "Annual Loss Reduction",
+              "legend": {
+                "currentRisk": "Current Risk",
+                "msProduct": "With Microsoft 365 Business Premium"
+              },
+              "aalChart": {
+                "chartLabel": [["Average", "Annual Loss"]],
+                "reductionLabel": "Reduction in Average Annual Loss"
+              },
+              "highLossChart": {
+                "chartLabel": [["1:100", "Annual Loss"]],
+                "chartLabelExtra": "(1% probability)",
+                "reductionLabel": "Reduction in 1:100 Annual Loss"
+              }
+            },
+            "riskScenariosReduction": {
+              "title": "Risk Scenarios Reduction",
+              "description": "The following graphs show the impact of Microsoft Business Premium on your company's financial cyber risk by focusing on the most critical scenarios. These visuals highlight the product's effect on both average annual loss and the 1:100 annual loss. By isolating the key event types and initial vectors, they demonstrate how Microsoft 365 Business Premium reduces financial exposure. Whether lowering the frequency of interruptions, mitigating data breaches, or reducing human errors, these graphs emphasize the product's ability to strengthen protection and minimize financial losses.",
+              "aalChart": {
+                "legend": {
+                  "currentRisk": "Current Risk",
+                  "msProduct": "With Microsoft 365 Business Premium"
+                },
+                "explanation": "How implementing <BoldBlueText>Microsoft 365 Business Premium</BoldBlueText> affect the average annual loss of different risk scenarios",
+                "brackets": "(All event types and top three initial vectors by average annual loss)"
+              },
+              "highExposureLossChart": {
+                "legend": {
+                  "currentRisk": "Current Risk",
+                  "msProduct": "With Microsoft 365 Business Premium"
+                },
+                "explanation": "How implementing <BoldBlueText>Microsoft 365 Business Premium</BoldBlueText> affect the 1:100 annual loss of different risk scenarios",
+                "brackets": "(All event types and top three initial vectors by average annual loss)"
+              },
+              "reductionTable": {
+                "title": "Table view: <BoldBlueText>Microsoft 365 Business Premium</BoldBlueText> effect on risk scenarios",
+                "columns": {
+                  "scenario": "Scenario",
+                  "aalEffect": "Average Annual Loss Reduction",
+                  "aalPercentage": "%",
+                  "highExposureLossEffect": "1:100 Annual Loss Reduction",
+                  "highExposureLossPercentage": "%"
+                }
+              }
+            },
+            "coreCapabilities": {
+              "title": "Core Capabilities",
+              "description": [
+                "The breakdown below details the number of security products within Microsoft 365 Business Premium, categorized by their respective security functions.",
+                "These are the products that contribute to the risk reduction observed in our simulation."
+              ],
+              "suffix": "Products",
+              "products": [
+                { "name": "Identity and Access Management", "count": 8 },
+                { "name": "Endpoint and App Management", "count": 8 },
+                { "name": "Threat Protection", "count": 6 },
+                { "name": "Data Lifecycle Management", "count": 3 },
+                { "name": "Information Protection", "count": 3 },
+                { "name": "Cloud Access Security Broker", "count": 1 },
+                { "name": "Data Loss Prevention (DLP)", "count": 1 },
+                { "name": "Email, Calendar and Scheduling", "count": 1 }
+              ]
+            },
+            "securityProductBreakdown": {
+              "title": "Security Product Breakdown: Contributions to Cyber Risk Reduction",
+              "description": [
+                "In the table below, you will find a detailed breakdown of how the most effective security products in the Microsoft 365 Business Premium bundle has contributed to the risk reduction demonstrated above. ",
+                "While our simulations account for the overall enhancement in your security posture, this table isolates and highlights the specific effect of each product, demonstrating how each component independently influences your company’s financial cyber risk."
+              ]
+            }
+          },
+          "msE3": {
+            "intro": {
+              "index": "2",
+              "title": "Microsoft 365 E3",
+              "description": "Microsoft 365 E3 is a powerful solution that enhances both security and productivity by offering advanced protection for your organization’s data and systems. It integrates essential cloud security features, device management, and identity protection to provide a robust framework for defending against cyber threats while maintaining operational efficiency."
+            },
+            "annualLossReduction": {
+              "title": "Annual Loss Reduction",
+              "legend": {
+                "currentRisk": "Current Risk",
+                "msProduct": "With Microsoft 365 E3"
+              },
+              "aalChart": {
+                "chartLabel": [["Average", "Annual Loss"]],
+                "reductionLabel": "Reduction in Average Annual Loss"
+              },
+              "highLossChart": {
+                "chartLabel": [["1:100", "Annual Loss"]],
+                "chartLabelExtra": "(1% probability)",
+                "reductionLabel": "Reduction in 1:100 Annual Loss"
+              }
+            },
+            "riskScenariosReduction": {
+              "title": "Risk Scenarios Reduction",
+              "description": "The following graphs show the impact of Microsoft 365 E3 on your company’s financial cyber risk by focusing on the most critical scenarios. These visuals highlight the product's effect on both average annual loss and the 1:100 annual loss. By isolating the key event types and initial vectors, they demonstrate how Microsoft 365 E3 reduces financial exposure. Whether lowering the frequency of interruptions, mitigating data breaches, or reducing human errors, these graphs emphasize the product's ability to strengthen protection and minimize financial losses.",
+              "aalChart": {
+                "legend": {
+                  "currentRisk": "Current Risk",
+                  "msProduct": "With Microsoft 365 E3"
+                },
+                "explanation": "How implementing <BoldBlueText>Microsoft 365 E3</BoldBlueText> affect the average annual loss of different risk scenarios",
+                "brackets": "(All event types and top three initial vectors by average annual loss)"
+              },
+              "highExposureLossChart": {
+                "legend": {
+                  "currentRisk": "Current Risk",
+                  "msProduct": "With Microsoft 365 E3"
+                },
+                "explanation": "How implementing <BoldBlueText>Microsoft 365 E3</BoldBlueText> affect the 1:100 annual loss of different risk scenarios",
+                "brackets": "(All event types and top three initial vectors by average annual loss)"
+              },
+              "reductionTable": {
+                "title": "Table view: <BoldBlueText>Microsoft 365 E3</BoldBlueText> effect on risk scenarios",
+                "columns": {
+                  "scenario": "Scenario",
+                  "aalEffect": "Average Annual Loss Reduction",
+                  "aalPercentage": "%",
+                  "highExposureLossEffect": "1:100 Annual Loss Reduction",
+                  "highExposureLossPercentage": "%"
+                }
+              }
+            },
+            "coreCapabilities": {
+              "title": "Core Capabilities",
+              "description": [
+                "The breakdown below details the number of security products within Microsoft 365 E3, categorized by their respective security functions.",
+                "These are the products that contribute to the risk reduction observed in our simulation."
+              ],
+              "suffix": "Products",
+              "products": [
+                { "name": "Identity and Access Management", "count": 13 },
+                { "name": "Endpoint and App Management", "count": 8 },
+                { "name": "Threat Protection", "count": 7 },
+                { "name": "Information Protection", "count": 6 },
+                { "name": "Data Lifecycle Management", "count": 2 },
+                { "name": "Windows", "count": 1 },
+                { "name": "Email, Calendar and Scheduling", "count": 1 },
+                { "name": "Cloud Access Security Broker", "count": 1 }
+              ]
+            },
+            "securityProductBreakdown": {
+              "title": "Security Product Breakdown: Contributions to Cyber Risk Reduction",
+              "description": [
+                "In the table below, you will find a detailed breakdown of how the most effective security products in the Microsoft 365 E3 bundle has contributed to these improvements.",
+                "While our simulations account for the overall enhancement in your security posture, this table isolates and highlights the specific effect of each product, demonstrating how each component independently influences your company’s financial cyber risk."
+              ]
+            }
+          },
+          "msE5": {
+            "intro": {
+              "index": "3",
+              "title": "Microsoft 365 E5",
+              "description": "Microsoft 365 E5 offers a premium, comprehensive security solution with advanced threat protection, compliance tools, and analytics, designed to provide a top-tier defense against cyber threats. It integrates sophisticated tools for cloud security, identity protection, and advanced threat detection, delivering unparalleled visibility and control over your organization’s security posture."
+            },
+            "annualLossReduction": {
+              "title": "Annual Loss Reduction",
+              "legend": {
+                "currentRisk": "Current Risk",
+                "msProduct": "With Microsoft 365 E5"
+              },
+              "aalChart": {
+                "chartLabel": [["Average", "Annual Loss"]],
+                "reductionLabel": "Reduction in Average Annual Loss"
+              },
+              "highLossChart": {
+                "chartLabel": [["1:100", "Annual Loss"]],
+                "chartLabelExtra": "(1% probability)",
+                "reductionLabel": "Reduction in 1:100 Annual Loss"
+              }
+            },
+            "riskScenariosReduction": {
+              "title": "Risk Scenarios Reduction",
+              "description": "The following graphs show the impact of Microsoft 365 E5 on your company’s financial cyber risk by focusing on the most critical scenarios. These visuals highlight the product's effect on both average annual loss and the 1:100 annual loss. By isolating the key event types and initial vectors, they demonstrate how Microsoft 365 E5 reduces financial exposure. Whether lowering the frequency of interruptions, mitigating data breaches, or reducing human errors, these graphs emphasize the product's ability to strengthen protection and minimize financial losses.",
+              "aalChart": {
+                "legend": {
+                  "currentRisk": "Current Risk",
+                  "msProduct": "With Microsoft 365 E5"
+                },
+                "explanation": "How implementing <BoldBlueText>Microsoft 365 E5</BoldBlueText> affect the average annual loss of different risk scenarios",
+                "brackets": "(All event types and top three initial vectors by average annual loss)"
+              },
+              "highExposureLossChart": {
+                "legend": {
+                  "currentRisk": "Current Risk",
+                  "msProduct": "With Microsoft 365 E5"
+                },
+                "explanation": "How implementing <BoldBlueText>Microsoft 365 E5</BoldBlueText> affect the 1:100 annual loss of different risk scenarios",
+                "brackets": "(All event types and top three initial vectors by average annual loss)"
+              },
+              "reductionTable": {
+                "title": "Table view: <BoldBlueText>Microsoft 365 E5</BoldBlueText> effect on risk scenarios",
+                "columns": {
+                  "scenario": "Scenario",
+                  "aalEffect": "Average Annual Loss Reduction",
+                  "aalPercentage": "%",
+                  "highExposureLossEffect": "1:100 Annual Loss Reduction",
+                  "highExposureLossPercentage": "%"
+                }
+              }
+            },
+            "coreCapabilities": {
+              "title": "Core Capabilities",
+              "description": [
+                "The breakdown below details the number of security products within Microsoft 365 E5, categorized by their respective security functions.",
+                "These are the products that contribute to the risk reduction observed in our simulation."
+              ],
+              "suffix": "Products",
+              "products": [
+                { "name": "Identity and Access Management", "count": 17 },
+                { "name": "Endpoint and App Management", "count": 8 },
+                { "name": "Threat Protection", "count": 13 },
+                { "name": "Information Protection", "count": 13 },
+                { "name": "Data Lifecycle Management", "count": 5 },
+                { "name": "Insider Risk Management", "count": 5 },
+                { "name": "Cloud Access Security Broker", "count": 4 },
+                { "name": "Data Loss Prevention (DLP)", "count": 2 },
+                { "name": "Windows", "count": 1 },
+                { "name": "Email, Calendar and Scheduling", "count": 1 }
+              ]
+            },
+            "securityProductBreakdown": {
+              "title": "Security Product Breakdown: Contributions to Cyber Risk Reduction",
+              "description": [
+                "In the table below, you will find a detailed breakdown of how the most effective security products in the Microsoft 365 E5 bundle has contributed to these improvements. ",
+                "While our simulations account for the overall enhancement in your security posture, this table isolates and highlights the specific effect of each product, demonstrating how each component independently influences your company’s financial cyber risk."
+              ]
+            }
+          },
+          "securityProductBreakdown": {
+            "columns": {
+              "product": "Product",
+              "aalPercentage": "Effect on Average Annual Loss",
+              "highExposureLossPercentage": "Effect on 1:100 Annual Loss"
+            },
+            "products": {
+              "microsoft_defender_for_office_365_plan_1": {
+                "title": "Microsoft Defender for Office 365 Plan 1",
+                "description": "Provides email and collaboration protection with phishing detection, malware prevention, and URL and attachment scanning."
+              },
+              "microsoft_defender_for_office_365_plan_2": {
+                "title": "Microsoft Defender for Office 365 Plan 2",
+                "description": "Enhances email protection with automated threat response, advanced phishing defenses, and training simulations."
+              },
+              "microsoft_entra_id_plan_1": {
+                "title": "Microsoft Entra ID1 Plan 1",
+                "description": "Provides secure access management with features like single sign-on (SSO) for easy access to apps, multi-factor authentication (MFA) for added security, and Conditional Access policies to enforce risk-based access controls."
+              },
+              "microsoft_intune_plan_1": {
+                "title": "Microsoft Intune Plan 1",
+                "description": "Delivers mobile device and application management with security policies, app protection, and device compliance."
+              },
+              "microsoft_defender_for_endpoint_plan_1": {
+                "title": "Microsoft Defender for Endpoint Plan 1",
+                "description": "Provides essential endpoint protection with next-generation antimalware, attack surface reduction, network and web protection, and device control (like USB devices) across Windows, macOS, iOS, and Android platforms."
+              },
+              "microsoft_defender_firewall": {
+                "title": "Microsoft Defender Firewall",
+                "description": "Offers network protection by filtering inbound and outbound traffic, helping safeguard devices from malicious attacks through customizable rules and integration with other Microsoft security tools​."
+              },
+              "multi_factor_authentication": {
+                "title": "Multi Factor Authentication",
+                "description": "Enhances account security by requiring multiple verification methods, such as password and a second factor (e.g., phone app, SMS), helping protect against unauthorized access."
+              },
+              "endpoint_dlp": {
+                "title": "Endpoint DLP",
+                "description": "Monitors and protects sensitive data on Windows and macOS devices, preventing data leaks while integrated with Microsoft Defender for Endpoint​."
+              },
+              "microsoft_defender_for_endpoint_plan_2": {
+                "title": "Microsoft Defender for Endpoint Plan 2",
+                "description": "Adds advanced features like Endpoint Detection and Response (EDR) and automated remediation to Plan 1, enhancing endpoint security​."
+              },
+              "microsoft_defender_for_identity": {
+                "title": "Microsoft Defender for Identity",
+                "description": "Detects and responds to identity threats in on-premises Active Directory, integrating with Microsoft 365 for unified risk management​."
+              },
+              "microsoft_defender_for_cloud_apps": {
+                "title": "Microsoft Defender for Cloud Apps",
+                "description": "Secures cloud apps by monitoring for threats and controlling data access across both Microsoft and third-party applications​."
+              },
+              "microsoft_entra_id_plan_2": {
+                "title": "Microsoft Entra ID1 Plan 2",
+                "description": "Provides advanced identity protection with features like risk-based Conditional Access and Privileged Identity Management​."
+              },
+              "privileged_identity_management": {
+                "title": "Privileged Identity Management",
+                "description": "Grants just-in-time access to admin roles, reducing risks by managing and auditing privileged account use."
+              }
+            }
+          }
+        },
+        "cspm": {
+          "title": "Return on Cyber Risk Investment Assessment: <RegularText>Microsoft Defender CSPM</RegularText>",
+          "description": [
+            "In the previous chapter, we outlined the company's current cyber risk profile based on its existing cybersecurity measures. To assess how the implementation of Microsoft Defender CSPM would impact this risk, we conducted a new quantification, altering only one variable: the addition of the product. This allowed us to simulate the company's cyber risk landscape as if the product had been fully integrated into their cloud operations. The analysis you will see in this chapter reflects the outcome of these adjustment, offering a comparative view of risk reduction.",
+            "When conducting the \"What If\" scenario quantification, we specifically applied the improvements to the CIS Controls related only to the cloud environment. This approach aligns with the fact that Microsoft Defender CSPM is a cloud-focused security product. By limiting the enhancements to cloud-related controls, we can more accurately assess the product's impact on the organization's cloud security posture, ensuring that the results of the quantification are relevant and reflective of the product's intended use case."
+          ],
+          "productIntro": "Microsoft Defender CSPM (Cloud Security Posture Management) is a comprehensive solution designed to enhance cloud security by continuously monitoring and managing your cloud environment's security posture. It offers advanced tools for identifying, assessing, and remediating vulnerabilities across multi-cloud environments, helping organizations proactively mitigate risks. By integrating automated compliance checks, threat detection, and real-time insights, Microsoft Defender CSPM provides a streamlined approach to securing cloud infrastructure and ensuring consistent adherence to security best practices.",
+          "annualLossReduction": {
+            "title": "Annual Loss Reduction",
+            "legend": {
+              "currentRisk": "Current Risk",
+              "msProduct": "With Microsoft Defender CSPM"
+            },
+            "aalChart": {
+              "chartLabel": [["Average", "Annual Loss"]],
+              "reductionLabel": "Reduction in Average Annual Loss"
+            },
+            "highLossChart": {
+              "chartLabel": [["1:100", "Annual Loss"]],
+              "chartLabelExtra": "(1% probability)",
+              "reductionLabel": "Reduction in 1:100 Annual Loss"
+            }
+          },
+          "riskScenariosReduction": {
+            "title": "Risk Scenarios Reduction",
+            "description": "The following graphs show the impact of Microsoft Defender CSPM on your company’s financial cyber risk by focusing on the most critical scenarios. These visuals highlight the product's effect on both average annual loss and the 1:100 annual loss, a rare but significant event. By isolating the key event types and initial attack vectors, they demonstrate how Microsoft Defender CSPM reduces financial exposure. Whether lowering the frequency of interruptions, mitigating data breaches, or reducing human errors, these graphs emphasize the product's ability to strengthen protection and minimize financial losses.",
+            "aalChart": {
+              "legend": {
+                "currentRisk": "Current Risk",
+                "msProduct": "With Microsoft Defender CSPM"
+              },
+              "explanation": "How implementing <BoldBlueText>Microsoft Defender CSPM</BoldBlueText> affect the average annual loss of different risk scenarios",
+              "brackets": "(All event types and top three initial vectors by average annual loss)"
+            },
+            "highExposureLossChart": {
+              "legend": {
+                "currentRisk": "Current Risk",
+                "msProduct": "With Microsoft Defender CSPM"
+              },
+              "explanation": "How implementing <BoldBlueText>Microsoft Defender CSPM</BoldBlueText> affect the 1:100 annual loss of different risk scenarios",
+              "brackets": "(All event types and top three initial vectors by average annual loss)"
+            },
+            "reductionTable": {
+              "title": "Table view: <BoldBlueText>Microsoft Defender CSPM</BoldBlueText> effect on risk scenarios",
+              "columns": {
+                "scenario": "Scenario",
+                "aalEffect": "Average Annual Loss Reduction",
+                "aalPercentage": "%",
+                "highExposureLossEffect": "1:100 Annual Loss Reduction",
+                "highExposureLossPercentage": "%"
+              }
+            }
+          },
+          "coreCapabilities": {
+            "title": "Core Capabilities",
+            "description": "The table below summarizes the core capabilities of the Microsoft Defender CSPM, which helps organizations secure their cloud environments effectively.",
+            "table": {
+              "headers": ["Capability", "Description"],
+              "rows": [
+                [
+                  "Continuous Security Assessment",
+                  "Provides ongoing evaluation of cloud environments against security benchmarks and industry standards, identifying potential risks and vulnerabilities."
+                ],
+                [
+                  "Regulatory Compliance Monitoring",
+                  "Tracks and reports compliance status with regulatory standards, enabling users to ensure adherence to policies like CIS, NIST, and GDPR."
+                ],
+                [
+                  "Attack Path Analysis",
+                  "Offers a visual representation of potential attack paths within the cloud environment, helping to prioritize the most critical vulnerabilities for remediation."
+                ],
+                [
+                  "Secure Score",
+                  "Assigns a score to the cloud environment based on security configuration, allowing users to benchmark and track improvements over time."
+                ],
+                [
+                  "Remediation",
+                  "Suggests and simplifies remediation via a fix button to quickly remediate recommendations for identified security issues, reducing manual effort and response times."
+                ],
+                [
+                  "Integration with Microsoft Defender XDR",
+                  "Seamlessly integrates with Microsoft Defender XDR to provide a unified security front by accessing alerts and getting a complete picture of an attack in the Microsoft Defender Portal"
+                ],
+                [
+                  "Resource Inventory Management",
+                  "Provides a centralized view of all cloud resources, helping users to understand their environment and detect unprotected or misconfigured assets."
+                ],
+                [
+                  "Security Recommendations",
+                  "Delivers actionable security recommendations tailored to the specific cloud setup, helping to improve overall security posture and reduce risk exposure."
+                ],
+                [
+                  "Policy Management",
+                  "Allows users to create, assign, and enforce security policies across their cloud environments, ensuring consistency in security practices."
+                ],
+                [
+                  "Compliance Dashboards",
+                  "Offers interactive dashboards for monitoring compliance status, helping organizations to quickly identify gaps and take corrective actions to achieve compliance."
+                ]
+              ]
+            }
+          },
+          "cisControls": {
+            "title": "CIS Controls Areas Affected by Microsoft Defender CSPM",
+            "description": "The following list outlines the specific areas of the CIS Controls Framework that are impacted by Microsoft Defender CSPM.",
+            "table": {
+              "headers": ["CIS Control", "Sub Controls"],
+              "rows": [
+                [
+                  [
+                    "CIS Control 1:",
+                    "<Bold>Inventory and Control of Enterprise Assets</Bold>"
+                  ],
+                  [
+                    "<Bold>1.1</Bold>: Establish and Maintain Detailed Enterprise Asset Inventory.",
+                    "<Bold>1.3</Bold>: Utilize an Active Discovery Tool.",
+                    "<Bold>1.5</Bold>: Use a Passive Asset Discovery Tool."
+                  ]
+                ],
+                [
+                  [
+                    "CIS Control 2:",
+                    "<Bold>Inventory and Control of Software Assets</Bold>"
+                  ],
+                  [
+                    "<Bold>2.1</Bold>: Establish and Maintain a Software Inventory.",
+                    "<Bold>2.5</Bold>: Allowlist Authorized Software.",
+                    "<Bold>2.6</Bold>: Allowlist Authorized Libraries.",
+                    "<Bold>2.7</Bold>: Allowlist Authorized Scripts."
+                  ]
+                ],
+                [
+                  [
+                    "CIS Control 4:",
+                    "<Bold>Secure Configuration of Enterprise Assets and Software</Bold>"
+                  ],
+                  [
+                    "<Bold>4.1</Bold>: Establish and Maintain a Secure Configuration Process.",
+                    "<Bold>4.2</Bold>: Establish and Maintain a Secure Configuration Process for Network Infrastructure.",
+                    "<Bold>4.4</Bold>: Implement and Manage a Firewall on Servers.",
+                    "<Bold>4.5</Bold>: Implement and Manage a Firewall on End-User Devices.",
+                    "<Bold>4.7</Bold>: Manage Default Accounts on Enterprise Assets and Software.",
+                    "<Bold>4.8</Bold>: Uninstall or Disable Unnecessary Services on Enterprise Assets and Software."
+                  ]
+                ],
+                [
+                  ["CIS Control 5:", "<Bold>Account Management</Bold>"],
+                  [
+                    "<Bold>5.5</Bold>: Establish and Maintain an Inventory of Service Accounts.",
+                    "<Bold>5.6</Bold>: Centralize Account Management."
+                  ]
+                ],
+                [
+                  ["CIS Control 6:", "<Bold>Access Control Management</Bold>"],
+                  [
+                    "<Bold>6.3</Bold>: Require MFA for Externally-Exposed Applications.",
+                    "<Bold>6.4</Bold>: Require MFA for Remote Network Access.",
+                    "<Bold>6.5</Bold>: Require MFA for Administrative Access."
+                  ]
+                ],
+                [
+                  [
+                    "CIS Control 7:",
+                    "<Bold>Continuous Vulnerability Management</Bold>"
+                  ],
+                  [
+                    "<Bold>7.2</Bold>: Establish and Maintain a Remediation Process.",
+                    "<Bold>7.5</Bold>: Perform Automated Vulnerability Scans of Internal Enterprise Assets.",
+                    "<Bold>7.6</Bold>: Perform Automated Vulnerability Scans of Externally-Exposed Enterprise Assets."
+                  ]
+                ],
+                [
+                  ["CIS Control 8:", "<Bold>Audit Log Management</Bold>"],
+                  [
+                    "<Bold>8.2</Bold>: Collect Audit Logs.",
+                    "<Bold>8.5</Bold>: Collect Detailed Audit Logs.",
+                    "<Bold>8.8</Bold>: Collect Command-Line Audit Logs.",
+                    "<Bold>8.11</Bold>: Conduct Audit Log Reviews."
+                  ]
+                ]
+              ],
+              "rowsContinued": [
+                [
+                  ["CIS Control 10:", "<Bold>Malware Defenses</Bold>"],
+                  [
+                    "<Bold>10.2</Bold>: Configure Automatic Anti-Malware Signature Updates.",
+                    "<Bold>10.6</Bold>: Centrally Manage Anti-Malware Software."
+                  ]
+                ],
+                [
+                  [
+                    "CIS Control 12:",
+                    "<Bold>Network Infrastructure Management</Bold>"
+                  ],
+                  [
+                    "<Bold>12.4</Bold>: Establish and Maintain Architecture Diagram(s)."
+                  ]
+                ],
+                [
+                  [
+                    "CIS Control 13:",
+                    "<Bold>Network Monitoring and Defense</Bold>"
+                  ],
+                  ["<Bold>13.1</Bold>: Centralize Security Event Alerting."]
+                ],
+                [
+                  [
+                    "CIS Control 15:",
+                    "<Bold>Service Provider Management</Bold>"
+                  ],
+                  [
+                    "<Bold>15.1</Bold>: Establish and Maintain an Inventory of Service Providers.",
+                    "<Bold>15.2</Bold>: Establish and Maintain a Service Provider Management Policy.",
+                    "<Bold>15.3</Bold>: Classify Service Providers.",
+                    "<Bold>15.4</Bold>: Assess Service Providers.",
+                    "<Bold>15.5</Bold>: Monitor Service Providers."
+                  ]
+                ],
+                [
+                  [
+                    "CIS Control 16:",
+                    "<Bold>Application Software Security</Bold>"
+                  ],
+                  [
+                    "<Bold>16.1</Bold>: Establish and Maintain a Secure Application Development Process.",
+                    "<Bold>16.2</Bold>: Establish and Maintain a Process to Accept and Address Software Vulnerabilities.",
+                    "<Bold>16.4</Bold>: Establish and Manage an Inventory of Third-Party Software Components.",
+                    "<Bold>16.5</Bold>: Use Up-to-Date and Trusted Third-Party Software Components.",
+                    "<Bold>16.7</Bold>: Use Standard Hardening Configuration Templates for Application Infrastructure."
+                  ]
+                ],
+                [
+                  [
+                    "CIS Control 17:",
+                    "<Bold>Incident Response Management</Bold>"
+                  ],
+                  [
+                    "<Bold>17.2</Bold>: Establish and Maintain Contact Information for Reporting Security Incidents.",
+                    "<Bold>17.4</Bold>: Establish and Maintain an Incident Response Process.",
+                    "<Bold>17.7</Bold>: Conduct Routine Incident Response Exercises.",
+                    "<Bold>17.9</Bold>: Establish and Maintain Security Incident Thresholds."
+                  ]
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "inDepthExamination": {
+        "chapterNumber": "04",
+        "title": "In-Depth Quantification Examination",
+        "description": [
+          "The Cyber Risk Quantification process involves leveraging various data sources, statistical models, and analytical techniques to simulate and predict the likelihood and severity of cyber events and their potential financial consequences.",
+          "This chapter offers an in-depth exploration of the distinct phases we undertake to quantify the organization's cyber risk exposure."
+        ],
+        "progressBar": [
+          "Threat Intelligence",
+          "Company Assets and Structure",
+          "Security Posture",
+          "Final Risk Calculation"
+        ],
+        "threatIntelligence": {
+          "title": "Threat Intelligence",
+          "description": [
+            "Our first step is understanding your company's basic risk level. We do this by studying trends in the threat landscape among companies that share similar characteristics to yours. By looking at how similar companies have been affected by cyber threats, we can better gauge the potential risks your organization faces.",
+            "By analyzing firmographics such as industry, company size, location, and revenue, we discern a comprehensive understanding of the company's operational landscape and potential outcomes of a cyber event. ",
+            "This data, gathered from both privileged and public sources, allows us to identify common cyber threats and prevalent attack vectors among peers and establish a foundational knowledge of the company's exposure to cyber risks."
+          ],
+          "businessSnapshot": {
+            "title": "Business Snapshot",
+            "table": {
+              "headers": [
+                "Company Name",
+                "Domain",
+                "Industry of Operation",
+                "Country of Operation",
+                "Annual Revenue",
+                "No. of Employees"
+              ]
+            }
+          },
+          "peerBaseRate": {
+            "title": "Peer Base Rate",
+            "description": "The graph below shows what is the baseline annual likelihood, also referred to as the 'Peer Base Rate' compared to your company’s residual annual likelihood to experience a cyber loss event."
+          },
+          "breakdownByEventType": {
+            "title": "Breakdown by Event Type",
+            "description": [
+              "The peer base rate is determined by summing the base rates for three types of events: Data Breach, Interruption, and Ransomware.",
+              "The graph below shows what is the baseline likelihood for the three types of events, compared to your company’s likelihood residual rates."
+            ]
+          },
+          "findingsExplanation": {
+            "description1": "To form the base probabilities, Kovrr meticulously examines various datasets using Bayesian methods. This approach accounts for reporting delays, data gaps, and uncertainties to ensure robust analysis.",
+            "boldDescription": "Calibration Factors Applied to Raw Data",
+            "description2": [
+              "Trends and Historical Data",
+              "The first calibration factor involves analyzing historical data to identify trends. For instance, if the incident rate in a particular industry remained stable for several years and then gradually increased, our model captures this trend. By considering historical patterns, the model enhances its predictive capabilities, allowing us to factor in evolving risks and better prepare for future scenarios.",
+              "Unreported Events (Based on Reporting Delay)",
+              "The first “uplift” relates to events that experience reporting delays. These events eventually get reported, but there is a time gap between their occurrence and official documentation. During this gap, the model considers them as \"unreported,\" leading to a higher likelihood rate. Once the reports are filed, the model is adjusted accordingly.",
+              "Events Not in Data (Approximately 19%)",
+              "Some events may not be present in the raw data due to underreporting, incomplete data sources, or unnoticed occurrences. Various validation tests and risk controls are applied throughout the model development process to limit model risk, ensure correct operation, and maintain high-quality output.",
+              "Main Areas of Validation and Testing:"
+            ],
+            "list": [
+              "Core Validation",
+              "Parameter Testing",
+              "Model Calculation Testing"
+            ],
+            "description3": [
+              "By rigorously validating and testing these areas, we ensure the model’s accuracy and reliability."
+            ]
+          },
+          "eventTypesFindings": {
+            "description": "The following plots present the likelihood rates for your industry and size, compared to others."
+          },
+          "annualLikelihoodBreakdown": {
+            "title": "Annual Likelihood Breakdown by Initial Vectors, (Above 1%)",
+            "description": "This graph shows what is the baseline annual likelihood for the initial vectors, compared to your company’s likelihood residual rates."
+          },
+          "attackVectorsDistribution": {
+            "mainTitle": "WHAT GROUNDS THESE FINDINGS?",
+            "title": "Distribution of Attack Vectors, within event types",
+            "description": "This graph offers insights into how initial vectors are utilized within different attacker outcomes and goals - the types of events."
+          }
+        },
+        "companyStructure": {
+          "title": "Company Assets and Structure",
+          "description": [
+            "The second step in the risk modeling process involves the collection of data regarding the company’s assets, structure, and technology stack. This data encompasses the asset count, service providers and your organization's comprehensive IT infrastructure.",
+            "Kovrr refines this knowledge by categorizing assets into specific groups, enabling more accurate modeling of potential cyber events aimed at your company.",
+            "This holistic data-driven strategy contributes to developing a custom risk profile that aligns with your distinctive technological setup.",
+            "Leveraging this information, our model constructs a tailored catalog of realistic cyber events that could impact your organization.",
+            "This catalog is not based on generic assumptions, but instead rooted in your specific technology makeup, ensuring the relevance and accuracy of the simulated scenarios.",
+            "We incorporate dynamic distributions that factor in frequencies, propagation patterns, and event severity.",
+            "This level of detail enables us to simulate cyber incidents based on large-scale insurance claims and policies and other event data from millions of global companies while simultaneously factoring in the unique interplay between your assets and potential vulnerabilities."
+          ],
+          "slider": {
+            "intro": "There are several key inputs:",
+            "title": "Cloud vs. Infrastructure Data Reliance",
+            "cloud": "Cloud",
+            "infrastructure": "On-Prem"
+          },
+          "technologicalProfile": {
+            "title": "Technological Profile",
+            "description": "The scan of the company uncovered its technological profile, revealing the number of products identified within each technology or security category."
+          },
+          "dataManagement": {
+            "dataBoxes": {
+              "title": "Data Management and Operational Continuity",
+              "description": "All these inputs allow us to create realistic events tailored specifically to your company.",
+              "records": "Maximum number of data records stored together",
+              "duration": "Average outage duration considered material",
+              "timeToRecover": "Average time to recover from outage"
+            },
+            "eventExamples": {
+              "title": "Event Examples",
+              "description": [
+                "These events are not based on past occurrences but are generated in a bespoke event catalog, tested against the assets and security defenses of the company.",
+                "Each event is described using multiple parameters, such as the duration of the interruption, the number of records compromised, the technologies and services impacted, the business impact using the CIA(E), the initial vector and the profile of the actor. ",
+                "These parameters allow for detailed modeling of how an event unfolds, from the initial attack vector to the likely impact on the organization."
+              ],
+              "table": {
+                "columns": ["Event Parameter", "Values", "Sampling"],
+                "values": [
+                  [
+                    "Event Type",
+                    ["Ransomware", "Data Breach", "Interruption"],
+                    "Randomly sampled from distributions based on threat intelligence data (You can have a glimpse of this TI data on <PageLink target='likelihoodBreakdown'>p.</PageLink>), adjusted for the company's security posture (You can see these adjustments on <PageLink target='threatIntelligence'>p.</PageLink>)."
+                  ],
+                  [
+                    "Initial Vector",
+                    [
+                      "MITRE ATT&CK Framework vectors",
+                      "Human Errors",
+                      "Stolen Devices"
+                    ],
+                    "Randomly sampled from distributions based on threat intelligence data (You can have a glimpse of this TI data on <PageLink target='annualLikelihoodBreakdown'>p.</PageLink>), adjusted for the company's security posture (You can see these adjustments on <PageLink target='eventTypeFindings'>p.</PageLink>)."
+                  ],
+                  [
+                    "Attack Surface",
+                    "Technologies & Service Providers impacted by the event.",
+                    "Randomly sampled based on threat, vulnerabilities (CVEs, EPSS), and outage data insights (You can have a glimpse of this TI data on <PageLink target='dataManagement'>p.</PageLink> and <PageLink target='exploitedCves'>p.</PageLink>)"
+                  ],
+                  [
+                    "Duration",
+                    "The length of time the event impacts the organization.",
+                    "Randomly sampled from threat intelligence data distributions,adjusted by the company’s recovery abilities and resilience (reflected on <PageLink target='dataManagement'>p.</PageLink>)."
+                  ],
+                  [
+                    "Data Records Scale",
+                    "The magnitude of the breach in terms of the number of records affected.",
+                    "Randomly sampled from impact distributions based on threat intelligence from similar company breaches."
+                  ]
+                ]
+              }
+            }
+          },
+          "lossImpactScenario": {
+            "title": "Loss Impact Scenario Definitions",
+            "description": "The six scenarios are mapped to damage types in the following way:"
+          },
+          "exploitedCves": {
+            "description": "Kovrr employs a well-developed approach to establishing the distribution of exploited technologies in our tailored event catalog. Leveraging our extensive database of vulnerabilities and exploits, we meticulously analyze the risk associated with different technologies. This in-depth analysis enables us to determine the exposure level and potential danger posed by each technology.",
+            "ratio": {
+              "title": "<strong>Ratio of Exploited CVEs to CVEs,</strong> by vendor",
+              "description": "This graph presents the ratio between successfully exploited Common Vulnerabilities and Exposures (CVEs) and the total number of CVEs associated with different vendors, focusing on the landscape of the past 12 months."
+            }
+          },
+          "globalDowntime": {
+            "description": [
+              "In addition, we meticulously determine the distribution of service providers experiencing outages within the bespoke event catalog through a comprehensive process.",
+              "Leveraging our extensive database of global historical outages, we assess the availability of various technologies under different scenarios. This data allows us to accurately model and predict potential disruptions impacting an organization's operations."
+            ],
+            "graph": {
+              "title": "<strong>Global Average Downtime,</strong> by provider",
+              "description": "This graph provides insights into the average number of outages per month and the average duration of downtime per month, considering vendors with the highest scores over the past 12 months."
+            }
+          }
+        },
+        "securityPosture": {
+          "securityPosture": {
+            "title": "Security Posture",
+            "description": [
+              "Your organization's security posture directly influences the quantification process. By closely examining your company's measures, practices, and technologies to safeguard its digital environment, we can better gauge its resilience against potential cyber threats.",
+              "This analysis considers various factors, such as the effectiveness and maturity of your security controls, incident response capabilities, and overall cybersecurity strategy.",
+              "The correlation between your security posture and the potential impact of cyber events is essential to accurately financially quantify your organization's cyber risk exposure."
+            ],
+            "averageControlScore": "Average Control Score"
+          },
+          "securityControls": {
+            "title": "Security Controls",
+            "description": [
+              "A company's security posture comprises various factors that collectively diminish financial risk and overall exposure.",
+              "Some aspects curtail the probability of incidents, while others mitigate their impact.",
+              "The following section categorizes your company’s controls implementation into key themes, reflecting the minimum level of implementation for each control.",
+              "Each domain contributes to your organization's resilience against cyber threats, aiding you in refining cyber risk management strategies to alleviate financial vulnerabilities."
+            ],
+            "controlsTable": {
+              "headers": {
+                "row": {
+                  "endpoints": "Endpoints and On-Prem Assets",
+                  "cloud": "Cloud Assets"
+                },
+                "column": {
+                  "vendorsInventory": "Assets and Vendors Inventory",
+                  "identityControl": "Access and Identity Control",
+                  "threatHandling": "Threat and Vulnerability Handling",
+                  "protectiveMeasures": "Protective Measures and Defenses",
+                  "securityAwareness": "Security Awareness and Training",
+                  "incidentResponseManagement": "Incident Response Management"
+                }
+              }
+            }
+          }
+        },
+        "exceedanceCurves": {
+          "graph": {
+            "bi": "Business Interruption",
+            "extortion": "Ransomware & Extortion",
+            "regulatory": "Regulation & Compliance",
+            "contingent_bi": "Third Party Service Provider Failure",
+            "liability": "Third Party Liability",
+            "privacy": "Data Theft & Privacy"
+          },
+          "averageAalDistribution": {
+            "title": "Average Annual Loss Breakdown by Loss Impact Scenarios",
+            "description": "Breaking down the average annual loss by loss impact scenarios, which reflect six general types of losses that are aligned with standard insurance coverages, highlights the specific drivers behind potential losses in cyber risk."
+          }
+        },
+        "riskPositionAnalysis": {
+          "description": "Through this simulation, we can pinpoint specific factors that contribute to your risk exposure, including the interplay of various control mechanisms. By examining scenarios such as baseline risk (your company without any controls), current risk (your company's current control situation), and minimal risk (your company with all controls implemented), you will establish a comprehensive perspective on how your security posture influences the likelihood and severity of cyber events.",
+          "aal": {
+            "title": "Risk Position Analysis (By average annual loss)",
+            "baselineRectangleInfo": "This number represents the company's potential average annual loss under a scenario where no security controls are in place.",
+            "currentRiskRectangleInfo": "This number represents the company's average annual loss at the given time.",
+            "lastLineRectangleInfo": "This number represents the company's potential average annual loss under a scenario where all security controls are fully implemented."
+          },
+          "riskPositionScore": {
+            "title": "Risk Position Score",
+            "description": "This metric evaluates your company's performance in risk reduction by comparing your current risk to the baseline and minimal risk. A higher score indicates more effective risk management and cybersecurity measures, while a lower score suggests room for improvement."
+          },
+          "effect": {
+            "title": "How does the security posture affect the likelihood of your company experiencing cyber events?",
+            "description": "Your company's security controls significantly shape the likelihood of encountering cyber events. Acting as a frontline defense, these controls deter and mitigate threats, reducing the probability of successful attacks. Adequate controls act as barriers against adversaries, enhancing protection. We quantify your security posture's impact on event likelihood by assessing its alignment with industry standards."
+          }
+        },
+        "finalRiskCalc": {
+          "title": "Final Risk Calculation",
+          "description": [
+            "The fourth step in cyber risk modeling involves running a Monte Carlo simulation to assess the company's risk. This simulation incorporates all the collected data, including threat intelligence, company-specific information, and security posture.",
+            "The model considers various scenarios and factors in the inherent uncertainties associated with cyber events by running 10,000 simulation iterations.",
+            "To effectively manage cyber risk, it is crucial to understand the potential damages associated with different types of cyber incidents.",
+            "Kovrr utilizes a robust cyber risk model, informed by comprehensive threat intelligence data, to calculate the possible damage of cyber events. "
+          ]
+        }
+      },
+      "controlRecommendations": {
+        "chapterNumber": "03",
+        "chapterTitle": "Top Controls Recommendations",
+        "chapterDescription": "Leveraging the Cybersecurity Risk Quantification methodology, this section offers insights into the specific controls that can yield the greatest risk reduction and resilience against potential cyber threats. In this chapter we will review the top 5 recommendations.",
+        "item": {
+          "controlCategory": "Control Category",
+          "recommendation": "Recommendation",
+          "averageReduction": "Average Reduction",
+          "highReduction": "High Reduction"
+        }
+      }
+    }
+  }
+}

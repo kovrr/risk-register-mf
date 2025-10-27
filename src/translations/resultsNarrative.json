@@ -1,0 +1,853 @@
+{
+  "firstPartyRisk": {
+    "title": "First Party Security Posture"
+  },
+  "riskEvaluation": {
+    "title": "Risk Evaluation",
+    "mainMetrics": {
+      "aal": {
+        "title": "Average Annual Loss",
+        "description": "The average loss across all next-year simulations",
+        "riskDriversDrillDown": {
+          "event": {
+            "description": "The average loss driven by {{driver}} across all next-year simulations"
+          },
+          "initialDriver": {
+            "description": "The average loss driven by events initiated by {{driver}} across all next-year simulations"
+          }
+        }
+      },
+      "extremeLossScenario": {
+        "title": "1:100 Annual Loss",
+        "description": "The loss value that has a 1% likelihood of being exceeded in any given year across all next-year simulations",
+        "modalText": "Explore Additional Risk Perspectives",
+        "riskDriversDrillDown": {
+          "event": {
+            "description": "The loss value that has a 1% likelihood of being exceeded in any given year across all next-year simulations specifically due to {{driver}} events"
+          },
+          "initialDriver": {
+            "description": "The loss value that has a 1% likelihood of being exceeded in any given year across all next-year simulations specifically due events initiated by {{driver}}"
+          }
+        }
+      },
+      "annualEventsLikelihood": {
+        "title": "Annual Events Likelihood",
+        "description": "The likelihood of experiencing cyber events resulting in loss next year",
+        "peerBaseRate": "This rate is determined by analyzing threat intelligence data for companies with similar characteristics to your organization, such as size and industry.",
+        "initialLikelihood": "The probability of experiencing a cyber event leading to loss, specifically initiated through this vector, in a scenario where no controls are implemented. This represents the baseline risk level before any risk mitigation measures are applied",
+        "legend": {
+          "peerBaseRate": "Peer Base Rate",
+          "overallLikelihood": "Overall Likelihood",
+          "initialLikelihood": "Initial Likelihood",
+          "inherentLikelihood": "Inherent Likelihood"
+        },
+        "riskDriversDrillDown": {
+          "event": {
+            "description": "The likelihood of experiencing {{driver}} events resulting in loss next year"
+          },
+          "initialDriver": {
+            "description": "The likelihood of experiencing events resulting in loss that are initiated with {{driver}} next year"
+          }
+        }
+      }
+    },
+    "topActions": {
+      "title": "Top Recommended Actions",
+      "description": "Tailored recommendations for control implementation aimed at reducing financial losses across the board for your organization",
+      "riskDriversDrillDown": {
+        "event": {
+          "description": "Tailored recommendations for control implementation aimed at reducing financial losses derived from {{driver}} events"
+        },
+        "initialDriver": {
+          "description": "Tailored recommendations for control implementation aimed at reducing financial losses derived from events initiated by {{driver}}"
+        }
+      },
+      "emptyState": {
+        "description": "Tailored recommendations for control implementation aimed at reducing financial losses across the board for your organization",
+        "messageTitle": "There are no recommended actions available at this time.",
+        "messageDescription": "This might be due to one of these reasons:",
+        "reasons": {
+          "zeroImpact": "1. All controls actions resulted in zero financial impact on the specific risk.",
+          "allControlsUnknown": "2. All controls have been categorized as \"Unknown\" or assigned the highest implementation level."
+        },
+        "editSphereButton": "Edit Sphere"
+      }
+    },
+    "simulationStats": {
+      "title": "Event Statistics",
+      "description": "The figures below show a summary of the impact of events from the simulations. For each attribute, you can see the median value, the probable minimum value (1st percentile), and the probable maximum value (99th percentile)",
+      "avg_event_loss": "Loss from an Event",
+      "avg_event_duration_hours": "Event Duration",
+      "avg_num_of_records_affected": "Data Records Compromised",
+      "riskDriversDrillDown": {
+        "event": {
+          "description": "The figures below show a summary of the impact of {{driver}} events from the simulations. For each attribute, you can see the median value, the probable minimum value (1st percentile), and the probable maximum value (99th percentile)"
+        },
+        "initialDriver": {
+          "description": "The figures below show a summary of the impact of events initiated with {{driver}} from the simulations. For each attribute, you can see the median value, the probable minimum value (1st percentile), and the probable maximum value (99th percentile)"
+        }
+      }
+    },
+    "companySecurityScore": {
+      "title": "Security Score",
+      "dropdown": {
+        "panorays": "External Scan",
+        "securityScoreCard": "Security ScoreCard"
+      },
+      "descriptions": {
+        "panorays": [
+          "This score represents your organization's cybersecurity health based on an external scan.",
+          "The evaluation provides insights into your organization's vulnerabilities and influences the financial quantification results. <SpanTag><ATag href='#'>Learn more about this score.</ATag></SpanTag>"
+        ],
+        "securityScoreCard": [
+          "This score reflects your organization's cybersecurity posture based on your integration with Security ScoreCard.",
+          "The evaluation provides insights into your organization's vulnerabilities, exposures, and security practices, and influences the financial quantification results. <SpanTag><ATag href='#'>Learn more about this score.</ATag></SpanTag>."
+        ]
+      },
+      "breakdown": "See Score Breakdown",
+      "modal": {
+        "title": "External Security Score Breakdown",
+        "description": [
+          "This score represents your organization's cybersecurity health based on an external scan. ",
+          "The evaluation provides insights into your organization's vulnerabilities and influences the financial quantification results.",
+          "<SpanTag><ATag href='#'>Learn more about insights from this external scan</ATag></SpanTag>"
+        ]
+      }
+    },
+    "threatIntelligenceInsights": {
+      "title": "Event Benchmark Insights",
+      "description": "The likelihood of experiencing cyber events that result in losses within your operational industries or revenue bands, compared to other industries or revenue bands",
+      "tabs.industry": "Industry",
+      "tabs.size": "Size",
+      "footer": "Go to Kovrr Signals to explore trends in the threat landscape",
+      "industry": {
+        "likelihood": "The likelihood of companies within the industry experiencing significant losses from cyber events compared to the average rate of all industries.",
+        "mostLikelyEvent": "The expected cost of a cyber event in this industry is likely to be within this range (by looking at the 25th to 75th percentiles).",
+        "mostSevereEvent": "The expected cost of a severe cyber event in this industry is likely to be within this range (by looking at the 90th to 95th percentiles).",
+        "topEventType": "The most common type of cyber event experienced by companies in this industry."
+      },
+      "size": {
+        "likelihood": "The likelihood of companies within this revenue bend experiencing losses from cyber events compared to the average rate of all revenue bends.",
+        "mostLikelyEvent": "The expected cost of a cyber event in this revenue bend is likely to be within this range (by looking at the 25th to 75th percentiles).",
+        "mostSevereEvent": "The expected cost of a severe cyber event in this revenue bend is likely to be within this range (by looking at the 90th to 95th percentiles).",
+        "topEventType": "The most common type of cyber event experienced by companies in this revenue bend."
+      },
+      "riskDriversDrillDown": {
+        "event": {
+          "description": "The likelihood of experiencing {{driver}} events that result in losses within your operational industries or revenue bands, compared to other industries or revenue bands"
+        },
+        "initialDriver": {
+          "description": "The likelihood of experiencing events initiated with {{driver}} that result in losses within your operational industries or revenue bands, compared to other industries or revenue bands"
+        }
+      }
+    }
+  },
+  "lossImpactScenario": {
+    "title": "Loss Impact Scenario",
+    "description": "The loss impact scenario is a measure of the impact of a cyber event on a company's operations and financials.",
+    "lossImpactDrillDown": {
+      "scenarios": {
+        "bi": {
+          "title": "Business Interruption",
+          "TitleCard": {
+            "title": "Business Interruption",
+            "description": "This scenario covers all costs that are associated with a business interruption caused by a first-party interruption event. These costs are the loss of income that is happening as a direct result of the disruption and any additional costs incurred to mitigate damage and help the business continue.",
+            "bottomLink": {
+              "text": "Learn more about impact and damage types",
+              "href": "https://trust.kovrr.app/docs/loss-impact-scenarios-page"
+            }
+          }
+        },
+        "contingent_bi": {
+          "title": "Third Party Service Provider Failure",
+          "TitleCard": {
+            "title": "Third Party Service Provider Failure",
+            "description": "Income losses and additional costs caused by a failure of a third-party service provider. In the event that the provider's system fails or is attacked, dependent income losses and additional costs of mitigating the service failure are captured.",
+
+            "bottomLink": {
+              "text": "Learn more about impact and damage types",
+              "href": "https://trust.kovrr.app/docs/loss-impact-scenarios-page"
+            }
+          }
+        },
+        "extortion": {
+          "title": "Ransomware & Extortion ",
+          "TitleCard": {
+            "title": "Ransomware & Extortion ",
+            "description": "Events in which a hacker infiltrates a computer system and threatens to commit a malicious act unless a ransom fee is paid. The scope extends to extortion payments made and expenses incurred in responding to those demands.",
+            "bottomLink": {
+              "text": "Learn more about impact and damage types",
+              "href": "https://trust.kovrr.app/docs/loss-impact-scenarios-page"
+            }
+          }
+        },
+        "liability": {
+          "title": "Third Party Liability",
+          "TitleCard": {
+            "title": "Third Party Liability",
+            "description": "Covers the cost of negligent acts, errors, or omissions. Includes claims of third parties alleging failure to properly protect sensitive data stored on a computer system.",
+            "bottomLink": {
+              "text": "Learn more about impact and damage types",
+              "href": "https://trust.kovrr.app/docs/loss-impact-scenarios-page"
+            }
+          }
+        },
+        "privacy": {
+          "title": "Data Breach & Privacy",
+          "TitleCard": {
+            "title": "Data Breach & Privacy",
+            "description": "Covers first-party costs associated with an event in which a customer's or employee's sensitive data is compromised or exposed.",
+            "bottomLink": {
+              "text": "Learn more about impact and damage types",
+              "href": "https://trust.kovrr.app/docs/loss-impact-scenarios-page"
+            }
+          }
+        },
+        "regulatory": {
+          "title": "Regulation & Compliance",
+          "TitleCard": {
+            "title": "Regulation & Compliance",
+            "description": "Costs resulting from fines or penalties imposed on a company by regulatory authorities. This includes legal fees associated with responding to regulatory actions.",
+            "bottomLink": {
+              "text": "Learn more about impact and damage types",
+              "href": "https://trust.kovrr.app/docs/loss-impact-scenarios-page"
+            }
+          }
+        }
+      }
+    }
+  },
+  "riskDrivers": {
+    "title": "Risk Drivers",
+    "attackVectors": {
+      "title": "Initial Vectors",
+      "description": "Breakdown of the risk by the techniques that are used to gain initial foothold within the network",
+      "riskDriversDrillDown": {
+        "event": {
+          "description": "Breakdown of the {{driver}} risk driver by the techniques that are used to gain initial foothold within the network"
+        }
+      }
+    },
+    "attackVectorsNew": {
+      "title": "MITRE ATT&CK<br/>Vectors +",
+      "description": "Breakdown of the risk by the techniques that are used to gain initial foothold within the network",
+      "riskDriversDrillDown": {
+        "event": {
+          "description": "Breakdown of the {{driver}} risk driver by the techniques that are used to gain initial foothold within the network"
+        }
+      }
+    },
+    "eventTypes": {
+      "title": "Event Types",
+      "description": "Breakdown of the risk by the types of events",
+      "legend.attritionalLosses": "Expected, recurring, or ongoing losses that a company may face due to common and frequent cyber incidents. These losses can derive from unsuccessful phishing attempts, low-profile data breaches with limited data exposure, or minor cybersecurity incidents that are quickly addressed.",
+      "tabs.averageAnnualLoss": "Average Annual Loss",
+      "tabs.likelihood": "Likelihood",
+      "riskDriversDrillDown": {
+        "initialDriver": {
+          "description": "Breakdown of the {{driver}} risk driver by the types of events"
+        }
+      }
+    },
+    "damageTypes": {
+      "title": "Damage Types",
+      "description": "Average annual loss breakdown of the risk by damage types.",
+      "moreInfo": "Learn more about damage types.",
+      "moreInfoLink": "https://trust.kovrr.app/docs/events-severity-impact-and-damage-types",
+      "tooltips": {
+        "bulletListTitle": "Loss Impact Scenarios:",
+        "lostIncome": {
+          "title": "Lost Income",
+          "description": "Financial impact resulting from the interruption of business operations due to a cyber event."
+        },
+        "biForensics": {
+          "title": "Business Interruption Forensics",
+          "description": "Costs of investigation and analysis required to determine the cause and extent of a cyber event."
+        },
+        "biRecoveryExpenses": {
+          "title": "Business Interruption Recovery Expenses",
+          "description": "Costs associated with restoring normal operations after a cyber event."
+        },
+        "publicRelationsRepairment": {
+          "title": "Public Relations Repairment",
+          "description": "Costs associated with restoring public trust and mitigating reputational damage following a cyber event."
+        },
+        "extortionPayment": {
+          "title": "Extortion Payment",
+          "description": "Financial cost incurred when paying a ransom to regain access to compromised systems or data."
+        },
+        "extortionRecoveryExpenses": {
+          "title": "Extortion Recovery Expenses",
+          "description": "Financial cost incurred when paying a ransom to regain access to compromised systems or data."
+        },
+        "legalDefense": {
+          "title": "Legal Defense",
+          "description": "Costs associated with legal proceedings and defense efforts following a data breach event."
+        },
+        "settlements": {
+          "title": "Settlements",
+          "description": "Costs incurred in legal settlements or agreements resulting from a data breach event."
+        },
+        "dataRecovery": {
+          "title": "Data Recovery",
+          "description": "Efforts to retrieve and restore compromised or encrypted data following a cyber event."
+        },
+        "monitoringServices": {
+          "title": "Monitoring Services",
+          "description": "Costs incurred by the company to monitor systems, networks, or data for signs of compromise or suspicious activity following a cyber event."
+        },
+        "notifications": {
+          "title": "Notifications",
+          "description": "Costs associated with notifying affected individuals about a data breach or security incident."
+        },
+        "dataRelatedForensics": {
+          "title": "Data Related Forensics",
+          "description": "Expenses required to investigate, analyze, and identify compromised data to determine the cause, extent, and impact of a data compromise event."
+        },
+        "regulatoryLegalDefense": {
+          "title": "Regulatory Legal Defense",
+          "description": "Expenses incurred to defend against regulatory actions and investigations following a data breach event."
+        },
+        "regulatoryFines": {
+          "title": "Regulatory Fines",
+          "description": "Financial penalties imposed by regulatory bodies for non-compliance with data protection laws and regulations following a cyber event."
+        },
+        "attritional": {
+          "title": "Attritional",
+          "description": "Expected, recurring, or ongoing losses that a company may face due to common and frequent cyber incidents. These losses can derive from unsuccessful phishing attempts, low-profile data breaches with limited data exposure, or minor cybersecurity incidents that are quickly addressed."
+        }
+      }
+    },
+    "impactScenarios": {
+      "title": "Impact Scenarios",
+      "description": "Average annual loss breakdown of the risk by the loss impact scenarios. <SpanTag><ATag href='#'>Learn more about impact scenarios.</ATag></SpanTag>"
+    },
+    "keysToText": {
+      "ransomware": {
+        "title": "Ransomware",
+        "mitre": ""
+      },
+      "interruption": {
+        "title": "Interruption",
+        "mitre": ""
+      },
+      "data_breach": {
+        "title": "Data Breach",
+        "mitre": ""
+      },
+      "attritional": {
+        "title": "Attritional Losses",
+        "mitre": ""
+      },
+      "attritional_vector": {
+        "title": "Attritional Losses",
+        "mitre": ""
+      },
+      "service_provider_interruption": {
+        "title": "3rd Party Interruption",
+        "mitre": ""
+      },
+      "service_provider_data_breach": {
+        "title": "3rd Party Data Breach",
+        "mitre": ""
+      },
+      "valid accounts": {
+        "title": "Valid Accounts",
+        "mitre": "Mitre T1078"
+      },
+      "trusted relationship": {
+        "title": "Trusted Relationship",
+        "mitre": "Mitre T1199"
+      },
+      "phishing": {
+        "title": "Phishing",
+        "mitre": "Mitre T1566"
+      },
+      "external remote services": {
+        "title": "External Remote Services",
+        "mitre": "Mitre T1133"
+      },
+      "drive-by compromise": {
+        "title": "Drive-by Compromise",
+        "mitre": "Mitre T1189"
+      },
+      "replication through removable media": {
+        "title": "Replication Through Removable Media",
+        "mitre": "Mitre T1091"
+      },
+      "supply chain compromise": {
+        "title": "Supply Chain Compromise",
+        "mitre": "Mitre T1195"
+      },
+      "hardware additions": {
+        "title": "Hardware Additions",
+        "mitre": "Mitre T1200"
+      },
+      "exploit public facing application": {
+        "title": "Exploit Public Facing Application",
+        "mitre": "Mitre T1190"
+      },
+      "lost or stolen devices": {
+        "title": "Lost Or Stolen Devices",
+        "mitre": ""
+      },
+      "human error": {
+        "title": "Human Error",
+        "mitre": ""
+      },
+      "malicious insider": {
+        "title": "Malicious Insider",
+        "mitre": ""
+      },
+      "content injection": {
+        "title": "Content Injection",
+        "mitre": "Mitre T1659"
+      }
+    },
+    "titleCard": {
+      "title": "{{driver}}",
+      "bottomLinkText": "Learn more about impact and damage types",
+      "ransomware": {
+        "topLink": {
+          "text": null,
+          "href": null
+        },
+        "description": "Events where there is a financial incentive targeted by the attacker in the form of an extortion payment. This may take the form malicious software which encrypts critical data, blocking or disrupting access to computers systems and databases, or the threat of the public release of data, unless an amount is paid to the attacker. These incidents can significantly impact businesses in terms of their availability, confidentiality and integrity. The quantified results on the page include all costs associated with ransomware events in the next-year simulations.",
+        "bottomLink": "https://trust.kovrr.app/docs/damage-types"
+      },
+      "interruption": {
+        "topLink": {
+          "text": null,
+          "href": null
+        },
+        "description": "Events that cause disruptions or impairments to target systems resulting in a loss of availability or denial of service (DoS). These events arise from various malicious causes such as attacks, hardware or software failures induced by attackers, or network outages orchestrated by malicious actors. Their objective is to disrupt critical systems, services, or resources, leading to downtime and impeding regular business operations. The quantified results on the page include all costs associated with interruption events caused by malicious activities in the next-year simulations.",
+        "bottomLink": "https://trust.kovrr.app/docs/damage-types"
+      },
+      "data_breach": {
+        "topLink": {
+          "text": null,
+          "href": null
+        },
+        "description": "Events involving unauthorized access, acquisition, and potential disclosure of sensitive information, including regulated personal records (PII), health (PHI), or financial information (PCI). Other confidential information can also be included such as intellectual property (IP) in this category using custom cost components. The primary impact of these events is a confidentiality compromise, leading to costs of notifications, monitoring services, regulatory, recovery expenses and more. Data breach events can impact availability by necessitating immediate actions such as system shutdowns or assessments of exposure extent. The quantified results on the page include all costs associated with data breach events in the next-year simulations.",
+        "bottomLink": "https://trust.kovrr.app/docs/damage-types"
+      },
+      "valid accounts": {
+        "topLink": {
+          "text": "Mitre T1078",
+          "href": "https://attack.mitre.org/techniques/T1078/"
+        },
+        "description": "Events that are initiated with malicious actors using legitimate, authorized user accounts or credentials to gain unauthorized access to systems or networks. This technique leverages existing accounts to avoid suspicion and detection, making it a stealthy method for carrying out cyberattacks.",
+        "bottomLink": null
+      },
+      "trusted relationship": {
+        "topLink": {
+          "text": "Mitre T1199",
+          "href": "https://attack.mitre.org/techniques/T1199/"
+        },
+        "description": "Events that are initiated with attackers exploit an existing connection that may not be protected or receive less scrutiny than standard mechanisms of gaining access to a network. Organizations often grant elevated access to second or third-party external providers to allow them to manage internal systems as well as cloud-based environments. Some examples of these relationships include IT services contractors, managed security providers, and infrastructure contractors (e.g. HVAC, elevators, physical security).",
+        "bottomLink": null
+      },
+      "phishing": {
+        "topLink": {
+          "text": "Mitre T1566",
+          "href": "https://attack.mitre.org/techniques/T1566/"
+        },
+        "description": "Events that are initiated through deceptive methods involve tricking individuals or organizations into revealing sensitive information or taking malicious actions by posing as a trustworthy entity through deceptive communication channels, typically email or messaging.",
+        "bottomLink": null
+      },
+      "content injection": {
+        "topLink": {
+          "text": "Mitre T1659",
+          "href": "https://attack.mitre.org/techniques/T1659/"
+        },
+        "description": "Events that are initiated when adversaries inject malicious or unauthorized content into web pages, applications, or data streams. This can allow attackers to manipulate what users see or interact with, steal sensitive data, or trigger malicious actions within the application context.",
+        "bottomLink": null
+      },
+      "external remote services": {
+        "topLink": {
+          "text": "Mitre T1133",
+          "href": "https://attack.mitre.org/techniques/T1133/"
+        },
+        "description": "Events that are initiated by leveraging external-facing remote services, such as VPNs, Citrix, and other access mechanisms allow users to connect to internal enterprise network resources from external locations, to obtain initial access within a network.",
+        "bottomLink": null
+      },
+      "drive-by compromise": {
+        "topLink": {
+          "text": "Mitre T1189",
+          "href": "https://attack.mitre.org/techniques/T1189/"
+        },
+        "description": "Events that are initiated through malicious code or malware that is delivered to the victim's device when they visit a compromised or malicious website, often exploiting vulnerabilities in the accessed website or the user's browser.",
+        "bottomLink": null
+      },
+      "replication through removable media": {
+        "topLink": {
+          "text": "Mitre T1091",
+          "href": "https://attack.mitre.org/techniques/T1091/"
+        },
+        "description": "Events that are initiated with malware or malicious code spreading by copying itself onto removable storage devices, such as USB drives or external hard disks. When these infected media are connected to other computers or systems, the malware can propagate to those systems, potentially compromising their security.",
+        "bottomLink": null
+      },
+      "supply chain compromise": {
+        "topLink": {
+          "text": "Mitre T1195",
+          "href": "https://attack.mitre.org/techniques/T1195/"
+        },
+        "description": "Events that are initiated when adversaries manipulate products or product delivery mechanisms before receipt by a final consumer for data or system compromise. Supply chain compromise can take place at any stage of the supply chain including manipulation of development tools, development environment, source code repositories (public or private), source code in open-source dependencies, source code repositories, source code in open-source dependencies, software update/distribution mechanisms and more.",
+        "bottomLink": null
+      },
+      "hardware additions": {
+        "topLink": {
+          "text": "Mitre T1200",
+          "href": "https://attack.mitre.org/techniques/T1200/"
+        },
+        "description": "Events that are initiated with attackers introducing new physical devices or components into a target's computing environment. This can be done stealthily, to exploit vulnerabilities, gain unauthorized access, or compromise the security of the existing infrastructure.",
+        "bottomLink": null
+      },
+      "exploit public facing application": {
+        "topLink": {
+          "text": "Mitre T1190",
+          "href": "https://attack.mitre.org/techniques/T1190/"
+        },
+        "description": "Events that are initiated by threat actors that target vulnerabilities in an internet-facing host or system to initially access a network. The weakness in the system can be a software bug, a temporary glitch, or a misconfiguration.",
+        "bottomLink": null
+      },
+      "lost or stolen devices": {
+        "topLink": {
+          "text": null,
+          "href": null
+        },
+        "description": "Events that are initiated by the loss or theft of a device, and involve unauthorized access or exposure of sensitive information. Attackers may exploit this situation to gain access to confidential data, conduct identity theft, infiltrate networks, distribute malware, and more.",
+        "bottomLink": null
+      },
+      "human error": {
+        "topLink": {
+          "text": null,
+          "href": null
+        },
+        "description": "Events that are initiated with unintentional actions or mistakes made by individuals within an organization, leading to security incidents. This can include scenarios such as:\n1. Accidental data breaches: Employees mistakenly send sensitive information to the wrong recipient or post confidential data publicly.\n2. Misconfigurations: Incorrectly configuring security settings, access controls, or software, resulting in vulnerabilities that can be exploited by attackers.\n3. Weak passwords: Using weak or easily guessable passwords that can be exploited by attackers to gain unauthorized access to systems or accounts.",
+        "bottomLink": null
+      },
+      "malicious insider": {
+        "topLink": {
+          "text": null,
+          "href": null
+        },
+        "description": "Events that are initiated by someone within an organization intentionally pose a threat to security, exploiting their privileged access to systems, networks, or data. This insider may deliberately engage in unauthorized activities, such as stealing sensitive data, sabotaging systems, or spreading malware, with the intent to harm the organization or gain personal benefits.",
+        "bottomLink": null
+      }
+    },
+    "seeAll": "See All"
+  },
+  "riskProgression": {
+    "title": "Program Performance",
+    "pastFQTable": {
+      "title": "Quantifications History",
+      "averageAnnualLossTip": "The average loss across every annual scenario in the simulation.",
+      "extremeLossScenarioTip": "The loss value for which there is a 1% likelihood to be exceeded in an annual scenario in the simulation.",
+      "riskPositionScoreTip": "This metric evaluates your company's performance in risk reduction by comparing your current risk to the baseline and minimal risk. A higher score indicates more effective risk management and cybersecurity measures, while a lower score suggests room for improvement.",
+      "externalScoreTip": "This score represents your organization's cybersecurity health based on an external scan.",
+      "modelVersionTip": "This indicates which model version was used for the quantification. Click to view the release notes for this version.",
+      "aal": "Average Annual Loss",
+      "extremeLoss": "1:100 Annual Loss"
+    },
+    "annualTrends": {
+      "title": "Quarterly Trends",
+      "cards": {
+        "averageAnnualloss": {
+          "title": "Average Annual Loss",
+          "description": "Capturing the shift in your company's average annual loss over the last quarter",
+          "unavailable": "Quarterly Trend is not available, there are no previous runs with average annual loss captured."
+        },
+        "baselineRisk": {
+          "title": "Baseline Risk",
+          "description": "Capturing the shift in your company's baseline risk over the last quarter",
+          "unavailable": "Quarterly Trend is not available, there are no previous runs with baseline risk captured."
+        },
+        "riskPositionScore": {
+          "title": "Risk Position Score",
+          "description": "Capturing the shift in your company's risk position score over the last quarter",
+          "unavailable": "Quarterly Trend is not available, there are no previous runs with risk position score captured."
+        }
+      }
+    },
+    "pastQuantifications": {
+      "title": "Past Quantifications",
+      "tabs": {
+        "totalExposure": {
+          "title": "Total Exposure",
+          "tabs": {
+            "averageAnnualLoss": {
+              "title": "Average Annual Loss"
+            },
+            "extremeLossScnerio": {
+              "title": "1:100 Annual Loss"
+            }
+          }
+        },
+        "byEventTypes": {
+          "title": "By Event Types",
+          "tabs": {
+            "averageAnnualLoss": {
+              "title": "Average Annual Loss"
+            }
+          }
+        },
+        "byLossImpactScenarios": {
+          "title": "By Loss Impact Scenarios",
+          "tabs": {
+            "averageAnnualLoss": {
+              "title": "Average Annual Loss"
+            },
+            "extremeLossScnerio": {
+              "title": "1:100 Annual Loss"
+            }
+          }
+        }
+      }
+    },
+    "riskProgressionAnalysis": {
+      "title": "Risk Position Analysis",
+      "description": "Assess your organization's cyber risk compared to scenarios with no controls and all controls in place, helping gauge the effectiveness of your cybersecurity measures.",
+      "baseRisk": "Baseline Risk",
+      "minimalRisk": "Minimal Risk",
+      "riskPositionAnalysis": "Risk Position Analysis",
+      "riskPositionScoreTitle": "Risk Position Score",
+      "riskPositionScoreDescription": "This metric evaluates your company's performance in risk reduction by comparing your current risk to the baseline and minimal risk. A higher score indicates more effective risk management and cybersecurity measures, while a lower score suggests room for improvement.",
+      "baselineRectangleInfo": "This number represents the company's potential average annual loss under a scenario where no security controls are in place.",
+      "currentRiskRectangleInfo": "This number represents the company's average annual loss at the given time.",
+      "lastLineRectangleInfo": "This number represents the company's potential average annual loss under a scenario where all security controls are fully implemented.",
+      "emptyStateInfo": "Risk Position Analysis is not available for this quantification.",
+      "emptyStateDetails": "Please run a new quantification to reveal this feature."
+    },
+    "changeLogs": {
+      "modelUpdate": "Model Update",
+      "averageAnnualLoss": "in Average Annual Loss",
+      "extremeLossScenario": "in 1:100 Annual Loss",
+      "modelChanges": "Changes in the Kovrr model affected this quantification.",
+      "modelChangesLink": "Learn More about model version {{modelVersion}}",
+      "modelChangesLearnMore": "https://trust.kovrr.app/docs/kovrr-crq-version-{{modelVersion}}",
+      "learnMore": "Learn More",
+      "learnMoreLink": "https://trust.kovrr.app/docs/kovrr-crq-version-v2023-4",
+      "securityAndControlsUnavailable": "Changes for Security Profiles and Custom Damage Types could not be tracked for this quantification.",
+      "securityControls": {
+        "control": {
+          "singular": "{{value}} control change was made to",
+          "plural": "{{value}} control changes were made to"
+        },
+        "other": {
+          "singular": "{{value}} change was made to",
+          "plural": "{{value}} changes were made to"
+        },
+        "changedSecurityProfiles": {
+          "singular": "{{totalChangedSecurityProfiles}} security profile, affecting",
+          "plural": "{{totalChangedSecurityProfiles}} security profiles, affecting"
+        },
+        "affectedAssetGroups": {
+          "singular": "{{totalAffectedAssetGroups}} asset group.",
+          "plural": "{{totalAffectedAssetGroups}} asset groups."
+        },
+        "unavailableMessage": "Changes for Security Profiles could not be tracked for this quantification."
+      },
+      "assetGroup": {
+        "modifications": {
+          "singular": "{{modifications}} change was made to",
+          "plural": "{{modifications}} changes were made to"
+        },
+        "modifiedAssetGroups": {
+          "singular": "{{modifiedAssetGroups}} asset group.",
+          "plural": "{{modifiedAssetGroups}} asset groups."
+        },
+        "creations": {
+          "singular": "{{value}} asset group was created.",
+          "plural": "{{value}} asset groups were created."
+        },
+        "deletions": {
+          "singular": "{{value}} asset group was deleted.",
+          "plural": "{{value}} asset groups were deleted."
+        }
+      },
+      "companyChanges": {
+        "singular": "{{totalChanges}} change was made to the company profile.",
+        "plural": "{{totalChanges}} changes were made to the company profile."
+      },
+      "damageType": {
+        "changes": {
+          "singular": "{{totalChanges}} change was made to",
+          "plural": "{{totalChanges}} changes were made to"
+        },
+        "changedDamageTypes": {
+          "singular": "{{totalChangedDamageTypes}} damage type, affecting",
+          "plural": "{{totalChangedDamageTypes}} damage types, affecting"
+        },
+        "affectedAssetGroups": {
+          "singular": "{{totalAffectedAssetGroups}} asset group.",
+          "plural": "{{totalAffectedAssetGroups}} asset groups."
+        },
+        "unavailableMessage": "Changes for Custom Damage Types could not be tracked for this quantification."
+      }
+    }
+  },
+  "materialityAnalysis": {
+    "title": "Materiality Analysis",
+    "intro": {
+      "part1": "Materiality in cybersecurity is a nuanced and ambiguous concept, requiring a tailored approach when determining its parameters within an organizational context. By providing preliminary thresholds aligned with industry standards, Kovrr's Materiality Analysis supports stakeholders as they navigate the complexities of this process and helps organizations define material loss more efficiently.",
+      "part2": "These thresholds are calculated to reflect common practices, aiding organizations in benchmarking appropriate risk tolerance and appetite levels. After these initial thresholds have been established, Kovrr's platform then illuminates various scenarios in which respective cyber event losses surpass these thresholds, equipping stakeholders to delve deeper into the implications these risks pose for the organization. This exploration not only enhances comprehension of potential material cyber incidents but also empowers management to make more informed decisions regarding risk management strategies and resource allocation."
+    },
+    "outputPage": {
+      "breadcrumb": "Materiality Analysis",
+      "badgeText": "Exceeding",
+      "thresholdTypesText": {
+        "cost": "Financial Loss",
+        "duration": "Outage Duration",
+        "records": "Number of Records Compromise"
+      },
+      "annualEventsLikelihood": {
+        "title": "Annual Events Likelihood",
+        "description": "The likelihood of experiencing events resulting in loss that are exceeding the threshold"
+      },
+      "simulationStats": {
+        "title": "Event Statistics",
+        "description": "The figures below show a summary of the impact of events exceeding the threshold from the simulations. For each attribute, you can see the median value, the probable minimum value (1st percentile), and the probable maximum value (99th percentile)"
+      },
+      "riskDrivers": {
+        "title": "Risk Drivers",
+        "eventTypes": {
+          "title": "Event Types",
+          "description": "Breakdown of the scenario of exceeding the threshold by the types of events"
+        },
+        "attackVectors": {
+          "title": "Initial Vectors",
+          "description": "Breakdown of the scenario of exceeding the threshold by the techniques that are used to gain initial foothold within the network"
+        },
+        "damageTypes": {
+          "title": "Damage Types",
+          "description": "Average annual loss breakdown of the risk by damage types."
+        }
+      }
+    },
+    "customThreshold": {
+      "setCustomThresholdButton": "Set Custom Threshold",
+      "previousThresholdIndicator": "In the quantification conducted on {{date}}, you set a custom threshold of {{thresholdValue}}.",
+      "modal": {
+        "title": "Custom Threshold",
+        "submit": "Set Custom Threshold",
+        "cost": {
+          "description": "You can set your own threshold for material financial loss, equipping you to align risk management with your organization's specific goals and priorities."
+        },
+        "records": {
+          "description": "You can set your own threshold for the material number of data records compromised, equipping you to align risk management with your organization's specific goals and priorities."
+        },
+        "duration": {
+          "description": "You can set your own threshold for a material outage duration, equipping you to align risk management with your organization's specific goals and priorities."
+        }
+      },
+      "popupMenu": {
+        "editThreshold": "Edit Threshold",
+        "deleteThreshold": "Delete Threshold"
+      }
+    },
+    "bubbleCards": {
+      "financialExposure": {
+        "title": "Preliminary Material Financial Loss",
+        "descriptions": [
+          "A loss threshold of 0.01% of annual revenue is often considered minimal. However, within the cybersecurity materiality context, it is highly significant. Learn more <SpanTag><a href='https://www.kovrr.com/blog-post/determining-cyber-materiality-in-a-post-sec-cyber-rule-world'>here</a></SpanTag>. This value has proven to be a useful starting point for calibrating a company's tolerance for risk and risk appetite. On the higher end, a loss threshold of 2% of annual revenue aligns with the maximum fines imposed under GDPR, which can reach up to 2% of global annual revenue for major breaches."
+        ]
+      },
+      "numberOfRecordsCompromise": {
+        "title": "Number of Records Compromise",
+        "descriptions": [
+          "The thresholds of 1%, 2%, 5%, and 10% of data records compromised are based on an analysis of claims data and common industry practices. Historical claims intelligence reveal that significant impact begins at a minimal threshold of 1% and extends up to 10%, which is generally considered a highly material compromise."
+        ]
+      },
+      "outageDuration": {
+        "title": "Outage Duration",
+        "descriptions": [
+          "8, 12, 24 and 48 hours are significant values as they align with common benchmarks in cyber insurance waiting periods. In cyber insurance, waiting periods are crucial for defining the time before coverage begins after a cyber event has occurred. Typical waiting periods in cyber insurance policies often range from a few hours to a day, the most common being between 8 to 12 hours. However, depending on the insurer and other policy details, this period can extend up to 24 or even 48 hours."
+        ]
+      }
+    },
+    "thresholdCard": {
+      "financialExposure": {
+        "title": "{{threshold}}% of Annual Revenue",
+        "explanation": "If a cyber incident occurs, there is a {{likelihood}}% likelihood that the financial loss will surpass {{threshold}}% of annual revenue.",
+        "explore": "Explore Scenario",
+        "customThreshold": "Custom Threshold"
+      },
+      "numberOfRecordsCompromise": {
+        "title": "{{threshold}}% of Records",
+        "explanation": "If a data theft occurs, there is a {{likelihood}}% likelihood that more than {{threshold}}%  of records will be compromised.",
+        "explore": "Explore Scenario",
+        "customThreshold": "Custom Threshold"
+      },
+      "outageDuration": {
+        "customThreshold": "Custom Threshold",
+        "explanation": "If an outage occurs, there is a {{likelihood}}% likelihood that it will surpass the duration of {{threshold}} hours.",
+        "8": {
+          "title": "Standard Work Day",
+          "explanation": "If an outage occurs, there is a {{likelihood}}% likelihood that it will surpass the duration of 8 hours.",
+          "explore": "Explore Scenario",
+          "customThreshold": "Custom Threshold"
+        },
+        "12": {
+          "title": "12 Hours",
+          "explanation": "If an outage occurs, there is a {{likelihood}}% likelihood that it will surpass the duration of 12 hours.",
+          "explore": "Explore Scenario",
+          "customThreshold": "Custom Threshold"
+        },
+        "24": {
+          "title": "One Day",
+          "explanation": "If an outage occurs, there is a {{likelihood}}% likelihood that it will surpass the duration of 24 hours.",
+          "explore": "Explore Scenario",
+          "customThreshold": "Custom Threshold"
+        },
+        "36": {
+          "title": "Two Business Days",
+          "explanation": "If an outage occurs, there is a {{likelihood}}% likelihood that it will surpass the duration of 36 hours.",
+          "explore": "Explore Scenario",
+          "customThreshold": "Custom Threshold"
+        },
+        "48": {
+          "title": "Two Days",
+          "explanation": "If an outage occurs, there is a {{likelihood}}% likelihood that it will surpass the duration of 48 hours.",
+          "explore": "Explore Scenario",
+          "customThreshold": "Custom Threshold"
+        }
+      }
+    },
+    "exceedanceCurves": {
+      "financialExposure": {
+        "title": "Financial Loss Exceedance Curve",
+        "description": "The likelihood of financial loss exceeding specified thresholds in the event of a cyber incidenty",
+        "graphAverageLabel": "Average Loss",
+        "tooltipHeader": "Financial Loss"
+      },
+      "numberOfRecordsCompromise": {
+        "title": "Number of Records Compromised Exceedance Curve",
+        "description": "The likelihood of the number of records compromised exceeding specified thresholds in the event of a data theft",
+        "graphAverageLabel": "Average Records Compromise",
+        "tooltipHeader": "Number of Records Compromised"
+      },
+      "outageDuration": {
+        "title": "Outage Duration Exceedance Curve",
+        "description": "The likelihood of the outage duration exceeding specified amounts in the event of an outage",
+        "graphAverageLabel": "Average Outage Duration",
+        "tooltipHeader": "Outage Duration"
+      }
+    },
+    "emptyState": {
+      "title": "Discover Your Organization's Material Risks",
+      "description1": "To unlock valuable insights into what constitutes a 'material event' for your organization, initiate a new quantification now. Gain the following benefits:",
+      "description2": "1. Explore pre-defined and your own risk thresholds to align with your company's specific risk materiality, appetite and regulatory requirements.",
+      "description3": "2. Discover the likelihood of exceeding your predefined risk thresholds in the next year.",
+      "description4": "3. Gain detailed insights into the severity of incidents that surpass your thresholds.",
+      "button": "Run New Quantification"
+    }
+  },
+  "eventExamples": {
+    "title": "Event Examples",
+    "eventType": "Event Type",
+    "eventCause": "Event Cause",
+    "technologiesImpacted": "Technologies Impacted",
+    "duration": "Duration"
+  }
+}

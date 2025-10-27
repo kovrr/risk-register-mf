@@ -1,0 +1,412 @@
+{
+  "demo": {
+    "addScenario": "Want to add a new risk scenario?",
+    "editScenario": "Want to edit a risk register scenario?",
+    "editField": "Want to edit a custom field?",
+    "deleteField": "Want to delete a custom field?",
+    "addNote": "Want to add a note?"
+  },
+  "controlsTable.averageEffect.title": "Effect",
+  "controlsTable.averageEffect": "Expected reduction in averaged cost of cyber incidents",
+  "controlsTable.highEffect": "Expected reduction in annual cost of cyber incidents in a high loss year (with 1% exceedance probability)",
+  "controlsTable.currentMinimum.title": "Current Minimum",
+  "controlsTable.currentMinimum": "This is the current minimum state of a security control. It takes into account different levels of implementation across an organization and considers the lowest level of implementation for quantification purposes.",
+  "controlsTable.targetMinimum.title": "Target Minimum",
+  "controlsTable.targetMinimumISO.title": "Target",
+  "controlsTable.targetMinimum": "The new level of controls across all asset groups after mitigation recommendations are taken.",
+  "controlsTable.currentControlScore.title": "Current Control Score",
+  "controlsTable.currentControlScore.info": "The average control score of all asset groups in the company",
+  "controlsTable.uponCompleting.title": "Upon Completing Action",
+  "controlsTable.averageReduction.title": "Average Reduction",
+  "controlsTable.highReduction.title": "High Reduction",
+  "controlsTable.actions.title": "Implementation Steps",
+  "controlsTable.actions.table.assetGroup": "Asset Group",
+  "controlsTable.actions.table.groupType": "Asset Group Type",
+  "controlsTable.actions.table.moveAssetGroups": "Move {{length}} Asset Groups",
+  "damageTypes": {
+    "title": "Damage Types",
+    "description": "Average loss breakdown of the risk by damage types.",
+    "moreInfo": "Learn more about damage types.",
+    "moreInfoLink": "https://trust.kovrr.app/docs/events-severity-impact-and-damage-types",
+    "tooltips": {
+      "bulletListTitle": "Loss Impact Scenarios:",
+      "lostIncome": {
+        "title": "Lost Income",
+        "description": "Financial impact resulting from the interruption of business operations due to a cyber event."
+      },
+      "biForensics": {
+        "title": "Business Interruption Forensics",
+        "description": "Costs of investigation and analysis required to determine the cause and extent of a cyber event."
+      },
+      "biRecoveryExpenses": {
+        "title": "Business Interruption Recovery Expenses",
+        "description": "Costs associated with restoring normal operations after a cyber event."
+      },
+      "publicRelationsRepairment": {
+        "title": "Public Relations Repairment",
+        "description": "Costs associated with restoring public trust and mitigating reputational damage following a cyber event."
+      },
+      "extortionPayment": {
+        "title": "Extortion Payment",
+        "description": "Financial cost incurred when paying a ransom to regain access to compromised systems or data."
+      },
+      "extortionRecoveryExpenses": {
+        "title": "Extortion Recovery Expenses",
+        "description": "Financial cost incurred when paying a ransom to regain access to compromised systems or data."
+      },
+      "legalDefense": {
+        "title": "Legal Defense",
+        "description": "Costs associated with legal proceedings and defense efforts following a data breach event."
+      },
+      "settlements": {
+        "title": "Settlements",
+        "description": "Costs incurred in legal settlements or agreements resulting from a data breach event."
+      },
+      "dataRecovery": {
+        "title": "Data Recovery",
+        "description": "Efforts to retrieve and restore compromised or encrypted data following a cyber event."
+      },
+      "monitoringServices": {
+        "title": "Monitoring Services",
+        "description": "Costs incurred by the company to monitor systems, networks, or data for signs of compromise or suspicious activity following a cyber event."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Costs associated with notifying affected individuals about a data breach or security incident."
+      },
+      "dataRelatedForensics": {
+        "title": "Data Related Forensics",
+        "description": "Expenses required to investigate, analyze, and identify compromised data to determine the cause, extent, and impact of a data compromise event."
+      },
+      "regulatoryLegalDefense": {
+        "title": "Regulatory Legal Defense",
+        "description": "Expenses incurred to defend against regulatory actions and investigations following a data breach event."
+      },
+      "regulatoryFines": {
+        "title": "Regulatory Fines",
+        "description": "Financial penalties imposed by regulatory bodies for non-compliance with data protection laws and regulations following a cyber event."
+      },
+      "attritional": {
+        "title": "Attritional",
+        "description": "Expected, recurring, or ongoing losses that a company may face due to common and frequent cyber incidents. These losses can derive from unsuccessful phishing attempts, low profile data breaches with limited data exposure, or minor cybersecurity incidents that are quickly addressed."
+      }
+    }
+  },
+  "table": {
+    "pagination": {
+      "pageSize": {
+        "prefix": "View",
+        "suffix": "items per page"
+      },
+      "results": {
+        "prefix": "Results",
+        "suffix": "of"
+      }
+    },
+    "scenarioDetails": {
+      "loading": "Loading scenario data..."
+    }
+  },
+  "createScenarioButton": {
+    "label": "Add Risk Scenario",
+    "menuItems": {
+      "simple": "Non-CRQ scenario",
+      "crq": "CRQ-Based Scenario",
+      "template": "Request pre-defined Scenarios"
+    },
+    "quotaExceeded": {
+      "title": "Quota Exceeded",
+      "description": "You've exceed the amount of free quantified scenarios allowed on your tenant. If you'd like to upgrade, please inquire through contact@kovrr.com"
+    }
+  },
+  "modal": {
+    "demo": {
+      "addScenario": "Want to add a new risk scenario?"
+    },
+    "title": {
+      "create": "New Risk Scenario",
+      "edit": "Edit Risk Scenario"
+    },
+    "labels": {
+      "scenarioId": "Scenario ID",
+      "modelingEntity": "Modeling Entity",
+      "scenarioName": "Scenario Name",
+      "description": "Description",
+      "likelihood": "Likelihood",
+      "likelihoodInformation": "The probability of this risk scenario occurring, rated from Rare to Expected.",
+      "impact": "Impact",
+      "impactInformation": "The potential severity of damage if this risk scenario occurs, rated from Negligible to Severe.",
+      "annualLikelihood": "Annual Likelihood",
+      "annualLikelihoodInformation": "The estimated probability as a percentage that this scenario will occur within the next year.",
+      "peerBaseRate": "Peer Base Rate",
+      "peerBaseRateInformation": "The average annual likelihood of this risk scenario occurring across organizations in your industry. This benchmark helps contextualize your risk assessment against industry trends.",
+      "averageLoss": "Average Loss",
+      "averageLossInformation": "The estimated average financial impact per occurrence, including direct and indirect costs.",
+      "qualitativeMetrics": "Qualitative Metrics",
+      "quantitativeMetrics": "Quantitative Metrics",
+      "optional": "(Optional)",
+      "initialAccessVectors": "Initial Access Vectors",
+      "initialAccessVectorsInformation": "Define the initial access vectors for your custom cyber risk scenario. Initial access vectors represent the ways in which potential threats could gain entry to your organization's systems.",
+      "crqEventTypes": "Event Types",
+      "crqEventTypesInformation": "Define the type of event triggered by this scenario. Event types describe the nature of the cyber incident and how it unfolds within your organization.",
+      "crqImpactTypes": "Impact Types",
+      "crqImpactTypesInformation": "Define the specific type of impact this scenario could have on your organization's assets and operations.",
+      "crqEventTypesAndImpacts": "Event Types and Impacts",
+      "impactMagnitude": "Impact Magnitude",
+      "impactMagnitudeDescription": "Specify the scale of the scenario's impact on your organization.",
+      "dataRecordsCompromised": "Data Records Compromised",
+      "eventDuration": "Event Duration",
+      "eventCost": "Event Cost"
+    },
+    "select": {
+      "placeholder": "Select...",
+      "currency": "Currency",
+      "options": {
+        "likelihood": {
+          "expected": "Expected",
+          "likely": "Likely",
+          "possible": "Possible",
+          "unlikely": "Unlikely",
+          "rare": "Rare"
+        },
+        "impact": {
+          "severe": "Severe",
+          "significant": "Significant",
+          "moderate": "Moderate",
+          "minor": "Minor",
+          "negligible": "Negligible"
+        }
+      }
+    },
+    "button": {
+      "create": "Create Risk Scenario",
+      "update": "Save Changes"
+    },
+    "impactDistribution": {
+      "title": "Impact Distribution",
+      "likelihood": "Likelihood",
+      "impact": "Impact",
+      "percentages": {
+        "99": {
+          "value": "99%",
+          "description": "Minimum",
+          "information": "<bold>For example:</bold><br/>Early detection of a phishing attempt, a few employees received suspicious emails, but no actual harm was done."
+        },
+        "75": {
+          "value": "75%",
+          "description": "75%",
+          "information": "<bold>For example:</bold><br/>A single employee's account was breached, non-sensitive data was leaked, requiring an internal security review."
+        },
+        "50": {
+          "value": "50%",
+          "description": "Median",
+          "information": "<bold>For example:</bold><br/>Data breach affecting user records in a CRM system, requiring regulatory reporting and initial legal expenses."
+        },
+        "25": {
+          "value": "25%",
+          "description": "25%",
+          "information": "<bold>For example:</bold><br/>A widespread phishing attack compromised financial systems, resulting in critical business data loss and external investigation."
+        },
+        "1": {
+          "value": "1%",
+          "description": "Maximum",
+          "information": "<bold>For example:</bold><br/>Large-scale customer data leak, legal lawsuits, heavy regulatory fines, and significant reputational damage."
+        }
+      }
+    }
+  },
+  "scenarioDrillDown": {
+    "title": "Scenario Details",
+    "dataBreachPhishing": {
+      "editControls": "Want to edit the relevant controls?",
+      "title": "Data breach due to phishing attack",
+      "description": "Employees fall victim to phishing emails, leading to sensitive data exposure",
+      "impact": "Impact",
+      "likelihood": "Likelihood",
+      "quantitativeMetrics": "Quantitative Metrics",
+      "averageFinancialLoss": "Average Financial Loss",
+      "annualLikelihood": "Annual Likelihood",
+      "peerBaseRate": "Peer Base Rate",
+      "peerBaseRateDescription": "The average annual likelihood of this risk scenario occurring across organizations in your industry. This benchmark helps contextualize your risk assessment against industry trends.",
+      "impactDistribution": "Impact Distribution",
+      "impactDistributionDescription": "A statistical breakdown of potential financial losses. Shows the range of possible impact amounts and their probabilities, from minimum (1%) to maximum (99%) loss scenarios. Helps understand the full spectrum of potential financial outcomes.",
+      "notEstimated": "Not Estimated",
+      "aalLikelihoodTitle": "Annual Events Likelihood",
+      "aalLikelihoodDescription": "The estimated likelihood as a percentage that this scenario will occur within the next 12 months.",
+      "averageFinancialLossTitle": "Average Financial Loss",
+      "averageFinancialLossDescription": "The estimated average financial impact per occurrence, including direct and indirect costs.",
+      "metricAverageFinancialLossDescription": "The expected financial impact if this cyber risk scenario materializes.",
+      "metricAnnualEventsLikelihoodDescription": "The estimated likelihood of cyber loss events occurring within the next 12 months, based on the selected risk scenario.",
+      "table": {
+        "likelihoodHeader": "Likelihood",
+        "impactHeader": "Impact",
+        "percentages": {
+          "99": {
+            "value": "99%",
+            "description": "Minimum"
+          },
+          "75": {
+            "value": "75%",
+            "description": "75%"
+          },
+          "50": {
+            "value": "50%",
+            "description": "Median"
+          },
+          "25": {
+            "value": "25%",
+            "description": "25%"
+          },
+          "1": {
+            "value": "1%",
+            "description": "Maximum"
+          }
+        }
+      },
+      "crqPoweredScenario": "This is a CRQ Powered Scenario",
+      "poweredByCRQLabel": "Powered by CRQ",
+      "scenarioDescription": "All the metrics below are retrieved from the quantification of {{companyName}} run at {{fqDate}}.",
+      "updateAvailable": "Update available",
+      "rerunScenario": "Want to rerun the CRQ scenario?",
+      "refresh": "Refresh",
+      "scenarioRobustness": "Scenario Robustness",
+      "scenarioRobustnessDescription": "Reflects the strength of the underlying data behind your selected scenario.",
+      "matchCount": "Match Count",
+      "matchCountInfo": "The percentage of damage-causing events in the simulation that match this scenario's characteristics. Attritional events (small, non-specific losses) are excluded. A higher Match Count means a larger sample was used to calculate average costs. Low values may reduce accuracy. This metric also underlies the scenario's Annual Likelihood calculation.<FormulaTag>(Number of matching events with damage / Total simulated events with damage) × 100</FormulaTag>",
+      "diversityScore": "Diversity Score",
+      "diversityScoreInfo": "Shows how many unique event combinations (e.g., vector, type, impact, data, duration, cost) are represented within this scenario compared to all possible combinations. Higher scores indicate broader scenario coverage across risk dimensions.<FormulaTag>(Unique combinations in the scenario / 6,912 total possible combinations) × 100</FormulaTag>",
+      "modelingEntity": "Modeling Entity",
+      "quantification": "Quantification",
+      "updateSuccessTitle": "Update Successful",
+      "updateSuccessDescription": "The CRQ scenario was updated successfully.",
+      "ok": "OK"
+    },
+    "notes": {
+      "title": "Notes",
+      "addNote": "Add Note",
+      "note": "Note",
+      "notePlaceholder": "Add a note...",
+      "notItem": {
+        "expand": "Show More",
+        "collapse": "Show Less",
+        "selectedFile": "Selected file:",
+        "delete": "Delete"
+      },
+      "noNotesYet": "No notes yet",
+      "saving": "Saving...",
+      "save": "Save"
+    },
+    "riskManagement": {
+      "editReviewDate": "Want to edit the review date?",
+      "title": "Risk Management",
+      "labels": {
+        "riskPriority": "Risk Priority",
+        "responsePlan": "Response Plan",
+        "riskOwner": "Risk Owner",
+        "ticket": "Ticket",
+        "creationDate": "Creation Date",
+        "lastEdited": "Last Edited On",
+        "subCategory": "Sub Category",
+        "reviewDate": "Review Date",
+        "mitigationCost": "Mitigation Cost"
+      },
+      "placeholders": {
+        "selectOwner": "Select owner",
+        "ticketUrl": "Enter ticket URL",
+        "searchOwner": "Search owner...",
+        "noResults": "No results found."
+      },
+      "actions": {
+        "createNewUser": "Create New User"
+      },
+      "owners": {
+        "janeDoe": "Jane Doe",
+        "johnSmith": "John Smith"
+      }
+    },
+    "controlsModal": {
+      "editControls": "Want to edit the relevant controls?",
+      "title": "Add Relevant Controls",
+      "selectedCount": "{{count}} Selected",
+      "frameworks": {
+        "cisV8Safeguards": "CIS Controls v.8 - Safeguards Level",
+        "cisV8": "CIS Controls v.8 - Controls Level",
+        "cisV7": "CIS Controls v.7 - Controls Level",
+        "cisV7Safeguards": "CIS Controls v.7 - Safeguards Level",
+        "nist": "NIST CSF",
+        "iso": "ISO 27001",
+        "tisax": "TISAX"
+      },
+      "noControls": "No controls selected yet. Add controls to track their relevance to this risk.",
+      "buttons": {
+        "saveChanges": "Save Changes",
+        "saving": "Saving..."
+      }
+    },
+    "methodologyInsights": {
+      "title": "Methodology Insights",
+      "placeholder": "Describe your methodology...",
+      "save": "Save",
+      "saving": "Saving...",
+      "info": [
+        "Describe the basis for your likelihood and impact estimates.",
+        "Consider:",
+        "What sources, expert opinions, or data influenced your assessment?",
+        "How statistically significant is your estimate?",
+        "What historical data or industry benchmarks did you reference?"
+      ]
+    },
+    "simulationExamples": {
+      "title": "Simulation Event Examples",
+      "headers": {
+        "medianLoss": "Median Loss",
+        "maximalLoss": "Maximal Loss",
+        "minimalLoss": "Minimal Loss"
+      },
+      "rows": {
+        "eventCost": {
+          "label": "Event Cost"
+        },
+        "eventType": {
+          "label": "Event Type"
+        },
+        "initialVector": {
+          "label": "Initial Vector"
+        },
+        "attackSurface": {
+          "label": "Attack Surface"
+        },
+        "duration": {
+          "label": "Duration"
+        },
+        "recordsCompromised": {
+          "label": "Records Compromised"
+        }
+      }
+    }
+  },
+  "deleteScenarioModal": {
+    "title": "Delete Scenario",
+    "description": "Are you sure you want to delete this scenario? This action cannot be undone.",
+    "confirmButtonText": "Delete",
+    "cancelButtonText": "Cancel"
+  },
+  "marketingButtons": {
+    "learnMore": "Learn More",
+    "getDemo": "Book a Demo"
+  },
+  "scenarioTable": {
+    "export": "Export"
+  },
+  "templateModal": {
+    "demo": {
+      "bookMeeting": "Want to ask for a scenario?"
+    },
+    "title": "Get Access After Booking",
+    "description": "To view the update and receive the template, please book a time with our team.",
+    "cancel": "Cancel",
+    "book": "Book a Meeting",
+    "emailSent": "Thank you for submitting a request for a risk register template.",
+    "error": "Failed to send request. Please try again."
+  }
+}
