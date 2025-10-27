@@ -585,4 +585,35 @@ export const handlers = [
   rest.post(`${getBaseApiUrl()}/api/report/ask-for-report`, (req, res, ctx) => {
     return res(ctx.json({ message: 'Request sent successfully' }));
   }),
+  // DELETE scenario endpoint
+  rest.delete(
+    `${getBaseApiUrl()}/api/risk-register/scenarios/:scenarioId`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({ message: 'Scenario deleted successfully' }),
+      );
+    },
+  ),
+  // GET scenario controls endpoint
+  rest.get(
+    `${getBaseApiUrl()}/api/risk-register/scenarios/:scenarioId/controls`,
+    (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json([]));
+    },
+  ),
+  // GET scenarios export endpoint
+  rest.get(
+    `${getBaseApiUrl()}/api/risk-register/scenarios/export`,
+    (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json({ message: 'Export completed' }));
+    },
+  ),
+  // POST tenant invite endpoint
+  rest.post(`${getBaseApiUrl()}/api/tenant/invite`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({ message: 'Invitation sent successfully' }),
+    );
+  }),
 ];
