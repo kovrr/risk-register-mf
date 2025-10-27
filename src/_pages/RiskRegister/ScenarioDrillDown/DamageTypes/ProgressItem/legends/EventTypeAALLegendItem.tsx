@@ -1,12 +1,12 @@
-import { Box, Flex, FlexProps, Text } from '@chakra-ui/react';
-import PopoverComponent from 'components/ui/PopoverComponent';
-import { FC } from 'react';
+import PopoverComponent from '@/components/molecules/PopoverComponent';
+import { Box, Flex, type FlexProps, Text } from '@chakra-ui/react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EventTypes } from 'types/riskDrivers/eventTypes';
+import type { EventTypes } from 'types/riskDrivers/eventTypes';
 import {
   isLegendDescriptionKey,
-  LegendDescriptionKey,
   LEGEND_DESCRIPTIONS,
+  type LegendDescriptionKey,
 } from './legendUtils';
 
 export const EventTypeAALLegendItem: FC<

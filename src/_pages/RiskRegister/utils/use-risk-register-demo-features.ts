@@ -1,11 +1,11 @@
-import { DemoExperienceContext } from '@/DemoExperienceContext';
-import { useIsLimitedAccessUser } from '@/permissions/use-permissions';
+import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
+import { useIsRiskRegisterLimitedUser } from '@/permissions/use-permissions';
 import { useCallback, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const useRiskRegisterDemoFeatures = () => {
   const { t: tDemo } = useTranslation('demo');
-  const isLimitedUser = useIsLimitedAccessUser();
+  const isLimitedUser = useIsRiskRegisterLimitedUser();
 
   const { showDemoModal } = useContext(DemoExperienceContext);
 

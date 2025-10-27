@@ -1,9 +1,8 @@
-import { FC } from 'react';
 import {
   Box,
   Table,
-  TableCellProps,
-  TableColumnHeaderProps,
+  type TableCellProps,
+  type TableColumnHeaderProps,
   Tbody,
   Td,
   Th,
@@ -12,11 +11,12 @@ import {
 } from '@chakra-ui/react';
 import {
   flexRender,
-  PaginationState,
-  RowSelectionState,
-  Table as ReactTable,
+  type PaginationState,
+  type Table as ReactTable,
+  type RowSelectionState,
 } from '@tanstack/react-table';
-import Pagination from 'components/wrappers/Pagination';
+import Pagination from '@/components/wrappers/Pagination';
+import type { FC } from 'react';
 
 const styles = {
   th: {
@@ -78,7 +78,7 @@ const MitigationTable: FC<Props> = ({
               const meta: any = header.column.columnDef.meta;
               const sortingHandler = !disableSorting
                 ? header.column.getToggleSortingHandler()
-                : () => {};
+                : () => { };
               const isFirstRow = index === 0;
               const isLastRow = index === table.getFlatHeaders().length - 1;
               return (

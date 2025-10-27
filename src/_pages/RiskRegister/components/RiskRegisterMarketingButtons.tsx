@@ -1,8 +1,8 @@
 import { Button } from '@/components/atoms/button';
 import { useIsSelfAssessmentLimitedUser } from '@/permissions/use-permissions';
-import { PUBLIC_ROUTES } from '@/routes';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { PUBLIC_ROUTES } from '@/routes';
 
 const GET_DEMO_URL = 'https://www.kovrr.com/demo';
 const LEARN_MORE_URL = 'https://www.kovrr.com/cybersecurity-grc';
