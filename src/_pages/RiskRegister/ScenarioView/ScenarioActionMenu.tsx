@@ -19,7 +19,7 @@ export const ScenarioActionMenu = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { mutateAsync: deleteRiskScenario } = useDeleteRiskRegisterScenario({
     onSuccess: () => {
-      navigate('/risk-register');
+      navigate('/');
     },
   });
   const { isLimitedUser, handleGuestUserClick } = useRiskRegisterDemoFeatures();

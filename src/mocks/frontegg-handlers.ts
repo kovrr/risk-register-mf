@@ -108,8 +108,10 @@ export const handlers = [
     },
   ),
   rest.get(
-    apiUrl('/frontegg/identity/resources/users/v2/me?addRoles'),
+    apiUrl('/frontegg/identity/resources/users/v2/me'),
     (req, res, ctx) => {
+      // Handle addRoles query parameter
+      const addRoles = req.url.searchParams.get('addRoles');
       return res(ctx.status(202), ctx.json(userDetails));
     },
   ),

@@ -35,7 +35,7 @@ export function CrqPoweredMessage({ scenario }: IntroSectionProps) {
   const handleModalChange = (open: boolean) => {
     setShowModal(open);
     if (!open) {
-      navigate('/risk-register');
+      navigate('/');
     }
   };
 
@@ -111,7 +111,7 @@ export function CrqPoweredMessage({ scenario }: IntroSectionProps) {
               <Button
                 onClick={() => {
                   setShowModal(false);
-                  navigate('/risk-register', { replace: true });
+                  navigate('/', { replace: true });
                 }}
               >
                 {t('ok')}

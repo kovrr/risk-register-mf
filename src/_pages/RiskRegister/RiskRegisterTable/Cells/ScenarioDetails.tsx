@@ -29,19 +29,18 @@ export const ScenarioDetails = ({
       <span>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger
-              className={cn('w-fit max-w-[100%]', disabled && 'cursor-default')}
-            >
-              <span>
-                <Button
-                  className='h-min max-w-[100%] p-0 text-[14px] font-[700] text-text-base-primary underline underline-offset-2'
-                  variant='link'
-                  disabled={disabled}
-                  onClick={() => navigate(`/risk-register/scenarios/${id}`)}
-                >
-                  <p className='truncate'>{title}</p>
-                </Button>
-              </span>
+            <TooltipTrigger asChild>
+              <Button
+                className={cn(
+                  'h-min max-w-[100%] p-0 text-[14px] font-[700] text-text-base-primary underline underline-offset-2',
+                  disabled && 'cursor-default',
+                )}
+                variant='link'
+                disabled={disabled}
+                onClick={() => navigate(`/scenarios/${id}`)}
+              >
+                <p className='truncate'>{title}</p>
+              </Button>
             </TooltipTrigger>
             {disabled ? (
               <TooltipContent>

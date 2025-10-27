@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/atoms/dialog';
 import { Button } from '@chakra-ui/button';
-import { type FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
@@ -27,7 +27,7 @@ export const RerunScenarioSuccessDialog: FC<Props> = ({
   const handleModalChange = (open: boolean) => {
     setShowModal(open);
     if (!open) {
-      navigate('/risk-register');
+      navigate('/');
     }
   };
   return (
@@ -42,7 +42,7 @@ export const RerunScenarioSuccessDialog: FC<Props> = ({
             <Button
               onClick={() => {
                 setShowModal(false);
-                navigate('/risk-register', { replace: true });
+                navigate('/', { replace: true });
               }}
             >
               {t('ok')}

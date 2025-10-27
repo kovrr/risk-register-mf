@@ -40,13 +40,13 @@ const RemoteApp = () => {
 
 											{/* View Scenario Details */}
 											<Route
-												path='/scenario/:scenarioId'
+												path='/scenarios/:scenarioId'
 												element={<ScenarioView />}
 											/>
 
 											{/* Edit Scenario */}
 											<Route
-												path='/scenario/:scenarioId/edit'
+												path='/scenarios/:scenarioId/edit'
 												element={<ScenarioEdit />}
 											/>
 										</Routes>

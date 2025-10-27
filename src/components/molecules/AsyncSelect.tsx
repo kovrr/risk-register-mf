@@ -1,3 +1,5 @@
+import { Check, ChevronDown, Loader2, Plus } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/atoms/button';
 import {
   Command,
@@ -14,8 +16,6 @@ import {
 } from '@/components/atoms/popover';
 import { useDebounce } from '@/components/hooks/use-debounce';
 import { cn } from '@/lib/utils';
-import { Check, ChevronDown, Loader2, Plus } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface Option {
   value: string;
@@ -92,7 +92,25 @@ const CreateOptionCommandItem = ({
   );
 };
 
-export function AsyncSelect<T>({
+function DefaultLoadingSkeleton() {
+  return (
+    <CommandGroup>
+      {[1, 2, 3].map((i) => (
+        <CommandItem key={i} disabled>
+          <div className='flex w-full items-center gap-2'>
+            <div className='h-6 w-6 animate-pulse rounded-full bg-muted' />
+            <div className='flex flex-1 flex-col gap-1'>
+              <div className='h-4 w-24 animate-pulse rounded bg-muted' />
+              <div className='h-3 w-16 animate-pulse rounded bg-muted' />
+            </div>
+          </div>
+        </CommandItem>
+      ))}
+    </CommandGroup>
+  );
+}
+
+export const AsyncSelect = React.forwardRef<HTMLButtonElement, AsyncSelectProps<any>>(function AsyncSelect({
   fetcher,
   preload,
   filterFn,
@@ -106,7 +124,7 @@ export function AsyncSelect<T>({
   value,
   onChange,
   disabled = false,
-  width = '200px',
+  width: _width = '200px',
   className,
   triggerClassName,
   noResultsMessage,
@@ -115,19 +133,19 @@ export function AsyncSelect<T>({
   hideChevron,
   onCreateOption,
   'data-testid': dataTestId,
-}: AsyncSelectProps<T>) {
+}, ref) {
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<T[]>([]);
+  const [options, setOptions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedValue, setSelectedValue] = useState(value);
-  const [selectedOption, setSelectedOption] = useState<T | null>(null);
+  const [selectedOption, setSelectedOption] = useState<any | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm, preload ? 0 : 300);
-  const [originalOptions, setOriginalOptions] = useState<T[]>([]);
+  const [originalOptions, setOriginalOptions] = useState<any[]>([]);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [updatingOption, setUpdatingOption] = useState<T | null>(null);
+  const [updatingOption, setUpdatingOption] = useState<any | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -279,6 +297,7 @@ export function AsyncSelect<T>({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          ref={ref}
           variant={triggerVariant}
           role='combobox'
           aria-expanded={open}
@@ -369,22 +388,6 @@ export function AsyncSelect<T>({
       </PopoverContent>
     </Popover>
   );
-}
+});
 
-function DefaultLoadingSkeleton() {
-  return (
-    <CommandGroup>
-      {[1, 2, 3].map((i) => (
-        <CommandItem key={i} disabled>
-          <div className='flex w-full items-center gap-2'>
-            <div className='h-6 w-6 animate-pulse rounded-full bg-muted' />
-            <div className='flex flex-1 flex-col gap-1'>
-              <div className='h-4 w-24 animate-pulse rounded bg-muted' />
-              <div className='h-3 w-16 animate-pulse rounded bg-muted' />
-            </div>
-          </div>
-        </CommandItem>
-      ))}
-    </CommandGroup>
-  );
-}
+AsyncSelect.displayName = 'AsyncSelect';

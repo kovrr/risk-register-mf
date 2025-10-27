@@ -9,9 +9,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import { QUERY_KEYS, useCreateNote, useNotes } from '@/services/hooks';
 import { useAuthUser } from '@frontegg/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getInitials } from '../utils/textManipulation';
 import { NoteItem } from './NoteItem';
@@ -19,7 +19,13 @@ import { NoteItem } from './NoteItem';
 export const Notes: React.FC<{
   includeHeader?: boolean;
 }> = ({ includeHeader }) => {
-  const user = useAuthUser();
+  // Safely get user from Frontegg context
+  let user = null;
+  try {
+    user = useAuthUser();
+  } catch (error) {
+    console.warn('Frontegg auth context not available:', error);
+  }
   const [noteText, setNoteText] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { scenarioId } = useParams();

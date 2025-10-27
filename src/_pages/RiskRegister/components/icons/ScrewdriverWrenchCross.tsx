@@ -1,8 +1,7 @@
-import React from 'react';
 
 export const ScrewdriverWrenchCross = () => {
   return (
-    <svg width='' height='9' viewBox='0 0 9 9' fill='none'>
+    <svg width='9' height='9' viewBox='0 0 9 9' fill='none'>
       <path
         fillRule='evenodd'
         clipRule='evenodd'

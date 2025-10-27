@@ -1,14 +1,14 @@
-import React from 'react';
-import { Icon, IconProps } from '@chakra-ui/react';
+import { Icon, type IconProps } from '@chakra-ui/react';
+import type React from 'react';
 
 type PaperClipProps = {
-  width: number;
-  height: number;
+  width?: number | string;
+  height?: number | string;
 } & IconProps;
 
 const PaperClip: React.FC<PaperClipProps> = ({
-  width = '13.6px',
-  height = '15.96px',
+  width = 13.6,
+  height = 15.96,
   ...props
 }) => {
   return (

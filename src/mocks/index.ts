@@ -1,4 +1,11 @@
+let mocksInitialized = false;
+
 async function initMocks() {
+  if (mocksInitialized) {
+    console.log('🔄 MSW already initialized, skipping...');
+    return;
+  }
+
   console.log('🚀 Initializing MSW mocks...');
   if (typeof window === 'undefined') {
     const { server } = await import('./server');
@@ -12,6 +19,7 @@ async function initMocks() {
     });
     console.log('✅ MSW worker started');
   }
+  mocksInitialized = true;
 }
 
 // Enable mocks in development mode by default
