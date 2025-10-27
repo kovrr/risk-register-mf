@@ -11,7 +11,7 @@ import { QUERY_KEYS, useCreateNote, useNotes } from '@/services/hooks';
 import { useAuthUser } from '@frontegg/react';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getInitials } from '../utils/textManipulation';
 import { NoteItem } from './NoteItem';

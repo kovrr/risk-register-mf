@@ -16,7 +16,7 @@ import {
 } from '@/services/hooks';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 type Props = {

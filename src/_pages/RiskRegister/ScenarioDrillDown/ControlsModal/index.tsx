@@ -16,7 +16,7 @@ import type { ControlsFrameworkLevels } from '@/types/riskRegister';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import {
   convertFrameworkLevelsServerToFrameworkLevels,

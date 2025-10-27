@@ -2,7 +2,7 @@ import type { Option } from '@/components/molecules/Dropdown';
 import { QUERY_KEYS, useUpdateRiskRegisterScenarioRow } from '@/services/hooks';
 import type { RiskRegisterRow } from '@/types/riskRegister';
 import { useState } from 'react';
-import { useIsMutating } from 'react-query';
+import { useIsMutating } from '@tanstack/react-query';
 import { useUpdateRiskRegisterQueries } from './useUpdateRiskRegisterQueries';
 
 export const useUpdateDropdownCell = <T extends string>({

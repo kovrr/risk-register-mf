@@ -6,7 +6,9 @@ import { fronteggAuthServerUrl } from '../../cypress/support/commands-lib/mock-f
 
 // Using environment variable instead of urls-defs
 const getBaseApiUrl = () =>
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.NEXT_PUBLIC_API_URL ||
+  'http://localhost:8000';
 
 import { chance } from './builders/buildingUtils';
 import {
@@ -56,18 +58,19 @@ import {
 } from './handlersUtils';
 
 const ROCI_COMPANY_STATE =
-  process.env.NEXT_PUBLIC_DEV_ROCI_STATE ?? 'company_exists';
+  import.meta.env.VITE_DEV_ROCI_STATE ||
+  (import.meta.env.NEXT_PUBLIC_DEV_ROCI_STATE ?? 'company_exists');
 const APPLICATION_TYPE =
-  process.env.NEXT_PUBLIC_DEV_APPLICATION_TYPE ?? applicationTypes.FOQUS;
-const APPLICATION_SUBTYPE = process.env.NEXT_PUBLIC_DEV_APPLICATION_SUBTYPE;
+  import.meta.env.VITE_DEV_APPLICATION_TYPE ||
+  (import.meta.env.NEXT_PUBLIC_DEV_APPLICATION_TYPE ?? applicationTypes.FOQUS);
+const APPLICATION_SUBTYPE =
+  import.meta.env.VITE_DEV_APPLICATION_SUBTYPE ||
+  import.meta.env.NEXT_PUBLIC_DEV_APPLICATION_SUBTYPE;
 
 const [latestCompanyBody, latestCompanyStatus] =
   ROCI_COMPANY_STATE === 'company_exists'
     ? [companiesResults[0], 200]
     : [{}, 404];
-
-ROCI_COMPANY_STATE === 'company_exists' ? companiesResults[0] : {},
-  ROCI_COMPANY_STATE === 'company_exists' ? 200 : 404;
 
 const tenantId =
   APPLICATION_TYPE === applicationTypes.ROCI ? 'roci-tenant-id' : chance.guid();

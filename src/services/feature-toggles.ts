@@ -1,12 +1,16 @@
 export const useFeatureRiskRegisterCRQ = () => {
   // Return true to enable feature, or read from env/config
-  return process.env.REACT_APP_FEATURE_CRQ === 'true';
+  return import.meta.env.VITE_FEATURE_CRQ === 'true' || import.meta.env.REACT_APP_FEATURE_CRQ === 'true';
 };
 
 export const useFeatureRiskRegisterTemplate = () => {
-  return process.env.REACT_APP_FEATURE_TEMPLATE === 'true';
+  return import.meta.env.VITE_FEATURE_TEMPLATE === 'true' || import.meta.env.REACT_APP_FEATURE_TEMPLATE === 'true';
 };
 
 export const useFeatureRiskRegisterReorganize = () => {
-  return process.env.REACT_APP_FEATURE_REORGANIZE === 'true';
+  return import.meta.env.VITE_FEATURE_REORGANIZE === 'true' || import.meta.env.REACT_APP_FEATURE_REORGANIZE === 'true';
+};
+
+export const useIsProductTourEnabled = () => {
+  return import.meta.env.VITE_FEATURE_PRODUCT_TOUR === 'true' || import.meta.env.REACT_APP_FEATURE_PRODUCT_TOUR === 'true';
 };

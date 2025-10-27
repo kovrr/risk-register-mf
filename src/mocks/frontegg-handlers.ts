@@ -5,10 +5,14 @@ import { fronteggAuthServerUrl } from '../../cypress/support/commands-lib/mock-f
 import { companiesResults } from './data/companiesResults';
 
 const APPLICATION_TYPE =
-  process.env.NEXT_PUBLIC_DEV_APPLICATION_TYPE ?? applicationTypes.FOQUS;
-const APPLICATION_SUBTYPE = process.env.NEXT_PUBLIC_DEV_APPLICATION_SUBTYPE;
+  import.meta.env.VITE_DEV_APPLICATION_TYPE ||
+  (import.meta.env.NEXT_PUBLIC_DEV_APPLICATION_TYPE ?? applicationTypes.FOQUS);
+const APPLICATION_SUBTYPE =
+  import.meta.env.VITE_DEV_APPLICATION_SUBTYPE ||
+  import.meta.env.NEXT_PUBLIC_DEV_APPLICATION_SUBTYPE;
 const IS_RISK_REGISTER_GUEST_USER =
-  process.env.NEXT_PUBLIC_DEV_RISK_REGISTER_GUEST_USER === 'true';
+  import.meta.env.VITE_DEV_RISK_REGISTER_GUEST_USER === 'true' ||
+  import.meta.env.NEXT_PUBLIC_DEV_RISK_REGISTER_GUEST_USER === 'true';
 
 const RANDOM_VALID_JWT =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ';

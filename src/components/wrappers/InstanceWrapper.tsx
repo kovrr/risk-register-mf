@@ -1,6 +1,5 @@
 import { configureAxiosInstance } from '@/services/configureAxiosInstance';
 import { HttpClientContext } from '@/state/HttpClientContext';
-import { useAuthUser } from '@frontegg/react';
 import type { AxiosInstance } from 'axios';
 import React, { useEffect } from 'react';
 
@@ -10,8 +9,12 @@ type Props = {
 };
 
 export const InstanceWrapper = ({ children, instance }: Props) => {
-  const user = useAuthUser();
-  const jwt: string = user.accessToken;
+  // Mock user for development with mocks
+  const mockUser = {
+    accessToken: 'mock-jwt-token-for-development',
+  };
+
+  const jwt: string = mockUser.accessToken;
 
   // This stores the current jwt in the same *mutable* variable
   const jwtRef = React.useRef(jwt);

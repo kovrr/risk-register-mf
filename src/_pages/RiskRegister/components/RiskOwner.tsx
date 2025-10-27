@@ -12,7 +12,7 @@ import { UserRound } from 'lucide-react';
 import { useIsGuestUser } from 'permissions/use-permissions';
 import { type FC, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { InvitationFormValues } from '../InvitationForm/components/form-config';
 import { InvitationFormModal } from '../InvitationForm/InvitationFormModal';

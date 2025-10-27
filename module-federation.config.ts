@@ -7,20 +7,17 @@ export default createModuleFederationConfig({
     './RemoteApp': './src/exposes/RemoteApp.tsx',
   },
   shared: {
-    react: {
-      singleton: true,
-      requiredVersion: false,
-      eager: true,
-    },
-    'react-dom': {
-      singleton: true,
-      requiredVersion: false,
-      eager: true,
-    },
-    'react-router-dom': {
-      singleton: true,
-      requiredVersion: false,
-      eager: true,
-    },
+    // Temporarily disabling all shared dependencies to fix factory errors
+    // This will bundle React and React-DOM with the microfrontend
+    // react: {
+    //   singleton: true,
+    //   requiredVersion: false,
+    //   eager: true,
+    // },
+    // 'react-dom': {
+    //   singleton: true,
+    //   requiredVersion: false,
+    //   eager: true,
+    // },
   },
 });

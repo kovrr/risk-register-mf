@@ -3,7 +3,7 @@ import type {
   RiskRegisterResponse,
   RiskRegisterScenarioPaginatedResponse,
 } from '@/types/riskRegister';
-import { type Query, useQueryClient } from 'react-query';
+import { type Query, useQueryClient } from '@tanstack/react-query';
 
 const _getRelevantQueries = (queries: Query[]) => {
   return queries.filter((query) => {
