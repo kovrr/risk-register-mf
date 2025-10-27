@@ -1,4 +1,4 @@
-import { ECISControl, ECISv8Control } from 'types/quantificationForm';
+import { ECISControl, ECISv8Control } from '@/types/quantificationForm';
 import { CisCode } from './cisControls';
 
 export type CISV8Code = Exclude<CisCode, '19' | '20'>;

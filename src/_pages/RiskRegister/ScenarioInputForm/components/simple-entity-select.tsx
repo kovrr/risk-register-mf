@@ -32,7 +32,7 @@ export default function SimpleEntitySelect({
 
   const getCompanies = async (_query?: string): Promise<CompanyApiData[]> => {
     const { data } = await _getCompanies();
-    return (data?.items.filter((company) => !isCompanyWithError(company)) ??
+    return ((data as { items: CompanyApiData[] })?.items.filter((company: CompanyApiData) => !isCompanyWithError(company)) ??
       []) as CompanyApiData[];
   };
 

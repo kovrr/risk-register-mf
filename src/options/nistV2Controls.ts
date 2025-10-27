@@ -1,4 +1,4 @@
-import { ENISTControl } from 'types/quantificationForm';
+import { ENISTControl } from '@/types/quantificationForm';
 
 interface NISTv2Subcategories {
   [key: string]: string;

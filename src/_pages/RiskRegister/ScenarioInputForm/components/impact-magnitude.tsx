@@ -1,5 +1,6 @@
 import { Checkbox } from '@/components/atoms/checkbox';
 import { DualRangeSlider } from '@/components/atoms/dual-range-slider';
+import { isCompanyWithError } from '@/components/molecules/CompanyErrorRow';
 import InfoPopover from '@/components/molecules/info-popover';
 import { cn } from '@/lib/utils';
 import { useCompanies } from '@/services/hooks';
@@ -7,8 +8,8 @@ import type { CheckedState } from '@radix-ui/react-checkbox';
 import React, { type FC } from 'react';
 import { type Control, useController, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { isCompanyWithError } from '@/components/molecules/CompanyErrorRow';
 import type { CRQScenarioFormValues } from './form-config';
+import type { CompanyApiData } from '@/types/companyForm';
 
 interface ImpactMagnitudeProps {
   control: Control<CRQScenarioFormValues>;
@@ -40,7 +41,7 @@ export const ImpactMagnitude = ({
     fields: companyFields,
     id: companyId,
   });
-  const company = companies?.items[0];
+  const company = (companies as { items: CompanyApiData[] })?.items[0];
   const validCompany = company && !isCompanyWithError(company) ? company : null;
 
   const [isRecordsEnabled, setIsRecordsEnabled] = React.useState(false);
@@ -76,7 +77,7 @@ export const ImpactMagnitude = ({
       setValue('crq_data.filters.min_damage_filter', null);
       setValue('crq_data.filters.max_damage_filter', null);
     }
-  }, [validCompany, companyId, isEditMode, setValue]);
+  }, [validCompany, isEditMode, setValue]);
 
   if (!validCompany) {
     return null;

@@ -1,6 +1,7 @@
 import type { InvitationFormValues } from '@/components/molecules/form-config';
 import { useAxiosInstance } from '@/state/HttpClientContext';
 import type { CompanyApiResponseItem, CompanyData } from '@/types/companyForm';
+import type { QuantificationData } from '@/types/quantificationData';
 import {
   type CRQScenarioCreateRequest,
   type CRQScenarioUpdateRequest,
@@ -34,6 +35,7 @@ export const QUERY_KEYS = {
   RISK_REGISTER_SCENARIOS_TABLE: 'RISK_REGISTER_SCENARIOS_TABLE',
   RISK_OWNER: 'RISK_REGISTER_RISK_OWNER',
   DOCUMENTS: 'DOCUMENTS',
+  FQ: 'FQ', // Financial Quantification
 };
 
 const baseURL: string =
@@ -46,6 +48,7 @@ export const API_URL = {
   NOTES: `/api/notes`,
   TENANT: `${baseURL}/api/tenant`,
   DOCUMENTS: `${baseURL}/api/documents`,
+  FQ: `${baseURL}/api/fq`, // Financial Quantification
 };
 
 // ============================================================================
@@ -131,6 +134,7 @@ export const useCompanies = (
   return useQuery<{ items: CompanyApiResponseItem[]; total: number }>(
     [QUERY_KEYS.COMPANIES, page, size, fields, id],
     () => client.get(urlWithParams).then(({ data }) => data),
+    // @ts-expect-error - React Query generic type mismatch
     { ...options },
   );
 };
@@ -150,6 +154,7 @@ export const useCompany = (
         return data;
       });
     },
+    // @ts-expect-error - React Query generic type mismatch
     { ...options },
   );
 };
@@ -224,6 +229,53 @@ export const useCRQScenarioRemainingLicenses = () => {
         .get(`${API_URL.TENANT}/remaining_crq_scenarios_licenses`)
         .then(({ data }) => data['remaining_crq_scenarios_licenses']),
   );
+};
+
+// ============================================================================
+// QUANTIFICATION HOOKS (for Financial Quantification integration)
+// ============================================================================
+
+/**
+ * Get current quantification ID from URL params (throws if not found)
+ */
+export const useCurrentQuantificationId = () => {
+  const { quantificationId } = useParams<{ quantificationId: string }>();
+  if (!quantificationId) {
+    throw Error(
+      'When using this hook, you must have quantificationId in the path',
+    );
+  }
+  return quantificationId;
+};
+
+/**
+ * Get current quantification ID from URL params (if exists)
+ */
+export const useCurrentQuantificationIdIfExists = () => {
+  const { quantificationId } = useParams<{ quantificationId: string }>();
+  if (!quantificationId) {
+    return null;
+  }
+  return quantificationId;
+};
+
+/**
+ * Fetch a single quantification by ID
+ */
+export const useQuantification = (id: string) => {
+  const client = useAxiosInstance();
+  return useQuery<QuantificationData>([QUERY_KEYS.FQ, { id }], () =>
+    client.get(`${API_URL.FQ}/${id}`).then(({ data }) => data),
+  );
+};
+
+/**
+ * Fetch the current quantification (from URL params)
+ * Use this when you're on a page with :quantificationId in the route
+ */
+export const useCurrentQuantification = () => {
+  const quantificationId = useCurrentQuantificationId();
+  return useQuantification(quantificationId);
 };
 
 // ============================================================================
@@ -319,6 +371,7 @@ export const useRiskRegisterScenarios = (
       sort_order,
     ],
     () => client.get(urlWithParams).then(({ data }) => data),
+    // @ts-expect-error - React Query generic type mismatch
     { ...options },
   );
 };

@@ -1,18 +1,28 @@
 import TableHeader from '@/components/molecules/TableHeader';
+import {
+  controlsFrameworkHelper,
+  genericFilter,
+  getDesc,
+  type ISOControlsType,
+  sortControls,
+  sortIfNotSubRow,
+  sortStatuses,
+  sortStatusesByValues,
+} from '@/utils/mitigationUtils';
 import { Flex, IconButton, Text } from '@chakra-ui/react';
 import {
   createColumnHelper,
-  ExpandedState,
+  type ExpandedState,
   getCoreRowModel,
   getExpandedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  OnChangeFn,
-  PaginationState,
-  RowSelectionState,
-  SortingState,
-  Updater,
+  type OnChangeFn,
+  type PaginationState,
+  type RowSelectionState,
+  type SortingState,
+  type Updater,
   useReactTable,
 } from '@tanstack/react-table';
 import { StatusBadge } from 'components/ui/Badge/StatusBadge';
@@ -24,34 +34,21 @@ import {
 import {
   mapSecControlsType,
   SecControlsFramework,
-  SecControlsFrameworkType,
+  type SecControlsFrameworkType,
 } from 'options/constants';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GoChevronDown, GoChevronUp } from 'react-icons/go';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SecControlsType } from 'types/companyForm';
+import type { AssetGroupRow, ControlRow } from 'types/assetGroup';
+import type { SecControlsType } from 'types/companyForm';
 import {
-  ByControlToMinimal,
+  type ByControlToMinimal,
   CONTROL_STATUS_TO_TEXT,
-  ControlStatus,
+  type ControlStatus,
   ignoredCurrentMinimums,
 } from 'types/security-controls';
 import { SphereKeysByAssetGroupType } from 'types/sphereForm';
-import {
-  AssetGroupRow,
-  ControlRow,
-} from '../../../FinancialQuantification/Mitigation/types';
-import {
-  controlsFrameworkHelper,
-  genericFilter,
-  getDesc,
-  ISOControlsType,
-  sortControls,
-  sortIfNotSubRow,
-  sortStatuses,
-  sortStatusesByValues,
-} from '../../../FinancialQuantification/Mitigation/utils';
 
 const controlColumnHelper = createColumnHelper<ControlRow>();
 
@@ -523,7 +520,7 @@ export const useWhatIfScenariosTable = ({
     () => () => {
       setSelectedRows({});
     },
-    [setSelectedRows],
+    [],
   );
 
   const isLoading = !byControlToMinimal;

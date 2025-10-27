@@ -1,4 +1,4 @@
-import { ECISControl } from 'types/quantificationForm';
+import { ECISControl } from '@/types/quantificationForm';
 
 export const MAX_CIS_GRADE = 3;
 

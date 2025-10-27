@@ -6,7 +6,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/atoms/tooltip';
-import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import InfoIcon from '../../components/icons/info.svg';
@@ -23,7 +22,7 @@ export default function InfoPopover({ content }: InfoPopoverProps) {
       <Tooltip>
         <TooltipTrigger asChild>
           <div>
-            <Image alt='' src={InfoIcon} className='h-3 w-3' />
+            <img alt='' src={InfoIcon} className='h-3 w-3' />
             <span className='sr-only'>{t('content')}</span>
           </div>
         </TooltipTrigger>
