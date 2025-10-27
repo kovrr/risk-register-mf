@@ -7,7 +7,7 @@ import {
   type IconProps,
   useTheme,
 } from '@chakra-ui/react';
-import dataBreachIcon from './dataBreachIcon.png';
+// import dataBreachIcon from './dataBreachIcon.png'; // File missing - commented out
 
 export const ArrowIcon = (props: IconProps) => {
   const {
@@ -80,7 +80,10 @@ export const InterruptionIcon = createIcon({
 export const DataBreachIcon: React.FC<BoxProps> = ({ ...resProps }) => {
   return (
     <Box {...resProps}>
-      <img src={dataBreachIcon} alt='data breach icon' />
+      <img
+        src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSIjNjY2NjY2Ii8+Cjx0ZXh0IHg9IjEyIiB5PSIxNiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SUM8L3RleHQ+Cjwvc3ZnPgo='
+        alt='data breach icon'
+      />
     </Box>
   );
 };
