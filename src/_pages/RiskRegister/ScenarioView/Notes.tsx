@@ -8,7 +8,6 @@ import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import { QUERY_KEYS, useCreateNote, useNotes } from '@/services/hooks';
-import { useAuthUser } from '@frontegg/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,13 +18,14 @@ import { NoteItem } from './NoteItem';
 export const Notes: React.FC<{
   includeHeader?: boolean;
 }> = ({ includeHeader }) => {
-  // Safely get user from Frontegg context
-  let user = null;
-  try {
-    user = useAuthUser();
-  } catch (error) {
-    console.warn('Frontegg auth context not available:', error);
-  }
+  // Mock user for microfrontend since Frontegg context is not available
+  const user = {
+    id: 'mock-user-id',
+    email: 'mock@example.com',
+    name: 'Mock User',
+    firstName: 'Mock',
+    lastName: 'User',
+  };
   const [noteText, setNoteText] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { scenarioId } = useParams();

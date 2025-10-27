@@ -1,5 +1,3 @@
-import { Check, ChevronDown, Loader2, Plus } from 'lucide-react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/atoms/button';
 import {
   Command,
@@ -16,6 +14,8 @@ import {
 } from '@/components/atoms/popover';
 import { useDebounce } from '@/components/hooks/use-debounce';
 import { cn } from '@/lib/utils';
+import { Check, ChevronDown, Loader2, Plus } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface Option {
   value: string;

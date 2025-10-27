@@ -16,6 +16,9 @@ async function initMocks() {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     worker.start({
       onUnhandledRequest: 'bypass', // Allow unhandled requests to pass through
+      serviceWorker: {
+        url: '/mockServiceWorker.js',
+      },
     });
     console.log('✅ MSW worker started');
   }
