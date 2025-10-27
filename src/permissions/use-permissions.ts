@@ -14,4 +14,3 @@ export const useIsSelfAssessmentLimitedUser = () =>
 
 export const useIsRiskRegisterLimitedUser = () =>
   useHasPermissions(['riskRegisterLimitedUser']);
-

@@ -2,7 +2,7 @@ import { Icon, IconProps } from '@chakra-ui/icons';
 
 const ThirdPartyIcon = (props: IconProps) => (
   <Icon {...props}>
-    <svg width={21} height={21} fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg width={21} height={21} fill='none' xmlns='http://www.w3.org/2000/svg' aria-label='third party icon' role='img'>
       <path
         fillRule='evenodd'
         clipRule='evenodd'

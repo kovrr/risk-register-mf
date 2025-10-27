@@ -14,7 +14,6 @@ import {
   useUpdateCRQScenario,
 } from '@/services/hooks';
 import type { RiskRegisterResponse } from '@/types/riskRegister';
-import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -68,7 +67,8 @@ export function CrqPoweredMessage({ scenario }: IntroSectionProps) {
           <div className='flex flex-row content-center items-center gap-[20px] align-middle'>
             <div className='flex flex-row gap-[5px]'>
               <p className='text-[14px] font-[700]'>{t('modelingEntity')}</p>
-              <p className={underlineTextClassName}>{company?.name}</p>
+              {/* @ts-ignore */}
+              <p className={underlineTextClassName}>{company?.name || ''}</p>
             </div>
             <div className='flex flex-row gap-[5px]'>
               <p className='text-[14px] font-[700]'>{t('quantification')}</p>
@@ -87,7 +87,7 @@ export function CrqPoweredMessage({ scenario }: IntroSectionProps) {
                 }
               >
                 <div className='flex flex-row gap-[4px]'>
-                  <Image src={EllipseIcon} alt='update available' />
+                  <img src={EllipseIcon} alt='update available' />
                   <p className='text-[14px] font-[400]'>
                     {t('updateAvailable')}
                   </p>

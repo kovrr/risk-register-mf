@@ -1,5 +1,4 @@
-import { useQuantificationByCostComponents } from 'service/fq';
-import { DamageTypesExposure } from './common/ExposureParameter';
+import type { DamageTypesExposure } from './common/ExposureParameter';
 
 type Props = {
   exposure: DamageTypesExposure;
@@ -38,10 +37,4 @@ export const useDamageTypesProgressData = ({ exposure, inDrawer }: Props) => {
     MAX_ITEMS,
     damageTypesSorted,
   };
-};
-
-export const useIsDamageTypesDataAvailable = () => {
-  const { cost_components_breakdown } = useQuantificationByCostComponents();
-
-  return !!cost_components_breakdown;
 };

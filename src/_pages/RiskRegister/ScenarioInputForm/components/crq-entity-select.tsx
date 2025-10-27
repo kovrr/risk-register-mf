@@ -32,6 +32,7 @@ export default function CRQEntitySelect({
 
   const getCompanies = async (_query?: string): Promise<CompanyApiData[]> => {
     const { data } = await _getCompanies();
+    // @ts-expect-error
     return (data?.items
       .filter((company: CompanyApiData) => !isCompanyWithError(company))
       .filter(

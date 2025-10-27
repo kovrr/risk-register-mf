@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { useCompanies } from '@/services/hooks';
 import { InitialAttackVectors } from '@/types/riskDrivers/attackVectors';
 import type { CRQScenarioFormValues } from './form-config';
+import type { CompanyApiData } from '@/types/companyForm';
 
 type Props = {
 	control: Control<CRQScenarioFormValues>;
@@ -48,7 +49,7 @@ export const InitialAccessVectors: FC<Props> = ({
 		fields: COMPANY_FIELDS,
 		id: companyId,
 	});
-	const company = companies?.items[0];
+	const company = (companies as { items: CompanyApiData[] })?.items[0];
 	const validCompany = company && !isCompanyWithError(company) ? company : null;
 
 	let availableVectors: string[] = [];

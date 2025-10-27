@@ -1,7 +1,7 @@
-import React, { FC, useCallback } from 'react';
+import { type FC, useCallback } from 'react';
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
 import ReactPaginate from 'react-paginate';
-import { Dropdown, Option } from './Dropdown';
+import { Dropdown, type Option } from './Dropdown';
 
 const defaultOptionStyles = {
   className:
@@ -87,7 +87,9 @@ export const Pagination: FC<PaginationProps> = ({
         <ReactPaginate
           breakLabel='...'
           nextLabel={<GrFormNext />}
-          onPageChange={({ selected }) => setPageIndex(selected)}
+          onPageChange={({ selected }: { selected: number }) =>
+            setPageIndex(selected)
+          }
           pageRangeDisplayed={3}
           pageCount={pageCount}
           previousLabel={<GrFormPrevious />}

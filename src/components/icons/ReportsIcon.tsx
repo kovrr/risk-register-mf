@@ -1,4 +1,4 @@
-import { Icon, IconProps } from '@chakra-ui/icons';
+import { Icon, type IconProps } from '@chakra-ui/icons';
 
 const ReportsIcon = (props: IconProps) => (
   <Icon {...props}>
@@ -7,6 +7,8 @@ const ReportsIcon = (props: IconProps) => (
       height={20}
       fill='currentColor'
       xmlns='http://www.w3.org/2000/svg'
+      aria-label='reports icon'
+      role='img'
     >
       <path
         fillRule='evenodd'

@@ -26,6 +26,7 @@ export const CRQScenarioDate: FC<Props> = ({ scenario }) => {
       data-testid='quantitative-metrics-header-description'
     >
       {t('scenarioDescription', {
+        // @ts-ignore
         companyName: company?.name || 'your company',
         fqDate: fq?.updated_at ? formatDatetimeOnlyDate(fq?.updated_at) : '',
       })}

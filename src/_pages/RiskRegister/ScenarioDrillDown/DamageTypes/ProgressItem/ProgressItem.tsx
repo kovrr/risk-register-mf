@@ -1,16 +1,16 @@
-import { AccordionIcon, FlexProps, Flex, Text } from '@chakra-ui/react';
-import { shortenNumberWithSuffix } from 'components/ui/charts/utils';
-import React, { FC, useMemo } from 'react';
+import TextWithPopover from '@/components/molecules/TextWithPopover';
 import {
+  type CurrencyCode,
   convertCurrencyLettersToSign,
-  CurrencyCode,
-} from 'worker/exportFqModule/converters';
+} from '@/helpers/converters';
+import { AccordionIcon, Flex, type FlexProps, Text } from '@chakra-ui/react';
+import { shortenNumberWithSuffix } from 'components/ui/charts/utils';
+import { type FC, useMemo } from 'react';
+import { BenchmarkHorizontalProgress } from './BenchmarkHorizontalProgress';
 import {
   clickableLegendItemStyles,
   hoverLegendItemStyles,
 } from './legends/consts';
-import { BenchmarkHorizontalProgress } from './BenchmarkHorizontalProgress';
-import TextWithPopover from 'components/ui/TextWithPopover';
 
 export const normalizeDecimal = (value?: number) =>
   Number(((value || 0) * 100).toFixed(2));

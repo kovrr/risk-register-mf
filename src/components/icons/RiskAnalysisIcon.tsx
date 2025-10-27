@@ -2,7 +2,7 @@ import { Icon, IconProps } from '@chakra-ui/icons';
 
 const RiskAnalysisIcon = (props: IconProps) => (
   <Icon {...props}>
-    <svg width={20} height={20} fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <svg width={20} height={20} fill='none' xmlns='http://www.w3.org/2000/svg' aria-label='risk analysis icon' role='img'>
       <circle
         cx={8.185}
         cy={7.176}

@@ -1,6 +1,6 @@
 import { addCurrencySign } from '@/helpers/string';
 import { CurrencyCodeType } from '@/options/constants';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 type Props = {
   value: number;

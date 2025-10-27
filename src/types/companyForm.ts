@@ -1,8 +1,8 @@
-import { MinimalInput } from '_pages/ROCI/CompanyCreation/Form/utils/types';
-import { IntegrationData, IntegrationTypes } from './integrations/integrations';
-import { Hazard, Quantification } from './quantificationData';
-import { MultipleSelectType } from '@/types/quantificationForm';
-import { SphereForm } from '@/types/sphereForm';
+import type { MinimalInput } from '@/types/companyCreation';
+import type { MultipleSelectType } from '@/types/quantificationForm';
+import type { SphereForm } from '@/types/sphereForm';
+import type { IntegrationData, IntegrationTypes } from './integrations';
+import type { Hazard, Quantification } from './quantificationData';
 
 export enum CompanyStatus {
   COMPLETED = 'completed_fq',
@@ -86,7 +86,13 @@ export type LastE2E = {
 
 export type HazardCollectionType = 'technologies' | 'providers';
 export type HazardItemType = 'technology' | 'provider';
-export type SecControlsType = 'CIS' | 'NIST' | 'ASB' | 'ISO27001' | 'CISv8' | 'NIST_CSF_v2';
+export type SecControlsType =
+  | 'CIS'
+  | 'NIST'
+  | 'ASB'
+  | 'ISO27001'
+  | 'CISv8'
+  | 'NIST_CSF_v2';
 
 export type IntegrationsDetails<T extends IntegrationTypes> = {
   hazard: boolean;

@@ -4,7 +4,7 @@ import {
   getISOText,
   getNistText,
   getNistV2Text,
-} from '@/_pages/FinancialQuantification/Mitigation/utils';
+} from '@/utils/mitigationUtils';
 import { abbrToText as cisV7AbbrToText } from '@/options/cisControls';
 import { abbrToText as cisV8AbbrToText } from '@/options/cisV8Controls';
 import { useMemo } from 'react';

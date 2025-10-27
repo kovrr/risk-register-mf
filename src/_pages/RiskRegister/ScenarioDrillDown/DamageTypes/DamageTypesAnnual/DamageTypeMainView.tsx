@@ -1,5 +1,5 @@
 import { useCurrentRiskRegisterScenario } from '@/services/hooks';
-import type { CurrencyCode } from '@/worker/exportFqModule/converters';
+import type { CurrencyCode } from '@/helpers/converters';
 import { Flex, Text } from '@chakra-ui/react';
 import { type FC, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,7 +41,7 @@ export const DamageTypeMainView: FC<{
     >
       {Object.entries(damageTypesSorted)
         .slice(0, MAX_ITEMS)
-        .map(([damageType, exposure], index) => {
+        .map(([damageType, exposure]) => {
           const isCustomDamageType = !(damageType in CostComponents);
           const { info, lossImpactList, title } = getDamageTypeDetails(
             damageType,
@@ -62,7 +62,7 @@ export const DamageTypeMainView: FC<{
               title={title}
               percentage={exposure / aalSum}
               amount={exposure * aal}
-              key={index}
+              key={damageType}
               data-testid={getTestId(damageType)}
               minHeight='50px'
               maxHeight='50px'

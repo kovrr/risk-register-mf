@@ -40,6 +40,7 @@ export const MASScenarioOldView: FC = () => {
         ?.scenario_cv ?? 0,
   };
   useEffect(() => {
+    // @ts-ignore
     trackEvent({
       name: 'risk_register.crq_scenario.view',
     });

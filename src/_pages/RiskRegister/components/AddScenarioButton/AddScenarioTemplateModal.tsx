@@ -1,6 +1,6 @@
 import { Button } from '@/components/atoms/button';
 import { Dialog, DialogContent } from '@/components/atoms/dialog';
-import { DemoExperienceContext } from '@/DemoExperienceContext';
+import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import { useRequestPreDefinedScenario } from '@/services/hooks';
@@ -62,6 +62,7 @@ export const AddScenarioTemplateModal = ({
         <div className='flex flex-col items-center p-8'>
           <div className='flex w-full justify-end'>
             <button
+              type='button'
               onClick={() => setShowTemplateModal(false)}
               className='text-gray-400 hover:text-gray-500 focus:outline-none'
               aria-label='Close'

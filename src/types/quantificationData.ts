@@ -1,26 +1,26 @@
-import { CurrencyCode } from 'worker/exportFqModule/converters';
-import { HazardItemType, SecControlsType } from './companyForm';
-import {
-  BasicEventTypes,
-  EventTypes,
-  ServiceProviderEventTypes,
-} from './riskDrivers/eventTypes';
-import { ResultsInsights } from './insights';
-import { NewQuantificationForm } from './quantificationForm';
-import { CISRecommendation } from './recommendations';
-import {
+import type { CurrencyCode } from '@/helpers/converters';
+import type { ResultsInsights } from '@/types/insights';
+import type { NewQuantificationForm } from '@/types/quantificationForm';
+import type { CISRecommendation } from '@/types/recommendations';
+import type {
   ByAssetGroup,
   ByControlDomainScenarios,
   ByControlToMinimal,
   ByRiskScenario,
   ControlType,
   RiskScenario,
-} from './security-controls';
-import { SphereForm, VendorData } from './sphereForm';
-import { InitialAttackVector } from './riskDrivers/attackVectors';
-import { ByMSBundleToMinimal } from './msBundles';
-import { ByMSProduct } from './msProducts';
-import { CostComponent } from './riskDrivers/damageTypes';
+} from '@/types/security-controls';
+import type { HazardItemType, SecControlsType } from './companyForm';
+import type { ByMSBundleToMinimal } from './msBundles';
+import type { ByMSProduct } from './msProducts';
+import type { InitialAttackVector } from './riskDrivers/attackVectors';
+import type { CostComponent } from './riskDrivers/damageTypes';
+import type {
+  BasicEventTypes,
+  EventTypes,
+  ServiceProviderEventTypes,
+} from './riskDrivers/eventTypes';
+import type { SphereForm, VendorData } from './sphereForm';
 
 export interface OverallResults {
   ep_curve: EpPoint[];
@@ -82,7 +82,7 @@ interface PastQuantificationExposure {
   };
 }
 
-export const enum Scenario {
+export enum Scenario {
   BI = 'bi',
   CONTINGENT_BI = 'contingent_bi',
   EXTORTION = 'extortion',
@@ -305,8 +305,8 @@ export interface ByRiskDriverMinimalBreakdownMetrics {
 export type ByRiskDriverMinimalBreakdown<
   T extends EventTypes | InitialAttackVector,
 > = {
-  [k in T]?: ByRiskDriverMinimalBreakdownMetrics;
-};
+    [k in T]?: ByRiskDriverMinimalBreakdownMetrics;
+  };
 
 export interface ByRiskScenarioDrillDown<
   T extends EventTypes | InitialAttackVector,

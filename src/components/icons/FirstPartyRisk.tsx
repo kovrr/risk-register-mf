@@ -8,6 +8,8 @@ export const FirstPartyRiskIcon = (props: IconProps) => (
       viewBox='0 0 18 18'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
+      aria-label='first party risk icon'
+      role='img'
     >
       <path
         d='M1.2002 0.495728H4.7998C5.1864 0.495728 5.5 0.809323 5.5 1.19592V13.4957H0.5V1.19592C0.5 0.809324 0.813596 0.495728 1.2002 0.495728Z'
