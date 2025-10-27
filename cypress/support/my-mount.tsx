@@ -1,8 +1,9 @@
-import { FronteggProvider } from "@frontegg/react";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { fronteggAuthServerUrl } from "./commands-lib/mock-frontegg";
-import { FakeParamsRouter } from "./test-utils";
-import { InstanceWrapper } from "../../src/components/wrappers/InstanceWrapper";
+import { InstanceWrapper } from '@/components/wrappers/InstanceWrapper';
+import '@/i18n';
+import { theme } from '@/theme/baseTheme';
+import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter } from 'react-router-dom';
 
 export interface CustomOptions {
   companyId?: string;
@@ -24,19 +25,14 @@ export const withProvider = (
     },
   });
   return (
-    <FakeParamsRouter params={options?.routerParams}>
-      <FronteggProvider
-        contextOptions={{
-          baseUrl: fronteggAuthServerUrl,
-          currentUserRoles: ["king"],
-        }}
-      >
+    <BrowserRouter>
+      <ChakraProvider theme={theme}>
         <InstanceWrapper>
           <QueryClientProvider client={queryClient}>
             {component}
           </QueryClientProvider>
         </InstanceWrapper>
-      </FronteggProvider>
-    </FakeParamsRouter>
+      </ChakraProvider>
+    </BrowserRouter>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 // ***********************************************************
 // This example support/component.ts is processed and
 // loaded automatically before your test files.
@@ -13,12 +14,14 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
-import "./commands";
-
-import { mount, MountOptions, MountReturn } from "cypress/react";
-import { CustomOptions, withProvider } from "./my-mount";
-import { ReactNode } from "react";
+// Import the styles setup first
+import { mount, MountOptions, MountReturn } from 'cypress/react';
+import { ReactNode } from 'react';
+import './commands';
+import { CustomOptions, withProvider } from './my-mount';
+import './styles';
+// Import global CSS after styles setup
+import '../../src/globals.css';
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
@@ -29,19 +32,17 @@ declare global {
     interface Chainable {
       mount(
         component: ReactNode,
-        options?: MountOptions & Partial<CustomOptions>
+        options?: MountOptions & Partial<CustomOptions>,
       ): Chainable<MountReturn>;
     }
   }
 }
 
-Cypress.Commands.add("mount", (component, options) => {
+Cypress.Commands.add('mount', (component, options) => {
   const { routerParams, ...builtinOptions } = options || {};
   return mount(
-    withProvider(component as unknown as JSX.Element, {
-      routerParams: routerParams as { [key: string]: string },
-    }),
-    builtinOptions
+    withProvider(component, { routerParams }),
+    builtinOptions,
   ) as unknown as any;
 });
 

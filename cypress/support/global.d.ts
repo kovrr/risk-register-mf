@@ -5,6 +5,12 @@
 
 declare namespace Cypress {
   interface Chainable {
-    mockFrontegg(userPermissionKeys?: string[], userId?: string): void;
+    mockFrontegg(
+      userPermissionKeys: string[],
+      userId?: string,
+      applicationType?: ApplicationType
+    ): void;
+    mockMixpanel(): void;
+    fillCompanyPage(options: any): void;
   }
 }

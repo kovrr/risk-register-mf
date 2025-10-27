@@ -1,5 +1,6 @@
 // ***********************************************************
-// This example support/e2e.ts is processed and
+import '@cypress/code-coverage/support';
+// This example support/index.js is processed and
 // loaded automatically before your test files.
 //
 // This is a great place to put global configuration and
@@ -14,4 +15,13 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
+
+// Alternatively you can use CommonJS syntax:
+// require('./commands')
+// Options for log collector
+const options = {
+  // Log console output only
+  collectTypes: ['cons:warn', 'cons:error'],
+};
+require('cypress-terminal-report/src/installLogsCollector')(options);
