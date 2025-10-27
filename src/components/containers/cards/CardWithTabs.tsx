@@ -15,7 +15,7 @@ import type { FC } from 'react';
 import {
   ToggleTab,
   ToggleTabList,
-} from '../../../_pages/ResultsNarrative/tabs';
+} from '@/components/molecules/NarrativeTabs';
 
 interface Props {
   title: string | React.ReactNode;
