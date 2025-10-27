@@ -1,6 +1,6 @@
-import { convertToInternationalCurrencySystemToFixed } from 'components/ui/charts/utils';
-import { useCurrentCompany } from '../service/hooks';
+import { convertToInternationalCurrencySystemToFixed } from '@/components/ui/charts/utils';
 
+const company = { currency: 'USD' }
 export const damageTypeFormatter = (text: string) => text.replace('bi ', 'BI ');
 export const addCurrencySign = (
   num: number | undefined,
@@ -36,7 +36,6 @@ export const useCurrencySignAdder = ({
   maxFraction = 0,
   shorten = false,
 } = {}) => {
-  const { data: company } = useCurrentCompany();
 
   return (num: number) => {
     const { value, suffix } = shorten
@@ -71,7 +70,6 @@ export const useCurrencySignAdderPredefinedCurrency = ({
 };
 /* Returns the currency sign, Based on this https://stackoverflow.com/questions/50650503/get-the-currency-symbol-for-a-locale */
 export const useCurrencySign = () => {
-  const { data: company } = useCurrentCompany();
 
   const currency = company?.currency;
 

@@ -1,7 +1,7 @@
-import { DemoExperienceContext } from '@/DemoExperienceContext';
-import Image from 'next/image';
-import { useIsGuestUser } from 'permissions/use-permissions';
-import React, { useContext } from 'react';
+import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
+import { useIsGuestUser } from '@/permissions/use-permissions';
+import type React from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import HamburgerIcon from '../icons/HamburgerIcon.svg';
 import PencilIcon from '../icons/PencilIcon.svg';
@@ -54,49 +54,70 @@ export function FieldWrapper({
               fontWeight: 400,
               lineHeight: 'normal',
             }}
+            htmlFor={fieldId}
           >
             {label}
           </label>
           {mode === 'edit' && (
             <button
               type='button'
-              onClick={isGuestUser ? () => showDemoModal({ title: t('demo.editScenario') }) : handleEditClick}
+              onClick={
+                isGuestUser
+                  ? () => showDemoModal({ title: t('demo.editScenario') })
+                  : handleEditClick
+              }
               className='flex h-[24px] w-[24px] flex-shrink-0 items-center justify-center rounded-[5px] p-1 hover:bg-gray-100'
               tabIndex={-1}
               data-testid='field-edit-button'
             >
-              <Image src={PencilIcon} alt='' />
+              <img src={PencilIcon} alt='' />
             </button>
           )}
         </div>
       </div>
 
-      <div className='flex-shrink-0' style={{ width: '146px' }}
-        onClick={isGuestUser ? () => showDemoModal({ title: t('demo.editField') }) : undefined}>
+      <div
+        className='flex-shrink-0'
+        style={{ width: '146px' }}
+        onClick={
+          isGuestUser
+            ? () => showDemoModal({ title: t('demo.editField') })
+            : undefined
+        }
+      >
         {children}
       </div>
 
-      {
-        mode === 'edit' && (
-          <div className='flex flex-shrink-0 items-center gap-4 pl-4'>
-            <div className={isGuestUser ? 'cursor-not-allowed' : 'cursor-grab'} data-testid='field-drag-handle'
-              onClick={isGuestUser ? () => showDemoModal({ title: t('demo.editScenario') }) : onDelete}>
-              <Image src={HamburgerIcon} alt='drag handle' />
-            </div>
-            {onDelete && (
-              <button
-                type='button'
-                onClick={isGuestUser ? () => showDemoModal({ title: t('demo.editScenario') }) : onDelete}
-                className='flex items-center justify-center'
-                tabIndex={-1}
-                data-testid='field-delete-button'
-              >
-                <Image src={TrashIcon} alt='delete' />
-              </button>
-            )}
+      {mode === 'edit' && (
+        <div className='flex flex-shrink-0 items-center gap-4 pl-4'>
+          <div
+            className={isGuestUser ? 'cursor-not-allowed' : 'cursor-grab'}
+            data-testid='field-drag-handle'
+            onClick={
+              isGuestUser
+                ? () => showDemoModal({ title: t('demo.editScenario') })
+                : onDelete
+            }
+          >
+            <img src={HamburgerIcon} alt='drag handle' />
           </div>
-        )
-      }
-    </div >
+          {onDelete && (
+            <button
+              type='button'
+              onClick={
+                isGuestUser
+                  ? () => showDemoModal({ title: t('demo.editScenario') })
+                  : onDelete
+              }
+              className='flex items-center justify-center'
+              tabIndex={-1}
+              data-testid='field-delete-button'
+            >
+              <img src={TrashIcon} alt='delete' />
+            </button>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

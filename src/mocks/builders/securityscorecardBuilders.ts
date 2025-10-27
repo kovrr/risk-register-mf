@@ -1,13 +1,13 @@
-import { chance } from '../../mocks/builders/buildingUtils';
-import {
+import type {
   SecurityScorecardApiResponse,
   SecurityScorecardCompany,
   SecurityScorecardGrade,
   SecurityScorecardPortfolio,
-} from 'service/securityscorecardHooks';
+} from '@/services/securityscorecardHooks';
+import { chance } from '../../mocks/builders/buildingUtils';
 
 export const buildSecurityScorecardPortfolios = (
-  overrides?: Partial<SecurityScorecardPortfolio>
+  overrides?: Partial<SecurityScorecardPortfolio>,
 ): SecurityScorecardPortfolio => {
   return {
     id: chance.guid(),
@@ -30,7 +30,7 @@ const getScoreGrade = (score: number): SecurityScorecardGrade => {
 };
 
 export const buildSecurityScorecardCompany = (
-  overrides?: Partial<SecurityScorecardCompany>
+  overrides?: Partial<SecurityScorecardCompany>,
 ): SecurityScorecardCompany => {
   const products = Array.from({
     length: chance.integer({ min: 1, max: 5 }),
@@ -73,7 +73,7 @@ export const buildSecurityScorecardCompany = (
     is_custom_vendor: chance.bool(),
     is_unpublished: chance.bool(),
     base: Array.from({ length: chance.integer({ min: 1, max: 5 }) }).map(() =>
-      chance.word()
+      chance.word(),
     ),
     products,
     products_count: products.length,
@@ -82,10 +82,10 @@ export const buildSecurityScorecardCompany = (
 };
 
 export const buildSecurityScorecardPortfoliosApiResponse = (
-  total = 5
+  total = 5,
 ): SecurityScorecardApiResponse<SecurityScorecardPortfolio> => {
   const portfolios = Array.from({ length: total }).map(() =>
-    buildSecurityScorecardPortfolios()
+    buildSecurityScorecardPortfolios(),
   );
   return {
     total,
@@ -94,10 +94,10 @@ export const buildSecurityScorecardPortfoliosApiResponse = (
 };
 
 export const buildSecurityScorecardCompanyApiResponse = (
-  total = 5
+  total = 5,
 ): SecurityScorecardApiResponse<SecurityScorecardCompany> => {
   const companies = Array.from({ length: total }).map(() =>
-    buildSecurityScorecardCompany()
+    buildSecurityScorecardCompany(),
   );
   return {
     total,

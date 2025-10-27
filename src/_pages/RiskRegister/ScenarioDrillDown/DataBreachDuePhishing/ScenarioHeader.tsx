@@ -1,8 +1,7 @@
 import { Card } from '@/components/atoms/card';
 import { Separator } from '@/components/atoms/separator';
-import { DemoExperienceContext } from '@/DemoExperienceContext';
+import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import type { RiskRegisterResponse } from '@/types/riskRegister';
-import Image from 'next/image';
 import { useIsGuestUser } from 'permissions/use-permissions';
 import { type FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -58,8 +57,9 @@ export const ScenarioHeader: FC<Props> = ({ scenario }) => {
                 ? () => showDemoModal({ title: t('demo.editScenario') })
                 : handleEditScenarioClick
             }
+            type='button'
           >
-            <Image alt='' src={PencilIcon} className='h-4 w-4' />
+            <img src={PencilIcon} alt='pencil' className='h-4 w-4' />
           </button>
         </div>
       </Card>

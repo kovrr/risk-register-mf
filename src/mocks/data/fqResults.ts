@@ -18,7 +18,7 @@ import {
   SphereForm,
   SphereSecurityProfileForm,
 } from 'types/sphereForm';
-import { ISO27001FormInitialValues } from '_pages/Sphere/Security/ISO/formInitialValues';
+import { ISO27001FormInitialValues } from '@/security/ISO/formInitialValues';
 import { buildVendorData } from 'mocks/builders/fqInputDataBuilders';
 
 const empAg = {

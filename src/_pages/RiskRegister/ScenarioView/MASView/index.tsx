@@ -1,4 +1,4 @@
-import { useFeatureRiskRegisterReorganize } from '@/service/feature-toggles';
+import { useFeatureRiskRegisterReorganize } from '@/services/feature-toggles';
 import { MASScenarioOldView } from './MASScenarioOldView';
 import { MASScenarioView } from './MASScenarioView';
 

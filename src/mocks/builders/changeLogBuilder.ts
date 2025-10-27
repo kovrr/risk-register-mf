@@ -1,6 +1,4 @@
-import { BasicEventType, EventTypes } from 'types/riskDrivers/eventTypes';
-import { Scenario } from 'types/quantificationData';
-import {
+import type {
   ByEventTypeExposureMetrics,
   ByScenarioExposureMetrics,
   ChangeLog,
@@ -9,7 +7,9 @@ import {
   DetailedChange,
   FQMetrics,
   RiskScenariosMetrics,
-} from '_pages/ResultsNarrative/RiskProgressionTab/PastQuantificationsCard/PastRunsChangeLogs/types';
+} from '@/types/pastRuns';
+import { Scenario } from 'types/quantificationData';
+import { BasicEventType, type EventTypes } from 'types/riskDrivers/eventTypes';
 import { chance } from './buildingUtils';
 
 const modelVersions = [
@@ -21,7 +21,7 @@ const modelVersions = [
 ];
 
 const buildDetailedChanges = (
-  detailedChanged: Partial<DetailedChange> = {}
+  detailedChanged: Partial<DetailedChange> = {},
 ): DetailedChange => {
   return {
     op: chance.pickone(['add', 'remove', 'replace']),
@@ -38,7 +38,7 @@ const buildChanges = (changes: Partial<Changes> = {}): Changes => {
       total_changes: chance.integer({ min: 0, max: 10 }),
       actual_changes: Array.from(
         { length: chance.integer({ min: 0, max: 10 }) },
-        () => buildDetailedChanges()
+        () => buildDetailedChanges(),
       ),
       custom_changes: ['custom change 1', 'custom change 2'],
       ...changes?.company,
@@ -51,7 +51,7 @@ const buildChanges = (changes: Partial<Changes> = {}): Changes => {
       total_changes: chance.integer({ min: 0, max: 10 }),
       actual_changes: Array.from(
         { length: chance.integer({ min: 0, max: 10 }) },
-        () => buildDetailedChanges()
+        () => buildDetailedChanges(),
       ),
       custom_changes: [],
       ...changes?.asset_groups,
@@ -64,7 +64,7 @@ const buildChanges = (changes: Partial<Changes> = {}): Changes => {
       total_changes: chance.integer({ min: 0, max: 10 }),
       actual_changes: Array.from(
         { length: chance.integer({ min: 0, max: 10 }) },
-        () => buildDetailedChanges()
+        () => buildDetailedChanges(),
       ),
       changes_unavailable: chance.bool({ likelihood: 20 }),
       custom_changes: ['custom change 1', 'custom change 2'],
@@ -76,7 +76,7 @@ const buildChanges = (changes: Partial<Changes> = {}): Changes => {
       total_changed_damage_types: chance.integer({ min: 0, max: 10 }),
       actual_changes: Array.from(
         { length: chance.integer({ min: 0, max: 10 }) },
-        () => buildDetailedChanges()
+        () => buildDetailedChanges(),
       ),
       changes_unavailable: chance.bool({ likelihood: 20 }),
       custom_changes: [],
@@ -120,7 +120,7 @@ const buildByScenarioExposureMetrics = ({
         high_exposure_loss: chance.integer({ min: 0, max: 5 * 1e10 }),
         ...(overrides?.[scenario] || {}),
       },
-    ])
+    ]),
   ) as ByScenarioExposureMetrics;
 };
 
@@ -135,7 +135,7 @@ const buildByEventTypeExposure = ({
         high_exposure_loss: chance.integer({ min: 0, max: 1 * 1e10 }),
         ...(override?.[eventType as EventTypes] || {}),
       },
-    ])
+    ]),
   ) as ByEventTypeExposureMetrics;
 };
 
@@ -166,15 +166,15 @@ export const buildChangeLog = (numberOfFqs: number): ChangeLog => {
     const previousRun = buildRunMetrics();
     return index !== numberOfFqs - 1
       ? ({
-          date: chance.date(),
-          changes: buildChanges(),
-          current_run: currentRun,
-          previous_run: previousRun,
-        } as ChangeLogEntry)
+        date: chance.date(),
+        changes: buildChanges(),
+        current_run: currentRun,
+        previous_run: previousRun,
+      } as ChangeLogEntry)
       : ({
-          date: chance.date(),
-          current_run: currentRun,
-        } as ChangeLogEntry);
+        date: chance.date(),
+        current_run: currentRun,
+      } as ChangeLogEntry);
   });
   return {
     total: numberOfFqs,

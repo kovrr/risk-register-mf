@@ -1,12 +1,12 @@
 import { Flex, FlexProps, Text, Tooltip } from '@chakra-ui/react';
-import { ErrorBoundary } from 'components/wrappers/ErrorBoundary';
+import { ErrorBoundary } from '@/components/wrappers/ErrorBoundary';
 import { BsArrowRight } from 'react-icons/bs';
 import { ControlStatus, CONTROL_STATUS_TO_TEXT } from 'types/security-controls';
 import { StatusBadge } from 'components/ui/Badge/StatusBadge';
 import {
   controlsFrameworkHelper,
   getEffectPercentage,
-} from '_pages/FinancialQuantification/Mitigation/utils';
+} from '@/utils/mitigationUtils';
 import {
   SecControlsFramework,
   SecControlsFrameworkType,

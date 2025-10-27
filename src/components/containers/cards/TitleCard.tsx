@@ -1,6 +1,7 @@
-import React from 'react';
-import { Badge, Box, BoxProps, Flex, Link, Text } from '@chakra-ui/react';
-import Image from 'next/image';
+import { Badge, Box, type BoxProps, Flex, Link, Text } from '@chakra-ui/react';
+import type React from 'react';
+
+// Replaced next/image with regular img tag
 
 type TitleCardProps = BoxProps & {
   icon: string;
@@ -42,7 +43,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({
     >
       <Flex direction='column' justifyContent='start'>
         <Flex width='50px' height='50px'>
-          <Image src={icon} alt='' />
+          <img src={icon} alt='' />
         </Flex>
       </Flex>
       <Flex
@@ -104,7 +105,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({
           <Flex direction='column' gap='8px' alignItems='flex-start'>
             {badges.map((badge, idx) => (
               <Badge
-                key={idx}
+                key={badge}
                 variant='scenarioDamageType'
                 fontSize='12px'
                 color='white'

@@ -1,3 +1,5 @@
+import { Check, ChevronDown, ChevronUp, X } from 'lucide-react';
+// Replaced next/image with regular img tag
 import { Card } from '@/components/atoms/card';
 import {
   Collapsible,
@@ -8,8 +10,6 @@ import { Skeleton } from '@/components/atoms/skeleton';
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { cn } from '@/lib/utils';
 import { useCurrentRiskRegisterScenario } from '@/services/hooks';
-import { Check, ChevronDown, ChevronUp, X } from 'lucide-react';
-import Image from 'next/image';
 import { useIsGuestUser } from 'permissions/use-permissions';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -134,8 +134,9 @@ export default function ControlsPreview({
               data-testid='edit-controls-button'
               className='text-gray-500 hover:text-gray-700'
               onClick={handleEditControlsClick}
+              type='button'
             >
-              <Image alt='' src={PencilIcon} className='h-4 w-4' />
+              <img alt='' src={PencilIcon} className='h-4 w-4' />
             </button>
           </div>
         ) : (
@@ -144,8 +145,9 @@ export default function ControlsPreview({
               data-testid='edit-controls-button'
               className='text-gray-500 hover:text-gray-700'
               onClick={handleEditControlsClick}
+              type='button'
             >
-              <Image alt='' src={PencilIcon} className='h-4 w-4' />
+              <img alt='' src={PencilIcon} className='h-4 w-4' />
             </button>
           </div>
         )}

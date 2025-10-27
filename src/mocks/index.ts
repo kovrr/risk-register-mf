@@ -9,7 +9,9 @@ async function initMocks() {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-initMocks();
+if (process.env.NEXT_PUBLIC_USE_MOCKS === 'true') {
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  initMocks();
+}
 
 export {};

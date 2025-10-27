@@ -11,8 +11,8 @@ import {
   ControlStatus,
   ignoredCurrentMinimums,
 } from 'types/security-controls';
-import { ControlRow } from '_pages/FinancialQuantification/Mitigation/types';
-import { getDesc } from '_pages/FinancialQuantification/Mitigation/utils';
+import { ControlRow } from '@/types/assetGroup';
+import { getDesc } from '@/utils/mitigationUtils';
 
 const sortStatusesByValues = (valueA: string, valueB: string): number => {
   // incase we receive nist results, the status will be a number so no need to convert to text.

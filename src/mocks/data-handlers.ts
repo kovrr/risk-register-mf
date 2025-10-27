@@ -1,9 +1,13 @@
+import { applicationTypes } from '@/types/applicationTypes';
+import { QuantificationStatus } from '@/types/quantificationData';
 import type { RiskOwner } from '@/types/riskRegister';
 import { rest } from 'msw';
-import { applicationTypes } from 'types/applicationTypes';
-import { QuantificationStatus } from 'types/quantificationData';
 import { fronteggAuthServerUrl } from '../../cypress/support/commands-lib/mock-frontegg';
-import { getBaseApiUrl } from '../urls-defs';
+
+// Using environment variable instead of urls-defs
+const getBaseApiUrl = () =>
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 import { chance } from './builders/buildingUtils';
 import {
   allVisibleMenuItemsMock,

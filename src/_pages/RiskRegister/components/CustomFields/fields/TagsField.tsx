@@ -1,4 +1,4 @@
-import { DemoExperienceContext } from '@/DemoExperienceContext';
+import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { X } from 'lucide-react';
 import { useIsGuestUser } from 'permissions/use-permissions';
 import React, { useContext, useRef, useState } from 'react';

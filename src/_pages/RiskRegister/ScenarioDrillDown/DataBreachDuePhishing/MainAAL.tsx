@@ -1,12 +1,11 @@
 'use client';
 
 import { Card, CardContent, CardHeader } from '@/components/atoms/card';
-import { DemoExperienceContext } from '@/DemoExperienceContext';
+import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import type {
   ImpactDistribution as ImpactDistributionType,
   RiskRegisterResponse,
 } from '@/types/riskRegister';
-import Image from 'next/image';
 import { useIsGuestUser } from 'permissions/use-permissions';
 import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -76,8 +75,9 @@ export default function MainAAL({ data }: DataBreachDuePhishingProps) {
                     ? () => showDemoModal({ title: t('demo.editScenario') })
                     : handleEditScenarioClick
                 }
+                type='button'
               >
-                <Image alt='' src={PencilIcon} className='h-4 w-4' />
+                <img alt='' src={PencilIcon} className='h-4 w-4' />
               </button>
             </div>
             <IntroSection

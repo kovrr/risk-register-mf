@@ -1,4 +1,4 @@
-import { MenuItem } from '@/components/layout/sidebar/sidebarPermissionsType';
+import type { MenuItem } from '@/types/sidebarPermissionsType';
 
 export const menuItemsMock: MenuItem = {
   id: 'fq_menu_items',

@@ -1,13 +1,13 @@
 import { NistV2SafeguardsByGroup, ScaleEnum } from '@/options/nistV2Controls';
-import { AlloyIntegrationDetails } from '_pages/ROCI/CompanyCreation/Form/utils/types';
+import type { AlloyIntegrationDetails } from '@/types/companyCreation';
 import { MOCK_TECH_SERVICE } from 'mocks/data/hazardMock';
-import { Hazard, ServiceProvider, Tech } from 'types/quantificationData';
-import {
+import type { Hazard, ServiceProvider, Tech } from 'types/quantificationData';
+import type {
   SphereDamageType,
   SphereForm,
   SphereSecurityProfileForm,
 } from 'types/sphereForm';
-import { CompanyApiData, LastFQ } from '../../types/companyForm';
+import type { CompanyApiData, LastFQ } from '../../types/companyForm';
 import { chance } from './buildingUtils';
 
 export const createMockOption = (text: string) => ({
@@ -16,7 +16,7 @@ export const createMockOption = (text: string) => ({
 });
 
 export const buildCCC = (
-  overrides: Partial<SphereDamageType> = {}
+  overrides: Partial<SphereDamageType> = {},
 ): SphereDamageType => ({
   cc_name: 'Custom CC',
   cost_dist: {
@@ -31,7 +31,7 @@ export const buildCCC = (
 });
 
 export const buildSphere = (
-  overrides: Partial<SphereForm> = {}
+  overrides: Partial<SphereForm> = {},
 ): SphereForm => ({
   employee_endpoints: [
     {
@@ -56,7 +56,7 @@ export const buildCisSecurityProfiles = (
   assetGroups?: {
     name: string;
     type: string;
-  }[]
+  }[],
 ): SphereSecurityProfileForm[] => {
   const half = assetGroups?.length ? Math.ceil(assetGroups.length / 2) : 0;
   const first = assetGroups?.slice(0, half);
@@ -104,7 +104,7 @@ export const buildCisV8SecurityProfiles = (
   assetGroups?: {
     name: string;
     type: string;
-  }[]
+  }[],
 ): SphereSecurityProfileForm[] => {
   const half = assetGroups?.length ? Math.ceil(assetGroups.length / 2) : 0;
   const first = assetGroups?.slice(0, half);
@@ -154,7 +154,7 @@ export const buildNistSecurityProfiles = (
   assetGroups?: {
     name: string;
     type: string;
-  }[]
+  }[],
 ): SphereSecurityProfileForm[] => {
   const half = assetGroups?.length ? Math.ceil(assetGroups.length / 2) : 0;
   const first = assetGroups?.slice(0, half);
@@ -202,7 +202,7 @@ const createNistV2SafeguardStructure = () => {
   const structure: any = {};
   Object.entries(NistV2SafeguardsByGroup).forEach(([control, subcontrols]) => {
     structure[control] = {};
-    subcontrols.forEach(subcontrol => {
+    subcontrols.forEach((subcontrol) => {
       structure[control][subcontrol] = chance.pickone([0, 0.25, 0.5, 0.75, 1]);
     });
   });
@@ -213,7 +213,7 @@ export const buildNistV2SecurityProfiles = (
   assetGroups?: {
     name: string;
     type: string;
-  }[]
+  }[],
 ): SphereSecurityProfileForm[] => {
   const half = assetGroups?.length ? Math.ceil(assetGroups.length / 2) : 0;
   const first = assetGroups?.slice(0, half);
@@ -240,7 +240,7 @@ export const buildNistV2SecurityProfiles = (
 };
 
 export const buildCompany = (
-  company: Partial<CompanyApiData> = {}
+  company: Partial<CompanyApiData> = {},
 ): CompanyApiData => {
   const haveFqs = chance.bool();
   const countries = ['US', chance.country()];
@@ -270,7 +270,7 @@ export const buildCompany = (
 };
 
 export const buildCompanyWithLastFq = (
-  company: Partial<CompanyApiData> = {}
+  company: Partial<CompanyApiData> = {},
 ): CompanyApiData => {
   const countries = ['US', chance.country()];
   const states = [chance.state(), chance.state()];
@@ -298,7 +298,7 @@ export const buildCompanyWithLastFq = (
 };
 
 export const buildCompanyWithSphere = (
-  company: Partial<CompanyApiData> = {}
+  company: Partial<CompanyApiData> = {},
 ): CompanyApiData => {
   const haveFqs = chance.bool();
   const countries = ['US', chance.country()];
@@ -329,7 +329,7 @@ export const buildCompanyWithSphere = (
 };
 
 export const buildLastQuantification = (
-  lastQuantification: Partial<LastFQ> = {}
+  lastQuantification: Partial<LastFQ> = {},
 ): LastFQ => {
   return {
     id: chance.guid(),
@@ -354,7 +354,7 @@ export const buildCompanyHazard = (overrides: Partial<Hazard> = {}) => {
 };
 
 export const buildProviders = (
-  overrides: Partial<ServiceProvider> = {}
+  overrides: Partial<ServiceProvider> = {},
 ): ServiceProvider => {
   return {
     cdn: [],
@@ -456,11 +456,11 @@ export type ROCICompanyFormInput = {
 
 const cloudInfraRatioPossibleValues = Array.from(
   { length: 21 },
-  (_, i) => i * 5
+  (_, i) => i * 5,
 ); // 0, 5, 10, 15, ..., 100
 
 export const buildROCICompanyFormInput = (
-  input?: Partial<ROCICompanyFormInput>
+  input?: Partial<ROCICompanyFormInput>,
 ): ROCICompanyFormInput => {
   return {
     name: chance.name(),
@@ -481,7 +481,7 @@ export const buildROCICompanyFormInput = (
     }),
     manual_cloud_providers: chance.pickset(
       ['AWS', 'Azure'],
-      chance.integer({ min: 1, max: 3 })
+      chance.integer({ min: 1, max: 3 }),
     ),
     integration_data: {
       provider: 'alloyscanlite',

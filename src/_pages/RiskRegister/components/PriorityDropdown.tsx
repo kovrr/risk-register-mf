@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/atoms/dropdown-menu';
 import { Dropdown, type Option } from '@/components/molecules/Dropdown';
-import { DemoExperienceContext } from '@/DemoExperienceContext';
+import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { cn } from '@/lib/utils';
 import {
   type RiskRegisterPriority,

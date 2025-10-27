@@ -1,15 +1,15 @@
-import { E2EStatuses, LastE2E } from 'types/companyForm';
 import {
   setCisDefaultValues,
   setCisSafeguardsDefaultValues,
-} from '_pages/ROCI/CompanyCreation/Form/utils/initial-values';
+} from '@/options/initial-values';
 import {
   CIS_V8_CONTROLS_KEY,
   COMPANY_DATA_KEY,
-  MinimalInput,
   MINIMAL_SPHERE_KEY,
-  ROCICompanyApiData,
-} from '_pages/ROCI/CompanyCreation/Form/utils/types';
+  type MinimalInput,
+  type ROCICompanyApiData,
+} from '@/types/companyCreation';
+import { E2EStatuses, type LastE2E } from 'types/companyForm';
 import { chance } from './buildingUtils';
 
 export const buildMinimalSphereData = (): MinimalInput['sphere_data'] => {
@@ -31,7 +31,7 @@ export const buildMinimalSphereData = (): MinimalInput['sphere_data'] => {
           by_theme: setCisDefaultValues(chance.natural({ min: 0, max: 3 })),
           by_control: setCisDefaultValues(chance.natural({ min: 0, max: 3 })),
           by_maturity: setCisSafeguardsDefaultValues(
-            chance.natural({ min: 0, max: 3 })
+            chance.natural({ min: 0, max: 3 }),
           ),
         },
       },
@@ -40,7 +40,7 @@ export const buildMinimalSphereData = (): MinimalInput['sphere_data'] => {
 };
 
 export const buildROCICompanyData = (
-  overrides?: Partial<ROCICompanyApiData>
+  overrides?: Partial<ROCICompanyApiData>,
 ): ROCICompanyApiData => {
   return {
     name: chance.name(),

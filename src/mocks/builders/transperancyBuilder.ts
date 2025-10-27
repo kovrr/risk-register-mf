@@ -1,4 +1,4 @@
-import { Transparency } from '../../types/transparency';
+import type { Transparency } from '@/types/transparency';
 
 export const buildTransparency = (
   overrides: Partial<Transparency> = {}

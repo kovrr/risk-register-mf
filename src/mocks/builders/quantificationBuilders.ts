@@ -1,76 +1,80 @@
+import { ISO27001ControlNumbers } from '@/security/ISO/formInitialValues';
 import { MOCK_TECH_SERVICE } from 'mocks/data/hazardMock';
 import { MODELED_DAMAGE_TYPES } from 'options/constants';
+import type { ResultsInsights } from 'types/insights';
+import {
+  type ByMSBundleScenario,
+  type ByMSBundleToMinimal,
+  MSProductBundles,
+} from 'types/msBundles';
+import {
+  type ByMSProduct,
+  type ByMSProductScenario,
+  MSProducts,
+} from 'types/msProducts';
+import {
+  type InitialAttackVector,
+  initialAttackVectorsAsStringArray,
+} from 'types/riskDrivers/attackVectors';
 import {
   BasicEventType,
-  EventTypes,
+  type EventTypes,
   ServiceProviderEventType,
 } from 'types/riskDrivers/eventTypes';
-import { ResultsInsights } from 'types/insights';
 import {
   ASBCategories,
-  ByControlDomainScenarios,
-  ByRiskScenario,
+  type ByControlDomainScenarios,
+  type ByRiskScenario,
   cisControlIds,
   cisV8Ids,
   ControlDomainScenarios,
-  ControlType,
+  type ControlType,
   nistControlIds,
-  RiskScenario,
+  type RiskScenario,
 } from 'types/security-controls';
 import { chance, fracionValue } from '../../mocks/builders/buildingUtils';
 import {
-  Exposure,
-  OverallResults,
-  QuantificationOld,
-  Highlights,
-  EpPoint,
-  LossEvent,
-  RiskTransfer,
-  Quantification,
-  HazardDistributionValues,
-  ParamStat,
-  RichSimulationExposure,
-  ByCoverageRichSimulationExposure,
-  SimulationExposure,
-  QuantificationData,
-  PastQuantification,
-  TopSimulationStat,
-  QuantificationStatus,
-  ByRiskDriverMinimalBreakdown,
-  ByInitialVectorDetailedExposure,
-  ByEventTypeDetailedExposure,
-  ByRiskDriverExposure,
-  FrequencyHighlights,
-  SICDivisionLetters,
+  type ByCostDetailedExposure,
+  type ByCoverageRichSimulationExposure,
+  type ByDurationDetailedExposure,
+  type ByEventTypeDetailedExposure,
+  type ByEventTypeDrillDown,
+  type ByInitialVectorDetailedExposure,
+  type ByInitialVectorDrillDown,
+  type ByRecordDetailedExposure,
+  type ByRiskDriverExposure,
+  type ByRiskDriverMinimalBreakdown,
+  type ByThresholdDetailedExposure,
+  type CalibrationHighlights,
+  type ControlScenarios,
+  type DataRevenueRange,
   DataRevenueRanges,
-  SICDivisionLetter,
-  DataRevenueRange,
-  CalibrationHighlights,
-  DrillDownLeanSimulationExposure,
-  ByEventTypeDrillDown,
-  ByInitialVectorDrillDown,
-  LeanSimulationExposure,
-  ByCostDetailedExposure,
-  ByThresholdDetailedExposure,
-  ByDurationDetailedExposure,
-  ByRecordDetailedExposure,
-  ControlScenarios,
+  type DrillDownLeanSimulationExposure,
+  type EpPoint,
+  type Exposure,
+  type FrequencyHighlights,
+  type HazardDistributionValues,
+  type Highlights,
+  type LeanSimulationExposure,
+  type LossEvent,
+  type OverallResults,
+  type ParamStat,
+  type PastQuantification,
+  type Quantification,
+  type QuantificationData,
+  type QuantificationOld,
+  QuantificationStatus,
+  type RichSimulationExposure,
+  type RiskTransfer,
+  type SICDivisionLetter,
+  SICDivisionLetters,
+  type SimulationExposure,
+  type TopSimulationStat,
 } from '../../types/quantificationData';
 import { CIS_RECOMMENDATIONS_MOCK } from '../data/cisMock';
 import { buildSphere } from './companyBuilder';
-import {
-  InitialAttackVector,
-  initialAttackVectorsAsStringArray,
-} from 'types/riskDrivers/attackVectors';
-import { buildTopSimulationStats } from './simulationStatsBuilder';
-import { ISO27001ControlNumbers } from '_pages/Sphere/Security/ISO/formInitialValues';
-import {
-  ByMSBundleScenario,
-  ByMSBundleToMinimal,
-  MSProductBundles,
-} from 'types/msBundles';
-import { ByMSProduct, ByMSProductScenario, MSProducts } from 'types/msProducts';
 import { buildVendorData } from './fqInputDataBuilders';
+import { buildTopSimulationStats } from './simulationStatsBuilder';
 
 const pickDamageType = () => {
   return chance.pickone(MODELED_DAMAGE_TYPES);
@@ -647,8 +651,14 @@ export const buildRiskScenarios = (
   currentAAL: number,
 ): Record<RiskScenario, ByRiskScenario> => {
   const randomScenario = (status: RiskScenario): ByRiskScenario => {
-    let minAALDamage, maxAALDamage, minAALEffect, maxAALEffect;
-    let minPMLDamage, maxPMLDamage, minPMLEffect, maxPMLEffect;
+    let minAALDamage: number,
+      maxAALDamage: number,
+      minAALEffect: number,
+      maxAALEffect: number;
+    let minPMLDamage: number,
+      maxPMLDamage: number,
+      minPMLEffect: number,
+      maxPMLEffect: number;
 
     if (status === 'MINIMAL') {
       minAALDamage = currentAAL * 0.01;
@@ -670,13 +680,19 @@ export const buildRiskScenarios = (
       maxPMLEffect = 0.5;
     }
     return {
-      aal_damage: chance.integer({ min: minAALDamage, max: maxAALDamage }),
+      aal_damage: chance.integer({
+        min: minAALDamage || 0,
+        max: maxAALDamage || 0,
+      }),
       aal_effect: chance.floating({
-        min: minAALEffect,
-        max: maxAALEffect,
+        min: minAALEffect || 0,
+        max: maxAALEffect || 0,
         fixed: 2,
       }),
-      pml_damage: chance.integer({ min: minPMLDamage, max: maxPMLDamage }),
+      pml_damage: chance.integer({
+        min: minPMLDamage || 0,
+        max: maxPMLDamage || 0,
+      }),
       pml_effect: chance.floating({
         min: minPMLEffect,
         max: maxPMLEffect,
@@ -1115,9 +1131,9 @@ export const buildByOtherRiskDriversBreakDown = <
   const events =
     eventType === 'event'
       ? [
-          ...Object.values(BasicEventType),
-          ...Object.values(ServiceProviderEventType),
-        ]
+        ...Object.values(BasicEventType),
+        ...Object.values(ServiceProviderEventType),
+      ]
       : initialAttackVectorsAsStringArray;
   return Object.fromEntries(
     events.map((event) => {
@@ -1153,8 +1169,8 @@ const buildByRiskScenarioDrillDown = <
 ): T extends EventTypes
   ? ByEventTypeDrillDown
   : T extends InitialAttackVector
-    ? ByInitialVectorDrillDown
-    : never => {
+  ? ByInitialVectorDrillDown
+  : never => {
   const controls =
     sec_controls_framework === 'cis'
       ? cisControlIds
@@ -1182,8 +1198,8 @@ const buildByRiskScenarioDrillDown = <
   return drillDown as T extends EventTypes
     ? ByEventTypeDrillDown
     : T extends InitialAttackVector
-      ? ByInitialVectorDrillDown
-      : never;
+    ? ByInitialVectorDrillDown
+    : never;
 };
 
 const buildByEventTypeDetailedExposure = (
@@ -1431,8 +1447,8 @@ export const buildNewSchemaResults = (
   }: Partial<Quantification> & {
     sec_controls_frameworks: 'cis' | 'nist' | 'iso27001' | 'cis_v8';
   } = {
-    sec_controls_frameworks: 'cis',
-  },
+      sec_controls_frameworks: 'cis',
+    },
 ): Quantification => {
   const { id: id1, ...ag1 } = buildAgData();
   const { id: id2, ...ag2 } = buildAgData();

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useAuthUser } from '@frontegg/react';
-import { configureAxiosInstance } from '@/services/service';
+import { configureAxiosInstance } from '@/services/configureAxiosInstance';
 import { HttpClientContext } from '@/state/HttpClientContext';
-import { AxiosInstance } from 'axios';
+import { useAuthUser } from '@frontegg/react';
+import type { AxiosInstance } from 'axios';
+import React, { useEffect } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -16,10 +16,7 @@ export const InstanceWrapper = ({ children, instance }: Props) => {
   // This stores the current jwt in the same *mutable* variable
   const jwtRef = React.useRef(jwt);
   const axiosRef = React.useRef(
-    instance || configureAxiosInstance(() => jwtRef.current)
-  );
-  const nextAxiosRef = React.useRef(
-    instance || configureAxiosInstance(() => jwtRef.current, '/')
+    instance || configureAxiosInstance(() => jwtRef.current, '/'),
   );
 
   useEffect(() => {
@@ -30,7 +27,6 @@ export const InstanceWrapper = ({ children, instance }: Props) => {
     <HttpClientContext.Provider
       value={{
         axiosInstance: axiosRef.current,
-        nextAxiosInstance: nextAxiosRef.current,
       }}
     >
       {children}

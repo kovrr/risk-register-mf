@@ -1,4 +1,4 @@
-import { DemoExperienceContext } from '@/DemoExperienceContext';
+import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { CustomField } from '@/types/riskRegister';
 import { Plus } from 'lucide-react';
 import { useIsGuestUser } from 'permissions/use-permissions';
@@ -114,6 +114,7 @@ export function CustomFieldsContainer({
               fontWeight: 600,
               lineHeight: 'normal',
             }}
+            type='button'
           >
             <Plus size={16} /> {t('riskRegister.customFields.add')}
           </button>
