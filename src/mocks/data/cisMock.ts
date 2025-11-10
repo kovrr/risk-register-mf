@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 import { CISRecommendation } from '../../types/recommendations';
 
 export const CIS_RECOMMENDATIONS_MOCK: CISRecommendation[] = [

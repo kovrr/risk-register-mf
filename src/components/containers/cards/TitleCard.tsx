@@ -103,7 +103,7 @@ export const TitleCard: React.FC<TitleCardProps> = ({
             Damage Types
           </Text>
           <Flex direction='column' gap='8px' alignItems='flex-start'>
-            {badges.map((badge, idx) => (
+            {badges.map((badge) => (
               <Badge
                 key={badge}
                 variant='scenarioDamageType'

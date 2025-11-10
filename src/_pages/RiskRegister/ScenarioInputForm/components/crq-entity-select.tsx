@@ -32,14 +32,26 @@ export default function CRQEntitySelect({
 
   const getCompanies = async (_query?: string): Promise<CompanyApiData[]> => {
     const { data } = await _getCompanies();
-    // @ts-expect-error
-    return (data?.items
-      .filter((company: CompanyApiData) => !isCompanyWithError(company))
-      .filter(
-        (company: CompanyApiData) =>
-          'status' in company && company.status === CompanyStatus.COMPLETED,
-      ) ?? []) as CompanyApiData[];
+    const items = (data as { items?: unknown[] } | undefined)?.items ?? [];
+    return items
+      .filter((company): company is CompanyApiData => {
+        return (
+          typeof company === 'object' &&
+          company !== null &&
+          'id' in company &&
+          'name' in company &&
+          'status' in company
+        );
+      })
+      .filter((company) => !isCompanyWithError(company))
+      .filter((company) => company.status === CompanyStatus.COMPLETED);
   };
+
+  const isCompany = (option: unknown): option is CompanyApiData =>
+    typeof option === 'object' &&
+    option !== null &&
+    'name' in option &&
+    'id' in option;
 
   return (
     <FormField<CRQScenarioFormValues>
@@ -53,17 +65,24 @@ export default function CRQEntitySelect({
           <FormItem>
             <FormLabel required>{t('labels.modelingEntity')}</FormLabel>
             <FormControl>
-              <AsyncSelect<CompanyApiData>
+              <AsyncSelect
                 preload
                 filterFn={(company, input) =>
+                  isCompany(company) &&
                   company.name.toLowerCase().includes(input.toLowerCase())
                 }
                 triggerClassName='w-[100%] rounded-[10px]'
                 className='w-[100%]'
                 fetcher={getCompanies}
-                renderOption={(company) => company.name}
-                getDisplayValue={(company) => company.name}
-                getOptionValue={(company) => company.id}
+                renderOption={(company) =>
+                  isCompany(company) ? company.name : ''
+                }
+                getDisplayValue={(company) =>
+                  isCompany(company) ? company.name : ''
+                }
+                getOptionValue={(company) =>
+                  isCompany(company) ? company.id : ''
+                }
                 label='Modeling Entity'
                 placeholder='Select Entity...'
                 value={typedValue}

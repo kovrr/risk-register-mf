@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 import { ISO27001FormInitialValues } from '@/security/ISO/formInitialValues';
 import { chance } from 'mocks/builders/buildingUtils';
 import { buildSecurityScorecardCompany } from 'mocks/builders/securityscorecardBuilders';

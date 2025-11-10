@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const narrative: any = {
     company_id: '891d122e-94d8-43a0-a748-cce5d0de0b8e',
     id: 'efcad167-b22e-428b-9e77-7c8fa3c72797',

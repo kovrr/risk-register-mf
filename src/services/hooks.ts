@@ -683,12 +683,12 @@ export const useDeleteRiskRegisterScenario = (
  */
 export const useExportRiskRegisterScenario = (
   options?: Omit<
-    UseMutationOptions<unknown, unknown, unknown, unknown>,
+    UseMutationOptions<unknown, AxiosError, void, unknown>,
     'mutationFn'
   >,
 ) => {
   const client = useAxiosInstance();
-  return useMutation({
+  return useMutation<unknown, AxiosError, void>({
     mutationFn: () =>
       client
         .get(`${API_URL.RISK_REGISTER}/scenarios/export`, {

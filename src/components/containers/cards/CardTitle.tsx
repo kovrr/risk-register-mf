@@ -1,5 +1,5 @@
 import { Flex, FlexProps, Text } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 export const CardTitle: FC<
   { title: string; description?: string; titleFontSize?: string } & FlexProps

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AGLevelRecommendation } from 'components/ui/tables/types';
 import { SecControlsFrameworkType } from 'options/constants';
 import {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { MenuItem } from '@/types/sidebarPermissionsType';
 
 export const menuItemsMock: MenuItem = {

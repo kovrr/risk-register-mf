@@ -63,7 +63,7 @@ export default function RiskManagementFormOld({
   const { t } = useTranslation('riskRegister', {
     keyPrefix: 'scenarioDrillDown.riskManagement',
   });
-  const { mutateAsync: updateRiskRegisterScenario, isLoading } =
+  const { mutateAsync: updateRiskRegisterScenario, isPending } =
     useUpdateRiskRegisterScenarioField({
       onSuccess: () => {
         setTicketState('valid');
@@ -130,7 +130,7 @@ export default function RiskManagementFormOld({
             value={scenario.scenario_data.risk_priority}
             onChange={handlePriorityChange}
             key={scenario.scenario_id}
-            disabled={isLoading}
+            disabled={isPending}
           />
         </div>
 
@@ -140,7 +140,7 @@ export default function RiskManagementFormOld({
             value={scenario.scenario_data.response_plan}
             onChange={handleResponsePlanChange}
             key={scenario.scenario_id}
-            disabled={isLoading}
+            disabled={isPending}
           />
         </div>
 
@@ -149,7 +149,7 @@ export default function RiskManagementFormOld({
           <RiskOwnerDropdownMutate
             value={scenario.scenario_data.risk_owner}
             rowData={registerToRowData(scenario)}
-            disabled={isLoading}
+            disabled={isPending}
           />
         </div>
 
@@ -176,7 +176,7 @@ export default function RiskManagementFormOld({
             )}
             onChange={(e) => handleLinkChange(e.target.value)}
             defaultValue={scenario.scenario_data.ticket || ''}
-            disabled={isLoading}
+            disabled={isPending}
           />
         </div>
 

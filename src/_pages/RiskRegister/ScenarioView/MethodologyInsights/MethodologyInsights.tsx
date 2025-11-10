@@ -29,13 +29,15 @@ export const MethodologyInsight: React.FC<Props> = ({ initialMethodology }) => {
   });
   const [methodology, setMethodology] = useState(initialMethodology);
   const isSaveDisabled = methodology === initialMethodology;
-  const { mutateAsync: updateScenario, isLoading: isSaving } =
+  const { mutateAsync: updateScenario, isPending: isSaving } =
     useUpdateRiskRegisterScenarioField({
       onSuccess: async (updatedScenario) => {
-        await queryClient.invalidateQueries([
-          QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-          updatedScenario.scenario_id,
-        ]);
+        await queryClient.invalidateQueries({
+          queryKey: [
+            QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+            updatedScenario.scenario_id,
+          ],
+        });
         toast.success('Methodology insights updated successfully');
       },
       onError: (error) => {

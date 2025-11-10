@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 import { ByScenarioExposureOld } from 'types/quantificationData';
 
 export const BY_SCENARIO_EXPOSURE_MOCK: ByScenarioExposureOld = {

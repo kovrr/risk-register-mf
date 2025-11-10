@@ -159,17 +159,14 @@ const useData = () => {
 
   const {
     data: scenarios,
-    isLoading,
+    isPending,
     isFetching,
-  } = useRiskRegisterScenarios(
-    {
-      page: pageIndex + 1,
-      size: pageSize,
-      sort_by: sortBy,
-      sort_order: sortOrder,
-    },
-    { keepPreviousData: true },
-  );
+  } = useRiskRegisterScenarios({
+    page: pageIndex + 1,
+    size: pageSize,
+    sort_by: sortBy,
+    sort_order: sortOrder,
+  });
 
   const data = useMemo(() => {
     if (!scenarios || !scenarios.items || !Array.isArray(scenarios.items))
@@ -215,7 +212,7 @@ const useData = () => {
     totalCount: scenarios?.total || 0,
     sorting,
     setSorting,
-    isLoading,
+    isLoading: isPending,
     isFetching,
   };
 };

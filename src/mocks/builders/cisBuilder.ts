@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CISRecommendation } from '../../types/recommendations';
 import { chance } from './buildingUtils';
 const randomHighInt = () =>

@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Trans, TransProps } from 'react-i18next';
 
 type Props = TransProps<any> & PropsWithChildren;

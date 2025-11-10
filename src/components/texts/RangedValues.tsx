@@ -1,8 +1,7 @@
 import { Flex } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { QuadrupleXLText, QuadrupleXLTextExtraBold } from './CommonTexts';
 
-        
 const DASH_SIGN = '-';
 
 type RangeTextDisplayProps = {

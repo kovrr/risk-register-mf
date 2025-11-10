@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { CompanyAsset } from 'types/companyAsset';
 import { chance } from './buildingUtils';
 

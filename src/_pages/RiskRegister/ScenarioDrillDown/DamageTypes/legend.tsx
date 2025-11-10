@@ -1,5 +1,5 @@
 import { Flex, FlexProps } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 export const Legend: FC<FlexProps> = ({ children, ...restProps }) => {
   return (

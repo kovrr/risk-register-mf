@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Text, TextProps } from '@chakra-ui/react';
 
 export const PreviewPaneTitle: FC<TextProps> = ({ children, ...restProps }) => {

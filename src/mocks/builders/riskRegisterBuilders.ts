@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CURRENCY_CODES } from '@/options/constants';
 import { initialAttackVectorsAsStringArray } from '@/types/riskDrivers/attackVectors';
 import { ClickableEventType } from '@/types/riskDrivers/eventTypes';

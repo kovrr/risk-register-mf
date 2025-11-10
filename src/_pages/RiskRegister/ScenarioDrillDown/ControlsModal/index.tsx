@@ -51,16 +51,18 @@ export default function ControlsModal({
   const { t } = useTranslation('riskRegister', {
     keyPrefix: 'scenarioDrillDown.controlsModal',
   });
-  const { mutateAsync: updateScenarioField, isLoading: isSaving } =
+  const { mutateAsync: updateScenarioField, isPending: isSaving } =
     useUpdateRiskRegisterScenarioField({
       onSuccess: async (updatedScenario) => {
-        await queryClient.invalidateQueries([
-          QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-          updatedScenario.scenario_id,
-        ]);
+        await queryClient.invalidateQueries({
+          queryKey: [
+            QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+            updatedScenario.scenario_id,
+          ],
+        });
         toast.success('Controls saved successfully');
       },
-      onError: (error) => {
+      onError: (_error) => {
         toast.error('Failed to save controls. Please try again.');
       },
     });

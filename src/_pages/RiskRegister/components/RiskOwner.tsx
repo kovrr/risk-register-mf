@@ -73,7 +73,9 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
 
   const { mutateAsync: createRiskOwner } = useCreateRiskOwner({
     onSuccess: async (riskOwner) => {
-      await queryClient.invalidateQueries(QUERY_KEYS.RISK_OWNER);
+      await queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.RISK_OWNER,
+      });
       setIsInvitationFormOpen(false);
       await handleChange(riskOwner.id);
     },
@@ -152,7 +154,7 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
 
   return (
     <>
-      <AsyncSelect<RiskOwner>
+      <AsyncSelect
         key={currentValue}
         preload
         onCreateOption={(inputValue) => {

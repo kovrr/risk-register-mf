@@ -10,7 +10,6 @@ import {
   TableColumnHeaderProps,
 } from '@chakra-ui/react';
 import { flexRender, Table as ReactTable } from '@tanstack/react-table';
-import React from 'react';
 
 type Props<T> = {
   table: ReactTable<T>;

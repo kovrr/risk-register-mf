@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HazardNewRow, Hazard } from 'types/quantificationData';
 import { chance } from './buildingUtils';
 

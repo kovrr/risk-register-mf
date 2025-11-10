@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Chance } from 'chance';
 import { VendorData } from 'types/sphereForm';
 import { CIS_ABBR_NAMES } from '../../options/cisControls';

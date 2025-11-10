@@ -1,5 +1,5 @@
 import { Text, TextProps } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 export const OneAndHalfXSText: FC<TextProps> = ({ children, ...restProps }) => {
   return (

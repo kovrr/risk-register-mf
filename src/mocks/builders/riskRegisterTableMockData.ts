@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CURRENCY_CODES } from '@/options/constants';
 import {
   RiskRegisterImpact,

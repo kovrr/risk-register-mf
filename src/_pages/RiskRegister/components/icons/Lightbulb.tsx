@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const Lightbulb = () => {
   return (
     <svg

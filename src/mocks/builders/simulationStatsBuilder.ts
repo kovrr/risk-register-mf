@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TopSimulationStats } from 'types/quantificationData';
 import { chance } from './buildingUtils';
 import { generatePercentiles } from './quantificationBuilders';

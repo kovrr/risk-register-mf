@@ -44,6 +44,7 @@ export const RiskDriverDamageTypes: FC<
     >
       <CardWithDescription
         data-testid='DamageTypes'
+        title={title ?? t('title')}
         description={description ?? t('description')}
         moreInfo={t('moreInfo')}
         moreInfoLink={t('moreInfoLink')}

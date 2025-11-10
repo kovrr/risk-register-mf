@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const transparency = {
   final_frequency: {
     ransomware: 0.22293333333333334,

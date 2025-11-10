@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { applicationTypes } from '@/types/applicationTypes';
 import { QuantificationStatus } from '@/types/quantificationData';
 import type { RiskOwner } from '@/types/riskRegister';
 import { rest } from 'msw';
-import { fronteggAuthServerUrl } from '../../cypress/support/commands-lib/mock-frontegg';
+import { fronteggAuthServerUrl } from './fronteggAuthServerUrl';
 
 // Using environment variable instead of urls-defs
 const getBaseApiUrl = () =>

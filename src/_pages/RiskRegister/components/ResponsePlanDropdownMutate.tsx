@@ -2,7 +2,7 @@ import {
   RiskRegisterResponsePlan,
   RiskRegisterRow,
 } from '@/types/riskRegister';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ResponsePlanDropdown } from './ResponsePlanDropdown';
 import { useUpdateDropdownCell } from '../RiskRegisterTable/useUpdateDropdownCell';
 import { ErrorDialog } from './ErrorDialog';
