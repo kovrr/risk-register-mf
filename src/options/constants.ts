@@ -248,7 +248,7 @@ export const MODELED_DAMAGE_TYPES = [
 
 export const isModeledDamageType = (damageType: string) => {
   return MODELED_DAMAGE_TYPES.includes(
-    damageType.toLowerCase().replaceAll(' ', '_'),
+    damageType.toLowerCase().replace(/ /g, '_'),
   );
 };
 

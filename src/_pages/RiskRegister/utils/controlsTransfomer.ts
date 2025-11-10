@@ -124,7 +124,7 @@ export const convertIsoToImplementationLevel = (
 ): ImplementationLevel => {
   if (!iso) return {};
 
-  return Object.entries(iso).reduce((acc, [category, controls]) => {
+  return Object.entries(iso).reduce((acc, [_category, controls]) => {
     Object.entries(controls).forEach(([controlNumber, value]) => {
       acc[controlNumber] = value;
     });
@@ -200,7 +200,7 @@ export const convertCisV8SafeguardsImplementationToImplementationLevel = (
 
   const flattenedImplementationLevel = Object.entries(
     implementationLevel,
-  ).reduce((acc, [category, controls]) => {
+  ).reduce((acc, [_category, controls]) => {
     Object.entries(controls).forEach(([controlNumber, value]) => {
       acc[controlNumber] = value;
     });
@@ -234,7 +234,7 @@ export const convertCisV7SafeguardsImplementationToImplementationLevel = (
 
   const flattenedImplementationLevel = Object.entries(
     implementationLevel,
-  ).reduce((acc, [category, controls]) => {
+  ).reduce((acc, [_category, controls]) => {
     Object.entries(controls).forEach(([controlNumber, value]) => {
       acc[controlNumber] = value;
     });
@@ -276,12 +276,15 @@ export const convertImplementationLevelToTisax = (
 export const convertNistV2SafeguardsToImplementationLevel = (
   implementationLevel: NistV2SafeguardsImplementation,
 ): ImplementationLevel => {
-  return Object.entries(implementationLevel).reduce((acc, [category, controls]) => {
-    Object.entries(controls).forEach(([controlNumber, value]) => {
-      acc[controlNumber] = value;
-    });
-    return acc;
-  }, {} as any) as ImplementationLevel;
+  return Object.entries(implementationLevel).reduce(
+    (acc, [_category, controls]) => {
+      Object.entries(controls).forEach(([controlNumber, value]) => {
+        acc[controlNumber] = value;
+      });
+      return acc;
+    },
+    {} as any,
+  ) as ImplementationLevel;
 };
 
 export const convertImplementationLevelToNistV2 = (

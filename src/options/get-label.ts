@@ -50,7 +50,7 @@ export const getOptionsFromKXEs = (
   return kxes
     .filter((kxe) => !kxe.startsWith('os'))
     .map((kxe) => ({
-      label: capitalize(kxe.replaceAll(/:|_|\*/g, ' ')), // replace (':', '*', '_') with white space
+      label: capitalize(kxe.replace(/[:_*]/g, ' ')), // replace (':', '*', '_') with white space
       value: kxe,
       type: type,
     }));
@@ -60,7 +60,7 @@ export const getOsOptions = (kxes: string[]) => {
   return kxes
     .filter((kxe) => kxe.startsWith('os'))
     .map((kxe) => ({
-      label: capitalize(kxe.replaceAll(/:|_|\*/g, ' ')), // replace (':', '*', '_') with white space
+      label: capitalize(kxe.replace(/[:_*]/g, ' ')), // replace (':', '*', '_') with white space
       value: kxe,
     }));
 };
