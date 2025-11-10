@@ -16,7 +16,6 @@ import {
 } from '@/types/riskRegister';
 import type { FeatureToggle, TenantData } from '@/types/tenantData';
 import {
-  type QueryObserverOptions,
   type UseMutationOptions,
   type UseQueryOptions,
   useMutation,
@@ -95,9 +94,20 @@ export interface CreateGenericNoteParams {
 /**
  * Fetch tenant data including feature toggles
  */
-export const useTenantData = (options?: UseQueryOptions<TenantData>) => {
+type StrippedQueryOptions<TQueryFnData, TError = AxiosError, TData = TQueryFnData> =
+  Omit<UseQueryOptions<TQueryFnData, TError, TData>, 'queryKey' | 'queryFn'> & {
+    /**
+     * React Query v5 removed `keepPreviousData`, but we allow it for backward compatibility.
+     * It is ignored at runtime by the underlying library.
+     */
+    keepPreviousData?: boolean;
+  };
+
+export const useTenantData = (
+  options?: StrippedQueryOptions<TenantData>,
+) => {
   const client = useAxiosInstance();
-  return useQuery<TenantData>({
+  return useQuery<TenantData, AxiosError>({
     queryKey: QUERY_KEYS.TENANT_DATA,
     queryFn: () => client.get(API_URL.TENANT).then(({ data }) => data),
     ...options,
@@ -115,7 +125,7 @@ export const useCompanies = (
     fields?: string[];
     id?: string;
   },
-  options?: UseQueryOptions<unknown>,
+  options?: StrippedQueryOptions<{ items: CompanyApiResponseItem[]; total: number }>,
 ) => {
   const client = useAxiosInstance();
 
@@ -133,10 +143,9 @@ export const useCompanies = (
     queryParams.append('id', id);
   }
   const urlWithParams = `${API_URL.COMPANIES}?${queryParams.toString()}`;
-  return useQuery<{ items: CompanyApiResponseItem[]; total: number }>({
+  return useQuery<{ items: CompanyApiResponseItem[]; total: number }, AxiosError>({
     queryKey: [...QUERY_KEYS.COMPANIES, page, size, fields, id],
     queryFn: () => client.get(urlWithParams).then(({ data }) => data),
-    // @ts-expect-error - React Query generic type mismatch
     ...options,
   });
 };
@@ -146,17 +155,16 @@ export const useCompanies = (
  */
 export const useCompany = (
   id: string,
-  options?: QueryObserverOptions<unknown, unknown>,
+  options?: StrippedQueryOptions<CompanyData, AxiosError>,
 ) => {
   const client = useAxiosInstance();
-  return useQuery<CompanyData>({
+  return useQuery<CompanyData, AxiosError>({
     queryKey: [...QUERY_KEYS.COMPANIES, { id }],
     queryFn: () => {
       return client.get(`${API_URL.COMPANIES}/${id}`).then(({ data }) => {
         return data;
       });
     },
-    // @ts-expect-error - React Query generic type mismatch
     ...options,
   });
 };
@@ -178,12 +186,12 @@ export const useCurrentCompanyIdIfExists = () => {
 const useFeatureToggle = (
   name: string,
 ): { featureToggle: FeatureToggle | undefined; isLoading: boolean } => {
-  const { data: tenantData, isLoading } = useTenantData();
+  const { data: tenantData, isPending } = useTenantData();
   return {
     featureToggle: tenantData?.feature_toggles.find(
       (toggle) => toggle.name === name,
     ),
-    isLoading,
+    isLoading: isPending,
   };
 };
 
@@ -224,7 +232,7 @@ export const useFeatureRiskRegisterReorganize = () => {
  */
 export const useCRQScenarioRemainingLicenses = () => {
   const client = useAxiosInstance();
-  return useQuery<number>({
+  return useQuery<number, AxiosError>({
     queryKey: [QUERY_KEYS.TENANT_DATA, 'remaining_crq_scenarios_licenses'],
     queryFn: () =>
       client
@@ -266,7 +274,7 @@ export const useCurrentQuantificationIdIfExists = () => {
  */
 export const useQuantification = (id: string) => {
   const client = useAxiosInstance();
-  return useQuery<QuantificationData>({
+  return useQuery<QuantificationData, AxiosError>({
     queryKey: [QUERY_KEYS.FQ, { id }],
     queryFn: () => client.get(`${API_URL.FQ}/${id}`).then(({ data }) => data),
   });
@@ -342,7 +350,7 @@ export const useRiskRegisterScenarios = (
     sort_by?: string;
     sort_order?: string;
   },
-  options?: UseQueryOptions<unknown>,
+  options?: StrippedQueryOptions<RiskRegisterScenarioPaginatedResponse>,
 ) => {
   const client = useAxiosInstance();
 
@@ -363,7 +371,7 @@ export const useRiskRegisterScenarios = (
     queryParams.append('sort_order', sort_order);
   }
   const urlWithParams = `${API_URL.RISK_REGISTER}/scenarios?${queryParams.toString()}`;
-  return useQuery<RiskRegisterScenarioPaginatedResponse>({
+  return useQuery<RiskRegisterScenarioPaginatedResponse, AxiosError>({
     queryKey: [
       ...QUERY_KEYS.RISK_REGISTER_SCENARIOS_TABLE,
       page,
@@ -374,7 +382,6 @@ export const useRiskRegisterScenarios = (
       sort_order,
     ],
     queryFn: () => client.get(urlWithParams).then(({ data }) => data),
-    // @ts-expect-error - React Query generic type mismatch
     ...options,
   });
 };
@@ -384,8 +391,8 @@ export const useRiskRegisterScenarios = (
  */
 export const useRiskRegisterScenario = (
   scenarioId: string,
-  options?: QueryObserverOptions<RiskRegisterResponse, AxiosError>,
-  customQueryKey: unknown[] = [],
+  options?: StrippedQueryOptions<RiskRegisterResponse, AxiosError>,
+  customQueryKey: readonly unknown[] = [],
 ) => {
   const client = useAxiosInstance();
   return useQuery<RiskRegisterResponse, AxiosError>({
@@ -403,7 +410,7 @@ export const useRiskRegisterScenario = (
  */
 export const useMetricHistory = (
   scenarioId: string,
-  options?: QueryObserverOptions<ScenarioMetricsHistory, AxiosError>,
+  options?: StrippedQueryOptions<ScenarioMetricsHistory, AxiosError>,
 ) => {
   const client = useAxiosInstance();
 
@@ -716,13 +723,15 @@ export const useExportRiskRegisterScenario = (
  */
 export const useRiskRegisterScenarioControls = (
   scenarioId: string,
-  options?: UseQueryOptions<unknown>,
+  options?: StrippedQueryOptions<unknown, AxiosError>,
 ) => {
   const client = useAxiosInstance();
-  return useQuery<unknown>({
+  return useQuery<unknown, AxiosError>({
     queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId],
     queryFn: () =>
-      client.get(`${API_URL.RISK_REGISTER}/scenarios/${scenarioId}/controls`),
+      client
+        .get(`${API_URL.RISK_REGISTER}/scenarios/${scenarioId}/controls`)
+        .then(({ data }) => data),
     ...options,
   });
 };
@@ -777,7 +786,7 @@ export const useRequestPreDefinedScenario = (
  * Fetch list of risk owners (users who can be assigned to scenarios)
  */
 export const useRiskOwners = (
-  options?: UseQueryOptions<RiskOwner[], AxiosError>,
+  options?: StrippedQueryOptions<RiskOwner[], AxiosError>,
 ) => {
   const client = useAxiosInstance();
   return useQuery<RiskOwner[], AxiosError>({
@@ -805,13 +814,13 @@ export const useCreateRiskOwner = (
         .post(`${API_URL.TENANT}/invite`, userDetails)
         .then(({ data }) => data),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       // Invalidate the risk owners query
       void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RISK_OWNER] });
 
       // Call the original onSuccess if it exists
       if (options?.onSuccess) {
-        void options.onSuccess(data, variables, context);
+        void options.onSuccess(data, variables, onMutateResult, context);
       }
     },
   });
@@ -827,7 +836,7 @@ export const useCreateRiskOwner = (
 export const useNotes = (
   parentType: 'quantification' | 'scenario',
   parentId: string,
-  options?: UseQueryOptions<Note[], AxiosError>,
+  options?: StrippedQueryOptions<Note[], AxiosError>,
 ) => {
   const client = useAxiosInstance();
 
@@ -920,7 +929,7 @@ export const useCreateNote = (
         });
     },
     ...options,
-    onSuccess: (data, variables) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       // Invalidate and refetch the notes for this parent
       void queryClient.invalidateQueries({
         queryKey: [
@@ -930,7 +939,7 @@ export const useCreateNote = (
         ],
       });
       if (options?.onSuccess) {
-        void options.onSuccess(data, variables, undefined);
+        void options.onSuccess(data, variables, onMutateResult, context);
       }
     },
   });
