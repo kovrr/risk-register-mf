@@ -1,6 +1,7 @@
 import type { InvitationFormValues } from '@/components/molecules/form-config';
 import { useAxiosInstance } from '@/state/HttpClientContext';
 import type { CompanyApiResponseItem, CompanyData } from '@/types/companyForm';
+import type { FrameworkResponseList } from '@/types/frameworkType';
 import type { QuantificationData } from '@/types/quantificationData';
 import {
   type CRQScenarioCreateRequest,
@@ -36,6 +37,7 @@ export const QUERY_KEYS = {
   RISK_OWNER: ['RISK_REGISTER_RISK_OWNER'],
   DOCUMENTS: ['DOCUMENTS'],
   FQ: ['FQ'], // Financial Quantification
+  FRAMEWORKS: `FRAMEWORKS`,
 };
 
 const baseURL: string =
@@ -51,6 +53,7 @@ export const API_URL = {
   TENANT: `${baseURL}/api/tenant`,
   DOCUMENTS: `${baseURL}/api/documents`,
   FQ: `${baseURL}/api/fq`, // Financial Quantification
+  FRAMEWORKS: `${baseURL}/api/self-assessment/frameworks`,
 };
 
 // ============================================================================
@@ -389,7 +392,11 @@ export const useRiskRegisterScenario = (
 ) => {
   const client = useAxiosInstance();
   return useQuery<RiskRegisterResponse, AxiosError>({
-    queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId, ...customQueryKey],
+    queryKey: [
+      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+      scenarioId,
+      ...customQueryKey,
+    ],
     queryFn: () =>
       client
         .get(`${API_URL.RISK_REGISTER}/scenarios/${scenarioId}`)
@@ -408,7 +415,11 @@ export const useMetricHistory = (
   const client = useAxiosInstance();
 
   return useQuery<ScenarioMetricsHistory, AxiosError>({
-    queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId, 'metrics-history'],
+    queryKey: [
+      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+      scenarioId,
+      'metrics-history',
+    ],
     queryFn: () =>
       client
         .get(`${API_URL.RISK_REGISTER}/scenarios/${scenarioId}/metrics-history`)
@@ -530,7 +541,11 @@ export const useUpdateRiskRegisterScenarioField = (
   const { data: scenario, isError } = useRiskRegisterScenario(scenarioId);
 
   return useMutation<RiskRegisterResponse, AxiosError, UpdateFieldParams>({
-    mutationKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, 'updateField', scenarioId],
+    mutationKey: [
+      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+      'updateField',
+      scenarioId,
+    ],
     mutationFn: async (data) => {
       if (!scenario || isError) throw new Error('Scenario not loaded');
 
@@ -597,7 +612,11 @@ export const useUpdateRiskRegisterScenario = (
     AxiosError<{ detail: string }>,
     UpdateFieldParams
   >({
-    mutationKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, 'updateField', scenarioId],
+    mutationKey: [
+      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+      'updateField',
+      scenarioId,
+    ],
     mutationFn: async (data) => {
       const { data: scenario, isError } = await refetch();
       if (!scenario || isError) throw new Error('Scenario not loaded');
@@ -782,7 +801,8 @@ export const useRiskOwners = (
   const client = useAxiosInstance();
   return useQuery<RiskOwner[], AxiosError>({
     queryKey: [QUERY_KEYS.RISK_OWNER],
-    queryFn: () => client.get(`${API_URL.TENANT}/users`).then(({ data }) => data),
+    queryFn: () =>
+      client.get(`${API_URL.TENANT}/users`).then(({ data }) => data),
     ...options,
   });
 };
@@ -923,11 +943,7 @@ export const useCreateNote = (
     onSuccess: (data, variables) => {
       // Invalidate and refetch the notes for this parent
       void queryClient.invalidateQueries({
-        queryKey: [
-          QUERY_KEYS.NOTES,
-          variables.parentType,
-          variables.parentId,
-        ],
+        queryKey: [QUERY_KEYS.NOTES, variables.parentType, variables.parentId],
       });
       if (options?.onSuccess) {
         void options.onSuccess(data, variables, undefined);
@@ -951,7 +967,8 @@ export const useGetDocument = (
 ) => {
   const client = useAxiosInstance();
   return useMutation({
-    mutationFn: (documentId: string) => client.get(`${API_URL.DOCUMENTS}/${documentId}`),
+    mutationFn: (documentId: string) =>
+      client.get(`${API_URL.DOCUMENTS}/${documentId}`),
     ...options,
   });
 };
@@ -975,6 +992,17 @@ export const useUpgradeToFullPlan = (
       client
         .post(`${API_URL.TENANT}/upgrade-to-full-plan`)
         .then(({ data }) => data),
+    ...options,
+  });
+};
+
+export const useFrameworks = (
+  options?: UseQueryOptions<FrameworkResponseList, AxiosError>,
+) => {
+  const client = useAxiosInstance();
+  return useQuery<FrameworkResponseList, AxiosError>({
+    queryKey: [QUERY_KEYS.FRAMEWORKS],
+    queryFn: () => client.get(`${API_URL.FRAMEWORKS}`).then(({ data }) => data),
     ...options,
   });
 };

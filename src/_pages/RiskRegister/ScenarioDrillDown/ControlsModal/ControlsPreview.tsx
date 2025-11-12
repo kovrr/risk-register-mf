@@ -1,5 +1,3 @@
-import { Check, ChevronDown, ChevronUp, X } from 'lucide-react';
-// Replaced next/image with regular img tag
 import { Card } from '@/components/atoms/card';
 import {
   Collapsible,
@@ -10,17 +8,13 @@ import { Skeleton } from '@/components/atoms/skeleton';
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { cn } from '@/lib/utils';
 import { useCurrentRiskRegisterScenario } from '@/services/hooks';
+import { Check, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { useIsGuestUser } from 'permissions/use-permissions';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ControlsModal, { type FrameworkType } from '.';
 import PencilIcon from '../../../../components/icons/pencil.svg';
-import {
-  convertCisV7SafeguardsImplementationToImplementationLevel,
-  convertCisV8SafeguardsImplementationToImplementationLevel,
-  convertIsoToImplementationLevel,
-  convertTisaxToImplementationLevel,
-} from '../../utils/controlsTransfomer';
+import { convertFrameworkLevelsServerToFrameworkLevels } from '../../utils/controlsTransfomer';
 import { useFrameworkControlsMapping } from './utils';
 
 export default function ControlsPreview({
@@ -43,54 +37,49 @@ export default function ControlsPreview({
     setIsModalOpen(false);
   }, []);
 
-  const [collapsibleState, setCollapsibleState] = useState({
-    cis: false,
-    cis_v7_safeguards: false,
-    nist: false,
-    iso: false,
-    cis_v8: false,
-    cis_v8_safeguards: false,
-    tisax: false,
-  });
-  const frameworksMappings = useFrameworkControlsMapping();
+  // Dynamic collapsible state for all frameworks (hardcoded + API)
+  const [collapsibleState, setCollapsibleState] = useState<
+    Record<string, boolean>
+  >({});
+  const frameworkMap = useFrameworkControlsMapping();
 
   const { data: scenario, isLoading } = useCurrentRiskRegisterScenario();
-
-  const frameworkMap = useFrameworkControlsMapping();
 
   const formattedScenarioControls = useMemo(() => {
     if (!scenario?.scenario_data?.relevant_controls) {
       return null;
     }
 
-    return {
-      ...scenario.scenario_data.relevant_controls,
-      iso27001_implementation_level: convertIsoToImplementationLevel(
-        scenario.scenario_data.relevant_controls.iso27001_implementation_level,
-      ),
-      cis_v8_safeguards:
-        convertCisV8SafeguardsImplementationToImplementationLevel(
-          scenario.scenario_data.relevant_controls.cis_v8_safeguards,
-        ),
-      cis_v7_safeguards:
-        convertCisV7SafeguardsImplementationToImplementationLevel(
-          scenario.scenario_data.relevant_controls.cis_v7_safeguards,
-        ),
-      tisax_implementation_level: convertTisaxToImplementationLevel(
-        scenario.scenario_data.relevant_controls.tisax_implementation_level,
-      ),
-    };
+    // Use generic conversion that handles ALL frameworks (hardcoded + API)
+    return convertFrameworkLevelsServerToFrameworkLevels(
+      scenario.scenario_data.relevant_controls,
+    );
   }, [scenario]);
 
   // Creates a map that maps each framework to the number of relevant controls
   const relevantCounter = useMemo(() => {
     if (!formattedScenarioControls || !frameworkMap) return null;
 
-    return Object.entries(frameworkMap).reduce((acc, [key, value]) => {
-      const controls = formattedScenarioControls[value.controls];
-      acc[key] = Array.isArray(controls) ? controls.length : 0;
-      return acc;
-    }, {} as any) as Record<FrameworkType, number>;
+    const counts = Object.entries(frameworkMap).reduce(
+      (acc, [key, value]) => {
+        const controls = (formattedScenarioControls as Record<string, unknown>)[
+          value.controls
+        ];
+        // Handle both Array and Set for API frameworks
+        let count = 0;
+        if (Array.isArray(controls)) {
+          count = controls.length;
+        } else if (controls instanceof Set) {
+          count = controls.size;
+        }
+
+        acc[key] = count;
+        return acc;
+      },
+      {} as Record<string, number>,
+    ) as Record<FrameworkType, number>;
+
+    return counts;
   }, [frameworkMap, formattedScenarioControls]);
 
   const relevantControls = useMemo(() => {
@@ -133,8 +122,8 @@ export default function ControlsPreview({
             <button
               data-testid='edit-controls-button'
               className='text-gray-500 hover:text-gray-700'
-              onClick={handleEditControlsClick}
               type='button'
+              onClick={handleEditControlsClick}
             >
               <img alt='' src={PencilIcon} className='h-4 w-4' />
             </button>
@@ -144,8 +133,8 @@ export default function ControlsPreview({
             <button
               data-testid='edit-controls-button'
               className='text-gray-500 hover:text-gray-700'
-              onClick={handleEditControlsClick}
               type='button'
+              onClick={handleEditControlsClick}
             >
               <img alt='' src={PencilIcon} className='h-4 w-4' />
             </button>
@@ -154,72 +143,85 @@ export default function ControlsPreview({
 
         <div className='space-y-4'>
           {relevantControls.length > 0 ? (
-            relevantControls.map(([framework, count]) => (
-              <Collapsible
-                key={framework}
-                open={collapsibleState[framework]}
-                onOpenChange={(open) =>
-                  setCollapsibleState({
-                    ...collapsibleState,
-                    [framework]: open,
-                  })
-                }
-              >
-                <CollapsibleTrigger
-                  data-testid={`framework-collapsible-${framework}`}
-                  className='flex items-center justify-start gap-4'
+            relevantControls.map(([framework, count]) => {
+              const frameworkConfig = frameworkMap[framework];
+              if (!frameworkConfig) {
+                return null;
+              }
+
+              const rawRelevantControls = (
+                scenario?.scenario_data?.relevant_controls as
+                | Record<string, unknown>
+                | undefined
+              )?.[frameworkConfig.controls] as string[] | undefined;
+
+              const implementationLevels =
+                (
+                  formattedScenarioControls as unknown as Record<
+                    string,
+                    Record<string, number> | undefined
+                  >
+                )[frameworkConfig.implementationLevel] || {};
+
+              return (
+                <Collapsible
+                  key={framework}
+                  open={collapsibleState[framework] || false}
+                  onOpenChange={(open: boolean) =>
+                    setCollapsibleState({
+                      ...collapsibleState,
+                      [framework]: open,
+                    })
+                  }
                 >
-                  <div className='flex items-center gap-2 rounded-full bg-slate-100 px-5 py-2'>
-                    <span className='font-semibold text-slate-800'>
-                      {frameworkMap[framework].title}
-                    </span>
-                    <div
-                      data-testid={`framework-count-${framework}`}
-                      className='flex items-center justify-center rounded-[4px] bg-fill-brand-primary px-[7px] py-[2px] text-[13px] font-[700] text-white'
-                    >
-                      {count}
+                  <CollapsibleTrigger
+                    data-testid={`framework-collapsible-${framework}`}
+                    className='flex items-center justify-start gap-4'
+                  >
+                    <div className='flex items-center gap-2 rounded-full bg-slate-100 px-5 py-2'>
+                      <span className='font-semibold text-slate-800'>
+                        {frameworkConfig.title}
+                      </span>
+                      <div
+                        data-testid={`framework-count-${framework}`}
+                        className='flex items-center justify-center rounded-[4px] bg-fill-brand-primary px-[7px] py-[2px] text-[13px] font-[700] text-white'
+                      >
+                        {count}
+                      </div>
                     </div>
-                  </div>
-                  {collapsibleState[framework] ? (
-                    <ChevronUp className='h-5 w-5 shrink-0 text-slate-500 transition-transform duration-200' />
-                  ) : (
-                    <ChevronDown className='h-5 w-5 shrink-0 text-slate-500 transition-transform duration-200' />
-                  )}
-                </CollapsibleTrigger>
-                <CollapsibleContent className='pt-4'>
-                  <div className='space-y-0'>
-                    {scenario?.scenario_data?.relevant_controls?.[
-                      frameworkMap[framework].controls
-                    ]?.map((control) => (
-                      <ControlItem
-                        key={control}
-                        id={control}
-                        title={
-                          frameworkMap[framework].codeToText(control)?.title ||
-                          control
-                        }
-                        description={
-                          frameworkMap[framework].codeToText(control)
-                            ?.secondaryTitle || control
-                        }
-                        completed={
-                          formattedScenarioControls &&
-                            formattedScenarioControls[
-                            frameworkMap[framework].implementationLevel
-                            ]?.[control] !== undefined
-                            ? frameworksMappings[framework].isImplemented(
-                              formattedScenarioControls[
-                              frameworkMap[framework].implementationLevel
-                              ][control],
-                            )
-                            : false
-                        }
-                      />
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            ))
+                    {collapsibleState[framework] ? (
+                      <ChevronUp className='h-5 w-5 shrink-0 text-slate-500 transition-transform duration-200' />
+                    ) : (
+                      <ChevronDown className='h-5 w-5 shrink-0 text-slate-500 transition-transform duration-200' />
+                    )}
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className='pt-4'>
+                    <div className='space-y-0'>
+                      {(rawRelevantControls || []).map((control: string) => {
+                        const codeToText = frameworkConfig.codeToText(control);
+                        const implementationValue =
+                          implementationLevels?.[control] ?? 0;
+                        const implementationChecker =
+                          frameworkConfig.isImplemented;
+                        const isImplemented = implementationChecker
+                          ? implementationChecker(implementationValue)
+                          : implementationValue === 1;
+
+                        return (
+                          <ControlItem
+                            key={control}
+                            id={control}
+                            title={codeToText?.title || control}
+                            description={codeToText?.secondaryTitle || control}
+                            completed={isImplemented}
+                          />
+                        );
+                      })}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              );
+            })
           ) : (
             <div
               data-testid='no-controls-message'

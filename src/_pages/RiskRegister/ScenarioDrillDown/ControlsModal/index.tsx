@@ -2,6 +2,7 @@ import { Button } from '@/components/atoms/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/atoms/dialog';
@@ -12,11 +13,14 @@ import {
   useCurrentRiskRegisterScenario,
   useUpdateRiskRegisterScenarioField,
 } from '@/services/hooks';
-import type { ControlsFrameworkLevels } from '@/types/riskRegister';
+import type {
+  ControlsFrameworkLevels,
+  RiskRegisterResponse,
+} from '@/types/riskRegister';
+import { useQueryClient } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import {
   convertFrameworkLevelsServerToFrameworkLevels,
@@ -27,14 +31,7 @@ import { ControlsTable } from './ControlsTable';
 import { columns } from './columns';
 import { useFrameworkControlsMapping } from './utils';
 
-export type FrameworkType =
-  | 'cis'
-  | 'nist'
-  | 'iso'
-  | 'cis_v8'
-  | 'cis_v8_safeguards'
-  | 'cis_v7_safeguards'
-  | 'tisax';
+export type FrameworkType = string;
 
 export default function ControlsModal({
   isOpen,
@@ -51,41 +48,58 @@ export default function ControlsModal({
   const { t } = useTranslation('riskRegister', {
     keyPrefix: 'scenarioDrillDown.controlsModal',
   });
-  const { mutateAsync: updateScenarioField, isLoading: isSaving } =
+  const { mutateAsync: updateScenarioField, status: updateStatus } =
     useUpdateRiskRegisterScenarioField({
-      onSuccess: async (updatedScenario) => {
-        await queryClient.invalidateQueries([
-          QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-          updatedScenario.scenario_id,
-        ]);
+      onSuccess: async (updatedScenario: RiskRegisterResponse) => {
+        await queryClient.invalidateQueries({
+          queryKey: [
+            QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+            updatedScenario.scenario_id,
+          ],
+        });
         toast.success('Controls saved successfully');
       },
-      onError: (error) => {
+      onError: (_error) => {
         toast.error('Failed to save controls. Please try again.');
       },
     });
 
-  const frameworks = useMemo(
-    () =>
-      [
-        { name: t('frameworks.cisV8Safeguards'), value: 'cis_v8_safeguards' },
-        { name: t('frameworks.cisV8'), value: 'cis_v8' },
-        { name: t('frameworks.cisV7'), value: 'cis' },
-        { name: t('frameworks.cisV7Safeguards'), value: 'cis_v7_safeguards' },
-        { name: t('frameworks.nist'), value: 'nist' },
-        { name: t('frameworks.iso'), value: 'iso' },
-        { name: t('frameworks.tisax'), value: 'tisax' },
-      ] as const,
-    [t],
-  );
+  const isSaving = updateStatus === 'pending';
 
   const frameworkMap = useFrameworkControlsMapping();
 
-  const [activeFramework, setActiveFramework] = useState<FrameworkType>('cis');
+  // Generate frameworks list dynamically from frameworkMap
+  const frameworks = useMemo(() => {
+    if (!frameworkMap) return [];
+
+    return Object.entries(frameworkMap).map(([key, value]) => ({
+      name: value.title,
+      value: key as FrameworkType,
+    }));
+  }, [frameworkMap]);
+
+  const [activeFramework, setActiveFramework] = useState<FrameworkType | null>(
+    null,
+  );
   const [controls, setControls] = useState<ControlsFrameworkLevels | null>(
     null,
   );
   const { data: scenario } = useCurrentRiskRegisterScenario();
+
+  useEffect(() => {
+    const frameworkKeys = Object.keys(frameworkMap);
+    if (frameworkKeys.length === 0) {
+      setActiveFramework(null);
+      return;
+    }
+
+    setActiveFramework((prev) => {
+      if (prev && frameworkKeys.includes(prev)) {
+        return prev;
+      }
+      return frameworkKeys[0] as FrameworkType;
+    });
+  }, [frameworkMap]);
 
   const handleSaveChanges = async () => {
     if (isGuestUser && showDemoModal) {
@@ -97,10 +111,12 @@ export default function ControlsModal({
     if (!scenario || !controls) return;
 
     try {
+      const convertedControls =
+        convertFrameworkLevelsToFrameworkLevelsServer(controls);
+
       await updateScenarioField({
         ...scenario.scenario_data,
-        relevant_controls:
-          convertFrameworkLevelsToFrameworkLevelsServer(controls),
+        relevant_controls: convertedControls,
       });
       onClose();
     } catch (error) {
@@ -123,21 +139,32 @@ export default function ControlsModal({
   }, [scenario, controls]);
 
   const handleImplementedChange = (controlId: string, implemented: number) => {
-    const invertImplemented =
-      frameworkMap[activeFramework].invertImplemented(implemented);
+    if (!activeFramework) return;
+    const activeConfig = frameworkMap[activeFramework];
+    if (!activeConfig) return;
+
+    const invertImplemented = activeConfig.invertImplemented(implemented);
     setControls((prevControls) => {
       if (!prevControls) return null;
-      const implKey = frameworkMap[activeFramework].implementationLevel;
-      const currentImplLevel = prevControls[implKey];
+      const implKey = activeConfig.implementationLevel;
+      const currentImplLevel = (prevControls as Record<string, unknown>)[
+        implKey
+      ];
 
-      if (!currentImplLevel) {
-        return prevControls;
+      // Initialize empty object if doesn't exist (for new API frameworks)
+      if (!currentImplLevel || typeof currentImplLevel !== 'object') {
+        return {
+          ...prevControls,
+          [implKey]: {
+            [controlId]: invertImplemented,
+          },
+        };
       }
 
       return {
         ...prevControls,
         [implKey]: {
-          ...currentImplLevel,
+          ...(currentImplLevel as Record<string, number>),
           [controlId]: invertImplemented,
         },
       };
@@ -145,23 +172,34 @@ export default function ControlsModal({
   };
 
   const handleRelevantChange = (controlId: string, relevant: boolean) => {
+    if (!activeFramework) return;
+    const activeConfig = frameworkMap[activeFramework];
+    if (!activeConfig) return;
+
     setControls((prevControls) => {
       if (!prevControls) return null;
-      const frameworkKey = frameworkMap[activeFramework].controls;
-      const currRelevantControls = prevControls[frameworkKey];
+      const frameworkKey = activeConfig.controls;
+      const currRelevantControls = (prevControls as Record<string, unknown>)[
+        frameworkKey
+      ];
 
-      if (!currRelevantControls) {
-        return prevControls;
+      // Initialize empty Set if doesn't exist (for new API frameworks)
+      let relevantSet: Set<string>;
+      if (!currRelevantControls || !(currRelevantControls instanceof Set)) {
+        relevantSet = new Set<string>();
+      } else {
+        relevantSet = new Set(currRelevantControls);
       }
 
       if (!relevant) {
-        currRelevantControls.delete(controlId);
+        relevantSet.delete(controlId);
       } else {
-        currRelevantControls.add(controlId);
+        relevantSet.add(controlId);
       }
+
       return {
         ...prevControls,
-        [frameworkKey]: currRelevantControls,
+        [frameworkKey]: relevantSet,
       };
     });
   };
@@ -171,16 +209,44 @@ export default function ControlsModal({
   };
 
   const controlsCount = useMemo(() => {
-    return controls && controls[frameworkMap[activeFramework].controls]
-      ? Array.from(controls[frameworkMap[activeFramework].controls]).length
-      : 0;
+    if (!controls || !activeFramework) return 0;
+    const activeConfig = frameworkMap[activeFramework];
+    if (!activeConfig) return 0;
+    const frameworkControlsKey = activeConfig.controls;
+    const frameworkControls = (controls as Record<string, unknown>)[
+      frameworkControlsKey
+    ];
+
+    if (frameworkControls instanceof Set) {
+      return frameworkControls.size;
+    }
+    if (Array.isArray(frameworkControls)) {
+      return frameworkControls.length;
+    }
+    return 0;
   }, [controls, activeFramework, frameworkMap]);
 
   const getControlsCount = (framework: FrameworkType) => {
-    return controls && controls[frameworkMap[framework].controls]
-      ? Array.from(controls[frameworkMap[framework].controls]).length
-      : 0;
+    if (!controls) return 0;
+    const frameworkConfig = frameworkMap[framework];
+    if (!frameworkConfig) return 0;
+    const frameworkControlsKey = frameworkConfig.controls;
+    const frameworkControls = (controls as Record<string, unknown>)[
+      frameworkControlsKey
+    ];
+
+    if (frameworkControls instanceof Set) {
+      return frameworkControls.size;
+    }
+    if (Array.isArray(frameworkControls)) {
+      return frameworkControls.length;
+    }
+    return 0;
   };
+
+  const activeFrameworkConfig = activeFramework
+    ? frameworkMap[activeFramework]
+    : undefined;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -192,6 +258,9 @@ export default function ControlsModal({
           <DialogTitle className='text-[20px] font-[700] leading-none'>
             {t('title')}
           </DialogTitle>
+          <DialogDescription className='sr-only'>
+            Select and manage relevant controls for this scenario
+          </DialogDescription>
         </DialogHeader>
 
         <div className='flex flex-col'>
@@ -208,20 +277,23 @@ export default function ControlsModal({
               <div className='flex w-[293px] flex-col items-start gap-[15px] bg-fill-base-1 py-[27px]'>
                 {frameworks.map((framework) => {
                   const currControlsCount = getControlsCount(framework.value);
+                  const isActive = activeFramework === framework.value;
+
                   return (
-                    <div
+                    <button
+                      type='button'
                       data-testid={`modal-framework-${framework.value}`}
-                      className='flex w-full flex-row items-center justify-between pr-[10px]'
+                      className={cn(
+                        'flex w-full items-center justify-between pr-[10px] pl-[16px] text-left transition-colors',
+                        'bg-transparent py-[6px]',
+                        isActive
+                          ? 'border-l-4 border-fill-brand-primary text-fill-brand-primary'
+                          : 'border-l-4 border-transparent text-text-primary hover:text-fill-brand-primary',
+                      )}
                       key={framework.name}
                       onClick={() => handleFrameworkClick(framework.value)}
                     >
-                      <span
-                        className={cn(
-                          'text-text-primary w-auto cursor-pointer rounded-none py-0 pl-[16px] hover:no-underline',
-                          activeFramework === framework.value &&
-                          'border-l-4 border-fill-brand-primary text-fill-brand-primary',
-                        )}
-                      >
+                      <span className='w-auto rounded-none'>
                         {framework.name}
                       </span>
                       {controls && currControlsCount > 0 && (
@@ -232,34 +304,56 @@ export default function ControlsModal({
                           {currControlsCount}
                         </div>
                       )}
-                    </div>
+                    </button>
                   );
                 })}
+                {frameworks.length === 0 && (
+                  <span className='px-[16px] text-sm text-text-base-secondary'>
+                    {t('noFrameworksAvailable', 'No frameworks available')}
+                  </span>
+                )}
               </div>
             </div>
 
             {/* Main content */}
             <div className='w-[680px] flex-1 overflow-auto bg-fill-base-0'>
               <div className='p-6'>
-                <div className='mb-8 flex items-center justify-between'>
-                  <h1
-                    data-testid='modal-framework-title'
-                    className='text-[17px] font-[700] text-text-base-primary'
-                  >
-                    {frameworkMap[activeFramework].title}
-                  </h1>
-                </div>
+                {activeFrameworkConfig ? (
+                  <>
+                    <div className='mb-8 flex items-center justify-between'>
+                      <h1
+                        data-testid='modal-framework-title'
+                        className='text-[17px] font-[700] text-text-base-primary'
+                      >
+                        {activeFrameworkConfig.title}
+                      </h1>
+                    </div>
 
-                {/* Controls table */}
-                {controls && (
-                  <ControlsTable
-                    columns={columns}
-                    data={getControlsFromFramework(activeFramework, controls)}
-                    onImplementedChange={handleImplementedChange}
-                    onRelevantChange={handleRelevantChange}
-                    isImplemented={frameworkMap[activeFramework].isImplemented}
-                    codeToText={frameworkMap[activeFramework].codeToText}
-                  />
+                    {/* Controls table */}
+                    {controls ? (
+                      <ControlsTable
+                        columns={columns}
+                        data={getControlsFromFramework(
+                          controls,
+                          activeFrameworkConfig.controls,
+                          activeFrameworkConfig.implementationLevel,
+                          activeFrameworkConfig.allowedControlIds,
+                        )}
+                        onImplementedChange={handleImplementedChange}
+                        onRelevantChange={handleRelevantChange}
+                        isImplemented={activeFrameworkConfig.isImplemented}
+                        codeToText={activeFrameworkConfig.codeToText}
+                      />
+                    ) : (
+                      <div className='text-sm text-text-base-secondary'>
+                        {t('noControlsData', 'No controls data available')}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className='text-sm text-text-base-secondary'>
+                    {t('noFrameworksAvailable', 'No frameworks available')}
+                  </div>
                 )}
               </div>
             </div>

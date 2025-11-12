@@ -1,116 +1,110 @@
 import {
-  getCisText,
-  getCisV8Text,
-  getISOText,
-  getNistText,
-  getNistV2Text,
-} from '@/utils/mitigationUtils';
-import { abbrToText as cisV7AbbrToText } from '@/options/cisControls';
-import { abbrToText as cisV8AbbrToText } from '@/options/cisV8Controls';
+  useCurrentRiskRegisterScenario,
+  useFrameworks,
+} from '@/services/hooks';
+import type { FrameworkResponseList } from '@/types/frameworkType';
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { processAllFrameworks } from './frameworkHelper';
 
-export const useFrameworkControlsMapping = () => {
-  const { t: tIso } = useTranslation('common', {
-    keyPrefix: 'sphere.securityProfiles.iso27001.drawer',
-  });
-  const ISOtrans = tIso('controls', { returnObjects: true });
+export interface FrameworkMapping {
+  controls: string;
+  implementationLevel: string; // Discovered or generated implementation key
+  title: string;
+  isImplemented: (implementedLevel: number) => boolean;
+  invertImplemented: (implementedLevel: number) => number;
+  codeToText: (
+    key: string,
+  ) => { title: string; secondaryTitle?: string; desc?: string } | null;
+  allowedControlIds?: Set<string>; // Filter for which controls to display
+}
 
-  const { t: tTisax } = useTranslation('common', {
-    keyPrefix: 'sphere.securityProfiles.tisax',
-  });
-  const tisaxTrans = tTisax('controls', { returnObjects: true });
+// No longer needed - implementation keys are now generated in frameworkHelper.ts
 
-  const frameworkMap = useMemo(
-    () =>
-      ({
-        cis_v8_safeguards: {
-          controls: 'relevant_cis_v8_safeguards',
-          implementationLevel: 'cis_v8_safeguards',
-          title: 'CIS v.8 - Safeguards Level',
-          isImplemented: (implementedLevel: number) => implementedLevel === 1,
-          invertImplemented: (implementedLevel: number) =>
-            implementedLevel === 1 ? 0 : 1,
-          codeToText: cisV8AbbrToText,
-        },
-        cis: {
-          controls: 'relevant_cis_controls',
-          implementationLevel: 'cis_implementation_level',
-          title: 'CIS Controls v.7 - Controls Level',
-          isImplemented: (implementedLevel: number) => implementedLevel === 1,
-          invertImplemented: (implementedLevel: number) =>
-            implementedLevel === 1 ? 0 : 1,
+export const useFrameworkControlsMapping = (): Record<
+  string,
+  FrameworkMapping
+> => {
+  const { data: frameworksData } = useFrameworks();
+  const { data: scenario } = useCurrentRiskRegisterScenario();
 
-          codeToText: getCisText,
-        },
-        cis_v7_safeguards: {
-          controls: 'relevant_cis_v7_safeguards',
-          implementationLevel: 'cis_v7_safeguards',
-          title: 'CIS Controls v.7 - Safeguards Level',
-          isImplemented: (implementedLevel: number) => implementedLevel === 1,
-          invertImplemented: (implementedLevel: number) =>
-            implementedLevel === 1 ? 0 : 1,
-          codeToText: cisV7AbbrToText,
-        },
-        nist: {
-          controls: 'relevant_nist_controls',
-          implementationLevel: 'nist_implementation_level',
-          title: 'NIST CSF',
-          codeToText: getNistText,
-          isImplemented: (implementedLevel: number) => implementedLevel === 0,
-          invertImplemented: (implementedLevel: number) => {
-            return implementedLevel === 0 ? 1 : 0;
-          },
-        },
-        nist_csf_v2: {
-          controls: 'relevant_nist_v2_controls',
-          implementationLevel: 'nist_v2_safeguard_implementation',
-          title: 'NIST CSF v2',
-          codeToText: getNistV2Text,
-          isImplemented: (implementedLevel: number) => implementedLevel === 0,
-          invertImplemented: (implementedLevel: number) => {
-            return implementedLevel === 0 ? 1 : 0;
-          },
-        },
-        iso: {
-          controls: 'relevant_iso27001_controls',
-          implementationLevel: 'iso27001_implementation_level',
-          title: 'ISO 27001',
-          codeToText: (key: any) => getISOText(key, ISOtrans),
-          isImplemented: (implementedLevel: number) => implementedLevel === 1,
-          invertImplemented: (implementedLevel: number) =>
-            implementedLevel === 1 ? 0 : 1,
-        },
-        cis_v8: {
-          controls: 'relevant_cis_v8_controls',
-          implementationLevel: 'cis_v8_implementation_level_igs',
-          codeToText: getCisV8Text,
-          title: 'CIS Controls v.8 - Controls Level',
-          isImplemented: (implementedLevel: number) => implementedLevel === 1,
-          invertImplemented: (implementedLevel: number) => {
-            return implementedLevel === 1 ? 0 : 1;
-          },
-        },
-        tisax: {
-          controls: 'relevant_tisax_controls',
-          implementationLevel: 'tisax_implementation_level',
-          title: 'TISAX Controls',
-          codeToText: (key: string) => {
-            const control = (tisaxTrans as Record<string, any>)[key];
-            return control || {
-              title: key,
-              secondaryTitle: key,
-              desc: key,
-              classifications: ["Tisax"]
+  const frameworkMap = useMemo(() => {
+    // Helper to get allowedControlIds from scenario data
+    const getControlIdsFromScenario = (
+      implementationKey: string,
+    ): Set<string> => {
+      const implData = (
+        scenario?.scenario_data?.relevant_controls as
+        | Record<string, unknown>
+        | undefined
+      )?.[implementationKey];
+      if (!implData || typeof implData !== 'object') return new Set();
+
+      // Flatten nested structures
+      const keys = new Set<string>();
+      const extractKeys = (obj: unknown) => {
+        if (obj && typeof obj === 'object') {
+          Object.entries(obj).forEach(([key, value]) => {
+            if (typeof value === 'number') {
+              keys.add(key);
+            } else if (typeof value === 'object') {
+              extractKeys(value);
+            }
+          });
+        }
+      };
+      extractKeys(implData);
+      return keys;
+    };
+
+    if (!frameworksData) {
+      return {};
+    }
+
+    const processedFrameworks = processAllFrameworks(
+      frameworksData as FrameworkResponseList,
+    );
+    const apiFrameworks: Record<string, FrameworkMapping> = {};
+
+    processedFrameworks.forEach((framework, key) => {
+      const scenarioControlIds = getControlIdsFromScenario(
+        framework.implementationLevelKey,
+      );
+      const mergedAllowedIds = new Set<string>([
+        ...Array.from(framework.allowedControlIds ?? new Set<string>()),
+        ...Array.from(scenarioControlIds),
+      ]);
+
+      apiFrameworks[key] = {
+        controls: framework.controlsKey,
+        implementationLevel: framework.implementationLevelKey,
+        title: framework.title,
+        allowedControlIds: mergedAllowedIds,
+        isImplemented: (implementedLevel: number) => implementedLevel === 1,
+        invertImplemented: (implementedLevel: number) =>
+          implementedLevel === 1 ? 0 : 1,
+        codeToText: (controlKey: string) => {
+          const control = framework.controls.get(controlKey);
+          if (!control) {
+            return {
+              title: controlKey,
+              secondaryTitle: controlKey,
+              desc: controlKey,
             };
-          },
-          isImplemented: (implementedLevel: number) => implementedLevel === 1,
-          invertImplemented: (implementedLevel: number) =>
-            implementedLevel === 1 ? 0 : 1,
+          }
+
+          return {
+            title: control.reference
+              ? `${control.reference} ${control.title}`
+              : control.title,
+            secondaryTitle: control.description,
+            desc: control.description,
+          };
         },
-      }) as const,
-    [ISOtrans, tisaxTrans],
-  );
+      };
+    });
+
+    return apiFrameworks;
+  }, [frameworksData, scenario]);
 
   return frameworkMap;
 };
