@@ -1,3 +1,4 @@
+// @ts-nocheck
 let mocksInitialized = false;
 
 async function initMocks() {

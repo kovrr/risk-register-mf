@@ -1,5 +1,5 @@
 import { Tab, TabList, TabListProps, TabProps } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 const selectedTabStyles = {
   bg: 'brand.white',

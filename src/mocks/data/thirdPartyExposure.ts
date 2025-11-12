@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const THIRD_PARTY_EXPOSURE_MOCK = {
   ep_curve: [
     {

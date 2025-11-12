@@ -1,5 +1,5 @@
 import { Box, BoxProps, TextProps } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { SmallText } from './CommonTexts';
 
 type Props = {

@@ -22,9 +22,7 @@ const RiskRegisterTable = () => {
   const { track: trackEvent } = useMixpanel();
 
   useEffect(() => {
-    trackEvent({
-      name: 'risk_register.table_viewed',
-    });
+    trackEvent('risk_register.table_viewed');
   }, [trackEvent]);
 
   return (

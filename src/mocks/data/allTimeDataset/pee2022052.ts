@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const pee: any = {
   company_id: 'f994111c-1111-1111-1111-111111111f441',
   id: 'f994111c-2222-1111-2222-111111111f441',

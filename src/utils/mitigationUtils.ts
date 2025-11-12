@@ -103,7 +103,7 @@ export const getDesc = {
   [SecControlsFramework.ISO27001]: (key: string) => {
     return key.split('-')[0];
   },
-  [SecControlsFramework.CISv8]: (key: any) => '',
+  [SecControlsFramework.CISv8]: (_key: any) => '',
   [SecControlsFramework.NIST_CSF_v2]: (key: any) => {
     const controlData = NIST_V2_CONTROL_CODE_MAP_DESC[key as NistV2Code];
     return controlData ? controlData.function : '';
@@ -123,7 +123,7 @@ export interface ControlText {
 
 const nistNameToCode = (name: string): string => name.replace('_', '.') || '';
 
-export const getCisText = (id: string, trans?: any): ControlText => {
+export const getCisText = (id: string, _trans?: unknown): ControlText => {
   const controlCode = cisAbbrToCode(id as CisAbbreviation);
   const controlTitle = `CIS Control ${controlCode}`;
   const isBasic = controlCode in BASIC_CIS_CONTROLS;
@@ -150,7 +150,7 @@ export const getCisText = (id: string, trans?: any): ControlText => {
   };
 };
 
-export const getCisV8Text = (id: string, trans?: any): ControlText => {
+export const getCisV8Text = (id: string, _trans?: unknown): ControlText => {
   const controlCode = cisV8AbbrToCode(id as CisV8Abbreviation);
   const controlTitle = `CIS Control ${controlCode}`;
 
@@ -169,7 +169,7 @@ const nistInitValue: ControlText = {
   desc: '',
   classifications: [],
 };
-export const getNistText = (id: string, trans?: any): ControlText => {
+export const getNistText = (id: string, _trans?: unknown): ControlText => {
   const controlCode = nistNameToCode(id) as NistCode;
   if (!(controlCode in NIST_CODE_MAP_DESC)) {
     return nistInitValue;
@@ -192,7 +192,7 @@ export const getNistText = (id: string, trans?: any): ControlText => {
   };
 };
 
-export const getNistV2Text = (id: string, trans?: any): ControlText => {
+export const getNistV2Text = (id: string, _trans?: unknown): ControlText => {
   const controlData = NIST_V2_CONTROL_CODE_MAP_DESC[id as NistV2Code];
   if (!controlData) {
     return {
@@ -460,7 +460,7 @@ const getAssetGroupsByNistV2 = (
     scale?: string;
     controlScope?: string;
   },
-  allAgIds: (string | undefined)[],
+  _allAgIds: (string | undefined)[],
 ) => {
   return (
     securityProfiles
@@ -501,7 +501,7 @@ const getAssetGroupsByNistV2 = (
           const subcategories = Object.entries(controlData.subcategories);
 
           return subcategories
-            .filter(([subcategoryKey, subcategoryTitle]) => {
+            .filter(([subcategoryKey]) => {
               const currentValue = safeguardsData[subcategoryKey] || 0;
 
               // If already at max value, don't include
@@ -729,20 +729,20 @@ export const controlsFrameworkHelper: Record<
     getControlsForMitigationAction: getNistV2ControlsForMitigationAction,
   },
   [SecControlsFramework.ASB]: {
-    getText: (id: string, trans?: any) => ({
+    getText: (_id: string, _trans?: unknown) => ({
       title: '',
       secondaryTitle: '',
       desc: '',
       classifications: [],
     }),
     getAssetGroups: (
-      securityProfiles: SphereSecurityProfileForm[] | null | undefined,
-      rowData: { control: string; currentMinimum: string },
-      allAgIds: string[],
+      _securityProfiles: SphereSecurityProfileForm[] | null | undefined,
+      _rowData: { control: string; currentMinimum: string },
+      _allAgIds: string[],
     ) => [],
     getControlsForMitigationAction: (
-      currentMinimum: string,
-      targetMinimum: string,
+      _currentMinimum: string,
+      _targetMinimum: string,
     ) => [],
   },
   [SecControlsFramework.ISO27001]: {
@@ -775,8 +775,8 @@ export const sortControlActions = <T = any>(
   rowB: Row<T>,
   columnId: string,
 ): number => {
-  const [rowAValue, _1] = rowA.getValue(columnId) as [string, string];
-  const [rowBValue, _2] = rowB.getValue(columnId) as [string, string];
+  const [rowAValue] = rowA.getValue(columnId) as [string, string];
+  const [rowBValue] = rowB.getValue(columnId) as [string, string];
   // incase we receive nist results, the status will be a number so no need to convert to text.
   const statusA = MAP_TEXT_CIS[rowAValue] ?? rowAValue;
   const statusB = MAP_TEXT_CIS[rowBValue] ?? rowBValue;

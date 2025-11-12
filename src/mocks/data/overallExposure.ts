@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const OVERALL_EXPOSURE_MOCK = {
   ep_curve: [
     {

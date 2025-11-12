@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const Sparkle = () => {
   return (
     <svg

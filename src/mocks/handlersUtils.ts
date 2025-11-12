@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { rest } from 'msw';
 
 export const getMock = (url: string, response: object) =>

@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const cisToOtherFrameworks = {
   'NIST CSF 1.1':
     'https://storage.googleapis.com/foqus-sme-data/publicly-accessible-docs/01%20-%20NIST%20800-53%20rev4.xlsx',

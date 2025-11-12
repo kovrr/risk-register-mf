@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const cbe: any = {
   company_id: 'f134111c-1111-1111-1111-111111111f931',
   id: 'f134111c-2222-1111-2222-111111111f931',

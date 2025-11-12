@@ -23,7 +23,7 @@ export const AddScenarioTemplateModal = ({
   const { toast } = useToast();
   const isGuestUser = useIsGuestUser();
   const { showDemoModal } = useContext(DemoExperienceContext);
-  const { mutateAsync: requestPreDefinedScenario, isLoading } =
+  const { mutateAsync: requestPreDefinedScenario, isPending } =
     useRequestPreDefinedScenario({
       onSuccess: () => {
         toast({
@@ -84,7 +84,7 @@ export const AddScenarioTemplateModal = ({
               variant='outline'
               onClick={() => setShowTemplateModal(false)}
               className='rounded-2xl px-6'
-              disabled={isLoading}
+              disabled={isPending}
             >
               {t('cancel')}
             </Button>
@@ -93,9 +93,9 @@ export const AddScenarioTemplateModal = ({
               data-testid='book-meeting-button'
               onClick={handleBookMeeting}
               className='bg-fill-brand-primary text-fill-base-0 rounded-2xl px-6'
-              disabled={isLoading}
+              disabled={isPending}
             >
-              {isLoading ? (
+              {isPending ? (
                 <Loader2 className='h-4 w-4 animate-spin' />
               ) : (
                 t('book')

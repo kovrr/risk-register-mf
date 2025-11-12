@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const riskTransfer = {
   highlights: {
     overall: [

@@ -1,5 +1,5 @@
 import { Box, BoxProps, Flex, Text } from '@chakra-ui/react';
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import Card from './Card';
 
 type Props = {

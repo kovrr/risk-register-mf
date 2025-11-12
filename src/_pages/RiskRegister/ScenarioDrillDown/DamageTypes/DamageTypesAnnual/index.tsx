@@ -1,5 +1,5 @@
 import { Flex, SkeletonText } from '@chakra-ui/react';
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Legend } from '../legend';
 import { DamageTypeInDrawerView } from './DamageTypeInDrawerView';

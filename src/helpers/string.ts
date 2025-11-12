@@ -117,8 +117,10 @@ export const toChicagoTitleCaseWithCustomSplit = (
   return titleString.trim();
 };
 
-export const titleCase = (s: string) => {
-  return s.replace(/^_*(.)|_+(.)/g, (s: any, c: string, d: string) =>
-    c ? c.toUpperCase() : ' ' + d.toUpperCase(),
+export const titleCase = (value: string) => {
+  return value.replace(
+    /^_*(.)|_+(.)/g,
+    (_match: string, c: string, d: string) =>
+      c ? c.toUpperCase() : ' ' + d.toUpperCase(),
   );
 };

@@ -27,7 +27,7 @@ interface QuantitativeMetricsProps {
 
 export default function QuantitativeMetrics({
   control,
-  currency,
+  currency: _currency,
 }: QuantitativeMetricsProps) {
   const { t } = useTranslation('riskRegister', { keyPrefix: 'modal' });
 

@@ -36,12 +36,12 @@ export const Notes: React.FC<{
   const { showDemoModal } = useContext(DemoExperienceContext);
 
   // Fetch notes using unified API
-  const { data: notes = [], isLoading: isLoadingNotes } = useNotes(
+  const { data: notes = [], isPending: isLoadingNotes } = useNotes(
     'scenario',
     scenarioId || '',
   );
 
-  const { mutateAsync: createNote, isLoading } = useCreateNote({
+  const { mutateAsync: createNote, isPending: isSavingNote } = useCreateNote({
     onError: (err: any) => {
       console.error('Error creating note:', err.response);
       const errorMsg = err.response?.data;
@@ -66,7 +66,9 @@ export const Notes: React.FC<{
       }
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries(QUERY_KEYS.RISK_REGISTER_SCENARIOS);
+      void queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+      });
       // Clear form after successful save
       setNoteText('');
       setSelectedFile(null);
@@ -155,9 +157,9 @@ export const Notes: React.FC<{
               <Button
                 className='ml-auto h-[34px] w-[61px] bg-[#7C89FF] px-8 text-white hover:bg-[#6574ff]'
                 onClick={handleSave}
-                disabled={isLoading}
+                disabled={isSavingNote}
               >
-                {isLoading ? (
+                {isSavingNote ? (
                   <>
                     <Spinner
                       className='-ml-1 mr-3 text-white'

@@ -60,7 +60,7 @@ export const ResponsePlanDropdown: FC<Props> = ({
 		[value],
 	);
 
-	const handleGuestUserChange = (option: Option) => {
+	const handleGuestUserChange = (_option: Option) => {
 		showDemoModal({ title: t('demo.editScenario') });
 	};
 
@@ -100,10 +100,10 @@ const GuestUserDropdown: FC<{
 }> = ({
 	options,
 	selectedOption,
-	onOptionClick,
-	disabled,
-	isLoading,
-	dataTestId,
+  onOptionClick,
+  disabled = false,
+  isLoading,
+  dataTestId,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -117,9 +117,10 @@ const GuestUserDropdown: FC<{
 			<DropdownMenuTrigger
 				className={cn(
 					'flex items-center rounded-2xl px-2 py-1 text-xs font-bold text-text-base-invert focus-visible:outline-none',
-					isLoading && 'cursor-not-allowed',
+					(isLoading || disabled) && 'cursor-not-allowed',
 					selectedOption?.className,
 				)}
+        disabled={disabled || isLoading}
 				data-testid={dataTestId}
 			>
 				<div className='flex items-center gap-1'>

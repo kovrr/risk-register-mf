@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { CurrencyCell, PercentageCell } from './numericalCells';
 import { RiskRegisterRow } from '@/types/riskRegister';
 
@@ -6,7 +6,9 @@ interface AnnualLikelihoodAverageLossCellProps {
   row: RiskRegisterRow;
 }
 
-export const AnnualLikelihoodAverageLossCell: React.FC<AnnualLikelihoodAverageLossCellProps> = ({ row }) => {
+export const AnnualLikelihoodAverageLossCell: FC<
+  AnnualLikelihoodAverageLossCellProps
+> = ({ row }) => {
   const annualLikelihood = row.annualLikelihood;
   const averageLoss = row.averageLoss;
   const currency = row.averageLossCurrency ?? 'USD';

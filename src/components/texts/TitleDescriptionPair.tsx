@@ -1,7 +1,6 @@
 import { Flex, FlexProps, TextProps } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { SmallText, SmallTextBold } from './CommonTexts';
-
 
 type Props = {
   title: string;

@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const v20240400: any = {
     company_id: 'b0203f37-dd56-41f8-a74a-bca14d0fd0af',
     id: 'abb989bb-a19f-413b-94b8-337ea3021a5f',

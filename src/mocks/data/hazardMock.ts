@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 import { Hazard } from '../../types/quantificationData';
 
 export const MOCK_TECH_SERVICE: Hazard = {

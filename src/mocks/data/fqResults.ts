@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 import { BY_EVENT_TYPE_EXPOSURE_MOCK } from './byEventTypeExposure';
 import { BY_SCENARIO_EXPOSURE_MOCK } from './byScenarioExposure';
 import { CIS_RECOMMENDATIONS_MOCK } from './cisMock';

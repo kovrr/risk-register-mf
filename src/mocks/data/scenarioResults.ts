@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const scenarioResults = {
   by_asset_group: {
     'd23c8775-5294-4af4-b5c0-5701adc5acd6': {

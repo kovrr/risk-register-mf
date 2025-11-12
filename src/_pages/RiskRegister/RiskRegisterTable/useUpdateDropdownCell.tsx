@@ -18,7 +18,7 @@ export const useUpdateDropdownCell = <T extends string>({
   const [errorMessage, setErrorMessage] = useState('');
 
   const { updateQueriesWithNewRow } = useUpdateRiskRegisterQueries();
-  const { mutateAsync, isLoading } = useUpdateRiskRegisterScenarioRow(
+  const { mutateAsync, isPending } = useUpdateRiskRegisterScenarioRow(
     rowData.scenarioId,
     {
       onSuccess: (updatedScenario) => {
@@ -33,15 +33,16 @@ export const useUpdateDropdownCell = <T extends string>({
       },
     },
   );
-  const amountOfUpdateActiveMutations = useIsMutating([
-    QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-    rowData.scenarioId,
-  ]);
-  const amountOfUpdateFieldActiveMutations = useIsMutating([
-    QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-    'updateField',
-    rowData.scenarioId,
-  ]);
+  const amountOfUpdateActiveMutations = useIsMutating({
+    mutationKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, rowData.scenarioId],
+  });
+  const amountOfUpdateFieldActiveMutations = useIsMutating({
+    mutationKey: [
+      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+      'updateField',
+      rowData.scenarioId,
+    ],
+  });
 
   const isMutating =
     amountOfUpdateActiveMutations + amountOfUpdateFieldActiveMutations > 0;
@@ -58,7 +59,7 @@ export const useUpdateDropdownCell = <T extends string>({
   return {
     handleChange,
     isMutating,
-    isLoading,
+    isLoading: isPending,
     errorDialogProps: {
       isOpen: isErrorDialogOpen,
       onOpenChange: setIsErrorDialogOpen,

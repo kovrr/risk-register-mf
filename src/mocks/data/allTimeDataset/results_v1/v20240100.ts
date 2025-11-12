@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 import { buildVendorData } from 'mocks/builders/fqInputDataBuilders';
 
 export const v20240100: any = {

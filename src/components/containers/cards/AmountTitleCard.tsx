@@ -1,5 +1,5 @@
 import { Flex, FlexProps, Text, TextProps } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 export interface AmountTitleCardProps {
   amount: string;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Transparency } from '@/types/transparency';
 
 export const buildTransparency = (

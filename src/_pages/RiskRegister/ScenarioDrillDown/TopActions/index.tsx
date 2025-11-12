@@ -4,7 +4,7 @@ import {
   SecControlsFramework,
   SecControlsFrameworkType,
 } from 'options/constants';
-import React from 'react';
+import { FC } from 'react';
 import { ByControlToMinimal } from 'types/security-controls';
 import { EmptyTable } from './EmptyTable';
 import MitigationTable from './MitigationTable';
@@ -19,11 +19,11 @@ type TopActionsProps = {
   aal: number;
 };
 
-export const TopActions: React.FC<TopActionsProps> = ({
+export const TopActions: FC<TopActionsProps> = ({
   controlsFramework,
   byControlToMinimal,
-  title,
-  description,
+  title: _title,
+  description: _description,
   currency,
   aal,
 }) => {

@@ -59,7 +59,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
   } = useUpdateRiskRegisterQueries();
   const isInScenarioViewPage = !!currentScenarioId;
 
-  const { mutateAsync: createRiskRegisterScenario, isLoading: isCreating } =
+  const { mutateAsync: createRiskRegisterScenario, isPending: isCreating } =
     useCreateCRQRiskRegisterScenario({
       onSuccess: async () => {
         onSuccess();
@@ -79,7 +79,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
       },
     });
 
-  const { mutateAsync: updateRiskRegisterScenario, isLoading: isUpdating } =
+  const { mutateAsync: updateRiskRegisterScenario, isPending: isUpdating } =
     useUpdateRiskRegisterScenario(scenario?.scenario_id || '', {
       onSuccess: async (updatedScenario) => {
         onSuccess();
@@ -151,9 +151,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
   );
 
   async function onSubmit(values: CRQScenarioFormValues) {
-    trackEvent({
-      name: 'risk_register.crq_scenario_input_form.submit',
-    });
+    trackEvent('risk_register.crq_scenario_input_form.submit');
     if (isEditMode) {
       return await updateRiskRegisterScenario({
         ...values,
@@ -167,9 +165,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
   }
 
   useEffect(() => {
-    trackEvent({
-      name: 'risk_register.crq_scenario_input_form.view',
-    });
+    trackEvent('risk_register.crq_scenario_input_form.view');
   }, [trackEvent]);
 
   const isLoading = isCreating || isUpdating;

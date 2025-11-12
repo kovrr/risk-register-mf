@@ -75,7 +75,7 @@ export const columns: ColumnDef<Control>[] = [
           <Checkbox
             checked={isImplemented(control.implemented)}
             disabled={!control.relevant}
-            onCheckedChange={(value) => {
+            onCheckedChange={(_value) => {
               const meta = table.options.meta as {
                 onImplementedChange: (id: string, value: number) => void;
               };

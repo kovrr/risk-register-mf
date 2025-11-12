@@ -51,10 +51,10 @@ interface Props {
 }
 
 const MitigationTable: FC<Props> = ({
-  selectedRows,
+  selectedRows: _selectedRows,
   table,
   containedComponent,
-  maxHeight,
+  maxHeight: _maxHeight,
   disableSorting,
   paginationState,
   setPaginationState,
@@ -108,7 +108,7 @@ const MitigationTable: FC<Props> = ({
         </Thead>
         <Tbody>
           <Tr height='2px' />
-          {table.getRowModel().rows.map((row, index) => (
+          {table.getRowModel().rows.map((row) => (
             <Tr
               key={row.id}
               backgroundColor={

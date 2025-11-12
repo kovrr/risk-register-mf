@@ -212,6 +212,17 @@ export type ScenarioData = {
   review_date?: string;
   mitigation_cost?: number;
   custom_fields?: CustomField[];
+  scenario_category?: string[];
+  risk_subcategory?: string[];
+  ai_assets?: string[];
+  tactics?: string[];
+  event_types?: string[];
+  impact_types?: string[];
+  data_exposure?: {
+    pii?: number;
+    pci?: number;
+    phi?: number;
+  };
 };
 
 export const scenarioStatus = {

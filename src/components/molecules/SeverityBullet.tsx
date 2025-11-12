@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { RiskRegisterImpact, riskRegisterImpacts } from '@/types/riskRegister';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 const severityBgColors = {
   [riskRegisterImpacts.Negligible]: 'bg-viz-impact-tags-negligible',

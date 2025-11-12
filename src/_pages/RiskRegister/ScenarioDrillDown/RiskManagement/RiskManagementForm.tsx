@@ -80,7 +80,7 @@ export default function RiskManagementForm({
   });
   const isGuestUser = useIsGuestUser();
   const { showDemoModal } = useContext(DemoExperienceContext);
-  const { mutateAsync: updateRiskRegisterScenario, isLoading } =
+  const { mutateAsync: updateRiskRegisterScenario, isPending } =
     useUpdateRiskRegisterScenarioField({
       onSuccess: () => {
         setTicketState('valid');
@@ -95,9 +95,9 @@ export default function RiskManagementForm({
       showDemoModal({ title: t('demo.editRiskPriority') });
       return;
     }
-    await updateRiskRegisterScenario({
-      risk_priority: option.value as RiskRegisterPriority,
-    });
+      await updateRiskRegisterScenario({
+        risk_priority: option.value as RiskRegisterPriority,
+      });
   };
 
   const handleResponsePlanChange = async (option: Option) => {
@@ -105,9 +105,9 @@ export default function RiskManagementForm({
       showDemoModal({ title: t('demo.editResponsePlan') });
       return;
     }
-    await updateRiskRegisterScenario({
-      response_plan: option.value as RiskRegisterResponsePlan,
-    });
+      await updateRiskRegisterScenario({
+        response_plan: option.value as RiskRegisterResponsePlan,
+      });
   };
 
   const handleTicketUrlChange = useCallback(
@@ -198,7 +198,7 @@ export default function RiskManagementForm({
             value={scenario.scenario_data.risk_priority}
             onChange={handlePriorityChange}
             key={scenario.scenario_id}
-            disabled={isLoading || isGuestUser}
+            disabled={isPending || isGuestUser}
           />
         </div>
 
@@ -207,7 +207,7 @@ export default function RiskManagementForm({
           <Input
             onChange={(e) => debouncedSubCategoryChange(e.target.value)}
             defaultValue={scenario.scenario_data.sub_category || ''}
-            disabled={isLoading || isGuestUser}
+            disabled={isPending || isGuestUser}
             name='sub-category'
           />
         </div>
@@ -217,7 +217,7 @@ export default function RiskManagementForm({
           <RiskOwnerDropdownMutate
             value={scenario.scenario_data.risk_owner}
             rowData={registerToRowData(scenario)}
-            disabled={isLoading || isGuestUser}
+            disabled={isPending || isGuestUser}
           />
         </div>
       </div>
@@ -228,7 +228,7 @@ export default function RiskManagementForm({
             value={scenario.scenario_data.response_plan}
             onChange={handleResponsePlanChange}
             key={scenario.scenario_id}
-            disabled={isLoading || isGuestUser}
+            disabled={isPending || isGuestUser}
           />
         </div>
 
@@ -256,7 +256,7 @@ export default function RiskManagementForm({
             )}
             onChange={(e) => handleLinkChange(e.target.value)}
             defaultValue={scenario.scenario_data.ticket || ''}
-            disabled={isLoading || isGuestUser}
+            disabled={isPending || isGuestUser}
           />
         </div>
 

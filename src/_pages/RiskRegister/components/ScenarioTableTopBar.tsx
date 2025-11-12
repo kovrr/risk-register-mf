@@ -9,7 +9,7 @@ const ScenarioTableTopBar: React.FC = () => {
   const { t } = useTranslation('riskRegister', {
     keyPrefix: 'scenarioTable',
   });
-  const { mutateAsync: exportRiskScenario, isLoading } =
+  const { mutateAsync: exportRiskScenario, isPending } =
     useExportRiskRegisterScenario();
 
   const handleExport = async () => {
@@ -26,7 +26,7 @@ const ScenarioTableTopBar: React.FC = () => {
           onClick={handleExport}
           variant='outline'
           className='hover:bg-background hover:text-text-base-primary'
-          loading={isLoading}
+          loading={isPending}
         >
           {t('export')}
         </Button>

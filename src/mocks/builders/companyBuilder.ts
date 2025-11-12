@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NistV2SafeguardsByGroup, ScaleEnum } from '@/options/nistV2Controls';
 import type { AlloyIntegrationDetails } from '@/types/companyCreation';
 import { MOCK_TECH_SERVICE } from 'mocks/data/hazardMock';

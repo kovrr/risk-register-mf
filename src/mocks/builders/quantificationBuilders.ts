@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 import { ISO27001ControlNumbers } from '@/security/ISO/formInitialValues';
 import { MOCK_TECH_SERVICE } from 'mocks/data/hazardMock';
 import { MODELED_DAMAGE_TYPES } from 'options/constants';

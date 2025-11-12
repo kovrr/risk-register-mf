@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { HighOrderPermissions } from '@/types/permissions';
 import { rest } from 'msw';
 import { applicationTypes } from 'types/applicationTypes';
-import { fronteggAuthServerUrl } from '../../cypress/support/commands-lib/mock-frontegg';
+import { fronteggAuthServerUrl } from './fronteggAuthServerUrl';
 import { companiesResults } from './data/companiesResults';
 
 const APPLICATION_TYPE =

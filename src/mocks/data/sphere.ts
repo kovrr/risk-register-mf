@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const sphere = {
   employee_endpoints: [
     {

@@ -1,13 +1,10 @@
-import React from 'react';
+import { FC } from 'react';
 
 type DashedLineLegendsProps = {
   stroke?: string;
 };
 
-export const DashedLineLegend: React.FC<DashedLineLegendsProps> = ({
-  stroke,
-  ...props
-}) => {
+export const DashedLineLegend: FC<DashedLineLegendsProps> = ({ stroke }) => {
   return (
     <svg
       width='19'

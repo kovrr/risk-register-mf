@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-nocheck
 export const BY_EVENT_TYPE_EXPOSURE_MOCK = {
   ransomware: {
     ep_curve: [

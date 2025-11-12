@@ -53,7 +53,7 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
   } = useUpdateRiskRegisterQueries();
   const { showDemoModal } = useContext(DemoExperienceContext);
   const { t } = useTranslation('riskRegister', { keyPrefix: 'modal' });
-  const { mutateAsync: createRiskRegisterScenario, isLoading: isCreating } =
+  const { mutateAsync: createRiskRegisterScenario, isPending: isCreating } =
     useCreateRiskRegisterScenario({
       onSuccess: async () => {
         toast({
@@ -71,7 +71,7 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
         setIsErrorDialogOpen(true);
       },
     });
-  const { mutateAsync: updateRiskRegisterScenario, isLoading: isUpdating } =
+  const { mutateAsync: updateRiskRegisterScenario, isPending: isUpdating } =
     useUpdateRiskRegisterScenario(scenario?.scenario_id || '', {
       onSuccess: async (updatedScenario) => {
         toast({
@@ -164,9 +164,7 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
       showDemoModal({ title: t('demo.addScenario') });
       return;
     }
-    trackEvent({
-      name: 'risk_register.naive_scenario_input_form.submit',
-    });
+    trackEvent('risk_register.naive_scenario_input_form.submit');
     if (isEditMode) {
       return await updateRiskRegisterScenario(
         values as SimpleScenarioUpdateRequest,
@@ -176,9 +174,7 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
   }
 
   useEffect(() => {
-    trackEvent({
-      name: 'risk_register.naive_scenario_input_form.view',
-    });
+    trackEvent('risk_register.naive_scenario_input_form.view');
   }, [trackEvent]);
 
   const isLoading = isCreating || isUpdating;
