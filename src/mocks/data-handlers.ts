@@ -1,4 +1,5 @@
 // @ts-nocheck
+
 import { applicationTypes } from '@/types/applicationTypes';
 import { QuantificationStatus } from '@/types/quantificationData';
 import type { RiskOwner } from '@/types/riskRegister';
@@ -617,4 +618,145 @@ export const handlers = [
       ctx.json({ message: 'Invitation sent successfully' }),
     );
   }),
+  // GET frameworks endpoint
+  getMock(`${getBaseApiUrl()}/api/self-assessment/frameworks`, [
+    {
+      id: '550e8400-e29b-41d4-a716-446655440001',
+      framework_name: 'CIS',
+      framework_version: 'v8',
+      title: 'CIS Controls v8',
+      type: 'official',
+      control_implementation_label: 'control',
+      sub_control_implementation_label: 'safeguard',
+      framework_handler_type: 'standard',
+      accept_inapplicable: true,
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      maturity_levels: [
+        { id: '1', label: 'Not Implemented', int_value: 0 },
+        { id: '2', label: 'Partially Implemented', int_value: 1 },
+        { id: '3', label: 'Fully Implemented', int_value: 2 },
+      ],
+      categories: [
+        {
+          id: 'CIS-1',
+          name: 'Inventory and Control of Enterprise Assets',
+          category_num: 1,
+          description: 'Actively manage all enterprise assets',
+          subcategories: [
+            {
+              id: 'CIS-1.1',
+              name: 'Establish and Maintain Detailed Enterprise Asset Inventory',
+              framework_reference: '1.1',
+              description:
+                'Maintain an up-to-date inventory of all enterprise assets',
+            },
+            {
+              id: 'CIS-1.2',
+              name: 'Address Unauthorized Assets',
+              framework_reference: '1.2',
+              description: 'Address and remove unauthorized assets',
+            },
+          ],
+        },
+        {
+          id: 'CIS-2',
+          name: 'Inventory and Control of Software Assets',
+          category_num: 2,
+          description: 'Actively manage all software on the network',
+          subcategories: [
+            {
+              id: 'CIS-2.1',
+              name: 'Establish and Maintain a Software Inventory',
+              framework_reference: '2.1',
+              description: 'Maintain an inventory of all software',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: '550e8400-e29b-41d4-a716-446655440002',
+      framework_name: 'NIST',
+      framework_version: 'v2',
+      title: 'NIST CSF v2',
+      type: 'official',
+      control_implementation_label: 'function',
+      sub_control_implementation_label: 'category',
+      framework_handler_type: 'grouped',
+      accept_inapplicable: true,
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      maturity_levels: [
+        { id: '1', label: 'Not Implemented', int_value: 0 },
+        { id: '2', label: 'Partially Implemented', int_value: 1 },
+        { id: '3', label: 'Fully Implemented', int_value: 2 },
+      ],
+      categories: [
+        {
+          id: 'GV',
+          name: 'Govern',
+          category_num: 1,
+          description:
+            'Develop and implement organizational cybersecurity strategy',
+        },
+        {
+          id: 'ID',
+          name: 'Identify',
+          category_num: 2,
+          description: 'Develop understanding of cybersecurity risk',
+        },
+        {
+          id: 'PR',
+          name: 'Protect',
+          category_num: 3,
+          description: 'Develop and implement safeguards',
+        },
+      ],
+    },
+    {
+      id: '550e8400-e29b-41d4-a716-446655440003',
+      framework_name: 'ISO27001',
+      framework_version: '2022',
+      title: 'ISO/IEC 27001:2022',
+      type: 'official',
+      control_implementation_label: 'control',
+      sub_control_implementation_label: 'safeguard',
+      framework_handler_type: 'standard',
+      accept_inapplicable: true,
+      is_active: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      maturity_levels: [
+        { id: '1', label: 'Not Implemented', int_value: 0 },
+        { id: '2', label: 'Partially Implemented', int_value: 1 },
+        { id: '3', label: 'Fully Implemented', int_value: 2 },
+      ],
+      categories: [
+        {
+          id: 'A.5',
+          name: 'Policies for Information Security',
+          category_num: 5,
+          description: 'Management direction for information security',
+          subcategories: [
+            {
+              id: 'A.5.1',
+              name: 'Policies for Information Security',
+              framework_reference: 'A.5.1',
+              description:
+                'Policies shall be defined, approved by management, published, communicated',
+            },
+          ],
+        },
+        {
+          id: 'A.6',
+          name: 'Organization of Information Security',
+          category_num: 6,
+          description: 'Organization of information security',
+        },
+      ],
+    },
+  ]),
 ];
