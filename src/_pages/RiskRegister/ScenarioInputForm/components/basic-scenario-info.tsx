@@ -30,7 +30,9 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
           name={'customer_scenario_id' as FieldPath<T>}
           render={({ field }) => (
             <FormItem>
-              <FormLabel required>{t('labels.scenarioId')}</FormLabel>
+              <FormLabel required className='text-text-base-primary'>
+                {t('labels.scenarioId')}
+              </FormLabel>
               <FormControl>
                 <Input {...field} disabled={isEditMode} />
               </FormControl>
@@ -43,7 +45,9 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
           name={'name' as FieldPath<T>}
           render={({ field }) => (
             <FormItem className='col-span-3'>
-              <FormLabel required>{t('labels.scenarioName')}</FormLabel>
+              <FormLabel required className='text-text-base-primary'>
+                {t('labels.scenarioName')}
+              </FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -57,8 +61,10 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
         control={control}
         name={'description' as FieldPath<T>}
         render={({ field }) => (
-          <FormItem className='col-span-4'>
-            <FormLabel required>{t('labels.description')}</FormLabel>
+            <FormItem className='col-span-4'>
+              <FormLabel required className='text-text-base-primary'>
+                {t('labels.description')}
+              </FormLabel>
             <FormControl>
               <Textarea {...field} className='min-h-[120px]' />
             </FormControl>
