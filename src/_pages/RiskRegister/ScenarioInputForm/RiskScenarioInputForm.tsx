@@ -32,7 +32,8 @@ import {
 import ImpactDistributionInputs from './components/impact-distribution-inputs';
 import QualitativeMetrics from './components/qualitative-metrics';
 import QuantitativeMetrics from './components/quantitative-metrics';
-import SimpleEntitySelect from './components/simple-entity-select';
+import { SimpleCategorizationSection } from './components/simple-categorization-section';
+import { DataExposureFields } from './components/data-exposure-fields';
 
 type Props = {
   scenario?: RiskRegisterResponse;
@@ -107,6 +108,11 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
         average_loss: scenario.scenario_data.average_loss || undefined,
         average_loss_currency:
           scenario.scenario_data.average_loss_currency || 'USD',
+        scenario_category: scenario.scenario_data.scenario_category || [],
+        ai_assets: scenario.scenario_data.ai_assets || [],
+        tactics: scenario.scenario_data.tactics || [],
+        event_types: scenario.scenario_data.event_types || [],
+        impact_types: scenario.scenario_data.impact_types || [],
         impact_distribution: {
           one: scenario.scenario_data.impact_distribution?.one || undefined,
           twenty_five:
@@ -121,6 +127,11 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
             scenario.scenario_data.impact_distribution?.ninety_nine ||
             undefined,
         },
+        data_exposure: {
+          pii: scenario.scenario_data.data_exposure?.pii || undefined,
+          pci: scenario.scenario_data.data_exposure?.pci || undefined,
+          phi: scenario.scenario_data.data_exposure?.phi || undefined,
+        },
       }
       : {
         scenario_type: scenarioTypes.MANUAL,
@@ -134,12 +145,22 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
         peer_base_rate: undefined,
         average_loss: undefined,
         average_loss_currency: 'USD',
+        scenario_category: [],
+        ai_assets: [],
+        tactics: [],
+        event_types: [],
+        impact_types: [],
         impact_distribution: {
           one: undefined,
           twenty_five: undefined,
           fifty: undefined,
           seventy_five: undefined,
           ninety_nine: undefined,
+        },
+        data_exposure: {
+          pii: undefined,
+          pci: undefined,
+          phi: undefined,
         },
       };
   }, [scenario]);
@@ -177,34 +198,74 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
     trackEvent('risk_register.naive_scenario_input_form.view');
   }, [trackEvent]);
 
+  const averageLossCurrency = form.watch('average_loss_currency');
   const isLoading = isCreating || isUpdating;
+
+  const handleCancel = () => {
+    trackEvent('risk_register.naive_scenario_input_form.cancel');
+    form.reset(initialValues as SimpleScenarioFormValues);
+    onSuccess();
+  };
+
+  const submitLabel = isEditMode ? t('button.update') : t('button.create');
+  const cancelLabel = t('button.cancel', { defaultValue: 'Cancel' });
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className='space-y-[20px]'>
-          <div className='flex flex-col gap-2'>
-            <SimpleEntitySelect
+        <div className='flex flex-col gap-10'>
+
+          <section className='space-y-6'>
+              <BasicScenarioInfo
+                control={form.control}
+                isEditMode={isEditMode}
+              />
+          </section>
+
+          <section className='space-y-6'>
+            <SimpleCategorizationSection
               control={form.control}
               isEditMode={isEditMode}
             />
-            <BasicScenarioInfo control={form.control} isEditMode={isEditMode} />
-          </div>
-          <QualitativeMetrics control={form.control} />
-          <QuantitativeMetrics
-            control={form.control}
-            currency={form.watch('average_loss_currency')}
-          />
-          <ImpactDistributionInputs
-            control={form.control}
-            currency={form.watch('average_loss_currency')}
-          />
-          <div className='flex justify-end'>
+          </section>
+
+          <section className='space-y-6'>
+            <QualitativeMetrics control={form.control} />
+          </section>
+
+          <section className='space-y-6'>
+            <div className='space-y-8'>
+              <QuantitativeMetrics
+                control={form.control}
+                currency={averageLossCurrency}
+              />
+              <DataExposureFields
+                control={form.control}
+                isEditMode={isEditMode}
+              />
+              <ImpactDistributionInputs
+                control={form.control}
+                currencyFieldName={'average_loss_currency'}
+                fallbackCurrency={averageLossCurrency}
+              />
+            </div>
+          </section>
+
+          <div className='flex flex-col gap-3 border-t border-border-base pt-6 sm:flex-row sm:items-center sm:justify-end'>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={handleCancel}
+              disabled={isLoading}
+            >
+              {cancelLabel}
+            </Button>
             <Button
               type='submit'
               loading={isLoading}
-              disabled={isEditMode && !hasFormChanged}
+              disabled={(isEditMode && !hasFormChanged) || isLoading}
             >
-              {isEditMode ? t('button.update') : t('button.create')}
+              {submitLabel}
             </Button>
           </div>
         </div>

@@ -51,6 +51,7 @@ export default function QuantitativeMetrics({
                     content={t('labels.annualLikelihoodInformation')}
                   />
                 }
+                className='text-text-base-primary'
               >
                 {t('labels.annualLikelihood')}
               </FormLabel>
@@ -79,6 +80,7 @@ export default function QuantitativeMetrics({
                 info={
                   <InfoPopover content={t('labels.peerBaseRateInformation')} />
                 }
+                className='text-text-base-primary'
               >
                 {t('labels.peerBaseRate')}
               </FormLabel>
@@ -109,6 +111,7 @@ export default function QuantitativeMetrics({
                 info={
                   <InfoPopover content={t('labels.averageLossInformation')} />
                 }
+                className='text-text-base-primary'
               >
                 {t('labels.averageLoss')}
               </FormLabel>

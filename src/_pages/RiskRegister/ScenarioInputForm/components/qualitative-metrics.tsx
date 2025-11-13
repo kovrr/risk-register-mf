@@ -7,7 +7,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/atoms/form';
-import { Label } from '@/components/atoms/label';
 import {
   Select,
   SelectContent,
@@ -16,6 +15,7 @@ import {
   SelectValue,
 } from '@/components/atoms/select';
 import InfoPopover from '@/components/molecules/info-popover';
+import { cn } from '@/lib/utils';
 import type { Control, FieldPath } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
@@ -27,17 +27,18 @@ import {
 interface QualitativeMetricsProps<T extends BaseScenarioFormValues> {
   control: Control<T>;
   isRequired?: boolean;
+  className?: string;
 }
 
 export default function QualitativeMetrics<T extends BaseScenarioFormValues>({
   control,
   isRequired = true,
+  className,
 }: QualitativeMetricsProps<T>) {
   const { t } = useTranslation('riskRegister', { keyPrefix: 'modal' });
 
   return (
-    <div className='w-1/2 space-y-xs'>
-      <Label variant='section-label'>{t('labels.qualitativeMetrics')}</Label>
+    <div className={cn('grid gap-6 md:grid-cols-2', className)}>
       <FormField
         control={control}
         name={'likelihood' as FieldPath<T>}
@@ -46,6 +47,7 @@ export default function QualitativeMetrics<T extends BaseScenarioFormValues>({
             <FormLabel
               required={isRequired}
               info={<InfoPopover content={t('labels.likelihoodInformation')} />}
+              className='text-text-base-primary'
             >
               {t('labels.likelihood')}
             </FormLabel>
@@ -76,6 +78,7 @@ export default function QualitativeMetrics<T extends BaseScenarioFormValues>({
             <FormLabel
               required={isRequired}
               info={<InfoPopover content={t('labels.impactInformation')} />}
+              className='text-text-base-primary'
             >
               {t('labels.impact')}
             </FormLabel>

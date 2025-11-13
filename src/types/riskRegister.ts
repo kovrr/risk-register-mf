@@ -296,6 +296,16 @@ export type ScenarioCreateRequest = {
   sub_category?: string;
   review_date?: string;
   mitigation_cost?: number;
+  scenario_category?: string[];
+  ai_assets?: string[];
+  tactics?: string[];
+  event_types?: string[];
+  impact_types?: string[];
+  data_exposure?: {
+    pii?: number;
+    pci?: number;
+    phi?: number;
+  };
 };
 
 export type CRQScenarioCreateRequest = ScenarioCreateRequest & {
