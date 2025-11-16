@@ -66,6 +66,7 @@ export type RiskRegisterRow = {
   entity?: string;
   company_id?: string;
   company_name?: string | null;
+  category?: string | null;
   likelihood: RiskRegisterLikelihood;
   impact: RiskRegisterImpact;
   annualLikelihood?: number;
