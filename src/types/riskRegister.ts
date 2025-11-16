@@ -287,6 +287,7 @@ export type ScenarioCreateRequest = {
   description: string;
   likelihood: RiskRegisterLikelihood;
   impact: RiskRegisterImpact;
+  group_id?: string;
   company_id?: string;
   annual_likelihood?: number;
   peer_base_rate?: number;

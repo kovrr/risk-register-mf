@@ -12,6 +12,10 @@ const getBaseApiUrl = () =>
   import.meta.env.NEXT_PUBLIC_API_URL ||
   'http://localhost:8000';
 
+// Use relative base so MSW matches same-origin requests from the app
+const getApiBasePath = () => `/api/v1`;
+const apiBasePath = getApiBasePath();
+
 import { chance } from './builders/buildingUtils';
 import {
   allVisibleMenuItemsMock,
@@ -433,11 +437,11 @@ export const handlers = [
     },
   ),
   getPaginatedMock(
-    `${getBaseApiUrl()}/api/risk-register/scenarios`,
+    `${apiBasePath}/risk-register/scenarios/`,
     buildMixedRiskRegisterList(25),
   ),
   rest.get(
-    `${getBaseApiUrl()}/api/risk-register/scenarios/:scenarioId`,
+    `${apiBasePath}/risk-register/scenarios/:scenarioId`,
     (req, res, ctx) => {
       // 50% chance for each response type
       const isCRQ = Math.random() < 1;
@@ -449,19 +453,19 @@ export const handlers = [
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/risk-register/scenarios`,
+    `${apiBasePath}/risk-register/scenarios/`,
     (req, res, ctx) => {
       return res(ctx.json(buildRiskRegisterResponse()));
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/risk-register/scenarios/crq/:scenarioId/update-crq`,
+    `${apiBasePath}/risk-register/scenarios/crq/:scenarioId/update-crq`,
     (req, res, ctx) => {
       return res(ctx.json(buildRiskRegisterResponse()));
     },
   ),
   rest.patch(
-    `${getBaseApiUrl()}/api/risk-register/scenarios/:scenarioId`,
+    `${apiBasePath}/risk-register/scenarios/:scenarioId`,
     (req, res, ctx) => {
       return res(ctx.json(buildRiskRegisterResponse()));
     },
@@ -511,13 +515,22 @@ export const handlers = [
     return res(ctx.json([]));
   }),
   rest.get(
-    `${getBaseApiUrl()}/api/tenant/remaining_crq_scenarios_licenses`,
+    `${apiBasePath}/tenant/remaining_crq_scenarios_licenses`,
     (req, res, ctx) => {
       return res(ctx.json({ remaining_crq_scenarios_licenses: 10 }));
     },
   ),
+  // Tenant info (normalize to relative path)
+  rest.get(`${apiBasePath}/tenant`, (req, res, ctx) => {
+    return res(
+      ctx.json({
+        id: 'mock-tenant',
+        name: 'Mock Tenant',
+      }),
+    );
+  }),
   rest.get(
-    `${getBaseApiUrl()}/api/risk-register/scenarios/:scenarioId/export`,
+    `${apiBasePath}/risk-register/scenarios/:scenarioId/export`,
     (req, res, ctx) => {
       const csvContent = 'Header1,Header2,Header3\nValue1,Value2,Value3';
       return res(
@@ -530,7 +543,7 @@ export const handlers = [
       );
     },
   ),
-  rest.get(`${getBaseApiUrl()}/api/tenant/users`, (req, res, ctx) => {
+  rest.get(`${apiBasePath}/tenant/users`, (req, res, ctx) => {
     return res(
       ctx.json([
         {
@@ -573,13 +586,13 @@ export const handlers = [
     },
   ),
   rest.get(
-    `${getBaseApiUrl()}/api/risk-register/scenarios/:scenarioId/metrics-history`,
+    `${apiBasePath}/risk-register/scenarios/:scenarioId/metrics-history`,
     (req, res, ctx) => {
       return res(ctx.json(buildMetricsHistory()));
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/risk-register/request-pre-defined-scenario`,
+    `${apiBasePath}/risk-register/request-pre-defined-scenario`,
     (req, res, ctx) => {
       return res(ctx.json({ message: 'Request sent successfully' }));
     },
@@ -589,7 +602,7 @@ export const handlers = [
   }),
   // DELETE scenario endpoint
   rest.delete(
-    `${getBaseApiUrl()}/api/risk-register/scenarios/:scenarioId`,
+    `${apiBasePath}/risk-register/scenarios/:scenarioId`,
     (req, res, ctx) => {
       return res(
         ctx.status(200),
@@ -599,14 +612,14 @@ export const handlers = [
   ),
   // GET scenario controls endpoint
   rest.get(
-    `${getBaseApiUrl()}/api/risk-register/scenarios/:scenarioId/controls`,
+    `${apiBasePath}/risk-register/scenarios/:scenarioId/controls`,
     (req, res, ctx) => {
       return res(ctx.status(200), ctx.json([]));
     },
   ),
   // GET scenarios export endpoint
   rest.get(
-    `${getBaseApiUrl()}/api/risk-register/scenarios/export`,
+    `${apiBasePath}/risk-register/scenarios/export`,
     (req, res, ctx) => {
       return res(ctx.status(200), ctx.json({ message: 'Export completed' }));
     },

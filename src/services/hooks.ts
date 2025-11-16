@@ -12,9 +12,11 @@ import {
   type RiskRegisterScenarioPaginatedResponse,
   type ScenarioCreateRequest,
   type ScenarioMetricsHistory,
+  type ScenarioType,
   type SimpleScenarioUpdateRequest,
   scenarioTypes,
 } from '@/types/riskRegister';
+import { getGroupId } from '@/services/authUtils';
 import type { FeatureToggle, TenantData } from '@/types/tenantData';
 import {
   type UseMutationOptions,
@@ -44,15 +46,63 @@ const baseURL: string =
   import.meta.env.NEXT_PUBLIC_API_URL ||
   'http://localhost:8000';
 
+// Resolve API base depending on mock mode:
+// - When mocks are ON, use relative URLs so MSW can intercept
+// - When mocks are OFF, use the configured absolute backend base (fallback to relative)
+const baseUrl =
+  import.meta.env.VITE_USE_MOCKS === 'true'
+    ? '/api/v1'
+    : import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const apiBasePath = `${baseUrl}`;
+
+const DEFAULT_GROUP_ID = 'mock-group-id';
+
+type ScenarioPayload =
+  | ScenarioCreateRequest
+  | CRQScenarioCreateRequest
+  | SimpleScenarioUpdateRequest
+  | CRQScenarioUpdateRequest;
+
+const buildScenarioRequestBody = (
+  payload: ScenarioPayload,
+  fallbackScenarioType: ScenarioType,
+) => {
+  const {
+    group_id,
+    customer_scenario_id,
+    name,
+    description,
+    ...scenarioData
+  } = payload;
+
+  const scenarioType =
+    'scenario_type' in payload && payload.scenario_type
+      ? payload.scenario_type
+      : fallbackScenarioType;
+
+  const { scenario_type: _ignored, ...sanitizedScenarioData } = scenarioData as typeof scenarioData & {
+    scenario_type?: ScenarioType;
+  };
+
+  return {
+    group_id: group_id ?? DEFAULT_GROUP_ID,
+    customer_scenario_id,
+    name,
+    description,
+    scenario_type: scenarioType,
+    scenario_data: sanitizedScenarioData,
+  };
+};
+
 // API URLs - Risk Register specific
 export const API_URL = {
-  COMPANIES: `${baseURL}/api/companies`,
-  RISK_REGISTER: `${baseURL}/api/risk-register`,
-  NOTES: `/api/notes`,
-  TENANT: `${baseURL}/api/tenant`,
-  DOCUMENTS: `${baseURL}/api/documents`,
-  FQ: `${baseURL}/api/fq`, // Financial Quantification
-  FRAMEWORKS: `${baseURL}/api/self-assessment/frameworks`,
+  COMPANIES: `${apiBasePath}/companies`,
+  RISK_REGISTER: `${apiBasePath}/risk-register`,
+  NOTES: `${apiBasePath}/notes`,
+  TENANT: `${apiBasePath}/tenant`,
+  DOCUMENTS: `${apiBasePath}/documents`,
+  FQ: `${apiBasePath}/fq`, // Financial Quantification
+  FRAMEWORKS: `${apiBasePath}/self-assessment/frameworks`,
 };
 
 // ============================================================================
@@ -307,8 +357,16 @@ export const useCreateRiskRegisterScenario = (
 ) => {
   const client = useAxiosInstance();
   return useMutation({
-    mutationFn: (scenario: ScenarioCreateRequest) =>
-      client.post(`${API_URL.RISK_REGISTER}/scenarios`, scenario),
+    mutationFn: async (scenario: ScenarioCreateRequest) => {
+      const resolvedGroupId = scenario.group_id ?? (await getGroupId());
+      return client.post(
+        `${API_URL.RISK_REGISTER}/scenarios`,
+        buildScenarioRequestBody(
+          { ...scenario, group_id: resolvedGroupId },
+          scenarioTypes.MANUAL,
+        ),
+      );
+    },
     ...options,
   });
 };
@@ -333,10 +391,16 @@ export const useCreateCRQRiskRegisterScenario = (
     AxiosError<{ detail: string }>,
     CRQScenarioCreateRequest
   >({
-    mutationFn: (scenario) =>
-      client
-        .post(`${API_URL.RISK_REGISTER}/scenarios/crq`, scenario)
-        .then(({ data }) => data),
+    mutationFn: async (scenario) => {
+      const resolvedGroupId = scenario.group_id ?? (await getGroupId());
+      const body = buildScenarioRequestBody(
+        { ...scenario, group_id: resolvedGroupId },
+        scenarioTypes.CRQ,
+      );
+      return client
+        .post(`${API_URL.RISK_REGISTER}/scenarios/crq`, body)
+        .then(({ data }) => data);
+    },
     ...options,
   });
 };
@@ -373,7 +437,7 @@ export const useRiskRegisterScenarios = (
   if (sort_order) {
     queryParams.append('sort_order', sort_order);
   }
-  const urlWithParams = `${API_URL.RISK_REGISTER}/scenarios?${queryParams.toString()}`;
+  const urlWithParams = `${API_URL.RISK_REGISTER}/scenarios/?${queryParams.toString()}`;
   return useQuery<RiskRegisterScenarioPaginatedResponse, AxiosError>({
     queryKey: [
       ...QUERY_KEYS.RISK_REGISTER_SCENARIOS_TABLE,
@@ -384,7 +448,27 @@ export const useRiskRegisterScenarios = (
       sort_by,
       sort_order,
     ],
-    queryFn: () => client.get(urlWithParams).then(({ data }) => data),
+    queryFn: () =>
+      client.get(urlWithParams).then(({ data }) => {
+        // Temporary debug: remove after verifying table populates correctly
+        // eslint-disable-next-line no-console
+        console.log('Scenarios API response', data);
+        // Normalize backend variants into RiskRegisterScenarioPaginatedResponse
+        const items =
+          data?.items ??
+          data?.scenarios ??
+          data?.results ??
+          data?.data ??
+          [];
+        const total =
+          data?.total ?? data?.total_count ?? data?.count ?? items.length ?? 0;
+        return {
+          items,
+          total,
+          page,
+          size,
+        } as RiskRegisterScenarioPaginatedResponse;
+      }),
     ...options,
   });
 };
@@ -512,10 +596,15 @@ export const useUpdateRiskRegisterScenarioRow = (
         })(),
       };
 
+      const requestBody = buildScenarioRequestBody(
+        updatePayload,
+        scenario.scenario_type,
+      );
+
       return client
         .patch(
           `${API_URL.RISK_REGISTER}/scenarios/${scenarioId}`,
-          updatePayload,
+          requestBody,
         )
         .then(({ data }) => data);
     },
@@ -589,10 +678,15 @@ export const useUpdateRiskRegisterScenarioField = (
         ...data,
       };
 
+      const requestBody = buildScenarioRequestBody(
+        updatePayload,
+        scenario.scenario_type,
+      );
+
       return client
         .patch(
           `${API_URL.RISK_REGISTER}/scenarios/${scenarioId}`,
-          updatePayload,
+          requestBody,
         )
         .then(({ data }) => data);
     },
@@ -672,10 +766,15 @@ export const useUpdateRiskRegisterScenario = (
         ...restOfPayload,
       };
 
+      const requestBody = buildScenarioRequestBody(
+        updatePayload,
+        scenario.scenario_type,
+      );
+
       return client
         .patch(
           `${API_URL.RISK_REGISTER}/scenarios/${scenarioId}`,
-          updatePayload,
+          requestBody,
         )
         .then(({ data }) => data);
     },

@@ -13,6 +13,6 @@ export type ScenarioFieldEnumsResponse = {
 };
 
 export async function fetchScenarioFieldEnums(): Promise<ScenarioFieldEnumsResponse> {
-  const { data } = await api.get('/risk-register/scenario/enums');
+  const { data } = await api.get('/risk-register/scenarios/enums');
   return data;
 }
