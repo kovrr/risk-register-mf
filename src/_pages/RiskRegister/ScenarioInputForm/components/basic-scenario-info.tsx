@@ -7,6 +7,14 @@ import {
 } from '@/components/atoms/form';
 import { Input } from '@/components/atoms/input';
 import { Textarea } from '@/components/atoms/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/atoms/select';
+import { useMockGroups } from '@/hooks/useMockGroups';
 import type { Control, FieldPath } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import type { BaseScenarioFormValues } from './form-config';
@@ -21,6 +29,7 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
   isEditMode,
 }: BasicScenarioInfoProps<T>) {
   const { t } = useTranslation('riskRegister', { keyPrefix: 'modal' });
+  const { data: groups } = useMockGroups();
 
   return (
     <div className='space-y-xs'>
@@ -67,6 +76,36 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
               </FormLabel>
             <FormControl>
               <Textarea {...field} className='min-h-[120px]' />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField<T>
+        control={control}
+        name={'group_id' as FieldPath<T>}
+        render={({ field }) => (
+          <FormItem className='col-span-4'>
+            <FormLabel className='text-text-base-primary'>
+              {t('labels.group', { defaultValue: 'Group' })}
+            </FormLabel>
+            <FormControl>
+              <Select
+                value={field.value || undefined}
+                onValueChange={(value) => field.onChange(value)}
+              >
+                <SelectTrigger data-testid='group-select'>
+                  <SelectValue placeholder='Select a group' />
+                </SelectTrigger>
+                <SelectContent>
+                  {(groups ?? []).map((group) => (
+                    <SelectItem key={group.id} value={group.id}>
+                      {group.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </FormControl>
             <FormMessage />
           </FormItem>

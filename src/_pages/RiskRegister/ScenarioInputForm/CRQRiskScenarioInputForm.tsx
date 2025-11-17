@@ -109,6 +109,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
         customer_scenario_id: scenario.customer_scenario_id,
         name: scenario.name,
         description: scenario.description,
+        group_id: scenario.group_id || undefined,
         likelihood: scenario.scenario_data.likelihood,
         impact: scenario.scenario_data.impact,
         crq_data: {
@@ -124,6 +125,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
         customer_scenario_id: '',
         name: '',
         description: '',
+        group_id: undefined,
         likelihood: undefined,
         impact: undefined,
         crq_data: {
