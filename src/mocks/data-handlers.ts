@@ -15,6 +15,7 @@ const getBaseApiUrl = () =>
 // Use relative base so MSW matches same-origin requests from the app
 const getApiBasePath = () => `/api/v1`;
 const apiBasePath = getApiBasePath();
+const riskScenariosBasePath = `${apiBasePath}/risk-scenarios`;
 
 import { chance } from './builders/buildingUtils';
 import {
@@ -437,11 +438,11 @@ export const handlers = [
     },
   ),
   getPaginatedMock(
-    `${apiBasePath}/risk-register/scenarios/`,
+    `${riskScenariosBasePath}/`,
     buildMixedRiskRegisterList(25),
   ),
   rest.get(
-    `${apiBasePath}/risk-register/scenarios/:scenarioId`,
+    `${riskScenariosBasePath}/:scenarioId`,
     (req, res, ctx) => {
       // 50% chance for each response type
       const isCRQ = Math.random() < 1;
@@ -453,19 +454,19 @@ export const handlers = [
     },
   ),
   rest.post(
-    `${apiBasePath}/risk-register/scenarios/`,
+    `${riskScenariosBasePath}/`,
     (req, res, ctx) => {
       return res(ctx.json(buildRiskRegisterResponse()));
     },
   ),
   rest.post(
-    `${apiBasePath}/risk-register/scenarios/crq/:scenarioId/update-crq`,
+    `${riskScenariosBasePath}/crq/:scenarioId/update-crq`,
     (req, res, ctx) => {
       return res(ctx.json(buildRiskRegisterResponse()));
     },
   ),
   rest.patch(
-    `${apiBasePath}/risk-register/scenarios/:scenarioId`,
+    `${riskScenariosBasePath}/:scenarioId`,
     (req, res, ctx) => {
       return res(ctx.json(buildRiskRegisterResponse()));
     },
@@ -530,7 +531,7 @@ export const handlers = [
     );
   }),
   rest.get(
-    `${apiBasePath}/risk-register/scenarios/:scenarioId/export`,
+    `${riskScenariosBasePath}/:scenarioId/export`,
     (req, res, ctx) => {
       const csvContent = 'Header1,Header2,Header3\nValue1,Value2,Value3';
       return res(
@@ -586,13 +587,13 @@ export const handlers = [
     },
   ),
   rest.get(
-    `${apiBasePath}/risk-register/scenarios/:scenarioId/metrics-history`,
+    `${riskScenariosBasePath}/:scenarioId/metrics-history`,
     (req, res, ctx) => {
       return res(ctx.json(buildMetricsHistory()));
     },
   ),
   rest.post(
-    `${apiBasePath}/risk-register/request-pre-defined-scenario`,
+    `${riskScenariosBasePath}/request-pre-defined-scenario`,
     (req, res, ctx) => {
       return res(ctx.json({ message: 'Request sent successfully' }));
     },
@@ -602,7 +603,7 @@ export const handlers = [
   }),
   // DELETE scenario endpoint
   rest.delete(
-    `${apiBasePath}/risk-register/scenarios/:scenarioId`,
+    `${riskScenariosBasePath}/:scenarioId`,
     (req, res, ctx) => {
       return res(
         ctx.status(200),
@@ -612,14 +613,14 @@ export const handlers = [
   ),
   // GET scenario controls endpoint
   rest.get(
-    `${apiBasePath}/risk-register/scenarios/:scenarioId/controls`,
+    `${riskScenariosBasePath}/:scenarioId/controls`,
     (req, res, ctx) => {
       return res(ctx.status(200), ctx.json([]));
     },
   ),
   // GET scenarios export endpoint
   rest.get(
-    `${apiBasePath}/risk-register/scenarios/export`,
+    `${riskScenariosBasePath}/export`,
     (req, res, ctx) => {
       return res(ctx.status(200), ctx.json({ message: 'Export completed' }));
     },

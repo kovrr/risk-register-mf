@@ -100,7 +100,7 @@ describe('Quantitative Metrics Header', () => {
     // Setup for manual scenario
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${manualScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${manualScenario.scenario_id}`,
       {
         statusCode: 200,
         body: manualScenario,
@@ -132,7 +132,7 @@ describe('Quantitative Metrics Header', () => {
     // Setup for CRQ scenario
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${crqScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${crqScenario.scenario_id}`,
       {
         statusCode: 200,
         body: crqScenario,
@@ -184,7 +184,7 @@ describe('Quantitative Metrics Header', () => {
     // Setup for CRQ scenario with refresh functionality
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${crqScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${crqScenario.scenario_id}`,
       {
         statusCode: 200,
         body: crqScenario,
@@ -202,7 +202,7 @@ describe('Quantitative Metrics Header', () => {
     }).as('getFQ');
 
     // Mock the update CRQ scenario API - use POST method
-    cy.intercept('POST', `/api/risk-register/scenarios/crq/${crqScenario.scenario_id}/update-crq`, {
+    cy.intercept('POST', `/api/v1/risk-scenarios/crq/${crqScenario.scenario_id}/update-crq`, {
       statusCode: 200,
       body: { message: 'Scenario updated successfully' },
     }).as('updateCRQScenario');

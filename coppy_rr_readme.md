@@ -270,7 +270,7 @@ export const QUERY_KEYS = {
 export const useRiskRegisterScenarios = (params) => {
   return useQuery(
     [QUERY_KEYS.riskRegister, params],
-    () => apiClient.get('/api/risk-register/scenarios', { params }),
+    () => apiClient.get('/api/v1/risk-scenarios', { params }),
   );
 };
 

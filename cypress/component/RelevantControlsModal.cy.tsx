@@ -68,7 +68,7 @@ describe('RelevantControlsModal', () => {
     );
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${scenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${scenario.scenario_id}`,
       {
         statusCode: 200,
         body: scenario,
@@ -77,7 +77,7 @@ describe('RelevantControlsModal', () => {
 
     cy.intercept(
       'PATCH',
-      `/api/risk-register/scenarios/${scenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${scenario.scenario_id}`,
       {
         statusCode: 200,
         body: scenario,
@@ -317,7 +317,7 @@ describe('RelevantControlsModal', () => {
 
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${emptyScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${emptyScenario.scenario_id}`,
       {
         statusCode: 200,
         body: emptyScenario,

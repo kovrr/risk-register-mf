@@ -171,7 +171,7 @@ describe('Scenario Input Form', () => {
     });
 
     // Spy on console.log
-    cy.intercept('POST', '/api/risk-register/scenarios').as('createScenario');
+    cy.intercept('POST', '/api/v1/risk-scenarios').as('createScenario');
 
     cy.get('[role="dialog"]').within(() => {
       // Fill in all required fields

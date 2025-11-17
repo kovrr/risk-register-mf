@@ -326,16 +326,16 @@ NEXT_PUBLIC_MIXPANEL_TOKEN=            # Mixpanel token
 ## API Endpoints to Verify
 
 ### Risk Register
-- [ ] `GET /api/risk-register/scenarios`
-- [ ] `POST /api/risk-register/scenarios`
-- [ ] `POST /api/risk-register/scenarios/crq`
-- [ ] `GET /api/risk-register/scenarios/:id`
-- [ ] `PATCH /api/risk-register/scenarios/:id`
-- [ ] `DELETE /api/risk-register/scenarios/:id`
-- [ ] `GET /api/risk-register/scenarios/:id/controls`
-- [ ] `GET /api/risk-register/scenarios/:id/metrics-history`
-- [ ] `POST /api/risk-register/scenarios/crq/:id/update-crq`
-- [ ] `GET /api/risk-register/scenarios/export`
+- [ ] `GET /api/v1/risk-scenarios`
+- [ ] `POST /api/v1/risk-scenarios`
+- [ ] `POST /api/v1/risk-scenarios/crq`
+- [ ] `GET /api/v1/risk-scenarios/:id`
+- [ ] `PATCH /api/v1/risk-scenarios/:id`
+- [ ] `DELETE /api/v1/risk-scenarios/:id`
+- [ ] `GET /api/v1/risk-scenarios/:id/controls`
+- [ ] `GET /api/v1/risk-scenarios/:id/metrics-history`
+- [ ] `POST /api/v1/risk-scenarios/crq/:id/update-crq`
+- [ ] `GET /api/v1/risk-scenarios/export`
 
 ### Tenant & Users
 - [ ] `GET /api/tenant`

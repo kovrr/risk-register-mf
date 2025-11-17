@@ -64,7 +64,7 @@ describe('Scenario Metrics Card', () => {
 
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${manualScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${manualScenario.scenario_id}`,
       {
         statusCode: 200,
         body: manualScenario,
@@ -73,7 +73,7 @@ describe('Scenario Metrics Card', () => {
 
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${crqScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${crqScenario.scenario_id}`,
       {
         statusCode: 200,
         body: crqScenario,
@@ -82,7 +82,7 @@ describe('Scenario Metrics Card', () => {
 
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${crqScenario.scenario_id}/metrics-history`,
+      `/api/v1/risk-scenarios/${crqScenario.scenario_id}/metrics-history`,
       {
         statusCode: 200,
         body: metricsHistory,

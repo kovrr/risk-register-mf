@@ -96,7 +96,7 @@ describe('Scenario Input Form', () => {
     );
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${scenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${scenario.scenario_id}`,
       {
         statusCode: 200,
         body: scenario,
@@ -256,7 +256,7 @@ describe('Scenario Input Form', () => {
   });
 
   it('should update a scenario with new data', () => {
-    cy.intercept('PATCH', '**/api/risk-register/scenarios/*', {
+    cy.intercept('PATCH', '**/api/v1/risk-scenarios/*', {
       statusCode: 200,
     }).as('updateScenario');
     cy.get('input[name="name"]').type('New Name');

@@ -25,7 +25,7 @@ describe('Risk Owner Dropdown', () => {
     }).as('getRiskOwners');
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${scenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${scenario.scenario_id}`,
       {
         statusCode: 200,
         body: scenario,
@@ -33,7 +33,7 @@ describe('Risk Owner Dropdown', () => {
     ).as('getScenario');
     cy.intercept(
       'PATCH',
-      `/api/risk-register/scenarios/${scenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${scenario.scenario_id}`,
       (req) => {
         const updatedScenario = {
           ...scenario,

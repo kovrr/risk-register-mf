@@ -170,7 +170,7 @@ describe('Scenario Input Form', () => {
 
   it('should submit form with complete data', () => {
     // Spy on console.log
-    cy.intercept('POST', '/api/risk-register/scenarios/crq', {
+    cy.intercept('POST', '/api/v1/risk-scenarios/crq', {
       statusCode: 201,
     }).as('createScenario');
 

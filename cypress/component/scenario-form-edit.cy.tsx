@@ -13,7 +13,7 @@ describe('Scenario Input Form', () => {
     cy.mockFrontegg([]);
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${mockScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${mockScenario.scenario_id}`,
       {
         statusCode: 200,
         body: mockScenario,
@@ -67,7 +67,7 @@ describe('Scenario Input Form', () => {
   });
 
   it('should successfully update an existing scenario', () => {
-    cy.intercept('PATCH', '**/api/risk-register/scenarios/*', {
+    cy.intercept('PATCH', '**/api/v1/risk-scenarios/*', {
       statusCode: 200,
     }).as('updateScenario');
 
@@ -90,7 +90,7 @@ describe('Scenario Input Form', () => {
   });
 
   it('should not include results field in crq_data when updating', () => {
-    cy.intercept('PATCH', '**/api/risk-register/scenarios/*', {
+    cy.intercept('PATCH', '**/api/v1/risk-scenarios/*', {
       statusCode: 200,
     }).as('updateScenario');
 
