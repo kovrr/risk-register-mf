@@ -59,6 +59,7 @@ export default function QuantitativeMetrics({
                 <div className='relative'>
                   <Input
                     type='number'
+                    step='any'
                     {...field}
                     onChange={(e) => field.onChange(e.target.valueAsNumber)}
                   />

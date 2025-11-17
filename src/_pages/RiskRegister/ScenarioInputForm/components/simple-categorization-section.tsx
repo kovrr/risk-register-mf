@@ -11,7 +11,6 @@ type SimpleCategorizationSectionProps = {
 
 export function SimpleCategorizationSection({
   control,
-  isEditMode,
 }: SimpleCategorizationSectionProps) {
   const { data: enums, isLoading } = useScenarioFieldEnums();
 
@@ -31,7 +30,6 @@ export function SimpleCategorizationSection({
         info={
           <InfoPopover content='Select one or more categories describing the AI risk scenario.' />
         }
-        disabled={isEditMode}
         data-testid='simple-scenario-category-select'
       />
 
@@ -47,7 +45,6 @@ export function SimpleCategorizationSection({
         info={
           <InfoPopover content='Associate the scenario with relevant AI assets or components.' />
         }
-        disabled={isEditMode}
         data-testid='simple-ai-asset-select'
       />
 
@@ -63,7 +60,6 @@ export function SimpleCategorizationSection({
         info={
           <InfoPopover content='Choose the initial access techniques relevant to this scenario.' />
         }
-        disabled={isEditMode}
         data-testid='simple-initial-access-select'
       />
 
@@ -79,7 +75,6 @@ export function SimpleCategorizationSection({
         info={
           <InfoPopover content='Identify the cyber events that best match this risk scenario.' />
         }
-        disabled={isEditMode}
         data-testid='simple-event-types-select'
       />
 

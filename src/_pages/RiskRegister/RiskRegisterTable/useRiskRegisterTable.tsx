@@ -16,6 +16,7 @@ import { LikelihoodBadge } from '@/components/molecules/LikelihoodBadge';
 import { Impact } from './Cells/Impact';
 import { ScenarioDetails } from './Cells/ScenarioDetails';
 import { StatusBadge } from '@/components/ui/Badge/StatusBadge';
+import { TableActions } from './Cells/TableActions';
 
 const columnHelper = createColumnHelper<RiskRegisterRow>();
 const useColumns = () => {
@@ -80,6 +81,12 @@ const useColumns = () => {
         ),
         header: () => <TableHeaderCell title='Owner' />,
         enableSorting: true,
+      }),
+      columnHelper.display({
+        id: 'actions',
+        cell: ({ row }) => <TableActions scenario={row.original} />,
+        header: () => <TableHeaderCell title='' />,
+        enableSorting: false,
       }),
     ],
     [],

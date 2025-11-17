@@ -1,10 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchScenarioFieldEnums } from '@/services/scenarioFieldEnums';
+import { useMemo } from 'react';
+import { scenarioFieldEnumValues } from '@/constants/scenarioEnums';
 
 export function useScenarioFieldEnums() {
-  return useQuery({
-    queryKey: ['scenario-field-enums'],
-    queryFn: fetchScenarioFieldEnums,
-    staleTime: 60 * 60 * 1000, // 1h cache
-  });
+  const data = useMemo(() => scenarioFieldEnumValues, []);
+
+  return {
+    data,
+    isLoading: false,
+  };
 }

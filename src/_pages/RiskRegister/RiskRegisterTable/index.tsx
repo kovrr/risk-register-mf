@@ -1,7 +1,6 @@
 import { Toaster } from '@/components/atoms/sonner';
 import { useMixpanel } from '@/hooks/useMixpanel';
 import { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useRiskRegisterTable } from './useRiskRegisterTable';
 import {
   Box,
@@ -23,9 +22,9 @@ import ImpactBadge from '@/components/molecules/ImpactBadge';
 import { LikelihoodBadge } from '@/components/molecules/LikelihoodBadge';
 import { StatusBadge } from '@/components/ui/Badge/StatusBadge';
 import { ScenarioDetails } from './Cells/ScenarioDetails';
+import { TableActions } from './Cells/TableActions';
 
 const RiskRegisterTable = () => {
-  const { t } = useTranslation('riskRegister', { keyPrefix: 'table' });
   const [searchInput, setSearchInput] = useState<string>('');
   const [search, setSearch] = useState<string>('');
 
@@ -34,17 +33,7 @@ const RiskRegisterTable = () => {
     return () => clearTimeout(id);
   }, [searchInput]);
 
-  const {
-    table,
-    pageCount,
-    pageIndex,
-    pageSize,
-    setPageIndex,
-    setPageSize,
-    totalCount,
-    isLoading,
-    isFetching,
-  } = useRiskRegisterTable({ search });
+  const { table } = useRiskRegisterTable({ search });
 
   const { track: trackEvent } = useMixpanel();
 
@@ -88,6 +77,7 @@ const RiskRegisterTable = () => {
                 'Likelihood',
                 'Status',
                 'Owner',
+                '',
               ].map((h) => (
                 <Th
                   key={h}
@@ -148,6 +138,9 @@ const RiskRegisterTable = () => {
                   </Td>
                   <Td paddingLeft='16px' color='gray.700'>
                     {d.owner || '-'}
+                  </Td>
+                  <Td paddingLeft='16px' isNumeric={false}>
+                    <TableActions scenario={d} />
                   </Td>
                 </Tr>
               );

@@ -66,7 +66,6 @@ export function DataExposureFields<TFieldValues extends FieldValues>({
                     value={field.value ?? ''}
                     name={field.name}
                     ref={field.ref}
-                    disabled={isEditMode}
                     onBlur={field.onBlur}
                     onChange={(event) =>
                       field.onChange(event.target.valueAsNumber || undefined)
