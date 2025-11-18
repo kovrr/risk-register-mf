@@ -1,5 +1,5 @@
 import { Button } from '@/components/atoms/button';
-import { useExportRiskRegisterScenario, useTenantData } from '@/services/hooks';
+import { useExportRiskRegisterScenario } from '@/services/hooks';
 import { Text } from '@chakra-ui/react';
 import type React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,11 +15,11 @@ const ScenarioTopBarNoSearch: React.FC = () => {
   const handleExport = async () => {
     await exportRiskScenario();
   };
-  const { data: tenantData } = useTenantData();
-
   return (
     <div className='flex flex-row items-center justify-between'>
-      <Text fontSize='28px'>{tenantData?.name || 'My Organization'}</Text>
+      <Text fontSize='28px' fontWeight='700'>
+        AI Risk Register
+      </Text>
       <div className='flex flex-row gap-4'>
         <Button
           data-testid='export-scenario-button'

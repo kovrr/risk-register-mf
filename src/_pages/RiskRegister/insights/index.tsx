@@ -75,7 +75,23 @@ function KovrrInsights() {
   }, [chatInput, client, selectedScenarioId]);
 
   return (
-    <Flex gap='24px' alignItems='flex-start'>
+    <Flex
+      direction='column'
+      gap='24px'
+      bg='white'
+      borderRadius='8px'
+      w='100%'
+      minH='inherit'
+      p={{ base: '20px', md: '24px' }}
+      boxShadow='sm'
+    >
+      <Flex
+        gap='24px'
+        alignItems='flex-start'
+        width='100%'
+        minH='inherit'
+        flexWrap='wrap'
+      >
       <Flex direction='column' gap='16px' flex='1'>
         {/* Scenario Analyzer */}
         <Flex direction='column' gap='8px' className='p-4 rounded-md bg-background'>
@@ -131,12 +147,13 @@ function KovrrInsights() {
         </Flex>
       </Flex>
 
-      {/* Recommendations Panel */}
-      <Flex direction='column' gap='8px' minW='360px' flex='1' className='p-4 rounded-md bg-background'>
-        <Text fontSize='16px' fontWeight='700'>
-          AI-Powered Recommendations
-        </Text>
-        <Textarea value={recommendations} readOnly height='100%' minH='360px' />
+        {/* Recommendations Panel */}
+        <Flex direction='column' gap='8px' minW='360px' flex='1' className='p-4 rounded-md bg-background'>
+          <Text fontSize='16px' fontWeight='700'>
+            AI-Powered Recommendations
+          </Text>
+          <Textarea value={recommendations} readOnly height='100%' minH='360px' />
+        </Flex>
       </Flex>
     </Flex>
   );
