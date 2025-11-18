@@ -34,17 +34,6 @@ const _updateScenarioInQuery = (
   };
 };
 
-const _getLatestQuery = (queries: Query[]) => {
-  if (queries.length === 0) return undefined;
-  return queries.reduce(
-    (latest, current) =>
-      current.state.dataUpdatedAt > latest.state.dataUpdatedAt
-        ? current
-        : latest,
-    queries[0],
-  );
-};
-
 const _deleteScenarioFromQuery = (
   oldData: RiskRegisterScenarioPaginatedResponse | undefined,
   deletedScenarioId: string,
@@ -102,16 +91,10 @@ export const useUpdateRiskRegisterQueries = () => {
     });
   };
 
-  const invalidateLatestGetScenariosQuery = async () => {
-    const queryCache = queryClient.getQueryCache();
-    const queries = queryCache.getAll();
-    const latestQuery = _getLatestQuery(_getRelevantQueries(queries));
-
-    if (latestQuery) {
-      await queryClient.invalidateQueries({
-        queryKey: latestQuery.queryKey,
-      });
-    }
+  const invalidateScenarioTableQueries = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.RISK_REGISTER_SCENARIOS_TABLE,
+    });
   };
 
   const invalidateCurrentScenarioQuery = async (scenarioId: string) => {
@@ -123,7 +106,7 @@ export const useUpdateRiskRegisterQueries = () => {
   return {
     updateQueriesWithNewRow,
     updateQueriesWithDeletedRow,
-    invalidateLatestGetScenariosQuery,
+    invalidateScenarioTableQueries,
     invalidateCurrentScenarioQuery,
   };
 };

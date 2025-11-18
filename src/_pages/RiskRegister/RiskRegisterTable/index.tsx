@@ -17,12 +17,12 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import PriorityBadge from '@/components/molecules/PriorityBadge';
 import ImpactBadge from '@/components/molecules/ImpactBadge';
 import { LikelihoodBadge } from '@/components/molecules/LikelihoodBadge';
 import { StatusBadge } from '@/components/ui/Badge/StatusBadge';
 import { ScenarioDetails } from './Cells/ScenarioDetails';
 import { TableActions } from './Cells/TableActions';
+import { PriorityDropdownMutate } from '../components/PriorityDropdownMutate';
 
 const RiskRegisterTable = () => {
   const [searchInput, setSearchInput] = useState<string>('');
@@ -125,7 +125,7 @@ const RiskRegisterTable = () => {
                     {d.category || '-'}
                   </Td>
                   <Td paddingLeft='16px'>
-                    <PriorityBadge value={d.priority} />
+                    <PriorityDropdownMutate value={d.priority} rowData={d} />
                   </Td>
                   <Td paddingLeft='16px'>
                     <ImpactBadge value={d.impact} />

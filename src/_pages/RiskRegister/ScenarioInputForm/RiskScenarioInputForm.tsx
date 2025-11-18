@@ -48,7 +48,7 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const isGuestUser = useIsGuestUser();
   const {
-    invalidateLatestGetScenariosQuery,
+    invalidateScenarioTableQueries,
     updateQueriesWithNewRow,
     invalidateCurrentScenarioQuery,
   } = useUpdateRiskRegisterQueries();
@@ -63,7 +63,7 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
         });
         onSuccess();
         form.reset();
-        await invalidateLatestGetScenariosQuery();
+        await invalidateScenarioTableQueries();
       },
       onError: (error: unknown) => {
         const axiosError = error as AxiosError<{ detail: string }>;

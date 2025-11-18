@@ -243,6 +243,7 @@ export type RiskRegisterResponse = {
   customer_scenario_id: string;
   name: string;
   description: string;
+  group_id?: string;
   scenario_data: ScenarioData;
   notes: NoteOutput[];
   created_at: string;
@@ -270,8 +271,8 @@ export interface ScenarioMetricsHistory {
 export type RiskRegisterScenarioPaginatedResponse = {
   items: RiskRegisterResponse[];
   total: number;
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
 };
 
 export type ImpactDistribution = {

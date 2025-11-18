@@ -53,7 +53,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
 
   const { t } = useTranslation('riskRegister', { keyPrefix: 'modal' });
   const {
-    invalidateLatestGetScenariosQuery,
+    invalidateScenarioTableQueries,
     invalidateCurrentScenarioQuery,
     updateQueriesWithNewRow,
   } = useUpdateRiskRegisterQueries();
@@ -68,7 +68,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
           description: 'The risk scenario has been created successfully',
         });
         form.reset();
-        await invalidateLatestGetScenariosQuery();
+        await invalidateScenarioTableQueries();
       },
       onError: (error: unknown) => {
         const axiosError = error as { response?: { data: { detail: string } } };

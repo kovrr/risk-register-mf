@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/atoms/select';
-import { useMockGroups } from '@/hooks/useMockGroups';
 import type { Control, FieldPath } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import type { BaseScenarioFormValues } from './form-config';
@@ -29,7 +28,11 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
   isEditMode,
 }: BasicScenarioInfoProps<T>) {
   const { t } = useTranslation('riskRegister', { keyPrefix: 'modal' });
-  const { data: groups } = useMockGroups();
+  const mockGroups = [
+    { id: 'mock-group-1', name: 'Mock Group A' },
+    { id: 'mock-group-2', name: 'Mock Group B' },
+    { id: 'mock-group-3', name: 'Mock Group C' },
+  ];
 
   return (
     <div className='space-y-xs'>
@@ -99,7 +102,7 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
                   <SelectValue placeholder='Select a group' />
                 </SelectTrigger>
                 <SelectContent>
-                  {(groups ?? []).map((group) => (
+                  {mockGroups.map((group) => (
                     <SelectItem key={group.id} value={group.id}>
                       {group.name}
                     </SelectItem>
