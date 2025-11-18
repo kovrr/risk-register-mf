@@ -37,7 +37,7 @@ export const registerToRowData: (
   scenario: RiskRegisterResponse,
 ) => RiskRegisterRow = (scenario) => {
   return {
-    id: scenario.id,
+    id: scenario.scenario_id,
     scenarioId: scenario.scenario_id,
     version: scenario.version,
     customerScenarioId: scenario.customer_scenario_id,

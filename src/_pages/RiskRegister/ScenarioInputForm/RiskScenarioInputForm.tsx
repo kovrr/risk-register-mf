@@ -187,7 +187,15 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
       showDemoModal({ title: t('demo.addScenario') });
       return;
     }
-    trackEvent('risk_register.naive_scenario_input_form.submit');
+
+    // Only track if we have the necessary context
+    const scenarioId = scenario?.scenario_id || currentScenarioId;
+    if (scenarioId) {
+      trackEvent('risk_register.naive_scenario_input_form.submit', {
+        scenarioId,
+      });
+    }
+
     if (isEditMode) {
       return await updateRiskRegisterScenario(
         values as SimpleScenarioUpdateRequest,
@@ -197,14 +205,26 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
   }
 
   useEffect(() => {
-    trackEvent('risk_register.naive_scenario_input_form.view');
-  }, [trackEvent]);
+    // Only track if we have the necessary context
+    const scenarioId = scenario?.scenario_id || currentScenarioId;
+    if (scenarioId) {
+      trackEvent('risk_register.naive_scenario_input_form.view', {
+        scenarioId,
+      });
+    }
+  }, [trackEvent, scenario?.scenario_id, currentScenarioId]);
 
   const averageLossCurrency = form.watch('average_loss_currency');
   const isLoading = isCreating || isUpdating;
 
   const handleCancel = () => {
-    trackEvent('risk_register.naive_scenario_input_form.cancel');
+    // Only track if we have the necessary context
+    const scenarioId = scenario?.scenario_id || currentScenarioId;
+    if (scenarioId) {
+      trackEvent('risk_register.naive_scenario_input_form.cancel', {
+        scenarioId,
+      });
+    }
     form.reset(initialValues as SimpleScenarioFormValues);
     onSuccess();
   };

@@ -149,7 +149,7 @@ const useData = (params: UseRiskRegisterTableParams) => {
     if (!scenarios || !scenarios.items || !Array.isArray(scenarios.items))
       return [];
     return scenarios.items.map((scenario) => ({
-      id: scenario.id,
+      id: scenario.scenario_id,
       customerScenarioId: scenario.customer_scenario_id,
       scenarioTitle: scenario.name,
       scenarioDescription: scenario.description,

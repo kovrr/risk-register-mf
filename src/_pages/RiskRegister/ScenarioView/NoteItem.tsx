@@ -1,7 +1,7 @@
 import { Avatar } from '@/components/atoms/avatar';
 import PaperClip from '@/components/icons/PaperClip';
 import { useToast } from '@/hooks/use-toast';
-import { useGetDocument } from '@/services/hooks';
+import { useCurrentRiskRegisterScenario, useGetDocument } from '@/services/hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getInitials } from '../utils/textManipulation';
@@ -27,6 +27,9 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   avatar,
 }) => {
   const { toast } = useToast();
+  const { data: scenario } = useCurrentRiskRegisterScenario();
+  const scenarioId = scenario?.scenario_id;
+
   const { mutateAsync: getDocument } = useGetDocument({
     onError: () => {
       toast({
@@ -58,14 +61,44 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   const handleDownloadFile = async () => {
     if (!attachment?.id) return;
 
-    try {
-      const response = await getDocument(attachment.id);
-      if (!response.data.download_url) throw new Error('Download failed');
+    if (!scenarioId) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Scenario not loaded. Cannot download attachment.',
+      });
+      return;
+    }
 
-      // Open the download URL in a new tab
-      window.open(response.data.download_url, '_blank');
+    try {
+      const response = await getDocument({
+        documentId: attachment.id,
+        scenarioId: scenarioId,
+      });
+
+      // If response is a Blob, create a download link
+      if (response instanceof Blob) {
+        const url = window.URL.createObjectURL(response);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = attachment.name || 'attachment';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } else if (response?.download_url) {
+        // Fallback: if response has download_url, open it
+        window.open(response.download_url, '_blank');
+      } else {
+        throw new Error('Download failed: Invalid response format');
+      }
     } catch (error) {
       console.error('Error downloading file:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to download attachment. Please try again.',
+      });
     }
   };
 

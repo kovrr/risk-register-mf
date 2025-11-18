@@ -1,7 +1,9 @@
+import { Badge } from '@/components/atoms/badge';
 import { Card } from '@/components/atoms/card';
 import { Input } from '@/components/atoms/input';
 import { Label } from '@/components/atoms/label';
 import type { Option } from '@/components/molecules/Dropdown';
+import { StatusBadge } from '@/components/ui/Badge/StatusBadge';
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { cn } from '@/lib/utils';
 import { useUpdateRiskRegisterScenarioField } from '@/services/hooks';
@@ -30,7 +32,8 @@ type RiskManagementFormProps = {
   scenario: RiskRegisterResponse;
 };
 
-const labelClassName = 'text-[14px] text-base-primary font[400]';
+const labelClassName = 'text-sm font-normal text-text-base-primary min-w-[140px]';
+const valueClassName = 'text-sm text-text-base-primary';
 
 const urlSchema = z.union([
   z.string().url(),
@@ -49,7 +52,7 @@ export const registerToRowData: (
       : scenario.scenario_data.company_id;
 
   return {
-    id: scenario.id,
+    id: scenario.scenario_id,
     scenarioId: scenario.scenario_id,
     version: scenario.version,
     customerScenarioId: scenario.customer_scenario_id,
@@ -189,104 +192,243 @@ export default function RiskManagementForm({
     });
   };
 
+  const aiAssets = scenario.scenario_data.ai_assets || [];
+  const tactics = scenario.scenario_data.tactics || [];
+  const eventTypes = scenario.scenario_data.event_types || [];
+  const impactTypes = scenario.scenario_data.impact_types || [];
+  const riskSubcategories = scenario.scenario_data.risk_subcategory || [];
+
   return (
-    <Card className='flex flex-col gap-6 space-y-[20px] p-[20px]'>
-      <div className='grid grid-cols-[2fr_3fr] gap-[5px] gap-y-[15px]'>
-        <Label className={labelClassName}>{t('labels.riskPriority')}</Label>
-        <div>
-          <PriorityDropdown
-            value={scenario.scenario_data.risk_priority}
-            onChange={handlePriorityChange}
-            key={scenario.scenario_id}
-            disabled={isPending || isGuestUser}
-          />
-        </div>
-
-        <Label className={labelClassName}>{t('labels.subCategory')}</Label>
-        <div className='relative w-full'>
-          <Input
-            onChange={(e) => debouncedSubCategoryChange(e.target.value)}
-            defaultValue={scenario.scenario_data.sub_category || ''}
-            disabled={isPending || isGuestUser}
-            name='sub-category'
-          />
-        </div>
-
-        <Label className={labelClassName}>{t('labels.riskOwner')}</Label>
-        <div>
-          <RiskOwnerDropdownMutate
-            value={scenario.scenario_data.risk_owner}
-            rowData={registerToRowData(scenario)}
-            disabled={isPending || isGuestUser}
-          />
-        </div>
-      </div>
-      <div className='grid grid-cols-[2fr_3fr] gap-[5px] gap-y-[15px]'>
-        <Label className={labelClassName}>{t('labels.responsePlan')}</Label>
-        <div>
-          <ResponsePlanDropdown
-            value={scenario.scenario_data.response_plan}
-            onChange={handleResponsePlanChange}
-            key={scenario.scenario_id}
-            disabled={isPending || isGuestUser}
-          />
-        </div>
-
-        <Label className={labelClassName}>{t('labels.ticket')}</Label>
-        <div className='relative w-full'>
-          <div className='absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground'>
-            <LinkIcon
-              className={cn(
-                'h-4 w-4 text-text-brand-primary',
-
-                ticketState === 'loading' || !scenario.scenario_data.ticket
-                  ? 'text-base-primary'
-                  : 'text-text-brand-primary',
-                ticketState === 'invalid' && 'text-red-500',
-              )}
+    <Card className='flex flex-col gap-6 p-6 shadow-sm'>
+      <div className='space-y-6'>
+        {/* Risk Priority */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>{t('labels.riskPriority')}</Label>
+          <div className='flex-1'>
+            <PriorityDropdown
+              value={scenario.scenario_data.risk_priority}
+              onChange={handlePriorityChange}
+              key={scenario.scenario_id}
+              disabled={isPending || isGuestUser}
             />
           </div>
-          <Input
-            type='url'
-            placeholder={t('placeholders.ticketUrl')}
-            className={cn(
-              'pl-9 text-text-brand-primary',
-              ticketState === 'loading' && 'text-base-primary',
-              ticketState === 'invalid' && 'text-red-500',
+        </div>
+
+        {/* AI Assets / Systems */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>AI Assets / Systems</Label>
+          <div className='flex flex-1 flex-wrap gap-2'>
+            {aiAssets.length > 0 ? (
+              aiAssets.map((asset, index) => (
+                <Badge
+                  key={index}
+                  variant='secondary'
+                  className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                >
+                  {asset}
+                </Badge>
+              ))
+            ) : (
+              <span className={cn(valueClassName, 'italic text-gray-500')}>
+                Not set
+              </span>
             )}
-            onChange={(e) => handleLinkChange(e.target.value)}
-            defaultValue={scenario.scenario_data.ticket || ''}
-            disabled={isPending || isGuestUser}
+          </div>
+        </div>
+
+        {/* Initial Access (MITRE) */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>Initial Access</Label>
+          <div className='flex flex-1 flex-wrap gap-2'>
+            {tactics.length > 0 ? (
+              tactics.map((tactic, index) => (
+                <Badge
+                  key={index}
+                  variant='secondary'
+                  className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                >
+                  {tactic}
+                </Badge>
+              ))
+            ) : (
+              <span className={cn(valueClassName, 'italic text-gray-500')}>
+                Not set
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Cyber Event Type */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>Cyber Event Type</Label>
+          <div className='flex flex-1 flex-wrap gap-2'>
+            {eventTypes.length > 0 ? (
+              eventTypes.map((type, index) => (
+                <Badge
+                  key={index}
+                  variant='secondary'
+                  className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                >
+                  {type}
+                </Badge>
+              ))
+            ) : (
+              <span className={cn(valueClassName, 'italic text-gray-500')}>
+                Not set
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Impact Type */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>Impact Type</Label>
+          <div className='flex flex-1 flex-wrap gap-2'>
+            {impactTypes.length > 0 ? (
+              impactTypes.map((type, index) => (
+                <Badge
+                  key={index}
+                  variant='secondary'
+                  className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                >
+                  {type}
+                </Badge>
+              ))
+            ) : (
+              <span className={cn(valueClassName, 'italic text-gray-500')}>
+                Not set
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Risk Subcategory */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>Risk Subcategory</Label>
+          <div className='flex flex-1 flex-wrap gap-2'>
+            {riskSubcategories.length > 0 ? (
+              riskSubcategories.map((subcategory, index) => (
+                <Badge
+                  key={index}
+                  variant='secondary'
+                  className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                >
+                  {subcategory}
+                </Badge>
+              ))
+            ) : (
+              <span className={cn(valueClassName, 'italic text-gray-500')}>
+                Not set
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Risk Owner */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>{t('labels.riskOwner')}</Label>
+          <div className='flex-1'>
+            <RiskOwnerDropdownMutate
+              value={scenario.scenario_data.risk_owner}
+              rowData={registerToRowData(scenario)}
+              disabled={isPending || isGuestUser}
+            />
+          </div>
+        </div>
+
+        {/* Status */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>Status</Label>
+          <div className='flex-1'>
+            <StatusBadge status={scenario.status || 'Draft'} />
+          </div>
+        </div>
+
+        {/* Response Plan */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>{t('labels.responsePlan')}</Label>
+          <div className='flex-1'>
+            <ResponsePlanDropdown
+              value={scenario.scenario_data.response_plan}
+              onChange={handleResponsePlanChange}
+              key={scenario.scenario_id}
+              disabled={isPending || isGuestUser}
+            />
+          </div>
+        </div>
+
+        {/* Ticket */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>{t('labels.ticket')}</Label>
+          <div className='relative flex-1'>
+            <div className='absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground'>
+              <LinkIcon
+                className={cn(
+                  'h-4 w-4',
+                  ticketState === 'loading' || !scenario.scenario_data.ticket
+                    ? 'text-base-primary'
+                    : 'text-text-brand-primary',
+                  ticketState === 'invalid' && 'text-red-500',
+                )}
+              />
+            </div>
+            <Input
+              type='url'
+              placeholder={t('placeholders.ticketUrl')}
+              className={cn(
+                'pl-9',
+                ticketState === 'loading' && 'text-base-primary',
+                ticketState === 'invalid' && 'text-red-500',
+              )}
+              onChange={(e) => handleLinkChange(e.target.value)}
+              defaultValue={scenario.scenario_data.ticket || ''}
+              disabled={isPending || isGuestUser}
+            />
+          </div>
+        </div>
+
+        {/* Review Date */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>{t('labels.reviewDate')}</Label>
+          <div className='flex-1'>
+            <DateField
+              value={scenario.scenario_data.review_date}
+              onChange={handleReviewDateChange}
+            />
+          </div>
+        </div>
+
+        {/* Mitigation Cost */}
+        <div className='flex items-start gap-4'>
+          <MitigationCostField
+            label={t('labels.mitigationCost')}
+            value={scenario.scenario_data.mitigation_cost}
+            labelClassName={labelClassName}
+            onChange={debouncedMitigationCostChange}
+            scenario={scenario}
+            disabled={isGuestUser}
           />
         </div>
 
-        <Label className={labelClassName}>{t('labels.reviewDate')}</Label>
-        <DateField
-          value={scenario.scenario_data.review_date}
-          onChange={handleReviewDateChange}
-        />
+        {/* Creation Date */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>{t('labels.creationDate')}</Label>
+          <span className={cn(valueClassName, 'italic text-gray-500')}>
+            {format(new Date(scenario.created_at), 'MMMM d, yyyy')}
+          </span>
+        </div>
 
-        <MitigationCostField
-          label={t('labels.mitigationCost')}
-          value={scenario.scenario_data.mitigation_cost}
-          labelClassName={labelClassName}
-          onChange={debouncedMitigationCostChange}
-          scenario={scenario}
-          disabled={isGuestUser}
-        />
+        {/* Last Edited On */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>{t('labels.lastEdited')}</Label>
+          <span className={cn(valueClassName, 'italic text-gray-500')}>
+            {format(new Date(scenario.updated_at), 'MMMM d, yyyy')}
+          </span>
+        </div>
       </div>
-      <div className='grid grid-cols-[2fr_3fr] gap-[5px] gap-y-[15px]'>
-        <Label className={labelClassName}>{t('labels.creationDate')}</Label>
-        <span className='font-[14px] italic text-gray-500'>
-          {format(new Date(scenario.created_at), 'MMMM d, yyyy')}
-        </span>
 
-        <Label className={labelClassName}>{t('labels.lastEdited')}</Label>
-        <span className='font-[14px] italic text-gray-500'>
-          {format(new Date(scenario.updated_at), 'MMMM d, yyyy')}
-        </span>
-      </div>
-      <div className='mt-8 border-t pt-8'>
+      {/* Custom Fields Section */}
+      <div className='mt-6 border-t pt-6'>
         <CustomFieldsSection scenario={scenario} />
       </div>
     </Card>

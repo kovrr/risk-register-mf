@@ -40,12 +40,38 @@ export const QUERY_KEYS = {
 
 // Resolve API base depending on mock mode:
 // - When mocks are ON, use relative URLs so MSW can intercept
-// - When mocks are OFF, use the configured absolute backend base (fallback to relative)
-const baseUrl =
-  import.meta.env.VITE_USE_MOCKS === 'true'
-    ? '/api/v1'
-    : import.meta.env.VITE_API_BASE_URL || '/api/v1';
-const apiBasePath = `${baseUrl}`;
+// - When mocks are OFF, use the configured absolute backend base with proper resolution
+const resolveApiBaseUrl = (): string => {
+  // Priority order: VITE_API_BASE_URL > NEXT_PUBLIC_API_BASE_URL > VITE_API_URL > NEXT_PUBLIC_API_URL
+  const envBaseUrl =
+    import.meta.env.VITE_API_BASE_URL ||
+    import.meta.env.NEXT_PUBLIC_API_BASE_URL ||
+    import.meta.env.VITE_API_URL ||
+    import.meta.env.NEXT_PUBLIC_API_URL;
+
+  // If mocks are enabled, use relative path for MSW interception
+  if (import.meta.env.VITE_USE_MOCKS === 'true') {
+    return '/api/v1';
+  }
+
+  // If env var exists and contains http:// or https://, append /api/v1
+  if (envBaseUrl && (envBaseUrl.startsWith('http://') || envBaseUrl.startsWith('https://'))) {
+    // Remove trailing slash if present, then append /api/v1
+    const cleaned = envBaseUrl.replace(/\/+$/, '');
+    return `${cleaned}/api/v1`;
+  }
+
+  // If env var exists but doesn't have protocol, add http://
+  if (envBaseUrl) {
+    const cleaned = envBaseUrl.replace(/^\/+|\/+$/g, '');
+    return `http://${cleaned}/api/v1`;
+  }
+
+  // Default fallback - never use window.location.origin for API calls
+  return 'http://localhost:8000/api/v1';
+};
+
+const apiBasePath = resolveApiBaseUrl();
 
 const DEFAULT_GROUP_ID = '00000000-0000-0456-0001-000000000001';
 
@@ -147,57 +173,56 @@ type StrippedQueryOptions<TQueryFnData, TError = AxiosError, TData = TQueryFnDat
 
 /**
  * Fetch paginated list of companies
+ * DISABLED: This endpoint does not exist in the backend and is not used by the Scenario Details page.
+ * Returns a no-op hook that doesn't make API calls.
  */
 export const useCompanies = (
-  params: {
+  _params: {
     page: number;
     size: number;
     name?: string;
     fields?: string[];
     id?: string;
   },
-  options?: StrippedQueryOptions<{ items: CompanyApiResponseItem[]; total: number }>,
+  _options?: StrippedQueryOptions<{ items: CompanyApiResponseItem[]; total: number }>,
 ) => {
-  const client = useAxiosInstance();
-
-  const { page, size, name, fields, id } = params;
-  const queryParams = new URLSearchParams();
-  queryParams.append('page', page.toString());
-  queryParams.append('size', size.toString());
-  if (name) {
-    queryParams.append('name', name);
-  }
-  if (fields) {
-    fields.forEach((field) => queryParams.append('fields', field));
-  }
-  if (id) {
-    queryParams.append('id', id);
-  }
-  const urlWithParams = `${API_URL.COMPANIES}?${queryParams.toString()}`;
-  return useQuery<{ items: CompanyApiResponseItem[]; total: number }, AxiosError>({
-    queryKey: [...QUERY_KEYS.COMPANIES, page, size, fields, id],
-    queryFn: () => client.get(urlWithParams).then(({ data }) => data),
-    ...options,
-  });
+  // No-op implementation - returns empty data without making API calls
+  return {
+    data: { items: [], total: 0 } as { items: CompanyApiResponseItem[]; total: number },
+    isLoading: false,
+    isPending: false,
+    isError: false,
+    error: null,
+    refetch: async () => {
+      return {
+        data: { items: [], total: 0 } as { items: CompanyApiResponseItem[]; total: number },
+      };
+    },
+  };
 };
 
 /**
  * Fetch a single company by ID
+ * DISABLED: This endpoint does not exist in the backend and is not used by the Scenario Details page.
+ * Returns a no-op hook that doesn't make API calls.
  */
 export const useCompany = (
-  id: string,
-  options?: StrippedQueryOptions<CompanyData, AxiosError>,
+  _id: string,
+  _options?: StrippedQueryOptions<CompanyData, AxiosError>,
 ) => {
-  const client = useAxiosInstance();
-  return useQuery<CompanyData, AxiosError>({
-    queryKey: [...QUERY_KEYS.COMPANIES, { id }],
-    queryFn: () => {
-      return client.get(`${API_URL.COMPANIES}/${id}`).then(({ data }) => {
-        return data;
-      });
+  // No-op implementation - returns undefined without making API calls
+  return {
+    data: undefined as CompanyData | undefined,
+    isLoading: false,
+    isPending: false,
+    isError: false,
+    error: null,
+    refetch: async () => {
+      return {
+        data: undefined as CompanyData | undefined,
+      };
     },
-    ...options,
-  });
+  };
 };
 
 /**
@@ -914,41 +939,27 @@ export const useCreateRiskOwner = (
 
 /**
  * Fetch notes for a scenario
+ * Uses scenario-based endpoint: GET /api/v1/risk-scenarios/{scenario_id}/notes
  */
 export const useNotes = (
-  parentType: 'quantification' | 'scenario',
-  parentId: string,
+  scenarioId: string,
   options?: StrippedQueryOptions<Note[], AxiosError>,
 ) => {
   const client = useAxiosInstance();
 
-  // Validate parentId before making API calls
-  const isValidParentId =
-    parentId &&
-    parentId !== 'undefined' &&
-    parentId.trim() !== '' &&
-    parentId.match(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
-    );
-
-  if (!isValidParentId) {
-    console.error('❌ useNotes: Invalid parentId:', parentId);
-  }
-
   return useQuery<Note[], AxiosError>({
-    queryKey: [QUERY_KEYS.NOTES, parentType, parentId],
+    queryKey: [QUERY_KEYS.NOTES, 'scenario', scenarioId],
     queryFn: () => {
-      const params = {
-        parent_type: parentType,
-        parent_id: parentId,
-      };
+      // Remove trailing slash if present
+      const cleanScenarioId = scenarioId.replace(/\/+$/, '');
+      const endpoint = `${API_URL.RISK_SCENARIOS}${cleanScenarioId}/notes`;
 
       return client
-        .get<NotesPage>(API_URL.NOTES, { params })
-        .then(({ data }) => {
-          // Extract notes from paginated response
-          const notes = data.items || [];
-          return notes;
+        .get(endpoint)
+        .then((res) => {
+          // Backend returns data in res.data.data format
+          const notes = res.data?.data || res.data?.items || [];
+          return Array.isArray(notes) ? notes : [];
         })
         .catch((error) => {
           console.error('❌ Error fetching Notes:', error);
@@ -957,54 +968,82 @@ export const useNotes = (
           throw error;
         });
     },
-    enabled: !!isValidParentId,
+    enabled: Boolean(scenarioId),
     ...options,
   });
 };
 
 /**
  * Create a new note (with optional file attachment)
+ * Uses scenario-based endpoints:
+ * - POST /api/v1/risk-scenarios/{scenario_id}/notes (for notes without attachment)
+ * - POST /api/v1/risk-scenarios/{scenario_id}/notes-with-attachment (for notes with attachment)
  */
 export const useCreateNote = (
   options?: Omit<
-    UseMutationOptions<Note, AxiosError, CreateGenericNoteParams>,
+    UseMutationOptions<
+      Note,
+      AxiosError,
+      { scenarioId: string; content: string; uploaded_file?: File },
+      unknown
+    >,
     'mutationFn'
   >,
 ) => {
   const client = useAxiosInstance();
   const queryClient = useQueryClient();
 
-  return useMutation<Note, AxiosError, CreateGenericNoteParams>({
-    mutationFn: ({ parentType, parentId, content, user, uploaded_file }) => {
-      // Validate parentId before making API call
-      const isValidParentId =
-        parentId &&
-        parentId !== 'undefined' &&
-        parentId.trim() !== '' &&
-        parentId.match(
-          /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
-        );
-
-      if (!isValidParentId) {
-        console.error('❌ useCreateNote: Invalid parentId:', parentId);
-        return Promise.reject(new Error('Invalid parent ID'));
+  return useMutation<
+    Note,
+    AxiosError,
+    { scenarioId: string; content: string; uploaded_file?: File },
+    unknown
+  >({
+    mutationFn: ({ scenarioId, content, uploaded_file }) => {
+      // Validate scenarioId before making API call
+      if (!scenarioId || scenarioId.trim() === '') {
+        console.error('❌ useCreateNote: Invalid scenarioId:', scenarioId);
+        return Promise.reject(new Error('Invalid scenario ID'));
       }
 
-      // Create FormData
-      const formData = new FormData();
-      formData.append('parent_type', parentType);
-      formData.append('parent_id', parentId);
-      formData.append('content', content);
-      formData.append('user', user);
+      // Remove trailing slash if present
+      const cleanScenarioId = scenarioId.replace(/\/+$/, '');
 
+      // If file is present, use notes-with-attachment endpoint with FormData
       if (uploaded_file) {
-        formData.append('uploaded_file', uploaded_file);
+        const formData = new FormData();
+        formData.append('content', content);
+        formData.append('file', uploaded_file);
+        formData.append('filename', uploaded_file.name);
+        formData.append('content_type', uploaded_file.type || 'application/octet-stream');
+
+        const endpoint = `${API_URL.RISK_SCENARIOS}${cleanScenarioId}/notes-with-attachment`;
+
+        return client
+          .post(endpoint, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then(({ data }) => {
+            return data?.data || data;
+          })
+          .catch((error) => {
+            throw error;
+          });
       }
+
+      // For notes without attachment, use notes endpoint with content as query param
+      const endpoint = `${API_URL.RISK_SCENARIOS}${cleanScenarioId}/notes`;
 
       return client
-        .post(API_URL.NOTES, formData)
+        .post(endpoint, null, {
+          params: {
+            content,
+          },
+        })
         .then(({ data }) => {
-          return data;
+          return data?.data || data;
         })
         .catch((error) => {
           throw error;
@@ -1012,9 +1051,9 @@ export const useCreateNote = (
     },
     ...options,
     onSuccess: (data, variables, onMutateResult, context) => {
-      // Invalidate and refetch the notes for this parent
+      // Invalidate and refetch the notes for this scenario
       void queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.NOTES, variables.parentType, variables.parentId],
+        queryKey: [QUERY_KEYS.NOTES, 'scenario', variables.scenarioId],
       });
       if (options?.onSuccess) {
         void options.onSuccess(data, variables, onMutateResult, context);
@@ -1028,18 +1067,43 @@ export const useCreateNote = (
 // ============================================================================
 
 /**
- * Download a document by ID
+ * Download a document/attachment by ID
+ * For scenario attachments, uses: GET /api/v1/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}
+ * For other documents, uses: /api/v1/documents/{documentId}
  */
 export const useGetDocument = (
   options?: Omit<
-    UseMutationOptions<unknown, unknown, unknown, unknown>,
+    UseMutationOptions<
+      Blob | { download_url: string },
+      AxiosError,
+      { documentId: string; scenarioId?: string },
+      unknown
+    >,
     'mutationFn'
   >,
 ) => {
   const client = useAxiosInstance();
   return useMutation({
-    mutationFn: (documentId: string) =>
-      client.get(`${API_URL.DOCUMENTS}/${documentId}`),
+    mutationFn: async ({ documentId, scenarioId }: { documentId: string; scenarioId?: string }) => {
+      // If scenarioId is provided, use scenario-based attachment endpoint with blob response
+      if (scenarioId) {
+        const cleanScenarioId = scenarioId.replace(/\/+$/, '');
+        const response = await client.get<Blob>(
+          `${API_URL.RISK_SCENARIOS}${cleanScenarioId}/attachments/download`,
+          {
+            params: {
+              attachment_id: documentId,
+            },
+            responseType: 'blob',
+          },
+        );
+        return response.data;
+      }
+
+      // Otherwise, use standard document endpoint
+      const response = await client.get<{ download_url: string }>(`${API_URL.DOCUMENTS}/${documentId}`);
+      return response.data;
+    },
     ...options,
   });
 };

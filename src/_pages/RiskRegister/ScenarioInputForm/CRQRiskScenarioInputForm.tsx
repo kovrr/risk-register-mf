@@ -153,7 +153,14 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
   );
 
   async function onSubmit(values: CRQScenarioFormValues) {
-    trackEvent('risk_register.crq_scenario_input_form.submit');
+    // Only track if we have the necessary context
+    const scenarioId = scenario?.scenario_id || currentScenarioId;
+    if (scenarioId) {
+      trackEvent('risk_register.crq_scenario_input_form.submit', {
+        scenarioId,
+      });
+    }
+
     if (isEditMode) {
       return await updateRiskRegisterScenario({
         ...values,
@@ -167,8 +174,14 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
   }
 
   useEffect(() => {
-    trackEvent('risk_register.crq_scenario_input_form.view');
-  }, [trackEvent]);
+    // Only track if we have the necessary context
+    const scenarioId = scenario?.scenario_id || currentScenarioId;
+    if (scenarioId) {
+      trackEvent('risk_register.crq_scenario_input_form.view', {
+        scenarioId,
+      });
+    }
+  }, [trackEvent, scenario?.scenario_id, currentScenarioId]);
 
   const isLoading = isCreating || isUpdating;
   return (
