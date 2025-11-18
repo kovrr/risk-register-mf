@@ -23,6 +23,7 @@ import { StatusBadge } from '@/components/ui/Badge/StatusBadge';
 import { ScenarioDetails } from './Cells/ScenarioDetails';
 import { TableActions } from './Cells/TableActions';
 import { PriorityDropdownMutate } from '../components/PriorityDropdownMutate';
+import { RiskOwnerDropdownMutate } from '../components/RiskOwner';
 
 const RiskRegisterTable = () => {
   const [searchInput, setSearchInput] = useState<string>('');
@@ -137,7 +138,7 @@ const RiskRegisterTable = () => {
                     <StatusBadge status={String(d.status)} />
                   </Td>
                   <Td paddingLeft='16px' color='gray.700'>
-                    {d.owner || '-'}
+                    <RiskOwnerDropdownMutate value={d.owner} rowData={d} />
                   </Td>
                   <Td paddingLeft='16px' isNumeric={false}>
                     <TableActions scenario={d} />
