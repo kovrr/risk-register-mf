@@ -758,6 +758,15 @@ export const useUpdateRiskRegisterScenario = (
         risk_owner: data.risk_owner || scenario.scenario_data.risk_owner,
         risk_priority:
           data.risk_priority || scenario.scenario_data.risk_priority,
+        scenario_category:
+          data.scenario_category || scenario.scenario_data.scenario_category,
+        ai_assets: data.ai_assets || scenario.scenario_data.ai_assets,
+        tactics: data.tactics || scenario.scenario_data.tactics,
+        event_types: data.event_types || scenario.scenario_data.event_types,
+        impact_types:
+          data.impact_types || scenario.scenario_data.impact_types,
+        data_exposure:
+          data.data_exposure || scenario.scenario_data.data_exposure,
         impact_distribution:
           data.impact_distribution ||
           scenario.scenario_data.impact_distribution,
