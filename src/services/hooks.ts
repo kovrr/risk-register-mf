@@ -16,7 +16,6 @@ import {
   type SimpleScenarioUpdateRequest,
   scenarioTypes,
 } from '@/types/riskRegister';
-import type { FeatureToggle, TenantData } from '@/types/tenantData';
 import {
   type UseMutationOptions,
   type UseQueryOptions,
@@ -30,7 +29,6 @@ import { useParams } from 'react-router-dom';
 // Query Keys - Risk Register specific
 export const QUERY_KEYS = {
   COMPANIES: ['COMPANIES'],
-  TENANT_DATA: ['TENANT_DATA'],
   RISK_REGISTER_SCENARIOS: ['RISK_REGISTER_SCENARIOS'],
   NOTES: ['NOTES'],
   RISK_REGISTER_SCENARIOS_TABLE: ['RISK_REGISTER_SCENARIOS_TABLE'],
@@ -94,7 +92,6 @@ export const API_URL = {
   RISK_REGISTER: `${apiBasePath}/risk-register`,
   RISK_SCENARIOS: `${apiBasePath}/risk-scenarios/`,
   NOTES: `${apiBasePath}/notes`,
-  TENANT: `${apiBasePath}/tenant`,
   DOCUMENTS: `${apiBasePath}/documents`,
   FQ: `${apiBasePath}/fq`, // Financial Quantification
   FRAMEWORKS: `${apiBasePath}/self-assessment/frameworks`,
@@ -139,9 +136,6 @@ export interface CreateGenericNoteParams {
 // SUPPORTING HOOKS (Dependencies for Risk Register)
 // ============================================================================
 
-/**
- * Fetch tenant data including feature toggles
- */
 type StrippedQueryOptions<TQueryFnData, TError = AxiosError, TData = TQueryFnData> =
   Omit<UseQueryOptions<TQueryFnData, TError, TData>, 'queryKey' | 'queryFn'> & {
     /**
@@ -150,17 +144,6 @@ type StrippedQueryOptions<TQueryFnData, TError = AxiosError, TData = TQueryFnDat
      */
     keepPreviousData?: boolean;
   };
-
-export const useTenantData = (
-  options?: StrippedQueryOptions<TenantData>,
-) => {
-  const client = useAxiosInstance();
-  return useQuery<TenantData, AxiosError>({
-    queryKey: QUERY_KEYS.TENANT_DATA,
-    queryFn: () => client.get(API_URL.TENANT).then(({ data }) => data),
-    ...options,
-  });
-};
 
 /**
  * Fetch paginated list of companies
@@ -226,67 +209,6 @@ export const useCurrentCompanyIdIfExists = () => {
     return null;
   }
   return companyId;
-};
-
-/**
- * Feature toggle hook
- */
-const useFeatureToggle = (
-  name: string,
-): { featureToggle: FeatureToggle | undefined; isLoading: boolean } => {
-  const { data: tenantData, isPending } = useTenantData();
-  return {
-    featureToggle: tenantData?.feature_toggles.find(
-      (toggle) => toggle.name === name,
-    ),
-    isLoading: isPending,
-  };
-};
-
-/**
- * Check if CRQ scenarios are enabled
- */
-export const useFeatureRiskRegisterCRQ = () => {
-  const { featureToggle } = useFeatureToggle('enable.riskRegister.crq');
-  return !!featureToggle?.value;
-};
-
-/**
- * Check if Risk Register templates are enabled
- */
-export const useFeatureRiskRegisterTemplate = () => {
-  const { featureToggle } = useFeatureToggle('enable.RiskRegisterTemplate');
-  return !!featureToggle?.value;
-};
-
-/**
- * Check if Risk Register export is enabled
- */
-export const useFeatureRiskRegisterExport = () => {
-  const { featureToggle } = useFeatureToggle('enable.riskRegister.export');
-  return !!featureToggle?.value;
-};
-
-/**
- * Check if Risk Register reorganize is enabled
- */
-export const useFeatureRiskRegisterReorganize = () => {
-  const { featureToggle } = useFeatureToggle('enable.riskRegister.reorganize');
-  return !!featureToggle?.value;
-};
-
-/**
- * Get remaining CRQ scenario licenses
- */
-export const useCRQScenarioRemainingLicenses = () => {
-  const client = useAxiosInstance();
-  return useQuery<number, AxiosError>({
-    queryKey: [QUERY_KEYS.TENANT_DATA, 'remaining_crq_scenarios_licenses'],
-    queryFn: () =>
-      client
-        .get(`${API_URL.TENANT}/remaining_crq_scenarios_licenses`)
-        .then(({ data }) => data['remaining_crq_scenarios_licenses']),
-  });
 };
 
 // ============================================================================
@@ -916,14 +838,33 @@ export const useRequestPreDefinedScenario = (
 /**
  * Fetch list of risk owners (users who can be assigned to scenarios)
  */
+let mockRiskOwners: RiskOwner[] = [
+  {
+    id: 'mock-owner-1',
+    email: 'risk.owner@example.com',
+    active_tenant: '',
+    tenant_ids: [],
+  },
+  {
+    id: 'mock-owner-2',
+    email: 'security.lead@example.com',
+    active_tenant: '',
+    tenant_ids: [],
+  },
+  {
+    id: 'mock-owner-3',
+    email: 'compliance.manager@example.com',
+    active_tenant: '',
+    tenant_ids: [],
+  },
+];
+
 export const useRiskOwners = (
   options?: StrippedQueryOptions<RiskOwner[], AxiosError>,
 ) => {
-  const client = useAxiosInstance();
   return useQuery<RiskOwner[], AxiosError>({
     queryKey: [QUERY_KEYS.RISK_OWNER],
-    queryFn: () =>
-      client.get(`${API_URL.TENANT}/users`).then(({ data }) => data),
+    queryFn: async () => mockRiskOwners,
     ...options,
   });
 };
@@ -937,14 +878,23 @@ export const useCreateRiskOwner = (
     'mutationFn'
   >,
 ) => {
-  const client = useAxiosInstance();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (userDetails: InvitationFormValues) =>
-      client
-        .post(`${API_URL.TENANT}/invite`, userDetails)
-        .then(({ data }) => data),
+    mutationFn: async (userDetails: InvitationFormValues) => {
+      const id =
+        typeof globalThis.crypto?.randomUUID === 'function'
+          ? globalThis.crypto.randomUUID()
+          : `mock-owner-${Date.now()}`;
+      const newOwner: RiskOwner = {
+        id,
+        email: userDetails.email,
+        active_tenant: '',
+        tenant_ids: [],
+      };
+      mockRiskOwners = [...mockRiskOwners, newOwner];
+      return newOwner;
+    },
     ...options,
     onSuccess: (data, variables, onMutateResult, context) => {
       // Invalidate the risk owners query
@@ -1107,12 +1057,10 @@ export const useUpgradeToFullPlan = (
     'mutationFn'
   >,
 ) => {
-  const client = useAxiosInstance();
   return useMutation<{ message: string }, AxiosError>({
-    mutationFn: () =>
-      client
-        .post(`${API_URL.TENANT}/upgrade-to-full-plan`)
-        .then(({ data }) => data),
+    mutationFn: async () => ({
+      message: 'Upgrade is unavailable in this environment.',
+    }),
     ...options,
   });
 };

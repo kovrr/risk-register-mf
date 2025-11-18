@@ -151,13 +151,15 @@ export const MultiSelectField = <TFieldValues extends FieldValues>({
             <FormControl>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
-                  <button
-                    type='button'
+                  <div
+                    role='button'
+                    tabIndex={disabled ? -1 : 0}
+                    aria-disabled={disabled}
                     className={cn(
                       'flex min-h-[42px] w-full items-center justify-between rounded-lg border border-border-base bg-fill-base-1 px-3 py-2 text-left text-sm transition-colors hover:border-border-base-strong focus:outline-none focus-visible:ring-2 focus-visible:ring-border-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60',
                       selectedValues.length === 0 && 'text-text-base-tertiary',
+                      disabled && 'cursor-not-allowed opacity-60',
                     )}
-                    disabled={disabled}
                     data-testid={dataTestId}
                   >
                     <div className='flex flex-wrap gap-1 text-sm'>
@@ -194,7 +196,7 @@ export const MultiSelectField = <TFieldValues extends FieldValues>({
                       )}
                       <ChevronsUpDown className='h-4 w-4 text-text-base-tertiary' />
                     </div>
-                  </button>
+                  </div>
                 </PopoverTrigger>
                 <PopoverContent
                   className='w-[320px] p-0'
