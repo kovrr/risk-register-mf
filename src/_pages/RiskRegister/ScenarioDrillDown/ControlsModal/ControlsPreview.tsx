@@ -134,28 +134,28 @@ export default function ControlsPreview({
           </div>
         )}
 
-        {relevantControls.length > 0 ? (
-          relevantControls.map(([framework, count]) => {
-            const frameworkConfig = frameworkMap[framework];
-            if (!frameworkConfig) {
-              return null;
-            }
+          {relevantControls.length > 0 ? (
+            relevantControls.map(([framework, count]) => {
+              const frameworkConfig = frameworkMap[framework];
+              if (!frameworkConfig) {
+                return null;
+              }
 
-            const rawRelevantControls = (
-              scenario?.scenario_data?.relevant_controls as
-              | Record<string, unknown>
-              | undefined
-            )?.[frameworkConfig.controls] as string[] | undefined;
+              const rawRelevantControls = (
+                scenario?.scenario_data?.relevant_controls as
+                | Record<string, unknown>
+                | undefined
+              )?.[frameworkConfig.controls] as string[] | undefined;
 
-            const implementationLevels =
-              (
-                formattedScenarioControls as unknown as Record<
-                  string,
-                  Record<string, number> | undefined
-                >
-              )[frameworkConfig.implementationLevel] || {};
+              const implementationLevels =
+                (
+                  formattedScenarioControls as unknown as Record<
+                    string,
+                    Record<string, number> | undefined
+                  >
+                )[frameworkConfig.implementationLevel] || {};
 
-            return (
+              return (
               <div key={framework} className='space-y-3'>
                 {/* Framework Badge */}
                 <div className='flex items-center gap-2'>
@@ -165,43 +165,43 @@ export default function ControlsPreview({
                   >
                     {frameworkConfig.title} · {count}
                   </Badge>
-                </div>
+                      </div>
 
                 {/* Controls List */}
                 <div className='space-y-2 pl-2'>
-                  {(rawRelevantControls || []).map((control: string) => {
-                    const codeToText = frameworkConfig.codeToText(control);
-                    const implementationValue =
-                      implementationLevels?.[control] ?? 0;
-                    const implementationChecker =
-                      frameworkConfig.isImplemented;
-                    const isImplemented = implementationChecker
-                      ? implementationChecker(implementationValue)
-                      : implementationValue === 1;
+                      {(rawRelevantControls || []).map((control: string) => {
+                        const codeToText = frameworkConfig.codeToText(control);
+                        const implementationValue =
+                          implementationLevels?.[control] ?? 0;
+                        const implementationChecker =
+                          frameworkConfig.isImplemented;
+                        const isImplemented = implementationChecker
+                          ? implementationChecker(implementationValue)
+                          : implementationValue === 1;
 
-                    return (
-                      <ControlItem
-                        key={control}
-                        id={control}
-                        title={codeToText?.title || control}
-                        description={codeToText?.secondaryTitle || control}
-                        completed={isImplemented}
-                      />
-                    );
-                  })}
-                </div>
+                        return (
+                          <ControlItem
+                            key={control}
+                            id={control}
+                            title={codeToText?.title || control}
+                            description={codeToText?.secondaryTitle || control}
+                            completed={isImplemented}
+                          />
+                        );
+                      })}
+                    </div>
               </div>
-            );
-          })
-        ) : (
-          <div
-            data-testid='no-controls-message'
+              );
+            })
+          ) : (
+            <div
+              data-testid='no-controls-message'
             className='flex justify-center py-8 text-sm italic text-text-base-secondary'
-          >
-            {t('noControls')}
-          </div>
-        )}
-      </div>
+            >
+              {t('noControls')}
+            </div>
+          )}
+        </div>
       <ControlsModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
@@ -242,25 +242,25 @@ function ControlItem({ id, title, completed, description }: ControlItemProps) {
           >
             {controlId}
           </span>
-          <div
-            className={cn(
+        <div
+          className={cn(
               'flex h-4 w-4 items-center justify-center rounded-full',
               completed ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600',
-            )}
-          >
-            {completed ? (
+          )}
+        >
+          {completed ? (
               <Check className='h-3 w-3' />
-            ) : (
+          ) : (
               <X className='h-3 w-3' />
-            )}
+          )}
           </div>
         </div>
-        <div
-          data-testid={`control-title-${id}`}
+          <div
+            data-testid={`control-title-${id}`}
           className='text-sm font-medium text-text-base-primary'
-        >
-          {title}
-        </div>
+          >
+            {title}
+          </div>
         {description && (
           <div
             data-testid={`control-description-${id}`}

@@ -17,7 +17,7 @@ export const NaiveScenarioView = () => {
         distribution={scenario.scenario_data.impact_distribution}
         currency={scenario.scenario_data.average_loss_currency}
         averageLoss={scenario.scenario_data.average_loss}
-      />
+        />
     </ScenarioContainer>
   );
 };

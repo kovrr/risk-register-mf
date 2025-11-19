@@ -44,8 +44,8 @@ export const ScenarioHeader: FC<Props> = ({ scenario }) => {
 
             {/* Description */}
             <p className='text-sm font-normal leading-relaxed text-text-base-secondary'>
-              {scenario.description}
-            </p>
+                {scenario.description}
+              </p>
 
             {/* Category Tags */}
             {categories.length > 0 && (
@@ -59,7 +59,7 @@ export const ScenarioHeader: FC<Props> = ({ scenario }) => {
                     {category}
                   </Badge>
                 ))}
-              </div>
+            </div>
             )}
           </div>
 

@@ -59,6 +59,8 @@ describe('MAS Scenario View', () => {
       review_date: '2025-01-01',
     };
 
+    // Note: Company endpoints are disabled (no-op hooks)
+    // This mock won't be called but is harmless to leave in place
     cy.intercept(
       'GET',
       '/api/companies?page=1&size=100&fields=id&fields=name&fields=status',
