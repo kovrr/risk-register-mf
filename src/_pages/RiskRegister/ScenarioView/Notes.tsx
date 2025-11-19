@@ -77,7 +77,7 @@ export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) 
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.NOTES, 'scenario', scenarioId],
+        queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId],
       });
       setNoteText('');
       setSelectedFile(null);

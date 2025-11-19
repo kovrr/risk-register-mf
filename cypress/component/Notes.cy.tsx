@@ -1,57 +1,53 @@
 import { Notes } from '@/_pages/RiskRegister/ScenarioView/Notes';
 import { buildRiskRegisterResponse } from '@/mocks/builders/riskRegisterBuilders';
 import { Toaster } from '@/components/atoms/toaster';
+import type { NoteOutput } from '@/types/riskRegister';
 import { BaseDriver } from '../support/base-driver';
 import {
   mockCreateNote,
   mockDeleteNote,
   mockGetDocument,
-  mockGetNotes,
   mockUpdateNote,
 } from '../support/commands-lib/mock-notes';
 
 describe('Notes Component', () => {
   let driver: BaseDriver;
   const scenarioId = '12345678-1234-1234-1234-123456789def';
+  const mockNotes: NoteOutput[] = [
+    {
+      id: 'note-1',
+      content: 'Test note content 1',
+      user: 'test.user@example.com',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      documents: [],
+    },
+    {
+      id: 'note-2',
+      content: 'Test note content 2',
+      user: 'test.user2@example.com',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      documents: [],
+    },
+  ];
+
   const mockScenario = buildRiskRegisterResponse({
     customer_scenario_id: 'RISK-001',
     name: 'Test Scenario',
   });
   mockScenario.scenario_id = scenarioId;
-
-  const mockNotes = [
-    {
-      id: 'note-1',
-      parent_type: 'scenario' as const,
-      parent_id: scenarioId,
-      content: 'Test note content 1',
-      user: 'test.user@example.com',
-      created_at: new Date().toISOString(),
-      documents: [],
-    },
-    {
-      id: 'note-2',
-      parent_type: 'scenario' as const,
-      parent_id: scenarioId,
-      content: 'Test note content 2',
-      user: 'test.user2@example.com',
-      created_at: new Date().toISOString(),
-      documents: [],
-    },
-  ];
+  mockScenario.notes = mockNotes;
 
   beforeEach(() => {
     driver = new BaseDriver();
     cy.viewport(800, 600);
 
-    // Mock scenario endpoint (required by useCurrentRiskRegisterScenario)
+    // Mock scenario endpoint (required by useCurrentRiskRegisterScenario + notes)
     cy.intercept('GET', `/api/v1/risk-scenarios/${scenarioId}`, {
       statusCode: 200,
       body: mockScenario,
     }).as('getScenario');
-
-    // Mock notes endpoints
-    mockGetNotes(mockNotes, scenarioId);
     mockCreateNote(scenarioId);
     mockUpdateNote();
     mockDeleteNote();

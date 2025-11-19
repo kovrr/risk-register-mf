@@ -24,25 +24,6 @@ export const mockGetDocument = (scenarioId?: string, shouldFail = false) => {
 };
 
 /**
- * Mock notes GET endpoint
- * New endpoint: GET /api/v1/risk-scenarios/{scenario_id}/notes
- */
-export const mockGetNotes = (notes: any[] = [], scenarioId?: string) => {
-  const urlPattern = scenarioId
-    ? `**/api/v1/risk-scenarios/${scenarioId}/notes*`
-    : '**/api/v1/risk-scenarios/*/notes*';
-
-  cy.intercept('GET', urlPattern, (req) => {
-    req.reply({
-      statusCode: 200,
-      body: {
-        data: notes, // New backend returns data in data.data format
-      },
-    });
-  }).as('getNotes');
-};
-
-/**
  * Mock create note endpoint
  * New endpoints:
  * - POST /api/v1/risk-scenarios/{scenario_id}/notes (content as query param)

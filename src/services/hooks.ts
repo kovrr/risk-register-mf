@@ -6,6 +6,7 @@ import type { QuantificationData } from '@/types/quantificationData';
 import {
   type CRQScenarioCreateRequest,
   type CRQScenarioUpdateRequest,
+  type NoteOutput,
   type RiskOwner,
   type RiskRegisterResponse,
   type RiskRegisterRow,
@@ -29,7 +30,7 @@ import { useParams } from 'react-router-dom';
 // Query Keys - Risk Register specific
 export const QUERY_KEYS = {
   COMPANIES: ['COMPANIES'],
-  RISK_REGISTER_SCENARIOS: ['RISK_REGISTER_SCENARIOS'],
+  RISK_REGISTER_SCENARIOS: 'risk-register-scenario',
   NOTES: ['NOTES'],
   RISK_REGISTER_SCENARIOS_TABLE: ['RISK_REGISTER_SCENARIOS_TABLE'],
   RISK_OWNER: ['RISK_REGISTER_RISK_OWNER'],
@@ -127,20 +128,10 @@ export const API_URL = {
 // NOTES TYPES
 // ============================================================================
 
-export interface Document {
-  id: string;
-  filename: string;
-}
-
-export interface Note {
-  id: string;
-  parent_type: 'quantification' | 'scenario';
-  parent_id: string;
-  content: string;
-  user: string;
-  created_at: string;
-  documents?: Document[];
-}
+export type Note = NoteOutput & {
+  parent_type?: 'quantification' | 'scenario';
+  parent_id?: string;
+};
 
 export interface NotesPage {
   items: Note[];
@@ -436,13 +427,13 @@ export const useRiskRegisterScenarios = (
 /**
  * Fetch a single risk register scenario by ID
  */
-export const useRiskRegisterScenario = (
+export const useRiskRegisterScenario = <TData = RiskRegisterResponse>(
   scenarioId: string,
-  options?: StrippedQueryOptions<RiskRegisterResponse, AxiosError>,
+  options?: StrippedQueryOptions<RiskRegisterResponse, AxiosError, TData>,
   customQueryKey: readonly unknown[] = [],
 ) => {
   const client = useAxiosInstance();
-  return useQuery<RiskRegisterResponse, AxiosError>({
+  return useQuery<RiskRegisterResponse, AxiosError, TData>({
     queryKey: [
       QUERY_KEYS.RISK_REGISTER_SCENARIOS,
       scenarioId,
@@ -938,38 +929,13 @@ export const useCreateRiskOwner = (
 // ============================================================================
 
 /**
- * Fetch notes for a scenario
- * Uses scenario-based endpoint: GET /api/v1/risk-scenarios/{scenario_id}/notes
+ * Fetch notes for a scenario by subscribing to the scenario query result.
+ * Notes now live inside the scenario payload: GET /api/v1/risk-scenarios/{scenario_id}
  */
-export const useNotes = (
-  scenarioId: string,
-  options?: StrippedQueryOptions<Note[], AxiosError>,
-) => {
-  const client = useAxiosInstance();
-
-  return useQuery<Note[], AxiosError>({
-    queryKey: [QUERY_KEYS.NOTES, 'scenario', scenarioId],
-    queryFn: () => {
-      // Remove trailing slash if present
-      const cleanScenarioId = scenarioId.replace(/\/+$/, '');
-      const endpoint = `${API_URL.RISK_SCENARIOS}${cleanScenarioId}/notes`;
-
-      return client
-        .get(endpoint)
-        .then((res) => {
-          // Backend returns data in res.data.data format
-          const notes = res.data?.data || res.data?.items || [];
-          return Array.isArray(notes) ? notes : [];
-        })
-        .catch((error) => {
-          console.error('❌ Error fetching Notes:', error);
-          console.error('❌ Error response:', error.response?.data);
-          console.error('❌ Error status:', error.response?.status);
-          throw error;
-        });
-    },
+export const useNotes = (scenarioId: string) => {
+  return useRiskRegisterScenario<Note[]>(scenarioId, {
     enabled: Boolean(scenarioId),
-    ...options,
+    select: (scenario) => scenario?.notes ?? [],
   });
 };
 
@@ -1053,7 +1019,7 @@ export const useCreateNote = (
     onSuccess: (data, variables, onMutateResult, context) => {
       // Invalidate and refetch the notes for this scenario
       void queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.NOTES, 'scenario', variables.scenarioId],
+        queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, variables.scenarioId],
       });
       if (options?.onSuccess) {
         void options.onSuccess(data, variables, onMutateResult, context);
