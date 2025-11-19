@@ -7,18 +7,19 @@ async function initMocks() {
   }
 
   if (typeof window === 'undefined') {
-    const { server } = await import('./server');
-    server.listen();
-  } else {
-    const { worker } = await import('./browser');
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    worker.start({
-      onUnhandledRequest: 'bypass', // Allow unhandled requests to pass through
-      serviceWorker: {
-        url: '/mockServiceWorker.js',
-      },
-    });
+    // In the microfrontend we never run MSW in Node (only browser mode).
+    // Skip initializing the server to avoid bundling msw/lib/node which depends on Node builtins.
+    return;
   }
+
+  const { worker } = await import('./browser');
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  worker.start({
+    onUnhandledRequest: 'bypass', // Allow unhandled requests to pass through
+    serviceWorker: {
+      url: '/mockServiceWorker.js',
+    },
+  });
   mocksInitialized = true;
 }
 
