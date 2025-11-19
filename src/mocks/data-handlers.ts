@@ -437,10 +437,24 @@ export const handlers = [
       return res(ctx.json(buildSecurityScorecardCompanyApiResponse(10)));
     },
   ),
-  getPaginatedMock(
-    `${riskScenariosBasePath}/`,
-    buildMixedRiskRegisterList(25),
-  ),
+  rest.get(`${riskScenariosBasePath}/`, (req, res, ctx) => {
+    const page = parseInt(req.url.searchParams.get('page') || '1');
+    const size = parseInt(req.url.searchParams.get('size') || '10');
+    const allScenarios = buildMixedRiskRegisterList(25);
+    const respItems = allScenarios.slice((page - 1) * size, page * size);
+
+    return res(
+      ctx.json({
+        success: true,
+        data: {
+          group_ids: [],
+          scenarios: respItems,
+          total_count: allScenarios.length,
+        },
+        error: null,
+      }),
+    );
+  }),
   rest.get(
     `${riskScenariosBasePath}/:scenarioId`,
     (req, res, ctx) => {

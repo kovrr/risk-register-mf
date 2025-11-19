@@ -1,14 +1,17 @@
-import { CisV7SafeguardsImplementation } from '@/options/cisControls';
-import { CisV8SafeguardsImplementation } from '@/options/cisV8Controls';
-import { CurrencyCodeType } from '@/options/constants';
-import { NistV2SafeguardsImplementation } from '@/options/nistV2Controls';
-import { SecControlsType } from './companyForm';
-import {
+import type { CisV7SafeguardsImplementation } from '@/options/cisControls';
+import type { CisV8SafeguardsImplementation } from '@/options/cisV8Controls';
+import type { CurrencyCodeType } from '@/options/constants';
+import type { NistV2SafeguardsImplementation } from '@/options/nistV2Controls';
+import type { SecControlsType } from './companyForm';
+import type {
   ControlScenarios,
   CostComponentsBreakdown,
   LeanSimulationExposure,
 } from './quantificationData';
-import { ImplementationLevel, ISO27001ImplementationLevel } from './sphereForm';
+import type {
+  ImplementationLevel,
+  ISO27001ImplementationLevel,
+} from './sphereForm';
 
 export const riskRegisterLikelihoods = {
   Expected: 'Expected',
@@ -268,6 +271,18 @@ export interface ScenarioMetricsHistory {
   metrics_history: MetricDataPoint[];
 }
 
+// Raw API response structure
+export type RiskRegisterScenarioPaginatedApiResponse = {
+  success: boolean;
+  data: {
+    group_ids?: string[];
+    scenarios: RiskRegisterResponse[];
+    total_count: number;
+  };
+  error: null | string;
+};
+
+// Normalized response type used throughout the app
 export type RiskRegisterScenarioPaginatedResponse = {
   items: RiskRegisterResponse[];
   total: number;

@@ -21,7 +21,7 @@ function RiskRegisterVisualization() {
     size: 250,
   });
 
-  const items = data?.items ?? [];
+  const items = Array.isArray(data?.items) ? data.items : [];
 
   const matrix = useMemo(() => {
     const byCell: Record<string, { ids: string[]; impact: RiskRegisterImpact }> = {};
@@ -230,5 +230,3 @@ function RiskRegisterVisualization() {
 }
 
 export default RiskRegisterVisualization;
-
-

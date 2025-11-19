@@ -2,6 +2,7 @@ import type { AxiosInstance } from 'axios';
 import type {
   NoteOutput,
   RiskRegisterResponse,
+  RiskRegisterScenarioPaginatedApiResponse,
   RiskRegisterScenarioPaginatedResponse,
   ScenarioMetricsHistory,
   ScenarioType,
@@ -69,21 +70,12 @@ export const getRiskScenarios = async (
   searchParams.append('sort_order', params.sort_order);
 
   const endpoint = `${withStrapiBasePath('/risk-scenarios')}?${searchParams.toString()}`;
-  const { data } = await client.get(endpoint);
-  const items =
-    data?.items ??
-    data?.scenarios ??
-    data?.results ??
-    data?.data ??
-    data?.attributes?.items ??
-    [];
-  const total =
-    data?.total ??
-    data?.total_count ??
-    data?.count ??
-    data?.meta?.pagination?.total ??
-    items.length ??
-    0;
+  const { data } = await client.get<RiskRegisterScenarioPaginatedApiResponse>(endpoint);
+
+  // Extract data from the API response structure: { success, data: { scenarios, total_count }, error }
+  const apiData = data?.data;
+  const items = Array.isArray(apiData?.scenarios) ? apiData.scenarios : [];
+  const total = apiData?.total_count ?? items.length ?? 0;
 
   return {
     items,
@@ -217,4 +209,3 @@ export const updateCrqScenario = async (
   const { data } = await client.post<RiskRegisterResponse>(endpoint);
   return (data as any)?.data ?? data;
 };
-
