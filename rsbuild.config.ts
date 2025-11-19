@@ -7,6 +7,9 @@ const useMocks = process.env.VITE_USE_MOCKS === "true";
 
 export default defineConfig({
 	plugins: [pluginReact(), pluginModuleFederation(moduleFederationConfig, {})],
+	dev: {
+		lazyCompilation: false,
+	},
 	server: {
 		...(useMocks
 			? {
