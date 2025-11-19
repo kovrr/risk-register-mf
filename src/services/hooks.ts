@@ -1011,8 +1011,8 @@ export const useCreateNote = (
 
       // If file is present, use notes-with-attachment endpoint with FormData
       if (uploaded_file) {
-        const formData = new FormData();
-        formData.append('content', content);
+      const formData = new FormData();
+      formData.append('content', content);
         formData.append('file', uploaded_file);
         formData.append('filename', uploaded_file.name);
         formData.append('content_type', uploaded_file.type || 'application/octet-stream');

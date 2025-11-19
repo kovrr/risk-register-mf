@@ -203,14 +203,14 @@ export default function RiskManagementForm({
       <div className='space-y-6'>
         {/* Risk Priority */}
         <div className='flex items-start gap-4'>
-          <Label className={labelClassName}>{t('labels.riskPriority')}</Label>
+        <Label className={labelClassName}>{t('labels.riskPriority')}</Label>
           <div className='flex-1'>
-            <PriorityDropdown
-              value={scenario.scenario_data.risk_priority}
-              onChange={handlePriorityChange}
-              key={scenario.scenario_id}
-              disabled={isPending || isGuestUser}
-            />
+          <PriorityDropdown
+            value={scenario.scenario_data.risk_priority}
+            onChange={handlePriorityChange}
+            key={scenario.scenario_id}
+            disabled={isPending || isGuestUser}
+          />
           </div>
         </div>
 
@@ -326,15 +326,15 @@ export default function RiskManagementForm({
 
         {/* Risk Owner */}
         <div className='flex items-start gap-4'>
-          <Label className={labelClassName}>{t('labels.riskOwner')}</Label>
+        <Label className={labelClassName}>{t('labels.riskOwner')}</Label>
           <div className='flex-1'>
-            <RiskOwnerDropdownMutate
-              value={scenario.scenario_data.risk_owner}
-              rowData={registerToRowData(scenario)}
-              disabled={isPending || isGuestUser}
-            />
-          </div>
+          <RiskOwnerDropdownMutate
+            value={scenario.scenario_data.risk_owner}
+            rowData={registerToRowData(scenario)}
+            disabled={isPending || isGuestUser}
+          />
         </div>
+      </div>
 
         {/* Status */}
         <div className='flex items-start gap-4'>
@@ -346,84 +346,84 @@ export default function RiskManagementForm({
 
         {/* Response Plan */}
         <div className='flex items-start gap-4'>
-          <Label className={labelClassName}>{t('labels.responsePlan')}</Label>
+        <Label className={labelClassName}>{t('labels.responsePlan')}</Label>
           <div className='flex-1'>
-            <ResponsePlanDropdown
-              value={scenario.scenario_data.response_plan}
-              onChange={handleResponsePlanChange}
-              key={scenario.scenario_id}
-              disabled={isPending || isGuestUser}
-            />
+          <ResponsePlanDropdown
+            value={scenario.scenario_data.response_plan}
+            onChange={handleResponsePlanChange}
+            key={scenario.scenario_id}
+            disabled={isPending || isGuestUser}
+          />
           </div>
         </div>
 
         {/* Ticket */}
         <div className='flex items-start gap-4'>
-          <Label className={labelClassName}>{t('labels.ticket')}</Label>
+        <Label className={labelClassName}>{t('labels.ticket')}</Label>
           <div className='relative flex-1'>
-            <div className='absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground'>
-              <LinkIcon
-                className={cn(
-                  'h-4 w-4',
-                  ticketState === 'loading' || !scenario.scenario_data.ticket
-                    ? 'text-base-primary'
-                    : 'text-text-brand-primary',
-                  ticketState === 'invalid' && 'text-red-500',
-                )}
-              />
-            </div>
-            <Input
-              type='url'
-              placeholder={t('placeholders.ticketUrl')}
+          <div className='absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground'>
+            <LinkIcon
               className={cn(
-                'pl-9',
-                ticketState === 'loading' && 'text-base-primary',
+                  'h-4 w-4',
+                ticketState === 'loading' || !scenario.scenario_data.ticket
+                  ? 'text-base-primary'
+                  : 'text-text-brand-primary',
                 ticketState === 'invalid' && 'text-red-500',
               )}
-              onChange={(e) => handleLinkChange(e.target.value)}
-              defaultValue={scenario.scenario_data.ticket || ''}
-              disabled={isPending || isGuestUser}
             />
+          </div>
+          <Input
+            type='url'
+            placeholder={t('placeholders.ticketUrl')}
+            className={cn(
+                'pl-9',
+              ticketState === 'loading' && 'text-base-primary',
+              ticketState === 'invalid' && 'text-red-500',
+            )}
+            onChange={(e) => handleLinkChange(e.target.value)}
+            defaultValue={scenario.scenario_data.ticket || ''}
+            disabled={isPending || isGuestUser}
+          />
           </div>
         </div>
 
         {/* Review Date */}
         <div className='flex items-start gap-4'>
-          <Label className={labelClassName}>{t('labels.reviewDate')}</Label>
+        <Label className={labelClassName}>{t('labels.reviewDate')}</Label>
           <div className='flex-1'>
-            <DateField
-              value={scenario.scenario_data.review_date}
-              onChange={handleReviewDateChange}
-            />
+        <DateField
+          value={scenario.scenario_data.review_date}
+          onChange={handleReviewDateChange}
+        />
           </div>
         </div>
 
         {/* Mitigation Cost */}
         <div className='flex items-start gap-4'>
-          <MitigationCostField
-            label={t('labels.mitigationCost')}
-            value={scenario.scenario_data.mitigation_cost}
-            labelClassName={labelClassName}
-            onChange={debouncedMitigationCostChange}
-            scenario={scenario}
-            disabled={isGuestUser}
-          />
-        </div>
+        <MitigationCostField
+          label={t('labels.mitigationCost')}
+          value={scenario.scenario_data.mitigation_cost}
+          labelClassName={labelClassName}
+          onChange={debouncedMitigationCostChange}
+          scenario={scenario}
+          disabled={isGuestUser}
+        />
+      </div>
 
         {/* Creation Date */}
         <div className='flex items-start gap-4'>
-          <Label className={labelClassName}>{t('labels.creationDate')}</Label>
+        <Label className={labelClassName}>{t('labels.creationDate')}</Label>
           <span className={cn(valueClassName, 'italic text-gray-500')}>
-            {format(new Date(scenario.created_at), 'MMMM d, yyyy')}
-          </span>
+          {format(new Date(scenario.created_at), 'MMMM d, yyyy')}
+        </span>
         </div>
 
         {/* Last Edited On */}
         <div className='flex items-start gap-4'>
-          <Label className={labelClassName}>{t('labels.lastEdited')}</Label>
+        <Label className={labelClassName}>{t('labels.lastEdited')}</Label>
           <span className={cn(valueClassName, 'italic text-gray-500')}>
-            {format(new Date(scenario.updated_at), 'MMMM d, yyyy')}
-          </span>
+          {format(new Date(scenario.updated_at), 'MMMM d, yyyy')}
+        </span>
         </div>
       </div>
 

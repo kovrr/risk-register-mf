@@ -3,7 +3,7 @@ import '@/i18n';
 import { theme } from '@/theme/baseTheme';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
 
 export interface CustomOptions {
   companyId?: string;
@@ -33,7 +33,12 @@ export const withProvider = (
         <ChakraProvider theme={theme}>
           <InstanceWrapper>
             <QueryClientProvider client={queryClient}>
-              {component}
+              <Routes>
+                {/* Route to extract scenarioId from URL params */}
+                <Route path="/scenarios/:scenarioId" element={component} />
+                {/* Fallback route for other paths */}
+                <Route path="*" element={component} />
+              </Routes>
             </QueryClientProvider>
           </InstanceWrapper>
         </ChakraProvider>

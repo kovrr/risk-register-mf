@@ -139,6 +139,8 @@ describe('Quantitative Metrics Header', () => {
       },
     ).as('getCRQScenario');
 
+    // Note: Company endpoints are disabled (no-op hooks)
+    // This mock won't be called but is harmless to leave in place
     cy.intercept('GET', `/api/companies/${company.id}`, {
       statusCode: 200,
       body: company,
@@ -191,6 +193,8 @@ describe('Quantitative Metrics Header', () => {
       },
     ).as('getCRQScenario');
 
+    // Note: Company endpoints are disabled (no-op hooks)
+    // This mock won't be called but is harmless to leave in place
     cy.intercept('GET', `/api/companies/${company.id}`, {
       statusCode: 200,
       body: company,
@@ -201,7 +205,8 @@ describe('Quantitative Metrics Header', () => {
       body: fq,
     }).as('getFQ');
 
-    // Mock the update CRQ scenario API - use POST method
+    // Mock the update CRQ scenario API
+    // Endpoint: POST /api/v1/risk-scenarios/crq/{scenario_id}/update-crq
     cy.intercept('POST', `/api/v1/risk-scenarios/crq/${crqScenario.scenario_id}/update-crq`, {
       statusCode: 200,
       body: { message: 'Scenario updated successfully' },

@@ -56,77 +56,77 @@ export const MASScenarioView = () => {
         distribution={impactDistribution}
         currency={scenario.scenario_data.average_loss_currency}
         averageLoss={scenario.scenario_data.average_loss}
-      />
-      <MasGenericTabs
-        defaultTab='controls-recommendations'
-        testIdPrefix='controls-recommendations'
-        tabsClassName='space-y-0'
-        tabsListClassName='flex justify-start gap-4 rounded-b-none rounded-t-3xl bg-white pl-4'
+            />
+        <MasGenericTabs
+          defaultTab='controls-recommendations'
+          testIdPrefix='controls-recommendations'
+          tabsClassName='space-y-0'
+          tabsListClassName='flex justify-start gap-4 rounded-b-none rounded-t-3xl bg-white pl-4'
         tabsContentClassName='rounded-b-3xl rounded-t-none border-t-0 bg-white p-6'
-        tabs={[
-          {
-            label: 'Controls Recommendations',
-            key: 'controls-recommendations',
-            content:
-              isLoading || !scenario ? (
-                <div>Loading...</div>
-              ) : (
+          tabs={[
+            {
+              label: 'Controls Recommendations',
+              key: 'controls-recommendations',
+              content:
+                isLoading || !scenario ? (
+                  <div>Loading...</div>
+                ) : (
+                  <>
+                    {byControlToMinimal && aal !== undefined && (
+                      <TopActions
+                        currency={
+                          scenario?.scenario_data.average_loss_currency ?? 'USD'
+                        }
+                        controlsFramework={
+                          scenario?.scenario_data.sec_controls_framework
+                        }
+                        byControlToMinimal={byControlToMinimal}
+                        aal={aal}
+                      />
+                    )}
+                  </>
+                ),
+            },
+            {
+              label: 'Damage Types',
+              key: 'damage-types',
+              content: (
                 <>
-                  {byControlToMinimal && aal !== undefined && (
-                    <TopActions
+                  {costComponentsBreakdown &&
+                    Object.keys(costComponentsBreakdown).length > 0 &&
+                    aal !== undefined ? (
+                    <RiskDriverDamageTypes
+                      exposure={costComponentsBreakdown}
+                      title='Damage Types'
+                      inDrawer={false}
+                      aal={aal}
+                    />
+                  ) : (
+                    <div className='flex justify-center p-8 text-sm text-gray-500'>
+                      There are currently no damage types for this scenario
+                    </div>
+                  )}
+                </>
+              ),
+            },
+            {
+              label: 'Simulation Event Examples',
+              key: 'simulation-event-examples',
+              content: (
+                <>
+                  {exampleEvents && (
+                    <SimulationExamples
+                      exampleEvents={exampleEvents}
                       currency={
                         scenario?.scenario_data.average_loss_currency ?? 'USD'
                       }
-                      controlsFramework={
-                        scenario?.scenario_data.sec_controls_framework
-                      }
-                      byControlToMinimal={byControlToMinimal}
-                      aal={aal}
                     />
                   )}
                 </>
               ),
-          },
-          {
-            label: 'Damage Types',
-            key: 'damage-types',
-            content: (
-              <>
-                {costComponentsBreakdown &&
-                  Object.keys(costComponentsBreakdown).length > 0 &&
-                  aal !== undefined ? (
-                  <RiskDriverDamageTypes
-                    exposure={costComponentsBreakdown}
-                    title='Damage Types'
-                    inDrawer={false}
-                    aal={aal}
-                  />
-                ) : (
-                  <div className='flex justify-center p-8 text-sm text-gray-500'>
-                    There are currently no damage types for this scenario
-                  </div>
-                )}
-              </>
-            ),
-          },
-          {
-            label: 'Simulation Event Examples',
-            key: 'simulation-event-examples',
-            content: (
-              <>
-                {exampleEvents && (
-                  <SimulationExamples
-                    exampleEvents={exampleEvents}
-                    currency={
-                      scenario?.scenario_data.average_loss_currency ?? 'USD'
-                    }
-                  />
-                )}
-              </>
-            ),
-          },
-        ]}
-      />
+            },
+          ]}
+        />
     </ScenarioContainer>
   );
 };

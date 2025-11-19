@@ -170,8 +170,16 @@ describe('Scenario Input Form', () => {
       return true; // Fail the test for other errors
     });
 
-    // Spy on console.log
-    cy.intercept('POST', '/api/v1/risk-scenarios').as('createScenario');
+    // Mock the create scenario endpoint for manual scenarios
+    // Actual endpoint: POST /api/v1/risk-scenarios (without /crq suffix for manual)
+    cy.intercept('POST', '/api/v1/risk-scenarios', {
+      statusCode: 201,
+      body: {
+        scenario_id: 'new-scenario-id',
+        customer_scenario_id: 'RISK-001',
+        name: 'Test Risk Scenario',
+      },
+    }).as('createScenario');
 
     cy.get('[role="dialog"]').within(() => {
       // Fill in all required fields
