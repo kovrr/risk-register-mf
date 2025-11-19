@@ -79,9 +79,9 @@ The application uses MSW for API mocking in development. MSW is automatically en
 
 **Key Mock Endpoints:**
 - `GET /api/tenant` - Tenant information
-- `GET /api/v1/risk-scenarios` - Risk register scenarios
-- `POST /api/v1/risk-scenarios` - Create new scenarios
-- `PUT /api/v1/risk-scenarios/:id` - Update scenarios
+- `GET /api/risk-scenarios` - Risk register scenarios
+- `POST /api/risk-scenarios` - Create new scenarios
+- `PUT /api/risk-scenarios/:id` - Update scenarios
 
 ## Application Structure
 

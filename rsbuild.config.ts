@@ -15,8 +15,8 @@ export default defineConfig({
 			: {
 					port: 3004,
 					proxy: {
-						"/api/v1": {
-							target: "http://localhost:8000",
+						"/api": {
+							target: "http://localhost:1337",
 							changeOrigin: true,
 						},
 					},
@@ -40,6 +40,12 @@ export default defineConfig({
 			),
 			"import.meta.env.RUNNING_IN_CYPRESS": JSON.stringify(
 				process.env.RUNNING_IN_CYPRESS,
+			),
+			"import.meta.env.NEXT_PUBLIC_STRAPI_API_URL": JSON.stringify(
+				process.env.NEXT_PUBLIC_STRAPI_API_URL,
+			),
+			"import.meta.env.VITE_STRAPI_API_URL": JSON.stringify(
+				process.env.VITE_STRAPI_API_URL,
 			),
 		},
 	},

@@ -18,6 +18,21 @@ import {
   scenarioTypes,
 } from '@/types/riskRegister';
 import {
+  createNote as createScenarioNote,
+  createNoteWithAttachment as createScenarioNoteWithAttachment,
+  createRiskScenario as createRiskScenarioRequest,
+  deleteRiskScenario as deleteRiskScenarioRequest,
+  downloadAttachment,
+  exportRiskScenarios,
+  getRiskScenarioById,
+  getRiskScenarioControls,
+  getRiskScenarioMetricsHistory,
+  getRiskScenarios as getRiskScenariosRequest,
+  requestPredefinedScenario as requestPredefinedScenarioRequest,
+  updateRiskScenario as updateRiskScenarioRequest,
+  updateCrqScenario as updateCrqScenarioRequest,
+} from '@/services/riskScenarios';
+import {
   type UseMutationOptions,
   type UseQueryOptions,
   useMutation,
@@ -30,9 +45,9 @@ import { useParams } from 'react-router-dom';
 // Query Keys - Risk Register specific
 export const QUERY_KEYS = {
   COMPANIES: ['COMPANIES'],
-  RISK_REGISTER_SCENARIOS: 'risk-register-scenario',
+  RISK_SCENARIO: 'risk-scenario',
   NOTES: ['NOTES'],
-  RISK_REGISTER_SCENARIOS_TABLE: ['RISK_REGISTER_SCENARIOS_TABLE'],
+  RISK_SCENARIOS_TABLE: ['risk-scenarios'],
   RISK_OWNER: ['RISK_REGISTER_RISK_OWNER'],
   DOCUMENTS: ['DOCUMENTS'],
   FQ: ['FQ'], // Financial Quantification
@@ -52,24 +67,24 @@ const resolveApiBaseUrl = (): string => {
 
   // If mocks are enabled, use relative path for MSW interception
   if (import.meta.env.VITE_USE_MOCKS === 'true') {
-    return '/api/v1';
+    return '/api';
   }
 
-  // If env var exists and contains http:// or https://, append /api/v1
+  // If env var exists and contains http:// or https://, append /api
   if (envBaseUrl && (envBaseUrl.startsWith('http://') || envBaseUrl.startsWith('https://'))) {
-    // Remove trailing slash if present, then append /api/v1
+    // Remove trailing slash if present, then append /api
     const cleaned = envBaseUrl.replace(/\/+$/, '');
-    return `${cleaned}/api/v1`;
+    return `${cleaned}/api`;
   }
 
   // If env var exists but doesn't have protocol, add http://
   if (envBaseUrl) {
     const cleaned = envBaseUrl.replace(/^\/+|\/+$/g, '');
-    return `http://${cleaned}/api/v1`;
+    return `http://${cleaned}/api`;
   }
 
   // Default fallback - never use window.location.origin for API calls
-  return 'http://localhost:8000/api/v1';
+  return 'http://localhost:8000/api';
 };
 
 const apiBasePath = resolveApiBaseUrl();
@@ -117,9 +132,6 @@ const buildScenarioRequestBody = (
 export const API_URL = {
   COMPANIES: `${apiBasePath}/companies`,
   RISK_REGISTER: `${apiBasePath}/risk-register`,
-  RISK_SCENARIOS: `${apiBasePath}/risk-scenarios/`,
-  NOTES: `${apiBasePath}/notes`,
-  DOCUMENTS: `${apiBasePath}/documents`,
   FQ: `${apiBasePath}/fq`, // Financial Quantification
   FRAMEWORKS: `${apiBasePath}/self-assessment/frameworks`,
 };
@@ -282,7 +294,7 @@ export const useCurrentQuantification = () => {
 /**
  * Create a simple (non-CRQ) risk register scenario
  */
-export const useCreateRiskRegisterScenario = (
+export const useCreateRiskScenario = (
   options?: Omit<
     UseMutationOptions<
       RiskRegisterResponse,
@@ -304,15 +316,10 @@ export const useCreateRiskRegisterScenario = (
         ...scenario,
         group_id: DEFAULT_GROUP_ID,
       };
-      return client
-        .post(
-          API_URL.RISK_SCENARIOS,
-          buildScenarioRequestBody(
-            scenarioWithDefaultGroup,
-            scenarioTypes.MANUAL,
-          ),
-        )
-        .then(({ data }) => data);
+      return createRiskScenarioRequest(
+        client,
+        buildScenarioRequestBody(scenarioWithDefaultGroup, scenarioTypes.MANUAL),
+      );
     },
     ...options,
   });
@@ -321,7 +328,7 @@ export const useCreateRiskRegisterScenario = (
 /**
  * Create a CRQ-powered risk register scenario
  */
-export const useCreateCRQRiskRegisterScenario = (
+export const useCreateCRQRiskScenario = (
   options?: Omit<
     UseMutationOptions<
       RiskRegisterResponse,
@@ -344,9 +351,7 @@ export const useCreateCRQRiskRegisterScenario = (
         scenarioWithoutGroup,
         scenarioTypes.CRQ,
       );
-      return client
-        .post(`${API_URL.RISK_SCENARIOS}crq`, body)
-        .then(({ data }) => data);
+      return createRiskScenarioRequest(client, body);
     },
     ...options,
   });
@@ -355,7 +360,7 @@ export const useCreateCRQRiskRegisterScenario = (
 /**
  * Fetch paginated list of risk register scenarios with optional filtering and sorting
  */
-export const useRiskRegisterScenarios = (
+export const useRiskScenarios = (
   params: {
     page: number;
     size: number;
@@ -378,21 +383,10 @@ export const useRiskRegisterScenarios = (
   } = params;
   const normalizedSortBy = sortByParam ?? 'updated_at';
   const normalizedSortOrder = sortOrderParam ?? 'desc';
-  const queryParams = new URLSearchParams();
-  queryParams.append('page', page.toString());
-  queryParams.append('size', size.toString());
-  if (name) {
-    queryParams.append('name', name);
-  }
-  if (fields) {
-    fields.forEach((field) => queryParams.append('fields', field));
-  }
-  queryParams.append('sort_by', normalizedSortBy);
-  queryParams.append('sort_order', normalizedSortOrder);
-  const urlWithParams = `${API_URL.RISK_SCENARIOS}?${queryParams.toString()}`;
+
   return useQuery<RiskRegisterScenarioPaginatedResponse, AxiosError>({
     queryKey: [
-      ...QUERY_KEYS.RISK_REGISTER_SCENARIOS_TABLE,
+      ...QUERY_KEYS.RISK_SCENARIOS_TABLE,
       page,
       size,
       name,
@@ -401,51 +395,37 @@ export const useRiskRegisterScenarios = (
       normalizedSortOrder,
     ],
     queryFn: () =>
-      client.get(urlWithParams).then(({ data }) => {
-        // eslint-disable-next-line no-console
-        console.log('Scenarios API response', data);
-        // Normalize backend variants into RiskRegisterScenarioPaginatedResponse
-        const items =
-          data?.items ??
-          data?.scenarios ??
-          data?.results ??
-          data?.data ??
-          [];
-        const total =
-          data?.total ?? data?.total_count ?? data?.count ?? items.length ?? 0;
-        return {
-          items,
-          total,
-          page,
-          size,
-        } as RiskRegisterScenarioPaginatedResponse;
+      getRiskScenariosRequest(client, {
+        page,
+        size,
+        name,
+        fields,
+        sort_by: normalizedSortBy,
+        sort_order: normalizedSortOrder,
       }),
     ...options,
   });
 };
 
+export const useRiskRegisterScenarios = useRiskScenarios;
+
 /**
  * Fetch a single risk register scenario by ID
  */
-export const useRiskRegisterScenario = <TData = RiskRegisterResponse>(
+export const useRiskScenario = <TData = RiskRegisterResponse>(
   scenarioId: string,
   options?: StrippedQueryOptions<RiskRegisterResponse, AxiosError, TData>,
   customQueryKey: readonly unknown[] = [],
 ) => {
   const client = useAxiosInstance();
   return useQuery<RiskRegisterResponse, AxiosError, TData>({
-    queryKey: [
-      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-      scenarioId,
-      ...customQueryKey,
-    ],
-    queryFn: () =>
-      client
-        .get(`${API_URL.RISK_SCENARIOS}${scenarioId}`)
-        .then(({ data }) => data),
+    queryKey: [QUERY_KEYS.RISK_SCENARIO, scenarioId, ...customQueryKey],
+    queryFn: () => getRiskScenarioById(client, scenarioId),
     ...options,
   });
 };
+
+export const useRiskRegisterScenario = useRiskScenario;
 
 /**
  * Fetch metrics history for a scenario
@@ -457,15 +437,8 @@ export const useMetricHistory = (
   const client = useAxiosInstance();
 
   return useQuery<ScenarioMetricsHistory, AxiosError>({
-    queryKey: [
-      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-      scenarioId,
-      'metrics-history',
-    ],
-    queryFn: () =>
-      client
-        .get(`${API_URL.RISK_SCENARIOS}${scenarioId}/metrics-history`)
-        .then(({ data }) => data),
+    queryKey: [QUERY_KEYS.RISK_SCENARIO, scenarioId, 'metrics-history'],
+    queryFn: () => getRiskScenarioMetricsHistory(client, scenarioId),
     ...options,
   });
 };
@@ -492,15 +465,17 @@ export const useCurrentRiskRegisterScenarioId = () => {
 /**
  * Fetch the current scenario (from URL params)
  */
-export const useCurrentRiskRegisterScenario = () => {
+export const useCurrentRiskScenario = () => {
   const scenarioId = useCurrentRiskRegisterScenarioId();
-  return useRiskRegisterScenario(scenarioId);
+  return useRiskScenario(scenarioId);
 };
+
+export const useCurrentRiskRegisterScenario = useCurrentRiskScenario;
 
 /**
  * Update a risk register scenario row (from table inline editing)
  */
-export const useUpdateRiskRegisterScenarioRow = (
+export const useUpdateRiskScenarioRow = (
   scenarioId: string,
   options: UseMutationOptions<
     RiskRegisterResponse,
@@ -509,12 +484,12 @@ export const useUpdateRiskRegisterScenarioRow = (
   >,
 ) => {
   const client = useAxiosInstance();
-  const { refetch } = useRiskRegisterScenario(scenarioId, {
+  const { refetch } = useRiskScenario(scenarioId, {
     enabled: false,
   });
 
   return useMutation<RiskRegisterResponse, AxiosError, RiskRegisterRow>({
-    mutationKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId],
+    mutationKey: [QUERY_KEYS.RISK_SCENARIO, scenarioId],
     mutationFn: async (data) => {
       const { data: scenario, isError } = await refetch();
       if (!scenario || isError) throw new Error('Scenario not loaded');
@@ -552,9 +527,7 @@ export const useUpdateRiskRegisterScenarioRow = (
         scenario.scenario_type,
       );
 
-      return client
-        .patch(`${API_URL.RISK_SCENARIOS}${scenarioId}`, requestBody)
-        .then(({ data }) => data);
+      return updateRiskScenarioRequest(client, scenarioId, requestBody);
     },
     ...options,
   });
@@ -573,7 +546,7 @@ const isCRQScenarioUpdateRequest = (
 /**
  * Update specific fields of a risk register scenario
  */
-export const useUpdateRiskRegisterScenarioField = (
+export const useUpdateRiskScenarioField = (
   options: UseMutationOptions<
     RiskRegisterResponse,
     AxiosError,
@@ -582,11 +555,11 @@ export const useUpdateRiskRegisterScenarioField = (
 ) => {
   const client = useAxiosInstance();
   const scenarioId = useCurrentRiskRegisterScenarioId();
-  const { data: scenario, isError } = useRiskRegisterScenario(scenarioId);
+  const { data: scenario, isError } = useRiskScenario(scenarioId);
 
   return useMutation<RiskRegisterResponse, AxiosError, UpdateFieldParams>({
     mutationKey: [
-      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+      QUERY_KEYS.RISK_SCENARIO,
       'updateField',
       scenarioId,
     ],
@@ -631,9 +604,7 @@ export const useUpdateRiskRegisterScenarioField = (
         scenario.scenario_type,
       );
 
-      return client
-        .patch(`${API_URL.RISK_SCENARIOS}${scenarioId}`, requestBody)
-        .then(({ data }) => data);
+      return updateRiskScenarioRequest(client, scenarioId, requestBody);
     },
     ...options,
   });
@@ -642,7 +613,7 @@ export const useUpdateRiskRegisterScenarioField = (
 /**
  * Update a risk register scenario (general purpose)
  */
-export const useUpdateRiskRegisterScenario = (
+export const useUpdateRiskScenario = (
   scenarioId: string,
   options: UseMutationOptions<
     RiskRegisterResponse,
@@ -651,7 +622,7 @@ export const useUpdateRiskRegisterScenario = (
   >,
 ) => {
   const client = useAxiosInstance();
-  const { refetch } = useRiskRegisterScenario(scenarioId, { enabled: false });
+  const { refetch } = useRiskScenario(scenarioId, { enabled: false });
 
   return useMutation<
     RiskRegisterResponse,
@@ -659,7 +630,7 @@ export const useUpdateRiskRegisterScenario = (
     UpdateFieldParams
   >({
     mutationKey: [
-      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+      QUERY_KEYS.RISK_SCENARIO,
       'updateField',
       scenarioId,
     ],
@@ -725,9 +696,7 @@ export const useUpdateRiskRegisterScenario = (
         scenario.scenario_type,
       );
 
-      return client
-        .patch(`${API_URL.RISK_SCENARIOS}${scenarioId}`, requestBody)
-        .then(({ data }) => data);
+      return updateRiskScenarioRequest(client, scenarioId, requestBody);
     },
     ...options,
   });
@@ -736,13 +705,15 @@ export const useUpdateRiskRegisterScenario = (
 /**
  * Delete a risk register scenario
  */
-export const useDeleteRiskRegisterScenario = (
+export const useDeleteRiskScenario = (
   options?: Omit<UseMutationOptions<null, AxiosError, string>, 'mutationFn'>,
 ) => {
   const client = useAxiosInstance();
   return useMutation({
-    mutationFn: (scenarioId) =>
-      client.delete(`${API_URL.RISK_SCENARIOS}${scenarioId}`),
+    mutationFn: async (scenarioId) => {
+      await deleteRiskScenarioRequest(client, scenarioId);
+      return null;
+    },
     ...options,
   });
 };
@@ -758,31 +729,22 @@ export const useExportRiskRegisterScenario = (
 ) => {
   const client = useAxiosInstance();
   return useMutation<unknown, AxiosError, void>({
-    mutationFn: () =>
-      client
-        .get(`${API_URL.RISK_SCENARIOS}export`, {
-          responseType: 'blob',
-        })
-        .then((response) => {
-          // Create a URL for the blob
-          const url = window.URL.createObjectURL(
-            new Blob([response.data], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            }),
-          );
-          // Create a temporary link element
-          const link = document.createElement('a');
-          link.href = url;
-          // Set the filename for download
-          link.setAttribute('download', `risk-register-scenarios.xlsx`);
-          // Append to document, click, and cleanup
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          // Cleanup the URL object
-          window.URL.revokeObjectURL(url);
-          return response;
+    mutationFn: async () => {
+      const blob = await exportRiskScenarios(client);
+      const url = window.URL.createObjectURL(
+        new Blob([blob], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         }),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `risk-register-scenarios.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      return blob;
+    },
     ...options,
   });
 };
@@ -790,17 +752,14 @@ export const useExportRiskRegisterScenario = (
 /**
  * Fetch security controls for a scenario
  */
-export const useRiskRegisterScenarioControls = (
+export const useRiskScenarioControls = (
   scenarioId: string,
   options?: StrippedQueryOptions<unknown, AxiosError>,
 ) => {
   const client = useAxiosInstance();
   return useQuery<unknown, AxiosError>({
-    queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId],
-    queryFn: () =>
-      client
-        .get(`${API_URL.RISK_SCENARIOS}${scenarioId}/controls`)
-        .then(({ data }) => data),
+    queryKey: [QUERY_KEYS.RISK_SCENARIO, scenarioId, 'controls'],
+    queryFn: () => getRiskScenarioControls(client, scenarioId),
     ...options,
   });
 };
@@ -821,9 +780,7 @@ export const useUpdateCRQScenario = (
   const client = useAxiosInstance();
   return useMutation<RiskRegisterResponse, AxiosError, { scenarioId: string }>({
     mutationFn: ({ scenarioId }) =>
-      client
-        .post(`${API_URL.RISK_SCENARIOS}crq/${scenarioId}/update-crq`)
-        .then(({ data }) => data),
+      updateCrqScenarioRequest(client, scenarioId),
     ...options,
   });
 };
@@ -831,18 +788,16 @@ export const useUpdateCRQScenario = (
 /**
  * Request a pre-defined scenario template
  */
-export const useRequestPreDefinedScenario = (
+export const useRequestPredefinedScenario = (
   options?: Omit<
-    UseMutationOptions<{ message: string }, AxiosError, void>,
+    UseMutationOptions<{ message: string }, AxiosError, Record<string, unknown> | void>,
     'mutationFn'
   >,
 ) => {
   const client = useAxiosInstance();
-  return useMutation<{ message: string }, AxiosError, void>({
-    mutationFn: () =>
-      client
-        .post(`${API_URL.RISK_SCENARIOS}request-pre-defined-scenario`)
-        .then(({ data }) => data),
+  return useMutation<{ message: string }, AxiosError, Record<string, unknown> | void>({
+    mutationFn: (payload) =>
+      requestPredefinedScenarioRequest(client, payload ?? {}),
     ...options,
   });
 };
@@ -930,27 +885,24 @@ export const useCreateRiskOwner = (
 
 /**
  * Fetch notes for a scenario by subscribing to the scenario query result.
- * Notes now live inside the scenario payload: GET /api/v1/risk-scenarios/{scenario_id}
+ * Notes now live inside the scenario payload: GET /api/risk-scenarios/{scenario_id}
  */
 export const useNotes = (scenarioId: string) => {
-  return useRiskRegisterScenario<Note[]>(scenarioId, {
+  return useRiskScenario<Note[]>(scenarioId, {
     enabled: Boolean(scenarioId),
     select: (scenario) => scenario?.notes ?? [],
   });
 };
 
 /**
- * Create a new note (with optional file attachment)
- * Uses scenario-based endpoints:
- * - POST /api/v1/risk-scenarios/{scenario_id}/notes (for notes without attachment)
- * - POST /api/v1/risk-scenarios/{scenario_id}/notes-with-attachment (for notes with attachment)
+ * Create a new note without attachment
  */
 export const useCreateNote = (
   options?: Omit<
     UseMutationOptions<
       Note,
       AxiosError,
-      { scenarioId: string; content: string; uploaded_file?: File },
+      { scenarioId: string; content: string },
       unknown
     >,
     'mutationFn'
@@ -962,64 +914,15 @@ export const useCreateNote = (
   return useMutation<
     Note,
     AxiosError,
-    { scenarioId: string; content: string; uploaded_file?: File },
+    { scenarioId: string; content: string },
     unknown
   >({
-    mutationFn: ({ scenarioId, content, uploaded_file }) => {
-      // Validate scenarioId before making API call
-      if (!scenarioId || scenarioId.trim() === '') {
-        console.error('❌ useCreateNote: Invalid scenarioId:', scenarioId);
-        return Promise.reject(new Error('Invalid scenario ID'));
-      }
-
-      // Remove trailing slash if present
-      const cleanScenarioId = scenarioId.replace(/\/+$/, '');
-
-      // If file is present, use notes-with-attachment endpoint with FormData
-      if (uploaded_file) {
-      const formData = new FormData();
-      formData.append('content', content);
-        formData.append('file', uploaded_file);
-        formData.append('filename', uploaded_file.name);
-        formData.append('content_type', uploaded_file.type || 'application/octet-stream');
-
-        const endpoint = `${API_URL.RISK_SCENARIOS}${cleanScenarioId}/notes-with-attachment`;
-
-        return client
-          .post(endpoint, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          })
-          .then(({ data }) => {
-            return data?.data || data;
-          })
-          .catch((error) => {
-            throw error;
-          });
-      }
-
-      // For notes without attachment, use notes endpoint with content as query param
-      const endpoint = `${API_URL.RISK_SCENARIOS}${cleanScenarioId}/notes`;
-
-      return client
-        .post(endpoint, null, {
-          params: {
-            content,
-          },
-        })
-        .then(({ data }) => {
-          return data?.data || data;
-        })
-        .catch((error) => {
-          throw error;
-        });
-    },
+    mutationFn: ({ scenarioId, content }) =>
+      createScenarioNote(client, scenarioId, content),
     ...options,
     onSuccess: (data, variables, onMutateResult, context) => {
-      // Invalidate and refetch the notes for this scenario
       void queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, variables.scenarioId],
+        queryKey: [QUERY_KEYS.RISK_SCENARIO, variables.scenarioId],
       });
       if (options?.onSuccess) {
         void options.onSuccess(data, variables, onMutateResult, context);
@@ -1028,48 +931,65 @@ export const useCreateNote = (
   });
 };
 
-// ============================================================================
-// DOCUMENT HOOKS
-// ============================================================================
-
 /**
- * Download a document/attachment by ID
- * For scenario attachments, uses: GET /api/v1/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}
- * For other documents, uses: /api/v1/documents/{documentId}
+ * Create a new note with attachment
  */
-export const useGetDocument = (
+export const useCreateNoteWithAttachment = (
   options?: Omit<
     UseMutationOptions<
-      Blob | { download_url: string },
+      Note,
       AxiosError,
-      { documentId: string; scenarioId?: string },
+      { scenarioId: string; file: File; content: string },
       unknown
     >,
     'mutationFn'
   >,
 ) => {
   const client = useAxiosInstance();
-  return useMutation({
-    mutationFn: async ({ documentId, scenarioId }: { documentId: string; scenarioId?: string }) => {
-      // If scenarioId is provided, use scenario-based attachment endpoint with blob response
-      if (scenarioId) {
-        const cleanScenarioId = scenarioId.replace(/\/+$/, '');
-        const response = await client.get<Blob>(
-          `${API_URL.RISK_SCENARIOS}${cleanScenarioId}/attachments/download`,
-          {
-            params: {
-              attachment_id: documentId,
-            },
-            responseType: 'blob',
-          },
-        );
-        return response.data;
-      }
+  const queryClient = useQueryClient();
 
-      // Otherwise, use standard document endpoint
-      const response = await client.get<{ download_url: string }>(`${API_URL.DOCUMENTS}/${documentId}`);
-      return response.data;
+  return useMutation<
+    Note,
+    AxiosError,
+    { scenarioId: string; file: File; content: string },
+    unknown
+  >({
+    mutationFn: ({ scenarioId, file, content }) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('content', content);
+      return createScenarioNoteWithAttachment(client, scenarioId, formData);
     },
+    ...options,
+    onSuccess: (data, variables, onMutateResult, context) => {
+      void queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.RISK_SCENARIO, variables.scenarioId],
+      });
+      if (options?.onSuccess) {
+        void options.onSuccess(data, variables, onMutateResult, context);
+      }
+    },
+  });
+};
+
+/**
+ * Download a scenario attachment by ID
+ */
+export const useDownloadAttachment = (
+  options?: Omit<
+    UseMutationOptions<
+      Blob,
+      AxiosError,
+      { scenarioId: string; attachmentId: string },
+      unknown
+    >,
+    'mutationFn'
+  >,
+) => {
+  const client = useAxiosInstance();
+  return useMutation<Blob, AxiosError, { scenarioId: string; attachmentId: string }>({
+    mutationFn: ({ scenarioId, attachmentId }) =>
+      downloadAttachment(client, scenarioId, attachmentId),
     ...options,
   });
 };

@@ -6,7 +6,7 @@ import type { Option } from '@/components/molecules/Dropdown';
 import { StatusBadge } from '@/components/ui/Badge/StatusBadge';
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { cn } from '@/lib/utils';
-import { useUpdateRiskRegisterScenarioField } from '@/services/hooks';
+import { useUpdateRiskScenarioField } from '@/services/hooks';
 import {
   type RiskRegisterPriority,
   type RiskRegisterResponse,
@@ -83,8 +83,8 @@ export default function RiskManagementForm({
   });
   const isGuestUser = useIsGuestUser();
   const { showDemoModal } = useContext(DemoExperienceContext);
-  const { mutateAsync: updateRiskRegisterScenario, isPending } =
-    useUpdateRiskRegisterScenarioField({
+  const { mutateAsync: updateRiskScenarioField, isPending } =
+    useUpdateRiskScenarioField({
       onSuccess: () => {
         setTicketState('valid');
       },
@@ -98,7 +98,7 @@ export default function RiskManagementForm({
       showDemoModal({ title: t('demo.editRiskPriority') });
       return;
     }
-      await updateRiskRegisterScenario({
+      await updateRiskScenarioField({
         risk_priority: option.value as RiskRegisterPriority,
       });
   };
@@ -108,7 +108,7 @@ export default function RiskManagementForm({
       showDemoModal({ title: t('demo.editResponsePlan') });
       return;
     }
-      await updateRiskRegisterScenario({
+      await updateRiskScenarioField({
         response_plan: option.value as RiskRegisterResponsePlan,
       });
   };
@@ -129,12 +129,12 @@ export default function RiskManagementForm({
       }
 
       setTicketState('loading');
-      await updateRiskRegisterScenario({
+      await updateRiskScenarioField({
         ticket: value || undefined,
       });
       setTicketState('valid');
     },
-    [updateRiskRegisterScenario, isGuestUser, showDemoModal, t],
+    [updateRiskScenarioField, isGuestUser, showDemoModal, t],
   );
 
   const debouncedTicketChange = useMemo(
@@ -161,11 +161,11 @@ export default function RiskManagementForm({
           showDemoModal({ title: t('demo.editSubCategory') });
           return;
         }
-        await updateRiskRegisterScenario({
+        await updateRiskScenarioField({
           sub_category: value || undefined,
         });
       }, 2000),
-    [updateRiskRegisterScenario, isGuestUser, showDemoModal, t],
+    [updateRiskScenarioField, isGuestUser, showDemoModal, t],
   );
 
   const debouncedMitigationCostChange = useMemo(
@@ -175,11 +175,11 @@ export default function RiskManagementForm({
           showDemoModal({ title: t('demo.editMitigationCost') });
           return;
         }
-        await updateRiskRegisterScenario({
+        await updateRiskScenarioField({
           mitigation_cost: value ? Number(value) : undefined,
         });
       }, 2000),
-    [updateRiskRegisterScenario, isGuestUser, showDemoModal, t],
+    [updateRiskScenarioField, isGuestUser, showDemoModal, t],
   );
 
   const handleReviewDateChange = async (value: string) => {
@@ -187,7 +187,7 @@ export default function RiskManagementForm({
       showDemoModal({ title: t('editReviewDate') });
       return;
     }
-    await updateRiskRegisterScenario({
+    await updateRiskScenarioField({
       review_date: value || undefined,
     });
   };

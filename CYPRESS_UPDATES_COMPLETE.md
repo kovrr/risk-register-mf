@@ -7,11 +7,11 @@ All Cypress test files have been systematically reviewed and updated to match th
 
 ### 1. Notes System (`cypress/support/commands-lib/mock-notes.ts`)
 **Changed:**
-- `mockGetNotes()` - Updated to use `GET /api/v1/risk-scenarios/{scenario_id}/notes`
+- `mockGetNotes()` - Updated to use `GET /api/risk-scenarios/{scenario_id}/notes`
 - `mockCreateNote()` - Updated to handle:
-  - `POST /api/v1/risk-scenarios/{scenario_id}/notes` (content as query param)
-  - `POST /api/v1/risk-scenarios/{scenario_id}/notes-with-attachment` (FormData)
-- `mockGetDocument()` - Updated to use `GET /api/v1/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}`
+  - `POST /api/risk-scenarios/{scenario_id}/notes` (content as query param)
+  - `POST /api/risk-scenarios/{scenario_id}/notes-with-attachment` (FormData)
+- `mockGetDocument()` - Updated to use `GET /api/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}`
 - Response format changed from `{ items: [...] }` to `{ data: [...] }`
 
 **Files Updated:**
@@ -37,10 +37,10 @@ All Cypress test files have been systematically reviewed and updated to match th
 
 ### 4. Form Submission Endpoints
 **Verified:**
-- ✅ Manual scenario: `POST /api/v1/risk-scenarios` (correct)
-- ✅ CRQ scenario: `POST /api/v1/risk-scenarios/crq` (correct)
-- ✅ Update scenario: `PATCH /api/v1/risk-scenarios/{scenario_id}` (correct)
-- ✅ Update CRQ: `POST /api/v1/risk-scenarios/crq/{scenario_id}/update-crq` (correct)
+- ✅ Manual scenario: `POST /api/risk-scenarios` (correct)
+- ✅ CRQ scenario: `POST /api/risk-scenarios/crq` (correct)
+- ✅ Update scenario: `PATCH /api/risk-scenarios/{scenario_id}` (correct)
+- ✅ Update CRQ: `POST /api/risk-scenarios/crq/{scenario_id}/update-crq` (correct)
 
 **Files Updated:**
 - `cypress/component/scenario-form.cy.tsx` - Added proper mock response with `scenario_id`
@@ -80,27 +80,27 @@ All now have comments explaining these mocks won't be called but are harmless to
 
 ### Notes Endpoints (UPDATED)
 ```
-GET  /api/v1/risk-scenarios/{scenario_id}/notes
-POST /api/v1/risk-scenarios/{scenario_id}/notes?content={content}
-POST /api/v1/risk-scenarios/{scenario_id}/notes-with-attachment (FormData)
-GET  /api/v1/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}
+GET  /api/risk-scenarios/{scenario_id}/notes
+POST /api/risk-scenarios/{scenario_id}/notes?content={content}
+POST /api/risk-scenarios/{scenario_id}/notes-with-attachment (FormData)
+GET  /api/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}
 ```
 
 ### Scenario Endpoints
 ```
-POST   /api/v1/risk-scenarios                    # Manual scenario
-POST   /api/v1/risk-scenarios/crq                # CRQ scenario
-GET    /api/v1/risk-scenarios/{scenario_id}      # Get scenario
-PATCH  /api/v1/risk-scenarios/{scenario_id}      # Update scenario
-DELETE /api/v1/risk-scenarios/{scenario_id}      # Delete scenario
-POST   /api/v1/risk-scenarios/crq/{scenario_id}/update-crq  # Update CRQ
-GET    /api/v1/risk-scenarios/{scenario_id}/metrics-history  # Metrics history
-GET    /api/v1/risk-scenarios/{scenario_id}/controls         # Controls
+POST   /api/risk-scenarios                    # Manual scenario
+POST   /api/risk-scenarios/crq                # CRQ scenario
+GET    /api/risk-scenarios/{scenario_id}      # Get scenario
+PATCH  /api/risk-scenarios/{scenario_id}      # Update scenario
+DELETE /api/risk-scenarios/{scenario_id}      # Delete scenario
+POST   /api/risk-scenarios/crq/{scenario_id}/update-crq  # Update CRQ
+GET    /api/risk-scenarios/{scenario_id}/metrics-history  # Metrics history
+GET    /api/risk-scenarios/{scenario_id}/controls         # Controls
 ```
 
 ### Disabled Endpoints (No-op hooks)
 ```
-GET /api/v1/companies  # Disabled - hooks return empty array
+GET /api/companies  # Disabled - hooks return empty array
 GET /api/companies/*   # Disabled - hooks return empty array
 ```
 

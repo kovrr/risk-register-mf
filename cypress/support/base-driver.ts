@@ -406,14 +406,14 @@ export class BaseDriver {
       ].forEach((column) => {
         cy.intercept(
           'GET',
-          `/api/v1/risk-scenarios?page=${page}&size=10&sort_by=${column}&sort_order=desc`,
+          `/api/risk-scenarios?page=${page}&size=10&sort_by=${column}&sort_order=desc`,
           {
             body,
           },
         ).as(`Scenarios${column}Desc${page}`);
         cy.intercept(
           'GET',
-          `/api/v1/risk-scenarios?page=${page}&size=10&sort_by=${column}&sort_order=asc`,
+          `/api/risk-scenarios?page=${page}&size=10&sort_by=${column}&sort_order=asc`,
           {
             body,
           },

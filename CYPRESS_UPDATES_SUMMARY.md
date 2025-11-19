@@ -9,11 +9,11 @@ This document tracks the updates made to Cypress tests to align with recent code
 ## Completed Updates
 
 ### ✅ 1. Notes Mock Helpers (`cypress/support/commands-lib/mock-notes.ts`)
-- **Updated** `mockGetNotes()` to use: `GET /api/v1/risk-scenarios/{scenario_id}/notes`
+- **Updated** `mockGetNotes()` to use: `GET /api/risk-scenarios/{scenario_id}/notes`
 - **Updated** `mockCreateNote()` to handle both:
-  - `POST /api/v1/risk-scenarios/{scenario_id}/notes` (content as query param)
-  - `POST /api/v1/risk-scenarios/{scenario_id}/notes-with-attachment` (FormData)
-- **Updated** `mockGetDocument()` to use: `GET /api/v1/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}`
+  - `POST /api/risk-scenarios/{scenario_id}/notes` (content as query param)
+  - `POST /api/risk-scenarios/{scenario_id}/notes-with-attachment` (FormData)
+- **Updated** `mockGetDocument()` to use: `GET /api/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}`
 - **Response format**: Changed to return `{ data: notes }` instead of `{ items: notes }`
 
 ### ✅ 2. Notes Component Tests (`cypress/component/Notes.cy.tsx`)
@@ -70,17 +70,17 @@ This document tracks the updates made to Cypress tests to align with recent code
 
 ### Notes Endpoints (OLD → NEW)
 ```
-OLD: GET  /api/v1/notes?parent_type=scenario&parent_id={id}
-NEW: GET  /api/v1/risk-scenarios/{scenario_id}/notes
+OLD: GET  /api/notes?parent_type=scenario&parent_id={id}
+NEW: GET  /api/risk-scenarios/{scenario_id}/notes
 
-OLD: POST /api/v1/notes (with parent_type/parent_id in body)
-NEW: POST /api/v1/risk-scenarios/{scenario_id}/notes?content={content}
+OLD: POST /api/notes (with parent_type/parent_id in body)
+NEW: POST /api/risk-scenarios/{scenario_id}/notes?content={content}
 
-OLD: POST /api/v1/notes (with FormData)
-NEW: POST /api/v1/risk-scenarios/{scenario_id}/notes-with-attachment (FormData)
+OLD: POST /api/notes (with FormData)
+NEW: POST /api/risk-scenarios/{scenario_id}/notes-with-attachment (FormData)
 
-OLD: GET  /api/v1/documents/{id}
-NEW: GET  /api/v1/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}
+OLD: GET  /api/documents/{id}
+NEW: GET  /api/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}
 ```
 
 ### Response Format Changes

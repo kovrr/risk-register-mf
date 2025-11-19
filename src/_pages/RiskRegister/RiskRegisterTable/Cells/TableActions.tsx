@@ -5,7 +5,7 @@ import {
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import {
-  useDeleteRiskRegisterScenario,
+  useDeleteRiskScenario,
   useRiskRegisterScenario,
 } from '@/services/hooks';
 import type { RiskRegisterRow } from '@/types/riskRegister';
@@ -43,7 +43,7 @@ export const TableActions: FC<Props> = ({ scenario }) => {
   );
   const { isLimitedUser, handleGuestUserClick } = useRiskRegisterDemoFeatures();
   const { updateQueriesWithDeletedRow } = useUpdateRiskRegisterQueries();
-  const { mutateAsync: deleteRiskScenario } = useDeleteRiskRegisterScenario({
+  const { mutateAsync: deleteRiskScenario } = useDeleteRiskScenario({
     onSuccess: () => {
       updateQueriesWithDeletedRow(scenario.scenarioId);
       setIsDeleteModalOpen(false);

@@ -171,8 +171,8 @@ describe('Scenario Input Form', () => {
     });
 
     // Mock the create scenario endpoint for manual scenarios
-    // Actual endpoint: POST /api/v1/risk-scenarios (without /crq suffix for manual)
-    cy.intercept('POST', '/api/v1/risk-scenarios', {
+    // Actual endpoint: POST /api/risk-scenarios (without /crq suffix for manual)
+    cy.intercept('POST', '/api/risk-scenarios', {
       statusCode: 201,
       body: {
         scenario_id: 'new-scenario-id',

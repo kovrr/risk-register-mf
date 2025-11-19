@@ -3,7 +3,7 @@ import { Input } from '@/components/atoms/input';
 import { Label } from '@/components/atoms/label';
 import type { Option } from '@/components/molecules/Dropdown';
 import { cn } from '@/lib/utils';
-import { useUpdateRiskRegisterScenarioField } from '@/services/hooks';
+import { useUpdateRiskScenarioField } from '@/services/hooks';
 import type {
   RiskRegisterPriority,
   RiskRegisterResponse,
@@ -63,8 +63,8 @@ export default function RiskManagementFormOld({
   const { t } = useTranslation('riskRegister', {
     keyPrefix: 'scenarioDrillDown.riskManagement',
   });
-  const { mutateAsync: updateRiskRegisterScenario, isPending } =
-    useUpdateRiskRegisterScenarioField({
+  const { mutateAsync: updateRiskScenarioField, isPending } =
+    useUpdateRiskScenarioField({
       onSuccess: () => {
         setTicketState('valid');
       },
@@ -74,13 +74,13 @@ export default function RiskManagementFormOld({
   >('valid');
 
   const handlePriorityChange = async (option: Option) => {
-    await updateRiskRegisterScenario({
+    await updateRiskScenarioField({
       risk_priority: option.value as RiskRegisterPriority,
     });
   };
 
   const handleResponsePlanChange = async (option: Option) => {
-    await updateRiskRegisterScenario({
+    await updateRiskScenarioField({
       response_plan: option.value as RiskRegisterResponsePlan,
     });
   };
@@ -96,12 +96,12 @@ export default function RiskManagementFormOld({
       }
 
       setTicketState('loading');
-      await updateRiskRegisterScenario({
+      await updateRiskScenarioField({
         ticket: value || undefined,
       });
       setTicketState('valid');
     },
-    [updateRiskRegisterScenario],
+    [updateRiskScenarioField],
   );
 
   const debouncedTicketChange = useMemo(

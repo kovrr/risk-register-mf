@@ -13,7 +13,7 @@ const getBaseApiUrl = () =>
   'http://localhost:8000';
 
 // Use relative base so MSW matches same-origin requests from the app
-const getApiBasePath = () => `/api/v1`;
+const getApiBasePath = () => `/api`;
 const apiBasePath = getApiBasePath();
 const riskScenariosBasePath = `${apiBasePath}/risk-scenarios`;
 

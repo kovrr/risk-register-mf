@@ -75,7 +75,7 @@ describe('MAS Scenario View', () => {
     );
     cy.intercept(
       'GET',
-      `/api/v1/risk-scenarios/${scenario.scenario_id}`,
+      `/api/risk-scenarios/${scenario.scenario_id}`,
       {
         statusCode: 200,
         body: scenario,
@@ -174,7 +174,7 @@ describe('MAS Scenario View', () => {
   it('edits risk management form', () => {
     cy.intercept(
       'PATCH',
-      `/api/v1/risk-scenarios/${scenario.scenario_id}`,
+      `/api/risk-scenarios/${scenario.scenario_id}`,
       scenario,
     ).as('updateScenario');
 

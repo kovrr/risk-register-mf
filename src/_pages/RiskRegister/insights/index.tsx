@@ -1,7 +1,7 @@
 import { Button, Flex, Input, Select, Text, Textarea } from '@chakra-ui/react';
 import { useCallback, useMemo, useState } from 'react';
 import { useAxiosInstance } from '@/state/HttpClientContext';
-import { useRiskRegisterScenarios } from '@/services/hooks';
+import { useRiskScenarios } from '@/services/hooks';
 
 type ChatMessage = {
   id: string;
@@ -11,7 +11,7 @@ type ChatMessage = {
 
 function KovrrInsights() {
   const client = useAxiosInstance();
-  const { data } = useRiskRegisterScenarios({ page: 1, size: 100 });
+  const { data } = useRiskScenarios({ page: 1, size: 100 });
   const scenarios = data?.items ?? [];
 
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>('');

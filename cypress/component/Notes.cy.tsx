@@ -44,7 +44,7 @@ describe('Notes Component', () => {
     cy.viewport(800, 600);
 
     // Mock scenario endpoint (required by useCurrentRiskRegisterScenario + notes)
-    cy.intercept('GET', `/api/v1/risk-scenarios/${scenarioId}`, {
+    cy.intercept('GET', `/api/risk-scenarios/${scenarioId}`, {
       statusCode: 200,
       body: mockScenario,
     }).as('getScenario');
@@ -138,7 +138,7 @@ describe('Notes Component', () => {
 
   it('handles error state', () => {
     // Mock error for create note endpoint
-    cy.intercept('POST', `**/api/v1/risk-scenarios/${scenarioId}/notes*`, {
+    cy.intercept('POST', `**/api/risk-scenarios/${scenarioId}/notes*`, {
       statusCode: 500,
       body: { detail: 'Error creating note' },
     }).as('createNoteError');

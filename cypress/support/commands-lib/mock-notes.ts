@@ -1,11 +1,11 @@
 /**
  * Mock document download endpoint
- * New endpoint: GET /api/v1/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}
+ * New endpoint: GET /api/risk-scenarios/{scenario_id}/attachments/download?attachment_id={id}
  */
 export const mockGetDocument = (scenarioId?: string, shouldFail = false) => {
   const urlPattern = scenarioId
-    ? `**/api/v1/risk-scenarios/${scenarioId}/attachments/download*`
-    : '**/api/v1/risk-scenarios/*/attachments/download*';
+    ? `**/api/risk-scenarios/${scenarioId}/attachments/download*`
+    : '**/api/risk-scenarios/*/attachments/download*';
 
   cy.intercept('GET', urlPattern, (req) => {
     if (shouldFail) {
@@ -26,13 +26,13 @@ export const mockGetDocument = (scenarioId?: string, shouldFail = false) => {
 /**
  * Mock create note endpoint
  * New endpoints:
- * - POST /api/v1/risk-scenarios/{scenario_id}/notes (content as query param)
- * - POST /api/v1/risk-scenarios/{scenario_id}/notes-with-attachment (FormData)
+ * - POST /api/risk-scenarios/{scenario_id}/notes (content as query param)
+ * - POST /api/risk-scenarios/{scenario_id}/notes-with-attachment (FormData)
  */
 export const mockCreateNote = (scenarioId?: string, shouldFail = false) => {
   const urlPattern = scenarioId
-    ? `**/api/v1/risk-scenarios/${scenarioId}/notes*`
-    : '**/api/v1/risk-scenarios/*/notes*';
+    ? `**/api/risk-scenarios/${scenarioId}/notes*`
+    : '**/api/risk-scenarios/*/notes*';
 
   cy.intercept('POST', urlPattern, (req) => {
     if (shouldFail) {
@@ -74,7 +74,7 @@ export const mockCreateNote = (scenarioId?: string, shouldFail = false) => {
  * Mock update note endpoint (if still used)
  */
 export const mockUpdateNote = (shouldFail = false) => {
-  cy.intercept('PATCH', '**/api/v1/risk-scenarios/*/notes/*', (req) => {
+  cy.intercept('PATCH', '**/api/risk-scenarios/*/notes/*', (req) => {
     if (shouldFail) {
       req.reply({ statusCode: 500 });
     } else {
@@ -104,7 +104,7 @@ export const mockUpdateNote = (shouldFail = false) => {
  * Mock delete note endpoint (if still used)
  */
 export const mockDeleteNote = (shouldFail = false) => {
-  cy.intercept('DELETE', '**/api/v1/risk-scenarios/*/notes/*', (req) => {
+  cy.intercept('DELETE', '**/api/risk-scenarios/*/notes/*', (req) => {
     if (shouldFail) {
       req.reply({ statusCode: 500 });
     } else {

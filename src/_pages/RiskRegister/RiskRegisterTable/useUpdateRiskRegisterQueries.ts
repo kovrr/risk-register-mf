@@ -5,7 +5,7 @@ import type {
 } from '@/types/riskRegister';
 import { type Query, useQueryClient } from '@tanstack/react-query';
 
-const SCENARIO_TABLE_KEY_PREFIX = QUERY_KEYS.RISK_REGISTER_SCENARIOS_TABLE[0];
+const SCENARIO_TABLE_KEY_PREFIX = QUERY_KEYS.RISK_SCENARIOS_TABLE[0];
 
 const _getRelevantQueries = (queries: Query[]) => {
   return queries.filter((query) => {
@@ -93,13 +93,13 @@ export const useUpdateRiskRegisterQueries = () => {
 
   const invalidateScenarioTableQueries = async () => {
     await queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.RISK_REGISTER_SCENARIOS_TABLE,
+      queryKey: QUERY_KEYS.RISK_SCENARIOS_TABLE,
     });
   };
 
   const invalidateCurrentScenarioQuery = async (scenarioId: string) => {
     await queryClient.invalidateQueries({
-      queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId],
+      queryKey: [QUERY_KEYS.RISK_SCENARIO, scenarioId],
     });
   };
 

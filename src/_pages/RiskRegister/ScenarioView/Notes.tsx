@@ -8,12 +8,11 @@ import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import {
-  QUERY_KEYS,
   useCreateNote,
+  useCreateNoteWithAttachment,
   useCurrentRiskRegisterScenario,
   useNotes,
 } from '@/services/hooks';
-import { useQueryClient } from '@tanstack/react-query';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getInitials } from '../utils/textManipulation';
@@ -39,7 +38,6 @@ export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) 
   const scenarioId = scenario?.scenario_id ?? '';
 
   const { t } = useTranslation('riskRegister');
-  const queryClient = useQueryClient();
   const { toast } = useToast();
   const isGuestUser = useIsGuestUser();
   const { showDemoModal } = useContext(DemoExperienceContext);
@@ -50,43 +48,54 @@ export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) 
     isPending: isLoadingNotes,
   } = useNotes(scenarioId);
 
+  const handleMutationError = (err: any) => {
+    console.error('Error creating note:', err.response);
+    const errorMsg = err.response?.data;
+
+    if (Array.isArray(errorMsg?.detail) && errorMsg?.detail?.length > 0) {
+      errorMsg.detail.forEach((error: { msg: string }) => {
+        error?.msg &&
+          toast({
+            variant: 'destructive',
+            title: 'Error creating note',
+            description: error.msg,
+          });
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to create note. Please try again later.',
+      });
+    }
+  };
+
+  const handleMutationSuccess = () => {
+    setNoteText('');
+    setSelectedFile(null);
+    toast({
+      description: 'Note created successfully',
+      duration: 3000,
+    });
+  };
+
   const {
     mutateAsync: createNote,
     isPending: isSavingNote,
   } = useCreateNote({
-    onError: (err: any) => {
-      console.error('Error creating note:', err.response);
-      const errorMsg = err.response?.data;
-
-      if (Array.isArray(errorMsg?.detail) && errorMsg?.detail?.length > 0) {
-        errorMsg.detail.forEach((error: { msg: string }) => {
-          error?.msg &&
-            toast({
-              variant: 'destructive',
-              title: 'Error creating note',
-              description: error.msg,
-            });
-        });
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: 'Failed to create note. Please try again later.',
-        });
-      }
-    },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId],
-      });
-      setNoteText('');
-      setSelectedFile(null);
-      toast({
-        description: 'Note created successfully',
-        duration: 3000,
-      });
-    },
+    onError: handleMutationError,
+    onSuccess: () => handleMutationSuccess(),
   });
+
+  const {
+    mutateAsync: createNoteWithAttachment,
+    isPending: isUploadingAttachment,
+  } = useCreateNoteWithAttachment({
+    onError: handleMutationError,
+    onSuccess: () => handleMutationSuccess(),
+  });
+
+  const isSaving = isSavingNote || isUploadingAttachment;
 
   // ❗ Only NOW we can early-return the skeleton safely
   if (isLoadingScenario || !scenario?.scenario_id) {
@@ -131,11 +140,18 @@ export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) 
     }
 
     try {
-      await createNote({
-        scenarioId,
-        content: noteText,
-        uploaded_file: selectedFile || undefined,
-      });
+      if (selectedFile) {
+        await createNoteWithAttachment({
+          scenarioId,
+          file: selectedFile,
+          content: noteText,
+        });
+      } else {
+        await createNote({
+          scenarioId,
+          content: noteText,
+        });
+      }
     } catch {
       // Error handling already done inside the mutation
     }
@@ -192,9 +208,9 @@ export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) 
               <Button
                 className="h-9 bg-[#7C89FF] px-6 text-white hover:bg-[#6574ff]"
                 onClick={handleSave}
-                disabled={isSavingNote || (!noteText.trim() && !selectedFile)}
+                disabled={isSaving || (!noteText.trim() && !selectedFile)}
               >
-                {isSavingNote ? (
+                {isSaving ? (
                   <>
                     <Spinner className="-ml-1 mr-2 h-4 w-4 text-white" data-testid="note-spinner" />
                     {t('scenarioDrillDown.notes.saving')}

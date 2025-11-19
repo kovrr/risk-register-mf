@@ -6,9 +6,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useMixpanel } from '@/hooks/useMixpanel';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import {
-  useCreateRiskRegisterScenario,
+  useCreateRiskScenario,
   useCurrentRiskRegisterScenarioIdIfExists,
-  useUpdateRiskRegisterScenario,
+  useUpdateRiskScenario,
 } from '@/services/hooks';
 import {
   type RiskRegisterResponse,
@@ -54,8 +54,8 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
   } = useUpdateRiskRegisterQueries();
   const { showDemoModal } = useContext(DemoExperienceContext);
   const { t } = useTranslation('riskRegister', { keyPrefix: 'modal' });
-  const { mutateAsync: createRiskRegisterScenario, isPending: isCreating } =
-    useCreateRiskRegisterScenario({
+  const { mutateAsync: createRiskScenario, isPending: isCreating } =
+    useCreateRiskScenario({
       onSuccess: async () => {
         toast({
           title: 'Success',
@@ -72,8 +72,8 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
         setIsErrorDialogOpen(true);
       },
     });
-  const { mutateAsync: updateRiskRegisterScenario, isPending: isUpdating } =
-    useUpdateRiskRegisterScenario(scenario?.scenario_id || '', {
+  const { mutateAsync: updateRiskScenario, isPending: isUpdating } =
+    useUpdateRiskScenario(scenario?.scenario_id || '', {
       onSuccess: async (updatedScenario) => {
         toast({
           title: 'Success',
@@ -197,11 +197,11 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
     }
 
     if (isEditMode) {
-      return await updateRiskRegisterScenario(
+      return await updateRiskScenario(
         values as SimpleScenarioUpdateRequest,
       );
     }
-    return await createRiskRegisterScenario(values as ScenarioCreateRequest);
+    return await createRiskScenario(values as ScenarioCreateRequest);
   }
 
   useEffect(() => {

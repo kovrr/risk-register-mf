@@ -1,5 +1,5 @@
 import { TableHeaderCell } from '@/components/molecules/TableHeaderCell';
-import { useRiskRegisterScenarios } from '@/services/hooks';
+import { useRiskScenarios } from '@/services/hooks';
 import {
   type RiskRegisterRow,
   scenarioStatus,
@@ -137,7 +137,7 @@ const useData = (params: UseRiskRegisterTableParams) => {
     data: scenarios,
     isPending,
     isFetching,
-  } = useRiskRegisterScenarios({
+  } = useRiskScenarios({
     page: pageIndex + 1,
     size: pageSize,
     name: search && search.length > 0 ? search : undefined,

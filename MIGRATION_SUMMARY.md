@@ -146,13 +146,13 @@ NEXT_PUBLIC_FRONTEGG_CLIENT_ID=your-client-id
 
 ```
 # Scenarios
-GET    /api/v1/risk-scenarios
-POST   /api/v1/risk-scenarios
-POST   /api/v1/risk-scenarios/crq
-GET    /api/v1/risk-scenarios/:id
-PATCH  /api/v1/risk-scenarios/:id
-DELETE /api/v1/risk-scenarios/:id
-GET    /api/v1/risk-scenarios/export
+GET    /api/risk-scenarios
+POST   /api/risk-scenarios
+POST   /api/risk-scenarios/crq
+GET    /api/risk-scenarios/:id
+PATCH  /api/risk-scenarios/:id
+DELETE /api/risk-scenarios/:id
+GET    /api/risk-scenarios/export
 
 # Supporting
 GET    /api/tenant

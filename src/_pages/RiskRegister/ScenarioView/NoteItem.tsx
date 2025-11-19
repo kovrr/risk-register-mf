@@ -1,7 +1,7 @@
 import { Avatar } from '@/components/atoms/avatar';
 import PaperClip from '@/components/icons/PaperClip';
 import { useToast } from '@/hooks/use-toast';
-import { useCurrentRiskRegisterScenario, useGetDocument } from '@/services/hooks';
+import { useCurrentRiskRegisterScenario, useDownloadAttachment } from '@/services/hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getInitials } from '../utils/textManipulation';
@@ -30,7 +30,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   const { data: scenario } = useCurrentRiskRegisterScenario();
   const scenarioId = scenario?.scenario_id;
 
-  const { mutateAsync: getDocument } = useGetDocument({
+  const { mutateAsync: downloadScenarioAttachment } = useDownloadAttachment({
     onError: () => {
       toast({
         variant: 'destructive',
@@ -71,27 +71,19 @@ export const NoteItem: React.FC<NoteItemProps> = ({
     }
 
     try {
-      const response = await getDocument({
-        documentId: attachment.id,
-        scenarioId: scenarioId,
+      const blob = await downloadScenarioAttachment({
+        attachmentId: attachment.id,
+        scenarioId,
       });
 
-      // If response is a Blob, create a download link
-      if (response instanceof Blob) {
-        const url = window.URL.createObjectURL(response);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = attachment.name || 'attachment';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-      } else if (response?.download_url) {
-        // Fallback: if response has download_url, open it
-        window.open(response.download_url, '_blank');
-      } else {
-        throw new Error('Download failed: Invalid response format');
-      }
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = attachment.name || 'attachment';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error downloading file:', error);
       toast({

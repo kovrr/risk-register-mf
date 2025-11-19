@@ -1,6 +1,6 @@
 import { Badge, Box, Flex, Grid, GridItem, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
-import { useRiskRegisterScenarios } from '@/services/hooks';
+import { useRiskScenarios } from '@/services/hooks';
 import { type RiskRegisterImpact } from '@/types/riskRegister';
 
 const likelihoodLabels = ['Expected', 'Possible', 'Unlikely', 'Rare', 'Very Rare'];
@@ -16,7 +16,7 @@ const impactBgMap: Record<string, string> = {
 
 function RiskRegisterVisualization() {
   // Fetch a large page to aggregate. If backend provides viz endpoints later, we can swap.
-  const { data } = useRiskRegisterScenarios({
+  const { data } = useRiskScenarios({
     page: 1,
     size: 250,
   });

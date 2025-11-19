@@ -5,7 +5,7 @@ import {
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import {
   useCurrentRiskRegisterScenarioId,
-  useDeleteRiskRegisterScenario,
+  useDeleteRiskScenario,
 } from '@/services/hooks';
 import { EllipsisVertical } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
@@ -17,7 +17,7 @@ export const ScenarioActionMenu = () => {
   const navigate = useNavigate();
   const scenarioId = useCurrentRiskRegisterScenarioId();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { mutateAsync: deleteRiskScenario } = useDeleteRiskRegisterScenario({
+  const { mutateAsync: deleteRiskScenario } = useDeleteRiskScenario({
     onSuccess: () => {
       navigate('/');
     },

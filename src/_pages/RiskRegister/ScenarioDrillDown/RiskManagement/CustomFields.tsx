@@ -1,4 +1,4 @@
-import { useUpdateRiskRegisterScenarioField } from '@/services/hooks';
+import { useUpdateRiskScenarioField } from '@/services/hooks';
 import type { CustomField, RiskRegisterResponse } from '@/types/riskRegister';
 import { useDebounceCallback } from '@react-hook/debounce';
 import { useCallback, useState } from 'react';
@@ -10,8 +10,8 @@ type CustomFieldsSectionProps = {
 };
 
 export function CustomFieldsSection({ scenario }: CustomFieldsSectionProps) {
-  const { mutateAsync: updateRiskRegisterScenario } =
-    useUpdateRiskRegisterScenarioField({});
+  const { mutateAsync: updateRiskScenarioField } =
+    useUpdateRiskScenarioField({});
 
   const [customFields, setCustomFields] = useState<CustomField[]>(
     scenario.scenario_data.custom_fields || [],
@@ -19,7 +19,7 @@ export function CustomFieldsSection({ scenario }: CustomFieldsSectionProps) {
 
   const debouncedUpdate = useDebounceCallback(
     async (updatedFields: CustomField[]) =>
-      await updateRiskRegisterScenario({
+      await updateRiskScenarioField({
         custom_fields: updatedFields,
       }),
     500,

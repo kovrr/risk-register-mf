@@ -4,9 +4,9 @@ import { Toaster } from '@/components/atoms/sonner';
 import { useToast } from '@/hooks/use-toast';
 import { useMixpanel } from '@/hooks/useMixpanel';
 import {
-  useCreateCRQRiskRegisterScenario,
+  useCreateCRQRiskScenario,
   useCurrentRiskRegisterScenarioIdIfExists,
-  useUpdateRiskRegisterScenario,
+  useUpdateRiskScenario,
 } from '@/services/hooks';
 import {
   type CRQData,
@@ -59,8 +59,8 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
   } = useUpdateRiskRegisterQueries();
   const isInScenarioViewPage = !!currentScenarioId;
 
-  const { mutateAsync: createRiskRegisterScenario, isPending: isCreating } =
-    useCreateCRQRiskRegisterScenario({
+  const { mutateAsync: createRiskScenario, isPending: isCreating } =
+    useCreateCRQRiskScenario({
       onSuccess: async () => {
         onSuccess();
         toast({
@@ -79,8 +79,8 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
       },
     });
 
-  const { mutateAsync: updateRiskRegisterScenario, isPending: isUpdating } =
-    useUpdateRiskRegisterScenario(scenario?.scenario_id || '', {
+  const { mutateAsync: updateRiskScenario, isPending: isUpdating } =
+    useUpdateRiskScenario(scenario?.scenario_id || '', {
       onSuccess: async (updatedScenario) => {
         onSuccess();
         toast({
@@ -162,12 +162,12 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
     }
 
     if (isEditMode) {
-      return await updateRiskRegisterScenario({
+      return await updateRiskScenario({
         ...values,
         crq_data: transformToServerFilters(values.crq_data as CRQData),
       } as CRQScenarioUpdateRequest);
     }
-    return await createRiskRegisterScenario({
+    return await createRiskScenario({
       ...values,
       crq_data: transformToServerFilters(values.crq_data as CRQData),
     } as CRQScenarioCreateRequest);
