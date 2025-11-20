@@ -126,8 +126,14 @@ export const createNote = async (
   scenarioId: string,
   content: string,
 ): Promise<NoteOutput> => {
-  const endpoint = withStrapiBasePath(`/risk-scenarios/${sanitizeId(scenarioId)}/notes`);
-  const { data } = await client.post<NoteOutput>(endpoint, { content });
+  const endpoint = withStrapiBasePath(
+    `/risk-scenarios/${sanitizeId(scenarioId)}/notes`,
+  );
+
+  const { data } = await client.post<NoteOutput>(endpoint, {}, {
+    params: { content },
+  });
+
   return (data as any)?.data ?? data;
 };
 

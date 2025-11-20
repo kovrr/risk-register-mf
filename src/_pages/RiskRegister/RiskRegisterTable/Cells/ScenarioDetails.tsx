@@ -37,7 +37,7 @@ export const ScenarioDetails = ({
                 )}
                 variant='link'
                 disabled={disabled}
-                onClick={() => navigate(`/scenarios/${id}`)}
+                onClick={() => navigate(`scenarios/${id}`)}
               >
                 <p className='truncate'>{title}</p>
               </Button>

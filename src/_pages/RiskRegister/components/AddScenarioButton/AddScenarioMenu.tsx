@@ -51,19 +51,15 @@ export const AddScenarioMenu = () => {
       label: t('menuItems.simple'),
       action: handleSimpleScenarioClick,
     },
-    {
-      label: t('menuItems.crq'),
-      action: handleCRQScenarioClick,
-    },
-    ...(isRiskRegisterTemplateEnabled
-      ? [
+    // {
+    //   label: t('menuItems.crq'),
+    //   action: handleCRQScenarioClick,
+    // },
         {
           label: t('menuItems.template'),
           action: handleTemplateClick,
         },
-      ]
-      : []),
-  ];
+      ];
 
   return (
     <>

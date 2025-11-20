@@ -2,6 +2,7 @@ import {
   DropMenu,
   type DropMenuItem,
 } from '@/components/molecules/DropdownMenu';
+import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import {
   useCurrentRiskRegisterScenarioId,
@@ -17,8 +18,15 @@ export const ScenarioActionMenu = () => {
   const navigate = useNavigate();
   const scenarioId = useCurrentRiskRegisterScenarioId();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { toast } = useToast();
   const { mutateAsync: deleteRiskScenario } = useDeleteRiskScenario({
     onSuccess: () => {
+      toast({
+        title: 'Success',
+        description: 'The risk scenario has been deleted successfully.',
+        status: 'success',
+      });
+      setIsDeleteModalOpen(false);
       navigate('/');
     },
   });
