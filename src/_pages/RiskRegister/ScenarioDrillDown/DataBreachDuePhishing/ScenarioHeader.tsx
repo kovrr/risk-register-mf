@@ -1,5 +1,5 @@
+import { Badge } from '@/components/atoms/badge';
 import { Card } from '@/components/atoms/card';
-import { Separator } from '@/components/atoms/separator';
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import type { RiskRegisterResponse } from '@/types/riskRegister';
 import { useIsGuestUser } from 'permissions/use-permissions';
@@ -7,7 +7,6 @@ import { type FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PencilIcon from '../../../../components/icons/pencil.svg';
 import ScenarioInputForm from '../../ScenarioInputForm/ScenarioInputModal';
-import { ScenarioMetric } from './ScenarioMetric';
 
 type Props = {
   scenario: RiskRegisterResponse;
@@ -23,35 +22,50 @@ export const ScenarioHeader: FC<Props> = ({ scenario }) => {
     setOpen(true);
   };
 
+  const categories = scenario.scenario_data.scenario_category || [];
+
   return (
     <>
-      <Card>
-        <div className='flex items-center justify-between gap-7'>
-          <div className='flex max-w-[350px] flex-col gap-1'>
-            <div className='flex items-center gap-[5px]'>
-              <p className='p-0 text-[14px] font-[700] text-text-brand-primary'>
+      <Card className='p-6 shadow-sm'>
+        <div className='flex items-start justify-between gap-4'>
+          <div className='flex flex-1 flex-col gap-4'>
+            {/* Scenario ID */}
+            <div className='flex items-center gap-2'>
+              <span className='text-sm font-bold text-text-brand-primary'>
                 {scenario.customer_scenario_id}
-              </p>
+              </span>
               <span className='text-muted-foreground'>/</span>
             </div>
-            <div>
-              <h1 className='mb-2 text-[20px] font-[700]'>{scenario.name}</h1>
-              <p className='text-[13px] font-[400] text-text-base-secondary'>
+
+            {/* Scenario Title */}
+            <h1 className='text-2xl font-bold text-text-base-primary'>
+              {scenario.name}
+            </h1>
+
+            {/* Description */}
+            <p className='text-sm font-normal leading-relaxed text-text-base-secondary'>
                 {scenario.description}
               </p>
+
+            {/* Category Tags */}
+            {categories.length > 0 && (
+              <div className='flex flex-wrap gap-2'>
+                {categories.map((category, index) => (
+                  <Badge
+                    key={index}
+                    variant='secondary'
+                    className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                  >
+                    {category}
+                  </Badge>
+                ))}
             </div>
+            )}
           </div>
-          <ScenarioMetric type='impact' value={scenario.scenario_data.impact} />
-          <Separator
-            orientation='vertical'
-            className='h-[68px] bg-fill-specific-divider'
-          />
-          <ScenarioMetric
-            type='likelihood'
-            value={scenario.scenario_data.likelihood}
-          />
+
+          {/* Edit Button */}
           <button
-            className='self-baseline pt-4 text-muted-foreground hover:text-foreground'
+            className='flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-gray-100 hover:text-foreground'
             onClick={
               isGuestUser
                 ? () => showDemoModal({ title: t('demo.editScenario') })

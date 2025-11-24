@@ -5,7 +5,7 @@ import type {
 } from '@/types/riskRegister';
 import { type Query, useQueryClient } from '@tanstack/react-query';
 
-const SCENARIO_TABLE_KEY_PREFIX = QUERY_KEYS.RISK_REGISTER_SCENARIOS_TABLE[0];
+const SCENARIO_TABLE_KEY_PREFIX = QUERY_KEYS.RISK_SCENARIOS_TABLE[0];
 
 const _getRelevantQueries = (queries: Query[]) => {
   return queries.filter((query) => {
@@ -32,17 +32,6 @@ const _updateScenarioInQuery = (
         : scenario,
     ),
   };
-};
-
-const _getLatestQuery = (queries: Query[]) => {
-  if (queries.length === 0) return undefined;
-  return queries.reduce(
-    (latest, current) =>
-      current.state.dataUpdatedAt > latest.state.dataUpdatedAt
-        ? current
-        : latest,
-    queries[0],
-  );
 };
 
 const _deleteScenarioFromQuery = (
@@ -102,28 +91,22 @@ export const useUpdateRiskRegisterQueries = () => {
     });
   };
 
-  const invalidateLatestGetScenariosQuery = async () => {
-    const queryCache = queryClient.getQueryCache();
-    const queries = queryCache.getAll();
-    const latestQuery = _getLatestQuery(_getRelevantQueries(queries));
-
-    if (latestQuery) {
-      await queryClient.invalidateQueries({
-        queryKey: latestQuery.queryKey,
-      });
-    }
+  const invalidateScenarioTableQueries = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: QUERY_KEYS.RISK_SCENARIOS_TABLE,
+    });
   };
 
   const invalidateCurrentScenarioQuery = async (scenarioId: string) => {
     await queryClient.invalidateQueries({
-      queryKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, scenarioId],
+      queryKey: [QUERY_KEYS.RISK_SCENARIO, scenarioId],
     });
   };
 
   return {
     updateQueriesWithNewRow,
     updateQueriesWithDeletedRow,
-    invalidateLatestGetScenariosQuery,
+    invalidateScenarioTableQueries,
     invalidateCurrentScenarioQuery,
   };
 };

@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import {
   QUERY_KEYS,
   useCurrentRiskRegisterScenario,
-  useUpdateRiskRegisterScenarioField,
+  useUpdateRiskScenarioField,
 } from '@/services/hooks';
 import type {
   ControlsFrameworkLevels,
@@ -49,13 +49,10 @@ export default function ControlsModal({
     keyPrefix: 'scenarioDrillDown.controlsModal',
   });
   const { mutateAsync: updateScenarioField, status: updateStatus } =
-    useUpdateRiskRegisterScenarioField({
+    useUpdateRiskScenarioField({
       onSuccess: async (updatedScenario: RiskRegisterResponse) => {
         await queryClient.invalidateQueries({
-          queryKey: [
-            QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-            updatedScenario.scenario_id,
-          ],
+          queryKey: [QUERY_KEYS.RISK_SCENARIO, updatedScenario.scenario_id],
         });
         toast.success('Controls saved successfully');
       },

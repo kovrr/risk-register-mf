@@ -10,30 +10,72 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/atoms/form';
 import { Input } from '@/components/atoms/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/atoms/select';
 import InfoPopover from '@/components/molecules/info-popover';
 import { TransWithComponent } from '@/components/texts/TransWithComponent';
 import type { CurrencyCodeType } from '@/options/constants';
 import { ChevronDown } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import type { Control } from 'react-hook-form';
+import {
+  type Control,
+  type FieldPath,
+  type FieldValues,
+  useController,
+} from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-interface ImpactDistributionInputsProps {
-  control: Control<any>;
-  currency: CurrencyCodeType;
-}
+type ImpactDistributionInputsProps<TFieldValues extends FieldValues> = {
+  control: Control<TFieldValues>;
+  currencyFieldName?: FieldPath<TFieldValues>;
+  fallbackCurrency?: string | null;
+  currencyOptions?: CurrencyCodeType[];
+  disabled?: boolean;
+};
 
-export default function ImpactDistributionInputs({
+const DEFAULT_CURRENCY_OPTIONS: CurrencyCodeType[] = ['USD', 'EUR'];
+
+export default function ImpactDistributionInputs<
+  TFieldValues extends FieldValues,
+>({
   control,
-  currency,
-}: ImpactDistributionInputsProps) {
+  currencyFieldName,
+  fallbackCurrency = 'USD',
+  currencyOptions = DEFAULT_CURRENCY_OPTIONS,
+  disabled = false,
+}: ImpactDistributionInputsProps<TFieldValues>) {
   const { t } = useTranslation('riskRegister', {
     keyPrefix: 'modal.impactDistribution',
   });
   const [isOpen, setIsOpen] = useState(false);
+
+  const baseCurrencyOptions =
+    currencyOptions.length > 0 ? currencyOptions : DEFAULT_CURRENCY_OPTIONS;
+
+  const currencyField = currencyFieldName
+    ? useController({
+      control,
+      name: currencyFieldName,
+    })
+    : null;
+
+  const currentCurrency =
+    currencyField?.field.value || fallbackCurrency || baseCurrencyOptions[0];
+  const resolvedCurrencyOptions = useMemo(() => {
+    if (currentCurrency && !baseCurrencyOptions.includes(currentCurrency as CurrencyCodeType)) {
+      return [...baseCurrencyOptions, currentCurrency as CurrencyCodeType];
+    }
+    return baseCurrencyOptions;
+  }, [baseCurrencyOptions, currentCurrency]);
 
   const rows = useMemo(
     () => [
@@ -113,23 +155,47 @@ export default function ImpactDistributionInputs({
                   </div>
                   <FormField
                     control={control}
-                    name={`impact_distribution.${row.fieldName}`}
+                    name={
+                      `impact_distribution.${row.fieldName}` as FieldPath<TFieldValues>
+                    }
                     render={({ field }) => (
                       <FormItem>
+                        <FormLabel className='sr-only'>
+                          {row.percentage.value}
+                        </FormLabel>
                         <FormControl>
                           <div className='flex items-center gap-2'>
-                            <div className='relative flex-1'>
+                            <div className='flex flex-1 items-center gap-2'>
                               <Input
                                 type='number'
-                                className='bg-white pr-16'
-                                {...field}
+                                className='bg-white'
+                                value={field.value ?? ''}
+                                onBlur={field.onBlur}
+                                name={field.name}
+                                ref={field.ref}
                                 onChange={(e) =>
-                                  field.onChange(e.target.valueAsNumber)
+                                  field.onChange(e.target.valueAsNumber || undefined)
                                 }
+                                disabled={disabled}
                               />
-                              <span className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400'>
-                                {currency}
-                              </span>
+                              <Select
+                                value={currentCurrency ?? ''}
+                                onValueChange={(value) =>
+                                  currencyField?.field.onChange(value)
+                                }
+                                disabled={disabled || !currencyField}
+                              >
+                                <SelectTrigger className='w-[120px]'>
+                                  <SelectValue placeholder='Currency' />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {resolvedCurrencyOptions.map((option) => (
+                                    <SelectItem key={option} value={option}>
+                                      {option}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
                             <InfoPopover
                               content={

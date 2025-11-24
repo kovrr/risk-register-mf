@@ -1,14 +1,17 @@
-import { CisV7SafeguardsImplementation } from '@/options/cisControls';
-import { CisV8SafeguardsImplementation } from '@/options/cisV8Controls';
-import { CurrencyCodeType } from '@/options/constants';
-import { NistV2SafeguardsImplementation } from '@/options/nistV2Controls';
-import { SecControlsType } from './companyForm';
-import {
+import type { CisV7SafeguardsImplementation } from '@/options/cisControls';
+import type { CisV8SafeguardsImplementation } from '@/options/cisV8Controls';
+import type { CurrencyCodeType } from '@/options/constants';
+import type { NistV2SafeguardsImplementation } from '@/options/nistV2Controls';
+import type { SecControlsType } from './companyForm';
+import type {
   ControlScenarios,
   CostComponentsBreakdown,
   LeanSimulationExposure,
 } from './quantificationData';
-import { ImplementationLevel, ISO27001ImplementationLevel } from './sphereForm';
+import type {
+  ImplementationLevel,
+  ISO27001ImplementationLevel,
+} from './sphereForm';
 
 export const riskRegisterLikelihoods = {
   Expected: 'Expected',
@@ -66,6 +69,7 @@ export type RiskRegisterRow = {
   entity?: string;
   company_id?: string;
   company_name?: string | null;
+  category?: string | null;
   likelihood: RiskRegisterLikelihood;
   impact: RiskRegisterImpact;
   annualLikelihood?: number;
@@ -242,6 +246,7 @@ export type RiskRegisterResponse = {
   customer_scenario_id: string;
   name: string;
   description: string;
+  group_id?: string;
   scenario_data: ScenarioData;
   notes: NoteOutput[];
   created_at: string;
@@ -266,11 +271,23 @@ export interface ScenarioMetricsHistory {
   metrics_history: MetricDataPoint[];
 }
 
+// Raw API response structure
+export type RiskRegisterScenarioPaginatedApiResponse = {
+  success: boolean;
+  data: {
+    group_ids?: string[];
+    scenarios: RiskRegisterResponse[];
+    total_count: number;
+  };
+  error: null | string;
+};
+
+// Normalized response type used throughout the app
 export type RiskRegisterScenarioPaginatedResponse = {
   items: RiskRegisterResponse[];
   total: number;
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
 };
 
 export type ImpactDistribution = {
@@ -287,6 +304,7 @@ export type ScenarioCreateRequest = {
   description: string;
   likelihood: RiskRegisterLikelihood;
   impact: RiskRegisterImpact;
+  group_id?: string;
   company_id?: string;
   annual_likelihood?: number;
   peer_base_rate?: number;
@@ -296,6 +314,16 @@ export type ScenarioCreateRequest = {
   sub_category?: string;
   review_date?: string;
   mitigation_cost?: number;
+  scenario_category?: string[];
+  ai_assets?: string[];
+  tactics?: string[];
+  event_types?: string[];
+  impact_types?: string[];
+  data_exposure?: {
+    pii?: number;
+    pci?: number;
+    phi?: number;
+  };
 };
 
 export type CRQScenarioCreateRequest = ScenarioCreateRequest & {

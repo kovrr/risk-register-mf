@@ -1,7 +1,7 @@
 import { Avatar } from '@/components/atoms/avatar';
 import PaperClip from '@/components/icons/PaperClip';
 import { useToast } from '@/hooks/use-toast';
-import { useGetDocument } from '@/services/hooks';
+import { useCurrentRiskRegisterScenario, useDownloadAttachment } from '@/services/hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getInitials } from '../utils/textManipulation';
@@ -27,7 +27,10 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   avatar,
 }) => {
   const { toast } = useToast();
-  const { mutateAsync: getDocument } = useGetDocument({
+  const { data: scenario } = useCurrentRiskRegisterScenario();
+  const scenarioId = scenario?.scenario_id;
+
+  const { mutateAsync: downloadScenarioAttachment } = useDownloadAttachment({
     onError: () => {
       toast({
         variant: 'destructive',
@@ -58,14 +61,36 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   const handleDownloadFile = async () => {
     if (!attachment?.id) return;
 
-    try {
-      const response = await getDocument(attachment.id);
-      if (!response.data.download_url) throw new Error('Download failed');
+    if (!scenarioId) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Scenario not loaded. Cannot download attachment.',
+      });
+      return;
+    }
 
-      // Open the download URL in a new tab
-      window.open(response.data.download_url, '_blank');
+    try {
+      const blob = await downloadScenarioAttachment({
+        attachmentId: attachment.id,
+        scenarioId,
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = attachment.name || 'attachment';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error downloading file:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to download attachment. Please try again.',
+      });
     }
   };
 

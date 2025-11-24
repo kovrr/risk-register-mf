@@ -4,9 +4,9 @@ import { Toaster } from '@/components/atoms/sonner';
 import { useToast } from '@/hooks/use-toast';
 import { useMixpanel } from '@/hooks/useMixpanel';
 import {
-  useCreateCRQRiskRegisterScenario,
+  useCreateCRQRiskScenario,
   useCurrentRiskRegisterScenarioIdIfExists,
-  useUpdateRiskRegisterScenario,
+  useUpdateRiskScenario,
 } from '@/services/hooks';
 import {
   type CRQData,
@@ -53,14 +53,14 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
 
   const { t } = useTranslation('riskRegister', { keyPrefix: 'modal' });
   const {
-    invalidateLatestGetScenariosQuery,
+    invalidateScenarioTableQueries,
     invalidateCurrentScenarioQuery,
     updateQueriesWithNewRow,
   } = useUpdateRiskRegisterQueries();
   const isInScenarioViewPage = !!currentScenarioId;
 
-  const { mutateAsync: createRiskRegisterScenario, isPending: isCreating } =
-    useCreateCRQRiskRegisterScenario({
+  const { mutateAsync: createRiskScenario, isPending: isCreating } =
+    useCreateCRQRiskScenario({
       onSuccess: async () => {
         onSuccess();
         toast({
@@ -68,7 +68,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
           description: 'The risk scenario has been created successfully',
         });
         form.reset();
-        await invalidateLatestGetScenariosQuery();
+        await invalidateScenarioTableQueries();
       },
       onError: (error: unknown) => {
         const axiosError = error as { response?: { data: { detail: string } } };
@@ -79,8 +79,8 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
       },
     });
 
-  const { mutateAsync: updateRiskRegisterScenario, isPending: isUpdating } =
-    useUpdateRiskRegisterScenario(scenario?.scenario_id || '', {
+  const { mutateAsync: updateRiskScenario, isPending: isUpdating } =
+    useUpdateRiskScenario(scenario?.scenario_id || '', {
       onSuccess: async (updatedScenario) => {
         onSuccess();
         toast({
@@ -109,6 +109,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
         customer_scenario_id: scenario.customer_scenario_id,
         name: scenario.name,
         description: scenario.description,
+        group_id: scenario.group_id || undefined,
         likelihood: scenario.scenario_data.likelihood,
         impact: scenario.scenario_data.impact,
         crq_data: {
@@ -124,6 +125,7 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
         customer_scenario_id: '',
         name: '',
         description: '',
+        group_id: undefined,
         likelihood: undefined,
         impact: undefined,
         crq_data: {
@@ -151,22 +153,35 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
   );
 
   async function onSubmit(values: CRQScenarioFormValues) {
-    trackEvent('risk_register.crq_scenario_input_form.submit');
+    // Only track if we have the necessary context
+    const scenarioId = scenario?.scenario_id || currentScenarioId;
+    if (scenarioId) {
+      trackEvent('risk_register.crq_scenario_input_form.submit', {
+        scenarioId,
+      });
+    }
+
     if (isEditMode) {
-      return await updateRiskRegisterScenario({
+      return await updateRiskScenario({
         ...values,
         crq_data: transformToServerFilters(values.crq_data as CRQData),
       } as CRQScenarioUpdateRequest);
     }
-    return await createRiskRegisterScenario({
+    return await createRiskScenario({
       ...values,
       crq_data: transformToServerFilters(values.crq_data as CRQData),
     } as CRQScenarioCreateRequest);
   }
 
   useEffect(() => {
-    trackEvent('risk_register.crq_scenario_input_form.view');
-  }, [trackEvent]);
+    // Only track if we have the necessary context
+    const scenarioId = scenario?.scenario_id || currentScenarioId;
+    if (scenarioId) {
+      trackEvent('risk_register.crq_scenario_input_form.view', {
+        scenarioId,
+      });
+    }
+  }, [trackEvent, scenario?.scenario_id, currentScenarioId]);
 
   const isLoading = isCreating || isUpdating;
   return (

@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '@/components/atoms/dialog';
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
-import { useRequestPreDefinedScenario } from '@/services/hooks';
+import { useRequestPredefinedScenario } from '@/services/hooks';
 import { Loader2 } from 'lucide-react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,8 +23,8 @@ export const AddScenarioTemplateModal = ({
   const { toast } = useToast();
   const isGuestUser = useIsGuestUser();
   const { showDemoModal } = useContext(DemoExperienceContext);
-  const { mutateAsync: requestPreDefinedScenario, isPending } =
-    useRequestPreDefinedScenario({
+  const { mutateAsync: requestPredefinedScenario, isPending } =
+    useRequestPredefinedScenario({
       onSuccess: () => {
         toast({
           title: t('emailSent'),
@@ -50,7 +50,7 @@ export const AddScenarioTemplateModal = ({
       showDemoModal({ title: t('demo.bookMeeting') });
       return;
     }
-    await requestPreDefinedScenario();
+    await requestPredefinedScenario();
   };
 
   return (

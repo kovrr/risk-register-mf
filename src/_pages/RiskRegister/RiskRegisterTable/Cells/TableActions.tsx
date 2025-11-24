@@ -3,9 +3,10 @@ import {
   type DropMenuItem,
 } from '@/components/molecules/DropdownMenu';
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
+import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import {
-  useDeleteRiskRegisterScenario,
+  useDeleteRiskScenario,
   useRiskRegisterScenario,
 } from '@/services/hooks';
 import type { RiskRegisterRow } from '@/types/riskRegister';
@@ -42,11 +43,17 @@ export const TableActions: FC<Props> = ({ scenario }) => {
     ['tableActions'],
   );
   const { isLimitedUser, handleGuestUserClick } = useRiskRegisterDemoFeatures();
+  const { toast } = useToast();
   const { updateQueriesWithDeletedRow } = useUpdateRiskRegisterQueries();
-  const { mutateAsync: deleteRiskScenario } = useDeleteRiskRegisterScenario({
+  const { mutateAsync: deleteRiskScenario } = useDeleteRiskScenario({
     onSuccess: () => {
       updateQueriesWithDeletedRow(scenario.scenarioId);
       setIsDeleteModalOpen(false);
+      toast({
+        title: 'Success',
+        description: 'The risk scenario has been deleted successfully.',
+        status: 'success',
+      });
     },
   });
 

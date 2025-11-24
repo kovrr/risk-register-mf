@@ -100,7 +100,7 @@ describe('Quantitative Metrics Header', () => {
     // Setup for manual scenario
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${manualScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${manualScenario.scenario_id}`,
       {
         statusCode: 200,
         body: manualScenario,
@@ -132,13 +132,15 @@ describe('Quantitative Metrics Header', () => {
     // Setup for CRQ scenario
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${crqScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${crqScenario.scenario_id}`,
       {
         statusCode: 200,
         body: crqScenario,
       },
     ).as('getCRQScenario');
 
+    // Note: Company endpoints are disabled (no-op hooks)
+    // This mock won't be called but is harmless to leave in place
     cy.intercept('GET', `/api/companies/${company.id}`, {
       statusCode: 200,
       body: company,
@@ -184,13 +186,15 @@ describe('Quantitative Metrics Header', () => {
     // Setup for CRQ scenario with refresh functionality
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${crqScenario.scenario_id}`,
+      `/api/v1/risk-scenarios/${crqScenario.scenario_id}`,
       {
         statusCode: 200,
         body: crqScenario,
       },
     ).as('getCRQScenario');
 
+    // Note: Company endpoints are disabled (no-op hooks)
+    // This mock won't be called but is harmless to leave in place
     cy.intercept('GET', `/api/companies/${company.id}`, {
       statusCode: 200,
       body: company,
@@ -201,8 +205,9 @@ describe('Quantitative Metrics Header', () => {
       body: fq,
     }).as('getFQ');
 
-    // Mock the update CRQ scenario API - use POST method
-    cy.intercept('POST', `/api/risk-register/scenarios/crq/${crqScenario.scenario_id}/update-crq`, {
+    // Mock the update CRQ scenario API
+    // Endpoint: POST /api/v1/risk-scenarios/crq/{scenario_id}/update-crq
+    cy.intercept('POST', `/api/v1/risk-scenarios/crq/${crqScenario.scenario_id}/update-crq`, {
       statusCode: 200,
       body: { message: 'Scenario updated successfully' },
     }).as('updateCRQScenario');

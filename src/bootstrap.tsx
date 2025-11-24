@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './i18n';
 
-const enableMocks =
-  import.meta.env.VITE_USE_MOCKS === 'true' || import.meta.env.DEV;
+const enableMocks = import.meta.env.VITE_USE_MOCKS === 'true';
 
 async function bootstrap() {
   if (enableMocks) {

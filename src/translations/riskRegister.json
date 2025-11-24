@@ -124,7 +124,7 @@
       "addScenario": "Want to add a new risk scenario?"
     },
     "title": {
-      "create": "New Risk Scenario",
+      "create": "New AI Risk Scenario",
       "edit": "Edit Risk Scenario"
     },
     "labels": {

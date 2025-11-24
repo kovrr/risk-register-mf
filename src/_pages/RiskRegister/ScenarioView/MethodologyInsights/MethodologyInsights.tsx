@@ -12,7 +12,7 @@ import InfoPopover from '@/components/molecules/info-popover';
 import { Spinner } from '@/components/ui/Spinner';
 import {
   QUERY_KEYS,
-  useUpdateRiskRegisterScenarioField,
+  useUpdateRiskScenarioField,
 } from '@/services/hooks';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,13 +30,10 @@ export const MethodologyInsight: React.FC<Props> = ({ initialMethodology }) => {
   const [methodology, setMethodology] = useState(initialMethodology);
   const isSaveDisabled = methodology === initialMethodology;
   const { mutateAsync: updateScenario, isPending: isSaving } =
-    useUpdateRiskRegisterScenarioField({
+    useUpdateRiskScenarioField({
       onSuccess: async (updatedScenario) => {
         await queryClient.invalidateQueries({
-          queryKey: [
-            QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-            updatedScenario.scenario_id,
-          ],
+          queryKey: [QUERY_KEYS.RISK_SCENARIO, updatedScenario.scenario_id],
         });
         toast.success('Methodology insights updated successfully');
       },

@@ -4,8 +4,8 @@
   "description": "Risk Register Microfrontend - Standalone risk scenario management application",
   "private": true,
   "scripts": {
-    "dev": "rsbuild dev --open",
-    "dev:msw": "VITE_USE_MOCKS=true rsbuild dev --open",
+    "dev": "VITE_USE_MOCKS=true rsbuild dev --open",
+    "dev:real": "VITE_USE_MOCKS=false rsbuild dev --open",
     "build": "rsbuild build",
     "preview": "rsbuild preview",
     "lint": "biome check",

@@ -11,6 +11,7 @@ const baseScenarioSchema = z.object({
   description: z.string().min(1, 'Description is required'),
   likelihood: z.string().min(1, 'Likelihood is required'),
   impact: z.string().min(1, 'Impact is required'),
+  group_id: z.string().optional(),
 });
 
 export const simpleScenarioFormSchema = baseScenarioSchema.extend({
@@ -20,6 +21,11 @@ export const simpleScenarioFormSchema = baseScenarioSchema.extend({
   peer_base_rate: z.number().optional(),
   average_loss: z.number().optional(),
   average_loss_currency: z.string(),
+  scenario_category: z.array(z.string()).optional(),
+  ai_assets: z.array(z.string()).optional(),
+  tactics: z.array(z.string()).optional(),
+  event_types: z.array(z.string()).optional(),
+  impact_types: z.array(z.string()).optional(),
   impact_distribution: z.object({
     one: z.number().optional(),
     twenty_five: z.number().optional(),
@@ -27,6 +33,13 @@ export const simpleScenarioFormSchema = baseScenarioSchema.extend({
     seventy_five: z.number().optional(),
     ninety_nine: z.number().optional(),
   }),
+  data_exposure: z
+    .object({
+      pii: z.number().optional(),
+      pci: z.number().optional(),
+      phi: z.number().optional(),
+    })
+    .optional(),
 });
 
 export const crqScenarioFormSchema = baseScenarioSchema.extend({

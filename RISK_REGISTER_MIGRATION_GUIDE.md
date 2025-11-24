@@ -1219,16 +1219,16 @@ NEXT_PUBLIC_MIXPANEL_TOKEN=your-token
 Your backend must expose these endpoints:
 
 ```
-GET    /api/risk-register/scenarios              # List scenarios (paginated)
-POST   /api/risk-register/scenarios              # Create simple scenario
-POST   /api/risk-register/scenarios/crq          # Create CRQ scenario
-GET    /api/risk-register/scenarios/:id          # Get scenario details
-PATCH  /api/risk-register/scenarios/:id          # Update scenario
-DELETE /api/risk-register/scenarios/:id          # Delete scenario
-GET    /api/risk-register/scenarios/:id/controls # Get scenario controls
-GET    /api/risk-register/scenarios/:id/metrics-history # Get metrics history
-POST   /api/risk-register/scenarios/crq/:id/update-crq  # Rerun CRQ
-GET    /api/risk-register/scenarios/export       # Export scenarios
+GET    /api/risk-scenarios              # List scenarios (paginated)
+POST   /api/risk-scenarios              # Create simple scenario
+POST   /api/risk-scenarios/crq          # Create CRQ scenario
+GET    /api/risk-scenarios/:id          # Get scenario details
+PATCH  /api/risk-scenarios/:id          # Update scenario
+DELETE /api/risk-scenarios/:id          # Delete scenario
+GET    /api/risk-scenarios/:id/controls # Get scenario controls
+GET    /api/risk-scenarios/:id/metrics-history # Get metrics history
+POST   /api/risk-scenarios/crq/:id/update-crq  # Rerun CRQ
+GET    /api/risk-scenarios/export       # Export scenarios
 
 GET    /api/tenant                                # Get tenant data
 GET    /api/tenant/users                          # Get risk owners

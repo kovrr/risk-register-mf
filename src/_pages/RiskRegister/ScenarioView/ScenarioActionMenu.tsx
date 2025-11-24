@@ -2,10 +2,11 @@ import {
   DropMenu,
   type DropMenuItem,
 } from '@/components/molecules/DropdownMenu';
+import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
 import {
   useCurrentRiskRegisterScenarioId,
-  useDeleteRiskRegisterScenario,
+  useDeleteRiskScenario,
 } from '@/services/hooks';
 import { EllipsisVertical } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
@@ -17,8 +18,15 @@ export const ScenarioActionMenu = () => {
   const navigate = useNavigate();
   const scenarioId = useCurrentRiskRegisterScenarioId();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const { mutateAsync: deleteRiskScenario } = useDeleteRiskRegisterScenario({
+  const { toast } = useToast();
+  const { mutateAsync: deleteRiskScenario } = useDeleteRiskScenario({
     onSuccess: () => {
+      toast({
+        title: 'Success',
+        description: 'The risk scenario has been deleted successfully.',
+        status: 'success',
+      });
+      setIsDeleteModalOpen(false);
       navigate('/');
     },
   });

@@ -11,6 +11,7 @@ const baseScenarioSchema = z.object({
   description: z.string().min(1, 'Description is required'),
   likelihood: z.string().min(1, 'Likelihood is required'),
   impact: z.string().min(1, 'Impact is required'),
+  group_id: z.string().optional(),
 });
 
 export const simpleScenarioFormSchema = baseScenarioSchema.extend({

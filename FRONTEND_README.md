@@ -36,7 +36,7 @@ This document provides comprehensive documentation for frontend developers integ
 The backend runs on **port 8000** by default. The API is served at:
 
 ```
-http://localhost:8000/api/v1/risk-register
+http://localhost:8000/api/risk-register
 ```
 
 ### Frontend Configuration
@@ -47,18 +47,18 @@ Configure your frontend to point to the backend API:
 
 ```bash
 # Development
-VITE_API_BASE_URL=http://localhost:8000/api/v1
+VITE_API_BASE_URL=http://localhost:8000/api
 # or
-REACT_APP_API_BASE_URL=http://localhost:8000/api/v1
+REACT_APP_API_BASE_URL=http://localhost:8000/api
 # or
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api/v1
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
 ```
 
 **Example API Client Configuration:**
 
 ```typescript
 // api/client.ts
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
 export const apiClient = {
   baseURL: API_BASE_URL,
@@ -141,7 +141,7 @@ The backend is configured to allow CORS from all origins in development. No addi
 3. **Configure environment:**
    ```bash
    # Create .env.local
-   echo "VITE_API_BASE_URL=http://localhost:8000/api/v1" > .env.local
+   echo "VITE_API_BASE_URL=http://localhost:8000/api" > .env.local
    ```
 
 4. **Start the frontend:**
@@ -203,7 +203,7 @@ The backend automatically provides a mock user for all requests:
 
 ```typescript
 // ✅ Correct - No auth headers needed
-const response = await fetch('http://localhost:8000/api/v1/risk-register/scenarios', {
+const response = await fetch('http://localhost:8000/api/risk-scenarios', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ const response = await fetch('http://localhost:8000/api/v1/risk-register/scenari
 });
 
 // ❌ Incorrect - Don't add auth headers
-const response = await fetch('http://localhost:8000/api/v1/risk-register/scenarios', {
+const response = await fetch('http://localhost:8000/api/risk-scenarios', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -227,12 +227,12 @@ const response = await fetch('http://localhost:8000/api/v1/risk-register/scenari
 All risk register endpoints are prefixed with:
 
 ```
-/api/v1/risk-register
+/api/risk-register
 ```
 
 **Full base URL examples:**
-- Local: `http://localhost:8000/api/v1/risk-register`
-- Production: `https://api.yourdomain.com/api/v1/risk-register`
+- Local: `http://localhost:8000/api/risk-register`
+- Production: `https://api.yourdomain.com/api/risk-register`
 
 ---
 
@@ -403,7 +403,7 @@ interface APIResponse {
 
 ### 1. Create Scenario
 
-**Endpoint:** `POST /api/v1/risk-register/scenarios`
+**Endpoint:** `POST /api/risk-scenarios`
 
 **Request Body:**
 ```typescript
@@ -448,7 +448,7 @@ ScenarioResponse
 **Example:**
 ```typescript
 const createScenario = async (data: CreateScenarioRequest): Promise<ScenarioResponse> => {
-  const response = await fetch('http://localhost:8000/api/v1/risk-register/scenarios', {
+  const response = await fetch('http://localhost:8000/api/risk-scenarios', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -473,7 +473,7 @@ const createScenario = async (data: CreateScenarioRequest): Promise<ScenarioResp
 
 ### 2. Get Scenario by ID
 
-**Endpoint:** `GET /api/v1/risk-register/scenarios/{scenario_id}`
+**Endpoint:** `GET /api/risk-scenarios/{scenario_id}`
 
 **Path Parameters:**
 - `scenario_id` (string): The logical scenario ID (not MongoDB _id)
@@ -487,7 +487,7 @@ ScenarioResponse  // Includes full notes array
 ```typescript
 const getScenario = async (scenarioId: string): Promise<ScenarioResponse> => {
   const response = await fetch(
-    `http://localhost:8000/api/v1/risk-register/scenarios/${scenarioId}`,
+    `http://localhost:8000/api/risk-scenarios/${scenarioId}`,
     {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -517,7 +517,7 @@ const getScenario = async (scenarioId: string): Promise<ScenarioResponse> => {
 
 ### 3. List Scenarios
 
-**Endpoint:** `GET /api/v1/risk-register/scenarios`
+**Endpoint:** `GET /api/risk-scenarios`
 
 **Query Parameters:**
 - `skip` (number, optional): Number of scenarios to skip (default: 0, min: 0)
@@ -546,7 +546,7 @@ const listScenarios = async (
   }
 
   const response = await fetch(
-    `http://localhost:8000/api/v1/risk-register/scenarios?${params}`,
+    `http://localhost:8000/api/risk-scenarios?${params}`,
     {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -571,7 +571,7 @@ const listScenarios = async (
 
 ### 4. Update Scenario
 
-**Endpoint:** `PATCH /api/v1/risk-register/scenarios/{scenario_id}`
+**Endpoint:** `PATCH /api/risk-scenarios/{scenario_id}`
 
 **Path Parameters:**
 - `scenario_id` (string): The logical scenario ID
@@ -597,7 +597,7 @@ const updateScenario = async (
   updates: UpdateScenarioRequest
 ): Promise<ScenarioResponse> => {
   const response = await fetch(
-    `http://localhost:8000/api/v1/risk-register/scenarios/${scenarioId}`,
+    `http://localhost:8000/api/risk-scenarios/${scenarioId}`,
     {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -629,7 +629,7 @@ const updateScenario = async (
 
 ### 5. Delete Scenario (Soft Delete / Archive)
 
-**Endpoint:** `DELETE /api/v1/risk-register/scenarios/{scenario_id}`
+**Endpoint:** `DELETE /api/risk-scenarios/{scenario_id}`
 
 **Path Parameters:**
 - `scenario_id` (string): The logical scenario ID
@@ -649,7 +649,7 @@ const updateScenario = async (
 ```typescript
 const deleteScenario = async (scenarioId: string): Promise<APIResponse> => {
   const response = await fetch(
-    `http://localhost:8000/api/v1/risk-register/scenarios/${scenarioId}`,
+    `http://localhost:8000/api/risk-scenarios/${scenarioId}`,
     {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -679,7 +679,7 @@ const deleteScenario = async (scenarioId: string): Promise<APIResponse> => {
 
 ### 6. Add Note to Scenario
 
-**Endpoint:** `POST /api/v1/risk-register/scenarios/{scenario_id}/notes`
+**Endpoint:** `POST /api/risk-scenarios/{scenario_id}/notes`
 
 **Path Parameters:**
 - `scenario_id` (string): The logical scenario ID
@@ -734,7 +734,7 @@ const addNote = async (
   }
 
   const response = await fetch(
-    `http://localhost:8000/api/v1/risk-register/scenarios/${scenarioId}/notes`,
+    `http://localhost:8000/api/risk-scenarios/${scenarioId}/notes`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -763,7 +763,7 @@ const addNote = async (
 
 ### 7. Add Note with File Attachment
 
-**Endpoint:** `POST /api/v1/risk-register/scenarios/{scenario_id}/notes-with-attachment`
+**Endpoint:** `POST /api/risk-scenarios/{scenario_id}/notes-with-attachment`
 
 **Path Parameters:**
 - `scenario_id` (string): The logical scenario ID
@@ -804,7 +804,7 @@ const addNoteWithAttachment = async (
   formData.append('uploaded_file', file);
 
   const response = await fetch(
-    `http://localhost:8000/api/v1/risk-register/scenarios/${scenarioId}/notes-with-attachment`,
+    `http://localhost:8000/api/risk-scenarios/${scenarioId}/notes-with-attachment`,
     {
       method: 'POST',
       body: formData,
@@ -841,7 +841,7 @@ const addNoteWithAttachment = async (
 
 ### 8. Download Scenario Attachment
 
-**Endpoint:** `GET /api/v1/risk-register/scenarios/{scenario_id}/attachments/download`
+**Endpoint:** `GET /api/risk-scenarios/{scenario_id}/attachments/download`
 
 **Path Parameters:**
 - `scenario_id` (string): The logical scenario ID
@@ -863,7 +863,7 @@ const downloadAttachment = async (
   const params = new URLSearchParams({ file_path: filePath });
 
   const response = await fetch(
-    `http://localhost:8000/api/v1/risk-register/scenarios/${scenarioId}/attachments/download?${params}`,
+    `http://localhost:8000/api/risk-scenarios/${scenarioId}/attachments/download?${params}`,
     {
       method: 'GET',
     }
@@ -904,7 +904,7 @@ const downloadAttachment = async (
 
 ### 9. Request Pre-defined Scenario
 
-**Endpoint:** `POST /api/v1/risk-register/request-pre-defined-scenario`
+**Endpoint:** `POST /api/risk-scenarios/request-pre-defined-scenario`
 
 **Request Body:** None (uses current user from mock auth)
 
@@ -926,7 +926,7 @@ const downloadAttachment = async (
 ```typescript
 const requestPreDefinedScenario = async (): Promise<APIResponse> => {
   const response = await fetch(
-    'http://localhost:8000/api/v1/risk-register/request-pre-defined-scenario',
+    'http://localhost:8000/api/risk-scenarios/request-pre-defined-scenario',
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1087,7 +1087,7 @@ const fetchScenario = async (id: string) => {
 ```typescript
 import { useState, useEffect } from 'react';
 
-const API_BASE = 'http://localhost:8000/api/v1/risk-register';
+const API_BASE = 'http://localhost:8000/api/risk-register';
 
 export const useScenarios = () => {
   const [scenarios, setScenarios] = useState<ScenarioResponse[]>([]);
@@ -1190,7 +1190,7 @@ export const useScenarios = () => {
 
 ## Summary
 
-- **Base URL**: `http://localhost:8000/api/v1/risk-register`
+- **Base URL**: `http://localhost:8000/api/risk-register`
 - **No Authentication**: Mock auth is automatic, no headers needed
 - **Versioning**: Updates create new versions automatically
 - **Soft Delete**: Scenarios are archived, not permanently deleted

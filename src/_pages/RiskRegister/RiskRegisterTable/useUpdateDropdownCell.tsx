@@ -1,5 +1,5 @@
 import type { Option } from '@/components/molecules/Dropdown';
-import { QUERY_KEYS, useUpdateRiskRegisterScenarioRow } from '@/services/hooks';
+import { QUERY_KEYS, useUpdateRiskScenarioRow } from '@/services/hooks';
 import type { RiskRegisterRow } from '@/types/riskRegister';
 import { useState } from 'react';
 import { useIsMutating } from '@tanstack/react-query';
@@ -18,7 +18,7 @@ export const useUpdateDropdownCell = <T extends string>({
   const [errorMessage, setErrorMessage] = useState('');
 
   const { updateQueriesWithNewRow } = useUpdateRiskRegisterQueries();
-  const { mutateAsync, isPending } = useUpdateRiskRegisterScenarioRow(
+  const { mutateAsync, isPending } = useUpdateRiskScenarioRow(
     rowData.scenarioId,
     {
       onSuccess: (updatedScenario) => {
@@ -34,14 +34,10 @@ export const useUpdateDropdownCell = <T extends string>({
     },
   );
   const amountOfUpdateActiveMutations = useIsMutating({
-    mutationKey: [QUERY_KEYS.RISK_REGISTER_SCENARIOS, rowData.scenarioId],
+    mutationKey: [QUERY_KEYS.RISK_SCENARIO, rowData.scenarioId],
   });
   const amountOfUpdateFieldActiveMutations = useIsMutating({
-    mutationKey: [
-      QUERY_KEYS.RISK_REGISTER_SCENARIOS,
-      'updateField',
-      rowData.scenarioId,
-    ],
+    mutationKey: [QUERY_KEYS.RISK_SCENARIO, 'updateField', rowData.scenarioId],
   });
 
   const isMutating =

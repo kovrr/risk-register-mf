@@ -59,6 +59,8 @@ describe('MAS Scenario View', () => {
       review_date: '2025-01-01',
     };
 
+    // Note: Company endpoints are disabled (no-op hooks)
+    // This mock won't be called but is harmless to leave in place
     cy.intercept(
       'GET',
       '/api/companies?page=1&size=100&fields=id&fields=name&fields=status',
@@ -73,7 +75,7 @@ describe('MAS Scenario View', () => {
     );
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${scenario.scenario_id}`,
+      `/api/risk-scenarios/${scenario.scenario_id}`,
       {
         statusCode: 200,
         body: scenario,
@@ -172,7 +174,7 @@ describe('MAS Scenario View', () => {
   it('edits risk management form', () => {
     cy.intercept(
       'PATCH',
-      `/api/risk-register/scenarios/${scenario.scenario_id}`,
+      `/api/risk-scenarios/${scenario.scenario_id}`,
       scenario,
     ).as('updateScenario');
 

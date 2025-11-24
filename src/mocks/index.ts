@@ -3,41 +3,30 @@ let mocksInitialized = false;
 
 async function initMocks() {
   if (mocksInitialized) {
-    console.log('🔄 MSW already initialized, skipping...');
     return;
   }
 
-  console.log('🚀 Initializing MSW mocks...');
   if (typeof window === 'undefined') {
-    const { server } = await import('./server');
-    server.listen();
-    console.log('✅ MSW server started');
-  } else {
-    const { worker } = await import('./browser');
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    worker.start({
-      onUnhandledRequest: 'bypass', // Allow unhandled requests to pass through
-      serviceWorker: {
-        url: '/mockServiceWorker.js',
-      },
-    });
-    console.log('✅ MSW worker started');
+    // In the microfrontend we never run MSW in Node (only browser mode).
+    // Skip initializing the server to avoid bundling msw/lib/node which depends on Node builtins.
+    return;
   }
+
+  const { worker } = await import('./browser');
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  worker.start({
+    onUnhandledRequest: 'bypass', // Allow unhandled requests to pass through
+    serviceWorker: {
+      url: '/mockServiceWorker.js',
+    },
+  });
   mocksInitialized = true;
 }
 
-// Enable mocks in development mode by default
+// Enable mocks only when explicitly requested via env
 const shouldUseMocks =
   import.meta.env.VITE_USE_MOCKS === 'true' ||
-  import.meta.env.NEXT_PUBLIC_USE_MOCKS === 'true' ||
-  import.meta.env.DEV; // Enable in development mode
-
-console.log('🔍 Mock initialization check:', {
-  VITE_USE_MOCKS: import.meta.env.VITE_USE_MOCKS,
-  NEXT_PUBLIC_USE_MOCKS: import.meta.env.NEXT_PUBLIC_USE_MOCKS,
-  DEV: import.meta.env.DEV,
-  shouldUseMocks
-});
+  import.meta.env.NEXT_PUBLIC_USE_MOCKS === 'true';
 
 if (shouldUseMocks) {
   // eslint-disable-next-line @typescript-eslint/no-floating-promises

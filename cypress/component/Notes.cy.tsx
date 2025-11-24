@@ -1,47 +1,57 @@
 import { Notes } from '@/_pages/RiskRegister/ScenarioView/Notes';
+import { buildRiskRegisterResponse } from '@/mocks/builders/riskRegisterBuilders';
 import { Toaster } from '@/components/atoms/toaster';
+import type { NoteOutput } from '@/types/riskRegister';
 import { BaseDriver } from '../support/base-driver';
 import {
   mockCreateNote,
   mockDeleteNote,
-  mockGetNotes,
+  mockGetDocument,
   mockUpdateNote,
 } from '../support/commands-lib/mock-notes';
 
 describe('Notes Component', () => {
   let driver: BaseDriver;
   const scenarioId = '12345678-1234-1234-1234-123456789def';
-  const mockNotes = [
+  const mockNotes: NoteOutput[] = [
     {
       id: 'note-1',
-      parent_type: 'scenario' as const,
-      parent_id: scenarioId,
       content: 'Test note content 1',
       user: 'test.user@example.com',
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      documents: [],
     },
     {
       id: 'note-2',
-      parent_type: 'scenario' as const,
-      parent_id: scenarioId,
       content: 'Test note content 2',
-      user: 'test.user@example.com',
+      user: 'test.user2@example.com',
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      documents: [],
     },
   ];
+
+  const mockScenario = buildRiskRegisterResponse({
+    customer_scenario_id: 'RISK-001',
+    name: 'Test Scenario',
+  });
+  mockScenario.scenario_id = scenarioId;
+  mockScenario.notes = mockNotes;
 
   beforeEach(() => {
     driver = new BaseDriver();
     cy.viewport(800, 600);
 
-    mockGetNotes(mockNotes);
-    mockCreateNote();
+    // Mock scenario endpoint (required by useCurrentRiskRegisterScenario + notes)
+    cy.intercept('GET', `/api/risk-scenarios/${scenarioId}`, {
+      statusCode: 200,
+      body: mockScenario,
+    }).as('getScenario');
+    mockCreateNote(scenarioId);
     mockUpdateNote();
     mockDeleteNote();
-    cy.intercept('GET', '**/api/documents/*', {
-      statusCode: 200,
-      body: { download_url: 'https://example.com/test' },
-    }).as('getDocument');
+    mockGetDocument(scenarioId);
 
     driver.mock();
     cy.mockFrontegg([]);
@@ -64,60 +74,55 @@ describe('Notes Component', () => {
   it('renders list of notes correctly', () => {
     mountComponent();
 
-    // Wait for component to load
-    cy.wait(2000);
+    // Wait for scenario to load (component shows skeleton until scenario is loaded)
+    cy.wait('@getScenario');
 
-    // Check if notes are rendered
-    cy.get('body').then(($body) => {
-      if ($body.find('[data-testid*="note"]').length > 0 || $body.text().includes('Test note content')) {
-        // Notes are present, test them
+    // Wait for skeleton to disappear and notes to load
+    cy.get('textarea[placeholder*="Add a note"]', { timeout: 5000 }).should('be.visible');
+    
+    // Verify notes are rendered
         mockNotes.forEach((note) => {
           cy.contains(note.content).should('be.visible');
           cy.contains(note.user).should('be.visible');
-        });
-      } else {
-        // Notes not rendered, just verify component mounted
-        cy.log('Notes component mounted successfully');
-      }
     });
   });
 
   it('allows creating a new note', () => {
     mountComponent();
 
-    // Wait for component to load
-    cy.wait(2000);
+    // Wait for scenario to load
+    cy.wait('@getScenario');
 
-    // Check if textarea is present
-    cy.get('body').then(($body) => {
-      if ($body.find('textarea').length > 0) {
-        // Form is present, test it
+    // Wait for form to be ready
+    cy.get('textarea[placeholder*="Add a note"]', { timeout: 5000 }).should('be.visible');
+    
+    // Type note content
         const noteText = 'This is a new test note';
-        cy.get('textarea').type(noteText);
-        cy.contains('button', 'Save').click();
+    cy.get('textarea[placeholder*="Add a note"]').type(noteText);
+    
+    // Click Save button (translates to "Save")
+    cy.contains('button', 'Save').should('be.enabled').click();
 
-        // Wait for API call or just verify the form was submitted
-        cy.wait(1000);
+    // Wait for create note API call
+    cy.wait('@createNote', { timeout: 5000 });
 
-        // Check if the textarea was cleared (indicates successful submission)
-        // If not cleared, that's okay - the form might work differently
-        cy.get('textarea').then(($textarea) => {
-          if ($textarea.val() === '') {
-            cy.get('textarea').should('have.value', '');
-          } else {
-            cy.log('Form submitted but textarea not cleared - this might be expected behavior');
-          }
-        });
-      } else {
-        // Form not present, just verify component mounted
-        cy.log('Notes component mounted successfully');
-      }
-    });
+    // Verify textarea was cleared (component clears form on success)
+    cy.get('textarea[placeholder*="Add a note"]').should('have.value', '');
+    
+    // Verify success toast appears
+    cy.contains('Note created successfully').should('be.visible');
   });
 
   it('handles file attachment', () => {
     mountComponent();
 
+    // Wait for scenario to load
+    cy.wait('@getScenario');
+    
+    // Wait for form to be ready
+    cy.get('textarea[placeholder*="Add a note"]', { timeout: 5000 }).should('be.visible');
+    
+    // Find file input and upload file
     cy.get('#file-upload').selectFile(
       {
         contents: Cypress.Buffer.from('file contents'),
@@ -127,43 +132,35 @@ describe('Notes Component', () => {
       { force: true },
     );
 
+    // Verify file name appears (component shows "Selected file: {filename}")
     cy.contains('test.pdf').should('be.visible');
   });
 
   it('handles error state', () => {
-    cy.intercept('POST', '**/api/notes', {
+    // Mock error for create note endpoint
+    cy.intercept('POST', `**/api/risk-scenarios/${scenarioId}/notes*`, {
       statusCode: 500,
-      body: { message: 'Error creating note' },
+      body: { detail: 'Error creating note' },
     }).as('createNoteError');
 
     mountComponent();
 
-    // Wait for component to load
-    cy.wait(2000);
+    // Wait for scenario to load
+    cy.wait('@getScenario');
 
-    // Check if form is present
-    cy.get('body').then(($body) => {
-      if ($body.find('textarea').length > 0) {
-        // Form is present, test error handling
-        cy.get('textarea').type('Test note');
+    // Wait for form to be ready
+    cy.get('textarea[placeholder*="Add a note"]', { timeout: 5000 }).should('be.visible');
+    
+    // Type note content
+    cy.get('textarea[placeholder*="Add a note"]').type('Test note');
+    
+    // Click Save button
         cy.contains('button', 'Save').click();
 
-        // Wait for error to appear or just verify the form was submitted
-        cy.wait(1000);
+    // Wait for error API call
+    cy.wait('@createNoteError', { timeout: 5000 });
 
-        // Check if error message appears or if form was submitted
-        cy.get('body').then(($body) => {
-          if ($body.text().includes('Failed to create note')) {
-            cy.contains('Failed to create note. Please try again later.').should('be.visible');
-          } else {
-            // Error handling might work differently, just verify form was submitted
-            cy.log('Form submitted successfully');
-          }
-        });
-      } else {
-        // Form not present, just verify component mounted
-        cy.log('Notes component mounted successfully');
-      }
-    });
+    // Verify error toast appears
+    cy.contains('Failed to create note').should('be.visible');
   });
 });

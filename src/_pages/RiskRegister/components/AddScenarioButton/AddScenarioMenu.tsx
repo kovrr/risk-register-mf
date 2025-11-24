@@ -3,7 +3,6 @@ import {
   type DropMenuItem,
 } from '@/components/molecules/DropdownMenu';
 import { useFeatureRiskRegisterTemplate } from '@/services/feature-toggles';
-import { useCRQScenarioRemainingLicenses } from '@/services/hooks';
 import { type ScenarioType, scenarioTypes } from '@/types/riskRegister';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
@@ -20,7 +19,7 @@ export const AddScenarioMenu = () => {
   const isRiskRegisterTemplateEnabled = useFeatureRiskRegisterTemplate();
   const { isLimitedUser, handleGuestUserClick } = useRiskRegisterDemoFeatures();
   const [scenarioType, setScenarioType] = useState<ScenarioType | null>(null);
-  const { data: remainingLicenses } = useCRQScenarioRemainingLicenses();
+  const remainingLicenses = 999;
   const [showQuotaExceededModal, setShowQuotaExceededModal] = useState(false);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
 
@@ -52,19 +51,15 @@ export const AddScenarioMenu = () => {
       label: t('menuItems.simple'),
       action: handleSimpleScenarioClick,
     },
-    {
-      label: t('menuItems.crq'),
-      action: handleCRQScenarioClick,
-    },
-    ...(isRiskRegisterTemplateEnabled
-      ? [
+    // {
+    //   label: t('menuItems.crq'),
+    //   action: handleCRQScenarioClick,
+    // },
         {
           label: t('menuItems.template'),
           action: handleTemplateClick,
         },
-      ]
-      : []),
-  ];
+      ];
 
   return (
     <>

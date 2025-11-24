@@ -1,5 +1,5 @@
 import { TableHeaderCell } from '@/components/molecules/TableHeaderCell';
-import { useRiskRegisterScenarios } from '@/services/hooks';
+import { useRiskScenarios } from '@/services/hooks';
 import {
   type RiskRegisterRow,
   scenarioStatus,
@@ -11,14 +11,11 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useMemo, useState } from 'react';
-import { PriorityDropdownMutate } from '../components/PriorityDropdownMutate';
-import { ResponsePlanDropdownMutate } from '../components/ResponsePlanDropdownMutate';
 import { RiskOwnerDropdownMutate } from '../components/RiskOwner';
-import { AnnualLikelihoodAverageLossCell } from './Cells/AnnualLikelihoodAverageLossCell';
-import { EntityCell } from './Cells/EntityCell';
-import { LastUpdated } from './Cells/LastUpdated';
-import { LikelihoodImpactCell } from './Cells/LikelihoodImpactCell';
+import { LikelihoodBadge } from '@/components/molecules/LikelihoodBadge';
+import { Impact } from './Cells/Impact';
 import { ScenarioDetails } from './Cells/ScenarioDetails';
+import { StatusBadge } from '@/components/ui/Badge/StatusBadge';
 import { TableActions } from './Cells/TableActions';
 
 const columnHelper = createColumnHelper<RiskRegisterRow>();
@@ -39,66 +36,39 @@ const useColumns = () => {
             disabled={row.original.status !== scenarioStatus.COMPLETED}
           />
         ),
-        header: () => <TableHeaderCell title='Scenario' />,
+        header: () => <TableHeaderCell title='Scenario Name' />,
         enableSorting: true,
       }),
-      columnHelper.accessor('entity', {
-        cell: ({ row }) => <EntityCell row={row.original} />,
-        header: () => <TableHeaderCell title='Entity' />,
-        enableSorting: true,
-      }),
-      columnHelper.accessor('likelihood', {
-        cell: ({ row }) => <LikelihoodImpactCell row={row.original} />,
-        header: () => <TableHeaderCell title='Likelihood | Impact' />,
-        enableSorting: true,
-      }),
-      columnHelper.accessor('annualLikelihood', {
-        cell: ({ row }) => (
-          <AnnualLikelihoodAverageLossCell row={row.original} />
-        ),
-        header: () => (
-          <TableHeaderCell
-            title={
-              <>
-                Annual Likelihood |<br /> Average Loss
-              </>
-            }
-          />
-        ),
+      columnHelper.accessor((row) => row.category ?? '-', {
+        id: 'category',
+        cell: (info) => info.getValue(),
+        header: () => <TableHeaderCell title='Category' />,
         enableSorting: true,
       }),
       columnHelper.accessor('priority', {
-        cell: (info) => {
-          return (
-            <PriorityDropdownMutate
-              value={info.getValue()}
-              rowData={info.row.original}
-              key={`${info.row.original.scenarioId}-priority`}
-            />
-          );
-        },
+        cell: (info) =>
+          info.getValue() ? (
+            // display-only badge; colors come from theme variants if configured
+            <span className='font-semibold'>{info.getValue()}</span>
+          ) : (
+            '-'
+          ),
         header: () => <TableHeaderCell title='Priority' />,
         enableSorting: true,
       }),
-      columnHelper.accessor('responsePlan', {
-        cell: (info) => (
-          <ResponsePlanDropdownMutate
-            value={info.getValue()}
-            rowData={info.row.original}
-            key={`${info.row.original.scenarioId}-response-plan`}
-          />
-        ),
-        header: () => <TableHeaderCell title='Response Plan' />,
+      columnHelper.accessor('impact', {
+        cell: ({ row }) => <Impact value={row.original.impact} />,
+        header: () => <TableHeaderCell title='Impact' />,
         enableSorting: true,
       }),
-      columnHelper.accessor('lastUpdated', {
-        cell: (info) => <LastUpdated value={info.getValue()} />,
-        header: () => (
-          <TableHeaderCell
-            containerClassName='w-[120px]'
-            title='Last Updated'
-          />
-        ),
+      columnHelper.accessor('likelihood', {
+        cell: ({ row }) => <LikelihoodBadge value={row.original.likelihood} />,
+        header: () => <TableHeaderCell title='Likelihood' />,
+        enableSorting: true,
+      }),
+      columnHelper.accessor('status', {
+        cell: (info) => <StatusBadge status={String(info.getValue())} />,
+        header: () => <TableHeaderCell title='Status' />,
         enableSorting: true,
       }),
       columnHelper.accessor('owner', {
@@ -112,9 +82,10 @@ const useColumns = () => {
         header: () => <TableHeaderCell title='Owner' />,
         enableSorting: true,
       }),
-      columnHelper.accessor('tableOptions', {
-        cell: (info) => <TableActions scenario={info.row.original} />,
-        header: () => '',
+      columnHelper.display({
+        id: 'actions',
+        cell: ({ row }) => <TableActions scenario={row.original} />,
+        header: () => <TableHeaderCell title='' />,
         enableSorting: false,
       }),
     ],
@@ -138,9 +109,14 @@ const mapColumnToApiField = (columnId: string): string => {
   return mappings[columnId] || columnId;
 };
 
-const useData = () => {
+type UseRiskRegisterTableParams = {
+  search?: string;
+};
+
+const useData = (params: UseRiskRegisterTableParams) => {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
+  const { search } = params;
 
   const [sorting, setSortingState] = useState<{ id: string; desc: boolean }[]>([
     { id: 'lastUpdated', desc: true }, // Default sorting
@@ -161,9 +137,10 @@ const useData = () => {
     data: scenarios,
     isPending,
     isFetching,
-  } = useRiskRegisterScenarios({
+  } = useRiskScenarios({
     page: pageIndex + 1,
     size: pageSize,
+    name: search && search.length > 0 ? search : undefined,
     sort_by: sortBy,
     sort_order: sortOrder,
   });
@@ -172,7 +149,7 @@ const useData = () => {
     if (!scenarios || !scenarios.items || !Array.isArray(scenarios.items))
       return [];
     return scenarios.items.map((scenario) => ({
-      id: scenario.id,
+      id: scenario.scenario_id,
       customerScenarioId: scenario.customer_scenario_id,
       scenarioTitle: scenario.name,
       scenarioDescription: scenario.description,
@@ -192,6 +169,9 @@ const useData = () => {
       responsePlan: scenario.scenario_data.response_plan,
       lastUpdated: scenario.updated_at,
       owner: scenario.scenario_data.risk_owner,
+      category: Array.isArray(scenario.scenario_data.scenario_category)
+        ? scenario.scenario_data.scenario_category[0] ?? null
+        : null,
       scenario: null,
       tableOptions: null,
       scenarioId: scenario.scenario_id,
@@ -217,7 +197,7 @@ const useData = () => {
   };
 };
 
-export const useRiskRegisterTable = () => {
+export const useRiskRegisterTable = (params: UseRiskRegisterTableParams) => {
   const columns = useColumns();
   const {
     data,
@@ -231,7 +211,7 @@ export const useRiskRegisterTable = () => {
     setSorting,
     isLoading,
     isFetching,
-  } = useData();
+  } = useData(params);
   const table = useReactTable({
     data,
     columns,

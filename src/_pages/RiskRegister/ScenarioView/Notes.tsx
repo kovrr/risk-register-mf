@@ -1,23 +1,24 @@
 import { Avatar } from '@/components/atoms/avatar';
 import { Button } from '@/components/atoms/button';
-import { Card, CardTitle } from '@/components/atoms/card';
+import { Skeleton } from '@/components/atoms/skeleton';
 import { Textarea } from '@/components/atoms/textarea';
 import PaperClip from '@/components/icons/PaperClip';
 import { Spinner } from '@/components/ui/Spinner';
 import { DemoExperienceContext } from '@/contexts/DemoExperienceContext';
 import { useToast } from '@/hooks/use-toast';
 import { useIsGuestUser } from '@/permissions/use-permissions';
-import { QUERY_KEYS, useCreateNote, useNotes } from '@/services/hooks';
-import { useQueryClient } from '@tanstack/react-query';
+import {
+  useCreateNote,
+  useCreateNoteWithAttachment,
+  useCurrentRiskRegisterScenario,
+  useNotes,
+} from '@/services/hooks';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
 import { getInitials } from '../utils/textManipulation';
 import { NoteItem } from './NoteItem';
 
-export const Notes: React.FC<{
-  includeHeader?: boolean;
-}> = ({ includeHeader }) => {
+export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) => {
   // Mock user for microfrontend since Frontegg context is not available
   const user = {
     id: 'mock-user-id',
@@ -26,66 +27,99 @@ export const Notes: React.FC<{
     firstName: 'Mock',
     lastName: 'User',
   };
+
   const [noteText, setNoteText] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { scenarioId } = useParams();
+
+  const { data: scenario, isLoading: isLoadingScenario } =
+    useCurrentRiskRegisterScenario();
+
+  // Always define scenarioId to maintain hook order
+  const scenarioId = scenario?.scenario_id ?? '';
+
   const { t } = useTranslation('riskRegister');
-  const queryClient = useQueryClient();
   const { toast } = useToast();
   const isGuestUser = useIsGuestUser();
   const { showDemoModal } = useContext(DemoExperienceContext);
 
-  // Fetch notes using unified API
-  const { data: notes = [], isPending: isLoadingNotes } = useNotes(
-    'scenario',
-    scenarioId || '',
-  );
+  // ❗ CALL HOOKS UNCONDITIONALLY
+  const {
+    data: notes = [],
+    isPending: isLoadingNotes,
+  } = useNotes(scenarioId);
 
-  const { mutateAsync: createNote, isPending: isSavingNote } = useCreateNote({
-    onError: (err: any) => {
-      console.error('Error creating note:', err.response);
-      const errorMsg = err.response?.data;
+  const handleMutationError = (err: any) => {
+    console.error('Error creating note:', err.response);
+    const errorMsg = err.response?.data;
 
-      if (Array.isArray(errorMsg?.detail) && errorMsg?.detail?.length > 0) {
-        // Handle validation errors (422)
-        errorMsg.detail.forEach((error: { msg: string }) => {
-          error?.msg &&
-            toast({
-              variant: 'destructive',
-              title: 'Error creating note',
-              description: error.msg,
-            });
-        });
-      } else {
-        // Handle other errors
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: 'Failed to create note. Please try again later.',
-        });
-      }
-    },
-    onSuccess: () => {
-      void queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.RISK_REGISTER_SCENARIOS,
+    if (Array.isArray(errorMsg?.detail) && errorMsg?.detail?.length > 0) {
+      errorMsg.detail.forEach((error: { msg: string }) => {
+        error?.msg &&
+          toast({
+            variant: 'destructive',
+            title: 'Error creating note',
+            description: error.msg,
+          });
       });
-      // Clear form after successful save
-      setNoteText('');
-      setSelectedFile(null);
+    } else {
       toast({
-        description: 'Note created successfully',
-        duration: 3000,
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Failed to create note. Please try again later.',
       });
-    },
+    }
+  };
+
+  const handleMutationSuccess = () => {
+    setNoteText('');
+    setSelectedFile(null);
+    toast({
+      description: 'Note created successfully',
+      duration: 3000,
+    });
+  };
+
+  const {
+    mutateAsync: createNote,
+    isPending: isSavingNote,
+  } = useCreateNote({
+    onError: handleMutationError,
+    onSuccess: () => handleMutationSuccess(),
   });
+
+  const {
+    mutateAsync: createNoteWithAttachment,
+    isPending: isUploadingAttachment,
+  } = useCreateNoteWithAttachment({
+    onError: handleMutationError,
+    onSuccess: () => handleMutationSuccess(),
+  });
+
+  const isSaving = isSavingNote || isUploadingAttachment;
+
+  // ❗ Only NOW we can early-return the skeleton safely
+  if (isLoadingScenario || !scenario?.scenario_id) {
+    return (
+      <div className="space-y-6">
+        {includeHeader && (
+          <h2 className="text-lg font-bold text-text-base-primary">
+            {t('scenarioDrillDown.notes.title')}
+          </h2>
+        )}
+        <div className="space-y-4">
+          <Skeleton className="h-32 w-full" />
+          <Skeleton className="h-20 w-full" />
+        </div>
+      </div>
+    );
+  }
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
     }
-    // Clear the input
-    event.target.value = '';
+    event.target.value = ''; // Reset input
   };
 
   const handleSave = async () => {
@@ -96,75 +130,89 @@ export const Notes: React.FC<{
 
     if (!noteText.trim() && !selectedFile) return;
 
-    try {
-      await createNote({
-        parentType: 'scenario',
-        parentId: scenarioId || '',
-        content: noteText,
-        user: user?.name || 'Unknown User',
-        uploaded_file: selectedFile || undefined,
+    if (!scenarioId) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Scenario not loaded. Please try again.',
       });
-    } catch (error) {
-      // Error handling is done in the mutation options
+      return;
+    }
+
+    try {
+      if (selectedFile) {
+        await createNoteWithAttachment({
+          scenarioId,
+          file: selectedFile,
+          content: noteText,
+        });
+      } else {
+        await createNote({
+          scenarioId,
+          content: noteText,
+        });
+      }
+    } catch {
+      // Error handling already done inside the mutation
     }
   };
 
   return (
-    <Card className='max-h-[652px] overflow-y-auto'>
+    <div className="space-y-6">
       {includeHeader && (
-        <CardTitle className='mb-5 text-[17px] font-[700] text-slate-800'>
+        <h2 className="text-lg font-bold text-text-base-primary">
           {t('scenarioDrillDown.notes.title')}
-        </CardTitle>
+        </h2>
       )}
 
-      <div className='mb-[30px] space-y-4'>
-        <div className='flex gap-3'>
-          <Avatar className='flex h-10 w-10 items-center justify-center rounded-full bg-fill-base-5 text-base font-[600] leading-[20px] text-white'>
+      {/* Add Note Section */}
+      <div className="space-y-4">
+        <div className="flex gap-3">
+          <Avatar className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-fill-base-5 text-base font-[600] leading-[20px] text-white">
             {getInitials(user?.name || '')}
           </Avatar>
-          <div className='flex-1'>
-            <div className='relative'>
+
+          <div className="flex-1 space-y-3">
+            <div className="relative">
               <Textarea
                 placeholder={t('scenarioDrillDown.notes.notePlaceholder')}
-                className='mb-4 min-h-[120px] resize-none border-gray-200'
+                className="min-h-[120px] resize-none border-gray-200 pr-10"
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
               />
+
               <input
-                type='file'
-                id='file-upload'
-                className='hidden'
+                type="file"
+                id="file-upload"
+                className="hidden"
                 onChange={handleFileSelect}
               />
+
               <Button
-                variant='ghost'
-                size='icon'
-                className='absolute bottom-1 left-1 text-gray-400 transition-colors hover:bg-gray-100'
+                variant="ghost"
+                size="icon"
+                className="absolute bottom-2 right-2 h-8 w-8 text-gray-400 transition-colors hover:bg-gray-100"
                 onClick={() => document.getElementById('file-upload')?.click()}
               >
                 <PaperClip width={13.6} height={15.96} />
               </Button>
             </div>
-            <div className='flex items-center justify-between'>
-              <div className='flex-1'>
-                {selectedFile && (
-                  <div className='text-sm text-gray-600'>
-                    `${t('scenarioDrillDown.notes.selectedFile')} $
-                    {selectedFile.name}`
-                  </div>
-                )}
+
+            {selectedFile && (
+              <div className="text-sm text-gray-600">
+                {t('scenarioDrillDown.notes.selectedFile')} {selectedFile.name}
               </div>
+            )}
+
+            <div className="flex justify-end">
               <Button
-                className='ml-auto h-[34px] w-[61px] bg-[#7C89FF] px-8 text-white hover:bg-[#6574ff]'
+                className="h-9 bg-[#7C89FF] px-6 text-white hover:bg-[#6574ff]"
                 onClick={handleSave}
-                disabled={isSavingNote}
+                disabled={isSaving || (!noteText.trim() && !selectedFile)}
               >
-                {isSavingNote ? (
+                {isSaving ? (
                   <>
-                    <Spinner
-                      className='-ml-1 mr-3 text-white'
-                      data-testid='note-spinner'
-                    />
+                    <Spinner className="-ml-1 mr-2 h-4 w-4 text-white" data-testid="note-spinner" />
                     {t('scenarioDrillDown.notes.saving')}
                   </>
                 ) : (
@@ -176,33 +224,40 @@ export const Notes: React.FC<{
         </div>
       </div>
 
-      {/* Existing Notes */}
-      <div className='space-y-6'>
+      {/* Notes List */}
+      <div className="space-y-6">
         {isLoadingNotes ? (
-          <div className='flex justify-center py-8'>
-            <Spinner className='text-gray-400' />
+          <div className="flex justify-center py-8">
+            <Spinner className="text-gray-400" />
           </div>
         ) : notes.length > 0 ? (
-          notes.map((note) => (
-            <NoteItem
-              key={note.id}
-              noteId={note.id}
-              avatar={note.user}
-              email={note.user}
-              date={note.created_at}
-              content={note.content}
-              attachment={{
-                id: '',
-                name: '',
-              }}
-            />
-          ))
+          notes.map((note) => {
+            const attachment =
+              note.documents && note.documents.length > 0
+                ? {
+                    id: note.documents[0].id,
+                    name: note.documents[0].filename || note.documents[0].id,
+                  }
+                : undefined;
+
+            return (
+              <NoteItem
+                key={note.id}
+                noteId={note.id}
+                avatar={note.user}
+                email={note.user}
+                date={note.created_at}
+                content={note.content}
+                attachment={attachment}
+              />
+            );
+          })
         ) : (
-          <div className='py-8 text-center text-sm text-gray-500'>
-            No notes yet. Add the first note above.
+          <div className="py-12 text-center text-sm italic text-gray-500">
+            {t('scenarioDrillDown.notes.noNotesYet')}
           </div>
         )}
       </div>
-    </Card>
+    </div>
   );
 };

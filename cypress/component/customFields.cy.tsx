@@ -66,7 +66,7 @@ describe('Custom Fields', () => {
     // Mock API calls
     cy.intercept(
       'GET',
-      `/api/risk-register/scenarios/${mockScenario.scenario_id}`,
+      `/api/risk-scenarios/${mockScenario.scenario_id}`,
       {
         statusCode: 200,
         body: mockScenario,
@@ -75,7 +75,7 @@ describe('Custom Fields', () => {
 
     cy.intercept(
       'PATCH',
-      `/api/risk-register/scenarios/${mockScenario.scenario_id}`,
+      `/api/risk-scenarios/${mockScenario.scenario_id}`,
       {
         statusCode: 200,
         body: (req: { body: Partial<RiskRegisterResponse> }) => {
