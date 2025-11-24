@@ -130,8 +130,8 @@ export const createNote = async (
     `/risk-scenarios/${sanitizeId(scenarioId)}/notes`,
   );
 
-  const { data } = await client.post<NoteOutput>(endpoint, {}, {
-    params: { content },
+  const { data } = await client.post<NoteOutput>(endpoint, {
+    content,
   });
 
   return (data as any)?.data ?? data;
