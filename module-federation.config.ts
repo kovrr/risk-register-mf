@@ -30,5 +30,15 @@ export default createModuleFederationConfig({
       singleton: true,
       requiredVersion: false,
     },
+    i18next: {
+      singleton: true,
+      requiredVersion: false,
+      eager: false, // Let the host initialize it
+    },
+    'react-i18next': {
+      singleton: true,
+      requiredVersion: false,
+      eager: false,
+    },
   },
 });
