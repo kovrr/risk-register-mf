@@ -237,7 +237,7 @@ jobs:
       - name: Download the cypress timings file
         uses: actions/download-artifact@v4
         with:
-          name: mf_rspack_template_cypress_timings.json
+          name: risk_register_mf_cypress_timings.json
           path: .
       - name: enable corepack
         run: corepack enable
@@ -329,21 +329,21 @@ jobs:
         if: failure()
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: '/home/runner/work/mf-rspack-template/mf-rspack-template/cypress/screenshots'
-          destination: 'mf_rspack_template_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
+          path: '/home/runner/work/risk-register-mf/risk-register-mf/cypress/screenshots'
+          destination: 'risk_register_mf_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
       - name: upload tests videos to bucket
         if: failure()
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: '/home/runner/work/mf-rspack-template/mf-rspack-template/cypress/videos'
-          destination: 'mf_rspack_template_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
+          path: '/home/runner/work/risk-register-mf/risk-register-mf/cypress/videos'
+          destination: 'risk_register_mf_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
       - name: link to the tests
         if: failure()
         run: |
           # The pr tests should be in the following link.
-          # The link structure is https://console.cloud.google.com/storage/browser/mf_rspack_template_integration_tests_cypress_outputs-kov-test/{{ ###BRANCH_NAME### }}
+          # The link structure is https://console.cloud.google.com/storage/browser/risk_register_mf_integration_tests_cypress_outputs-kov-test/{{ ###BRANCH_NAME### }}
           echo The pr tests are in:
-          echo https://console.cloud.google.com/storage/browser/mf_rspack_template_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}
+          echo https://console.cloud.google.com/storage/browser/risk_register_mf_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}
 
   # the N parallel Component testing jobs we create
   componentTests:
@@ -451,21 +451,21 @@ jobs:
         if: failure()
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: '/home/runner/work/mf-rspack-template/mf-rspack-template/cypress/screenshots'
-          destination: 'mf_rspack_template_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
+          path: '/home/runner/work/risk-register-mf/risk-register-mf/cypress/screenshots'
+          destination: 'risk_register_mf_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
       - name: upload tests videos to bucket
         if: failure()
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: '/home/runner/work/mf-rspack-template/mf-rspack-template/cypress/videos'
-          destination: 'mf_rspack_template_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
+          path: '/home/runner/work/risk-register-mf/risk-register-mf/cypress/videos'
+          destination: 'risk_register_mf_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
       - name: link to the tests
         if: failure()
         run: |
-          # The pr tests should be in the following link. 
-          # The link structure is https://console.cloud.google.com/storage/browser/mf_rspack_template_integration_tests_cypress_outputs-kov-test/{{ ###BRANCH_NAME### }}
+          # The pr tests should be in the following link.
+          # The link structure is https://console.cloud.google.com/storage/browser/risk_register_mf_integration_tests_cypress_outputs-kov-test/{{ ###BRANCH_NAME### }}
           echo The pr tests are in:
-          echo https://console.cloud.google.com/storage/browser/mf_rspack_template_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}
+          echo https://console.cloud.google.com/storage/browser/risk_register_mf_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}
 
   merge-split-timings:
     # only merge timings if E2E specs were successful
@@ -526,4 +526,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: merged-split-file
-          path: '${{ inputs.split-file }}' 
+          path: '${{ inputs.split-file }}'

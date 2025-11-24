@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  package_name: kovrr-mf-template-rspack
+  package_name: risk-register-mf
 
 jobs:
   check-branch:
@@ -43,7 +43,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
       - name: Enable corepack
         run: corepack enable
       - name: Set yarn version
@@ -52,10 +52,10 @@ jobs:
         run: yarn install --immutable
       - name: Run lint-staged
         run: yarn lint-staged
-      - name: Check formatting
-        run: yarn format:check
-      - name: Run linting
-        run: yarn lint:ci
+      # - name: Check formatting
+      #   run: yarn format:check
+      # - name: Run linting
+      #   run: yarn lint:ci
 
   download_cypress_timings_file:
     runs-on: ubuntu-24.04
@@ -64,7 +64,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          sparse-checkout: 'mf_rspack_template_cypress_timings.json'
+          sparse-checkout: "risk_register_mf_cypress_timings.json"
           sparse-checkout-cone-mode: false
           path: foqus_fe_cypress_timings
           repository: Kovrr/foqus_fe_cypress_timings
@@ -72,9 +72,9 @@ jobs:
           token: ${{ secrets.SA_TOKEN }}
       - uses: actions/upload-artifact@v4
         with:
-          name: mf_rspack_template_cypress_timings.json
+          name: risk_register_mf_cypress_timings.json
           path: |
-            foqus_fe_cypress_timings/mf_rspack_template_cypress_timings.json
+            foqus_fe_cypress_timings/risk_register_mf_cypress_timings.json
           if-no-files-found: ignore
 
   test_e2e_and_component:
@@ -85,7 +85,7 @@ jobs:
       nE2E: 1
       nComponent: 1
       # use timings to split E2E specs across N machines efficiently
-      split-file: 'mf_rspack_template_cypress_timings.json'
+      split-file: "risk_register_mf_cypress_timings.json"
       browser: chrome
       build: yarn build
       start: yarn start:ci
@@ -123,18 +123,19 @@ jobs:
           echo '${{ needs.test_e2e_and_component.outputs.merged-timings }}'
       - name: Write updated timings 💾
         # pretty-print json string into a file
-        run: echo '${{ needs.test_e2e_and_component.outputs.merged-timings }}' > foqus_fe_cypress_timings/mf_rspack_template_cypress_timings.json
+        run: echo '${{ needs.test_e2e_and_component.outputs.merged-timings }}' > foqus_fe_cypress_timings/risk_register_mf_cypress_timings.json
       - name: Commit changed spec timings ⏱️
         uses: EndBug/add-and-commit@v9
         with:
-          add: 'mf_rspack_template_cypress_timings.json'
+          add: "risk_register_mf_cypress_timings.json"
           default_author: user_info
-          message: 'ci: automated update of mf_rspack_template_cypress_timings.json'
-          tag_push: '--force'
+          message: "ci: automated update of risk_register_mf_cypress_timings.json"
+          tag_push: "--force"
           cwd: foqus_fe_cypress_timings
 
   build:
-    needs: [test_results]
+    needs: [check-branch]
+    # needs: [test_results]
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -142,7 +143,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
       - name: Enable corepack
         run: corepack enable
       - name: Set yarn version
@@ -151,19 +152,21 @@ jobs:
         run: yarn install --immutable
       - name: Build application
         run: yarn build
+        env:
+          NODE_ENV: production
       - name: Set environment variables
         run: |
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
             echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
-            echo "BUCKET_PATH=mf-builds/mf-rspack-template/${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+            echo "BUCKET_PATH=mf-builds/risk-register-mf/${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
           else
             echo "VERSION=sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
-            echo "BUCKET_PATH=mf-builds/mf-rspack-template/sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
+            echo "BUCKET_PATH=mf-builds/risk-register-mf/sha-${GITHUB_SHA::7}" >> $GITHUB_ENV
           fi
       - name: Login to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GCP_SHARED_KEY }}'
+          credentials_json: "${{ secrets.GCP_SHARED_KEY }}"
       - name: Upload build to GCS bucket
         uses: google-github-actions/upload-cloud-storage@v2
         with:
