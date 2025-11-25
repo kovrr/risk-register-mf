@@ -21,11 +21,27 @@ describe('Add Risk Scenario Button (non-CRQ flow)', () => {
     );
   };
 
-  it('renders the simple add scenario button', () => {
+const openSimpleScenarioModal = () => {
+  cy.get('[data-testid="add-risk-scenario-dropdown-button"]', {
+    timeout: 5000,
+  })
+    .should('be.visible')
+    .and('contain.text', 'Add Risk Scenario')
+    .click();
+
+  cy.get('[data-testid="dropdown-menu-content"]').should('be.visible');
+  cy.get('[data-testid="dropdown-menu-item-0"]')
+    .should('contain.text', 'Non-CRQ scenario')
+    .click();
+};
+
+  it('renders the add scenario dropdown trigger', () => {
     driver.mock();
     mountComponent();
 
-    cy.get('[data-testid="add-risk-scenario-simple-button"]', { timeout: 5000 })
+    cy.get('[data-testid="add-risk-scenario-dropdown-button"]', {
+      timeout: 5000,
+    })
       .should('be.visible')
       .and('contain.text', 'Add Risk Scenario');
   });
@@ -34,9 +50,7 @@ describe('Add Risk Scenario Button (non-CRQ flow)', () => {
     driver.mock();
     mountComponent();
 
-    cy.get('[data-testid="add-risk-scenario-simple-button"]', { timeout: 5000 })
-      .should('be.visible')
-      .click();
+    openSimpleScenarioModal();
 
     cy.get('[role="dialog"]', { timeout: 3000 }).should('be.visible');
     cy.contains(/New.*Risk Scenario/i).should('be.visible');

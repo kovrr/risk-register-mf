@@ -44,7 +44,7 @@ describe('Notes Component', () => {
     cy.viewport(800, 600);
 
     // Mock scenario endpoint (required by useCurrentRiskRegisterScenario + notes)
-    cy.intercept('GET', `/api/risk-scenarios/${scenarioId}`, {
+    cy.intercept('GET', `**/api/risk-scenarios/${scenarioId}`, {
       statusCode: 200,
       body: mockScenario,
     }).as('getScenario');

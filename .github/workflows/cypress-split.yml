@@ -143,6 +143,10 @@ on:
         description: 'E2E split timings file to use and merge back'
         type: string
         required: false
+    secrets:
+      gcp-key:
+        description: 'GCP shared key to use'
+        required: false
     outputs:
       merged-timings:
         description: 'Combined timings JSON from split files'
@@ -320,20 +324,22 @@ jobs:
         with:
           format: YYYYMMDD-HH:mm
           utcOffset: '+08:00'
+
       - name: log in to gcp
-        if: failure()
-        uses: 'google-github-actions/auth@v2'
+        if: failure() && inputs.gcp-key != ''
+        uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GCP_SHARED_KEY }}'
+          credentials_json: ${{ inputs.gcp-key }}
+
       - name: upload tests screenshots to bucket
-        if: failure()
-        uses: 'google-github-actions/upload-cloud-storage@v2'
+        if: failure() && inputs.gcp-key != ''
+        uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: '/home/runner/work/risk-register-mf/risk-register-mf/cypress/screenshots'
           destination: 'risk_register_mf_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
       - name: upload tests videos to bucket
-        if: failure()
-        uses: 'google-github-actions/upload-cloud-storage@v2'
+        if: failure() && inputs.gcp-key != ''
+        uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: '/home/runner/work/risk-register-mf/risk-register-mf/cypress/videos'
           destination: 'risk_register_mf_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'

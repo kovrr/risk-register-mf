@@ -1,7 +1,11 @@
 import { Avatar } from '@/components/atoms/avatar';
 import PaperClip from '@/components/icons/PaperClip';
 import { useToast } from '@/hooks/use-toast';
-import { useCurrentRiskRegisterScenario, useDownloadAttachment } from '@/services/hooks';
+import {
+  useCurrentRiskRegisterScenario,
+  useCurrentRiskRegisterScenarioIdIfExists,
+  useDownloadAttachment,
+} from '@/services/hooks';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getInitials } from '../utils/textManipulation';
@@ -28,7 +32,8 @@ export const NoteItem: React.FC<NoteItemProps> = ({
 }) => {
   const { toast } = useToast();
   const { data: scenario } = useCurrentRiskRegisterScenario();
-  const scenarioId = scenario?.scenario_id;
+  const scenarioIdFromRoute = useCurrentRiskRegisterScenarioIdIfExists();
+  const scenarioId = scenario?.scenario_id ?? scenarioIdFromRoute;
 
   const { mutateAsync: downloadScenarioAttachment } = useDownloadAttachment({
     onError: () => {
