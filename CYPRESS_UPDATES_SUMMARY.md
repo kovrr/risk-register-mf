@@ -8,7 +8,7 @@ This document tracks the updates made to Cypress tests to align with recent code
 
 ## Completed Updates
 
-### ✅ 1. Notes Mock Helpers (`cypress/support/commands-lib/mock-notes.ts`)
+### ✅ 1. Notes Mock Helpers dsdsd (`cypress/support/commands-lib/mock-notes.ts`)
 - **Updated** `mockGetNotes()` to use: `GET /api/risk-scenarios/{scenario_id}/notes`
 - **Updated** `mockCreateNote()` to handle both:
   - `POST /api/risk-scenarios/{scenario_id}/notes` (content as query param)
@@ -95,4 +95,3 @@ yarn cypress:component
 # Run specific test file
 yarn cypress:component --spec "cypress/component/Notes.cy.tsx"
 ```
-

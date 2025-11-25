@@ -3,7 +3,7 @@ name: Release
 on:
   pull_request:
     branches:
-      - master
+      - main
     types:
       - closed
 
@@ -15,7 +15,7 @@ jobs:
       - name: Tag
         uses: krogon/semver-release-action@master
         with:
-          release_branch: master
+          release_branch: main
           default_increment: patch
         env:
           GITHUB_TOKEN: ${{ secrets.SA_TOKEN }}
