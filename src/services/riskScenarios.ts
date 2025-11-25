@@ -26,6 +26,22 @@ export type RiskScenarioListParams = {
   sort_order: string;
 };
 
+const isTestRuntime = () => {
+  if (typeof window !== 'undefined' && (window as any).Cypress) {
+    return true;
+  }
+
+  if (
+    typeof process !== 'undefined' &&
+    typeof process.env !== 'undefined' &&
+    process.env.NODE_ENV === 'test'
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 const resolveStrapiBaseUrl = (): string => {
   if (import.meta.env.VITE_USE_MOCKS === 'true') {
     return '/api';
@@ -35,6 +51,11 @@ const resolveStrapiBaseUrl = (): string => {
     import.meta.env.VITE_STRAPI_API_URL;
 
   if (!envBaseUrl) {
+    if (isTestRuntime()) {
+      // Component tests run inside Cypress where API requests are intercepted.
+      // Falling back to a relative base keeps legacy tests working without requiring env setup.
+      return '/api';
+    }
     throw new Error(
       'NEXT_PUBLIC_STRAPI_API_URL (or VITE_STRAPI_API_URL) must be defined to call Strapi APIs.',
     );

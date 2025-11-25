@@ -26,6 +26,7 @@ import { MitigationCostField } from '../../components/MitigationCostField';
 import { PriorityDropdown } from '../../components/PriorityDropdown';
 import { ResponsePlanDropdown } from '../../components/ResponsePlanDropdown';
 import { RiskOwnerDropdownMutate } from '../../components/RiskOwner';
+import { CustomFieldsSection } from './CustomFields';
 
 type RiskManagementFormProps = {
   scenario: RiskRegisterResponse;
@@ -428,6 +429,7 @@ export default function RiskManagementForm({
 
       {/* Custom Fields Section */}
       <div className='mt-6 border-t pt-6'>
+        <CustomFieldsSection scenario={scenario} />
       </div>
     </Card>
   );

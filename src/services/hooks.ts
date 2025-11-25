@@ -555,7 +555,7 @@ export const useUpdateRiskScenarioField = (
 ) => {
   const client = useAxiosInstance();
   const scenarioId = useCurrentRiskRegisterScenarioId();
-  const { data: scenario, isError } = useRiskScenario(scenarioId);
+  const { data: scenario, isError, refetch } = useRiskScenario(scenarioId);
 
   return useMutation<RiskRegisterResponse, AxiosError, UpdateFieldParams>({
     mutationKey: [
@@ -564,44 +564,55 @@ export const useUpdateRiskScenarioField = (
       scenarioId,
     ],
     mutationFn: async (data) => {
-      if (!scenario || isError) throw new Error('Scenario not loaded');
+      let scenarioData = scenario;
+      let scenarioHasError = isError;
+
+      if (!scenarioData || scenarioHasError) {
+        const result = await refetch();
+        scenarioData = result.data;
+        scenarioHasError = result.isError ?? false;
+      }
+
+      if (!scenarioData || scenarioHasError) {
+        throw new Error('Scenario not loaded');
+      }
 
       const updatePayload:
         | SimpleScenarioUpdateRequest
         | CRQScenarioUpdateRequest = {
-        customer_scenario_id: scenario.customer_scenario_id,
-        name: scenario.name,
-        description: scenario.description,
-        likelihood: scenario.scenario_data.likelihood,
-        impact: scenario.scenario_data.impact,
-        company_id: data.company_id || scenario.scenario_data.company_id,
-        annual_likelihood: scenario.scenario_data.annual_likelihood,
-        average_loss: scenario.scenario_data.average_loss,
-        average_loss_currency: scenario.scenario_data.average_loss_currency,
-        response_plan: scenario.scenario_data.response_plan,
-        risk_owner: scenario.scenario_data.risk_owner,
-        risk_priority: scenario.scenario_data.risk_priority,
-        impact_distribution: scenario.scenario_data.impact_distribution,
-        methodology_insights: scenario.scenario_data.methodology_insights,
-        peer_base_rate: scenario.scenario_data.peer_base_rate,
-        relevant_controls: scenario.scenario_data.relevant_controls,
-        ticket: scenario.scenario_data.ticket,
+        customer_scenario_id: scenarioData.customer_scenario_id,
+        name: scenarioData.name,
+        description: scenarioData.description,
+        likelihood: scenarioData.scenario_data.likelihood,
+        impact: scenarioData.scenario_data.impact,
+        company_id: data.company_id || scenarioData.scenario_data.company_id,
+        annual_likelihood: scenarioData.scenario_data.annual_likelihood,
+        average_loss: scenarioData.scenario_data.average_loss,
+        average_loss_currency: scenarioData.scenario_data.average_loss_currency,
+        response_plan: scenarioData.scenario_data.response_plan,
+        risk_owner: scenarioData.scenario_data.risk_owner,
+        risk_priority: scenarioData.scenario_data.risk_priority,
+        impact_distribution: scenarioData.scenario_data.impact_distribution,
+        methodology_insights: scenarioData.scenario_data.methodology_insights,
+        peer_base_rate: scenarioData.scenario_data.peer_base_rate,
+        relevant_controls: scenarioData.scenario_data.relevant_controls,
+        ticket: scenarioData.scenario_data.ticket,
         crq_data: (() => {
-          const baseCrqData = scenario.scenario_data.crq_data;
+          const baseCrqData = scenarioData.scenario_data.crq_data;
           if (!baseCrqData) return baseCrqData;
           const { results: _, ...rest } = baseCrqData;
           return rest;
         })(),
-        scenario_type: scenario.scenario_type,
-        sub_category: scenario.scenario_data.sub_category,
-        review_date: scenario.scenario_data.review_date,
-        mitigation_cost: scenario.scenario_data.mitigation_cost,
+        scenario_type: scenarioData.scenario_type,
+        sub_category: scenarioData.scenario_data.sub_category,
+        review_date: scenarioData.scenario_data.review_date,
+        mitigation_cost: scenarioData.scenario_data.mitigation_cost,
         ...data,
       };
 
       const requestBody = buildScenarioRequestBody(
         updatePayload,
-        scenario.scenario_type,
+        scenarioData.scenario_type,
       );
 
       return updateRiskScenarioRequest(client, scenarioId, requestBody);

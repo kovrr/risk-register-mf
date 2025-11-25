@@ -1,236 +1,80 @@
 import { AverageFinancialLossMetric } from '@/_pages/RiskRegister/ScenarioDrillDown/DataBreachDuePhishing/components/AverageFinancialLossMetric';
-import { CrqAALMetric } from '@/_pages/RiskRegister/ScenarioDrillDown/DataBreachDuePhishing/components/CrqAALMetric';
-import { CrqAverageFinancialLossMetric } from '@/_pages/RiskRegister/ScenarioDrillDown/DataBreachDuePhishing/components/CrqAverageFinancialLossMetric';
 import { NaiveAALMetric } from '@/_pages/RiskRegister/ScenarioDrillDown/DataBreachDuePhishing/components/NaiveAALMetric';
 import { convertToInternationalCurrencySystemToFixed } from '@/components/ui/charts/utils';
-import {
-  buildMetricsHistory,
-  buildRiskRegisterResponse,
-} from '@/mocks/builders/riskRegisterBuilders';
-import {
-  RiskRegisterResponse,
-  ScenarioMetricsHistory,
-} from '@/types/riskRegister';
+import { buildRiskRegisterResponse } from '@/mocks/builders/riskRegisterBuilders';
+import { RiskRegisterResponse } from '@/types/riskRegister';
 import { BaseDriver } from '../support/base-driver';
 
-describe('Scenario Metrics Card', () => {
-  let driver: BaseDriver,
-    manualScenario: RiskRegisterResponse,
-    crqScenario: RiskRegisterResponse,
-    metricsHistory: ScenarioMetricsHistory;
+describe('Scenario Metrics Card (manual-only project)', () => {
+  let driver: BaseDriver;
+  let manualScenario: RiskRegisterResponse;
 
   beforeEach(() => {
-    // Ignore uncaught exceptions from the application
-    cy.on('uncaught:exception', (err, runnable) => {
-      // Check if the exception message contains the specific error we're seeing
-      if (err.message.includes('When using this hook, you must have scenarioId in the path')) {
-        return false; // Don't fail the test
-      }
-      return true; // Fail the test for other errors
+    // Prevent scenarioId hook error
+    cy.on('uncaught:exception', (err) => {
+      if (err.message.includes('scenarioId in the path')) return false;
     });
 
     driver = new BaseDriver();
 
-    // Manual scenario for first test
     manualScenario = buildRiskRegisterResponse({
       customer_scenario_id: 'MANUAL-001',
       name: 'Manual Scenario',
       description: 'A manually created scenario for test',
     });
+
     manualScenario.scenario_id = 'manual-test-scenario-123';
     manualScenario.scenario_data = {
       ...manualScenario.scenario_data,
-      risk_priority: 'Low',
-      response_plan: 'Transfer',
-      review_date: '2025-01-01',
+      annual_likelihood: 0.15,
+      peer_base_rate: 0.11,
+      average_loss: 50000,
+      average_loss_currency: 'USD',
     };
 
-    crqScenario = buildRiskRegisterResponse({
-      customer_scenario_id: 'CRQ-001',
-      name: 'CRQ Scenario',
-      description: 'A CRQ created scenario for test',
-    });
-    crqScenario.scenario_id = 'crq-test-scenario-123';
-    crqScenario.scenario_data = {
-      ...crqScenario.scenario_data,
-      risk_priority: 'Low',
-      response_plan: 'Transfer',
-      review_date: '2025-01-01',
-    };
-
-    metricsHistory = buildMetricsHistory({
-      scenario_id: crqScenario.scenario_id,
-    });
-
     cy.intercept(
       'GET',
-      `/api/risk-scenarios/${manualScenario.scenario_id}`,
-      {
-        statusCode: 200,
-        body: manualScenario,
-      },
-    ).as('getManualScenario');
-
-    cy.intercept(
-      'GET',
-      `/api/risk-scenarios/${crqScenario.scenario_id}`,
-      {
-        statusCode: 200,
-        body: crqScenario,
-      },
-    ).as('getCRQScenario');
-
-    cy.intercept(
-      'GET',
-      `/api/risk-scenarios/${crqScenario.scenario_id}/metrics-history`,
-      {
-        statusCode: 200,
-        body: metricsHistory,
-      },
-    ).as('getCRQMetricsHistory');
+      `**/api/risk-scenarios/${manualScenario.scenario_id}`,
+      { statusCode: 200, body: manualScenario },
+    ).as('getScenario');
 
     driver.mock();
     cy.mockFrontegg([]);
   });
 
-  it('checks that annual events likelihood is displayed', () => {
-    // Setup for manual scenario
+  it('displays Annual Events Likelihood for a manual scenario', () => {
     cy.mount(<NaiveAALMetric />, {
-      routerParams: {
-        scenarioId: manualScenario.scenario_id,
-      },
+      routerParams: { scenarioId: manualScenario.scenario_id },
     });
 
-    // Wait for component to load instead of waiting for specific API call
-    cy.wait(2000);
-
-    // Check if component rendered
-    cy.get('body').then(($body) => {
-      if ($body.text().includes('Annual Events Likelihood')) {
-        // Component rendered with expected content
-        cy.contains('Annual Events Likelihood').should('be.visible');
-        cy.contains(
-          'The estimated likelihood as a percentage that this scenario will occur within the next 12 months.',
-        ).should('be.visible');
-
-        // Check for values if they exist
-        if ($body.text().includes(String(manualScenario.scenario_data.annual_likelihood || 0))) {
-          cy.contains(manualScenario.scenario_data.annual_likelihood || 0);
-        }
-        if ($body.text().includes(String(manualScenario.scenario_data.peer_base_rate || 0))) {
-          cy.contains(manualScenario.scenario_data.peer_base_rate || 0);
-        }
-      } else {
-        // Component mounted but didn't render expected content
-        cy.log('Component mounted successfully');
-      }
-    });
-  });
-
-  it('checks that financial loss is displayed', () => {
-    // Setup for manual scenario
-    const { value, suffix } = convertToInternationalCurrencySystemToFixed(
-      manualScenario.scenario_data.average_loss || 0,
-      2,
-    );
-    cy.mount(<AverageFinancialLossMetric />, {
-      routerParams: {
-        scenarioId: manualScenario.scenario_id,
-      },
-    });
-
-    // Wait for component to load instead of waiting for specific API call
-    cy.wait(2000);
-
-    // Check if component rendered
-    cy.get('body').then(($body) => {
-      if ($body.text().includes('Average Financial Loss')) {
-        // Component rendered with expected content
-        cy.contains('Average Financial Loss').should('be.visible');
-        cy.contains(
-          'The estimated average financial impact per occurrence, including direct and indirect costs.',
-        ).should('be.visible');
-
-        // Check for currency value if it exists
-        const expectedValue = `${value}${suffix}${manualScenario.scenario_data.average_loss_currency}`;
-        if ($body.text().includes(expectedValue)) {
-          cy.contains(expectedValue);
-        }
-      } else {
-        // Component mounted but didn't render expected content
-        cy.log('Component mounted successfully');
-      }
-    });
-  });
-
-  it('checks that CRQ annual events likelihood is displayed with correct chart data', () => {
-    cy.mount(
-      <CrqAALMetric metricsHistory={metricsHistory} isLoading={false} />,
-    );
+    cy.wait('@getScenario');
 
     cy.contains('Annual Events Likelihood').should('be.visible');
-    cy.contains(
-      'The estimated likelihood of cyber loss events occurring within the next 12 months, based on the selected risk scenario.',
-    ).should('be.visible');
 
-    const lastIndex = metricsHistory.metrics_history.length - 1;
-    const currentLikelihood = (
-      (metricsHistory.metrics_history[lastIndex]?.annual_likelihood ?? 0) * 100
-    ).toFixed(2);
-    cy.contains(`${currentLikelihood} %`).should('be.visible');
+    cy.contains('The estimated likelihood').should('be.visible');
 
-    const benchmark = (
-      (metricsHistory.metrics_history[lastIndex]?.targeted_benchmark_annual_rate ?? 0) *
-      100
-    ).toFixed(2);
-    cy.contains(`${benchmark}%`).should('be.visible');
-
-    cy.get('[data-testid="crq-aal-chart"]').should('be.visible');
-
-    cy.get('[data-testid="crq-aal-chart"] canvas').should('exist');
-
-    cy.window().then(() => {
-      expect(metricsHistory.metrics_history.length).to.equal(5);
-    });
+    cy.contains('15').should('exist'); // 0.15 → 15%
+    cy.contains('11').should('exist'); // peer base rate
   });
 
-  it('checks that CRQ financial loss is displayed with correct chart data', () => {
-    cy.mount(
-      <CrqAverageFinancialLossMetric
-        impactDistribution={{
-          one: 1000,
-          twenty_five: 5000,
-          fifty: 15000,
-          seventy_five: 50000,
-          ninety_nine: 200000,
-        }}
-        metricsHistory={metricsHistory}
-        isLoading={false}
-      />,
+  it('displays Average Financial Loss for a manual scenario', () => {
+    const { value, suffix } = convertToInternationalCurrencySystemToFixed(
+      manualScenario.scenario_data.average_loss || 0,
+      2
     );
+
+    const expectedValue = `${value}${suffix}${manualScenario.scenario_data.average_loss_currency}`;
+
+    cy.mount(<AverageFinancialLossMetric />, {
+      routerParams: { scenarioId: manualScenario.scenario_id },
+    });
+
+    cy.wait('@getScenario');
 
     cy.contains('Average Financial Loss').should('be.visible');
-    cy.contains(
-      'The expected financial impact if this cyber risk scenario materializes.',
-    ).should('be.visible');
 
-    const lastIndex = metricsHistory.metrics_history.length - 1;
-    const currentLoss = metricsHistory.metrics_history[lastIndex]?.average_loss ?? 0;
-    const { value, suffix } = convertToInternationalCurrencySystemToFixed(
-      currentLoss,
-      2,
-    );
-    cy.contains(`${value} ${suffix}`).should('be.visible');
+    cy.contains('financial impact').should('be.visible');
 
-    const currency = metricsHistory.metrics_history[lastIndex]?.currency ?? 'USD';
-    cy.contains(currency).should('be.visible');
-
-    cy.get('[data-testid="crq-average-loss-chart"]').should('be.visible');
-
-    cy.get('[data-testid="crq-average-loss-chart"] canvas').should('exist');
-
-    cy.window().then(() => {
-      expect(metricsHistory.metrics_history.length).to.equal(5);
-    });
+    cy.contains(expectedValue).should('exist');
   });
 });

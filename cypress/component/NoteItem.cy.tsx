@@ -33,7 +33,7 @@ describe('NoteItem Component', () => {
     cy.viewport(500, 300);
 
     // Mock scenario endpoint (NoteItem needs scenario context)
-    cy.intercept('GET', `/api/risk-scenarios/${scenarioId}`, {
+    cy.intercept('GET', `**/api/risk-scenarios/${scenarioId}`, {
       statusCode: 200,
       body: mockScenario,
     }).as('getScenario');

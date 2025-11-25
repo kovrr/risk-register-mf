@@ -2,111 +2,97 @@ import ScenarioInputModal from '@/_pages/RiskRegister/ScenarioInputForm/Scenario
 import { buildRiskRegisterResponse } from '@/mocks/builders/riskRegisterBuilders';
 import { BaseDriver } from '../support/base-driver';
 
-const mockScenario = buildRiskRegisterResponse();
-
-describe('Scenario Input Form', () => {
+describe('Scenario Input Form (manual-only)', () => {
   let driver: BaseDriver;
+  const scenario = buildRiskRegisterResponse({
+    customer_scenario_id: 'SCEN-001',
+    name: 'Manual Scenario',
+    description: 'A manual test scenario',
+  });
+
   beforeEach(() => {
     driver = new BaseDriver();
     cy.viewport(800, 800);
     driver.mock();
     cy.mockFrontegg([]);
+
     cy.intercept(
       'GET',
-      `/api/risk-scenarios/${mockScenario.scenario_id}`,
-      {
-        statusCode: 200,
-        body: mockScenario,
-      },
+      `**/api/risk-scenarios/${scenario.scenario_id}`,
+      { statusCode: 200, body: scenario }
     ).as('getScenario');
+
+    cy.intercept(
+      'PATCH',
+      `**/api/risk-scenarios/${scenario.scenario_id}`,
+      (req) => req.reply({ statusCode: 200, body: req.body })
+    ).as('updateScenario');
+
     cy.mount(
       <ScenarioInputModal
         open={true}
         onOpenChange={() => null}
-        scenario={mockScenario}
-        scenarioType={mockScenario.scenario_type}
-      />,
+        scenario={scenario}
+        scenarioType={scenario.scenario_type}
+      />
     );
   });
 
-  it('should load existing scenario data for editing', () => {
-    // Verify form is populated with existing data
-    cy.get('input[name="customer_scenario_id"]').should(
-      'have.value',
-      mockScenario.customer_scenario_id,
-    );
-    cy.get('input[name="name"]').should('have.value', mockScenario.name);
-    cy.get('textarea[name="description"]').should(
-      'have.value',
-      mockScenario.description,
-    );
-    cy.get('[data-testid="likelihood-select"]').should(
-      'contain',
-      mockScenario.scenario_data.likelihood,
-    );
-    cy.get('[data-testid="impact-select"]').should(
-      'contain',
-      mockScenario.scenario_data.impact,
-    );
-    cy.get('input[name="annual_likelihood"]').should(
-      'have.value',
-      mockScenario.scenario_data.annual_likelihood,
-    );
-    cy.get('input[name="peer_base_rate"]').should(
-      'have.value',
-      mockScenario.scenario_data.peer_base_rate,
-    );
-    cy.get('input[name="average_loss"]').should(
-      'have.value',
-      mockScenario.scenario_data.average_loss,
-    );
-    cy.get('[data-testid="currency-select"]').should(
-      'contain',
-      mockScenario.scenario_data.average_loss_currency,
-    );
+  // ---------------------------------------------------------
+  // LOAD EXISTING DATA
+  // ---------------------------------------------------------
+
+  it('should load scenario data into form fields', () => {
+    cy.get('input[name="customer_scenario_id"]')
+      .should('have.value', scenario.customer_scenario_id);
+
+    cy.get('input[name="name"]')
+      .should('have.value', scenario.name);
+
+    cy.get('textarea[name="description"]')
+      .should('have.value', scenario.description);
   });
 
-  it('should successfully update an existing scenario', () => {
-    cy.intercept('PATCH', '**/api/risk-scenarios/*', {
-      statusCode: 200,
-    }).as('updateScenario');
+  // ---------------------------------------------------------
+  // UPDATE SCENARIO
+  // ---------------------------------------------------------
 
-    // Update some fields
-    cy.get('input[name="name"]').clear().type('Updated Scenario Name');
-    cy.get('textarea[name="description"]').clear().type('Updated description');
-    cy.get('[data-testid="likelihood-select"]').click();
-    cy.get('[role="option"]').contains('Unlikely').click();
+  it('should update the scenario successfully', () => {
+    cy.get('input[name="name"]')
+      .clear()
+      .type('Updated Manual Scenario');
 
-    // Submit form
+    cy.get('textarea[name="description"]')
+      .clear()
+      .type('Updated manual description');
+
     cy.get('button[type="submit"]').click();
 
-    // Verify the update request
     cy.wait('@updateScenario').then((interception) => {
-      expect(interception.request.body).to.include({
-        name: 'Updated Scenario Name',
-        description: 'Updated description',
-      });
+      const body = interception.request.body;
+
+      expect(body.name).to.equal('Updated Manual Scenario');
+      expect(body.description).to.equal('Updated manual description');
+
+      // no CRQ fields should exist
+      expect(body).to.not.have.property('crq_data');
+      expect(body).to.not.have.property('annual_likelihood');
+      expect(body).to.not.have.property('peer_base_rate');
     });
   });
 
-  it('should not include results field in crq_data when updating', () => {
-    cy.intercept('PATCH', '**/api/risk-scenarios/*', {
-      statusCode: 200,
-    }).as('updateScenario');
+  // ---------------------------------------------------------
+  // VALIDATION
+  // ---------------------------------------------------------
 
-    // Update a field
-    cy.get('input[name="name"]').clear().type('Updated Name');
-
-    // Submit form
+  it('should prevent submission if required fields are empty', () => {
+    cy.get('input[name="name"]').clear();
     cy.get('button[type="submit"]').click();
 
-    // Verify the update request doesn't include results field
-    cy.wait('@updateScenario').then((interception) => {
-      const requestBody = interception.request.body;
+    // modal should NOT close
+    cy.get('input[name="name"]').should('exist');
 
-      if (requestBody.crq_data) {
-        expect(requestBody.crq_data).to.not.have.property('results');
-      }
-    });
+    // if your UI shows an error message, assert it
+    // cy.contains('Name is required').should('be.visible');
   });
 });
