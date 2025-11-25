@@ -143,9 +143,9 @@ on:
         description: 'E2E split timings file to use and merge back'
         type: string
         required: false
+    secrets:
       gcp-key:
         description: 'GCP shared key to use'
-        type: string
         required: false
     outputs:
       merged-timings:
@@ -324,7 +324,7 @@ jobs:
         with:
           format: YYYYMMDD-HH:mm
           utcOffset: '+08:00'
-          
+
       - name: log in to gcp
         if: failure() && inputs.gcp-key != ''
         uses: google-github-actions/auth@v2
