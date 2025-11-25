@@ -321,22 +321,27 @@ jobs:
           format: YYYYMMDD-HH:mm
           utcOffset: '+08:00'
       - name: log in to gcp
-        if: failure()
-        uses: 'google-github-actions/auth@v2'
+        if: failure() && secrets.GCP_SHARED_KEY != ''
+        uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GCP_SHARED_KEY }}'
+
       - name: upload tests screenshots to bucket
-        if: failure()
-        uses: 'google-github-actions/upload-cloud-storage@v2'
+        if: failure() && secrets.GCP_SHARED_KEY != ''
+        uses: google-github-actions/upload-cloud-storage@v2
         with:
-          path: '/home/runner/work/mf-rspack-template/mf-rspack-template/cypress/screenshots'
+          path: cypress/screenshots
           destination: 'mf_rspack_template_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
+          if-no-files-found: ignore
+
       - name: upload tests videos to bucket
-        if: failure()
-        uses: 'google-github-actions/upload-cloud-storage@v2'
+        if: failure() && secrets.GCP_SHARED_KEY != ''
+        uses: google-github-actions/upload-cloud-storage@v2
         with:
-          path: '/home/runner/work/mf-rspack-template/mf-rspack-template/cypress/videos'
+          path: cypress/videos
           destination: 'mf_rspack_template_integration_tests_cypress_outputs-kov-test/${{ steps.extract_branch.outputs.branch }}/${{ steps.current-time.outputs.formattedTime }}'
+          if-no-files-found: ignore
+
       - name: link to the tests
         if: failure()
         run: |
