@@ -22,15 +22,15 @@ export const NaiveScenarioView = () => {
           <NaiveAALMetric />
           <AverageFinancialLossMetric />
         </div>
+        
         <ImpactDistributionCard
           distribution={scenario.scenario_data.impact_distribution}
           currency={scenario.scenario_data.average_loss_currency}
           averageLoss={scenario.scenario_data.average_loss}
         />
-      </Card>
-      <Card className='p-6 shadow-sm'>
         <DataExposureSection scenario={scenario} />
       </Card>
+      
     </ScenarioContainer>
   );
 };

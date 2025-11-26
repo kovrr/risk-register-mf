@@ -33,32 +33,19 @@ export const ScenarioHeader: FC<Props> = ({ scenario }) => {
           <div className='flex flex-wrap items-start justify-between gap-7'>
             <div className='flex flex-1 flex-col gap-3'>
               <div className='flex items-center gap-[5px]'>
-                <span className='text-sm font-bold text-text-brand-primary'>
-                  {scenario.customer_scenario_id}
-                </span>
-                <span className='text-muted-foreground'>/</span>
-              </div>
+              <span className='text-sm font-bold text-text-brand-primary'>
+                {scenario.customer_scenario_id}
+              </span>
+              <span className='text-muted-foreground'>/</span>
+            </div>
               <div className='space-y-2'>
                 <h1 className='text-[20px] font-[700] text-text-base-primary'>
-                  {scenario.name}
-                </h1>
+              {scenario.name}
+            </h1>
                 <p className='text-[13px] font-normal leading-relaxed text-text-base-secondary'>
-                  {scenario.description}
-                </p>
+                {scenario.description}
+              </p>
               </div>
-              {categories.length > 0 && (
-                <div className='flex flex-wrap gap-2'>
-                  {categories.map((category, index) => (
-                    <Badge
-                      key={index}
-                      variant='secondary'
-                      className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
-                    >
-                      {category}
-                    </Badge>
-                  ))}
-                </div>
-              )}
             </div>
 
             <div className='flex flex-1 flex-wrap items-center gap-6 lg:flex-nowrap'>
@@ -88,6 +75,20 @@ export const ScenarioHeader: FC<Props> = ({ scenario }) => {
               <img src={PencilIcon} alt='pencil' className='h-4 w-4' />
             </button>
           </div>
+
+            {categories.length > 0 && (
+              <div className='flex flex-wrap gap-2'>
+                {categories.map((category, index) => (
+                  <Badge
+                    key={index}
+                    variant='secondary'
+                    className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                  >
+                    {category}
+                  </Badge>
+                ))}
+            </div>
+            )}
         </div>
       </Card>
 
