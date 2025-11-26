@@ -1,4 +1,4 @@
-import type { AxiosInstance } from 'axios';
+import { withStrapiApiPath } from '@/services/strapi';
 import type {
   NoteOutput,
   RiskRegisterResponse,
@@ -7,6 +7,7 @@ import type {
   ScenarioMetricsHistory,
   ScenarioType,
 } from '@/types/riskRegister';
+import type { AxiosInstance } from 'axios';
 
 type ScenarioPayload = {
   group_id?: string;
@@ -24,52 +25,7 @@ export type RiskScenarioListParams = {
   fields?: string[];
   sort_by: string;
   sort_order: string;
-};
-
-const isTestRuntime = () => {
-  if (typeof window !== 'undefined' && (window as any).Cypress) {
-    return true;
-  }
-
-  if (
-    typeof process !== 'undefined' &&
-    typeof process.env !== 'undefined' &&
-    process.env.NODE_ENV === 'test'
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
-const resolveStrapiBaseUrl = (): string => {
-  if (import.meta.env.VITE_USE_MOCKS === 'true') {
-    return '/api';
-  }
-  const envBaseUrl =
-    import.meta.env.NEXT_PUBLIC_STRAPI_API_URL ||
-    import.meta.env.VITE_STRAPI_API_URL;
-
-  if (!envBaseUrl) {
-    if (isTestRuntime()) {
-      // Component tests run inside Cypress where API requests are intercepted.
-      // Falling back to a relative base keeps legacy tests working without requiring env setup.
-      return '/api';
-    }
-    throw new Error(
-      'NEXT_PUBLIC_STRAPI_API_URL (or VITE_STRAPI_API_URL) must be defined to call Strapi APIs.',
-    );
-  }
-
-  const normalizedBase = envBaseUrl.replace(/\/+$/, '');
-  return normalizedBase.endsWith('/api') ? normalizedBase : `${normalizedBase}/api`;
-};
-
-const STRAPI_API_BASE_URL = resolveStrapiBaseUrl();
-
-const withStrapiBasePath = (path: string): string => {
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return `${STRAPI_API_BASE_URL}${normalizedPath}`;
+  groupId?: string;
 };
 
 const sanitizeId = (value: string): string => value?.replace(/\/+$/, '') ?? '';
@@ -90,8 +46,13 @@ export const getRiskScenarios = async (
   searchParams.append('sort_by', params.sort_by);
   searchParams.append('sort_order', params.sort_order);
 
-  const endpoint = `${withStrapiBasePath('/risk-scenarios')}?${searchParams.toString()}`;
-  const { data } = await client.get<RiskRegisterScenarioPaginatedApiResponse>(endpoint);
+  if (params.groupId) {
+    searchParams.append('groupid', params.groupId);
+  }
+
+  const endpoint = `${withStrapiApiPath('/risk-scenarios')}?${searchParams.toString()}`;
+  const { data } =
+    await client.get<RiskRegisterScenarioPaginatedApiResponse>(endpoint);
 
   // Extract data from the API response structure: { success, data: { scenarios, total_count }, error }
   const apiData = data?.data;
@@ -110,7 +71,9 @@ export const getRiskScenarioById = async (
   client: AxiosInstance,
   scenarioId: string,
 ): Promise<RiskRegisterResponse> => {
-  const endpoint = withStrapiBasePath(`/risk-scenarios/${sanitizeId(scenarioId)}`);
+  const endpoint = withStrapiApiPath(
+    `/risk-scenarios/${sanitizeId(scenarioId)}`,
+  );
   const { data } = await client.get<RiskRegisterResponse>(endpoint);
   return (data as any)?.data ?? data;
 };
@@ -119,7 +82,7 @@ export const createRiskScenario = async (
   client: AxiosInstance,
   payload: ScenarioPayload,
 ): Promise<RiskRegisterResponse> => {
-  const endpoint = withStrapiBasePath('/risk-scenarios');
+  const endpoint = withStrapiApiPath('/risk-scenarios');
   const { data } = await client.post<RiskRegisterResponse>(endpoint, payload);
   return (data as any)?.data ?? data;
 };
@@ -129,7 +92,9 @@ export const updateRiskScenario = async (
   scenarioId: string,
   payload: ScenarioPayload,
 ): Promise<RiskRegisterResponse> => {
-  const endpoint = withStrapiBasePath(`/risk-scenarios/${sanitizeId(scenarioId)}`);
+  const endpoint = withStrapiApiPath(
+    `/risk-scenarios/${sanitizeId(scenarioId)}`,
+  );
   const { data } = await client.patch<RiskRegisterResponse>(endpoint, payload);
   return (data as any)?.data ?? data;
 };
@@ -138,7 +103,9 @@ export const deleteRiskScenario = async (
   client: AxiosInstance,
   scenarioId: string,
 ): Promise<void> => {
-  const endpoint = withStrapiBasePath(`/risk-scenarios/${sanitizeId(scenarioId)}`);
+  const endpoint = withStrapiApiPath(
+    `/risk-scenarios/${sanitizeId(scenarioId)}`,
+  );
   await client.delete(endpoint);
 };
 
@@ -147,7 +114,7 @@ export const createNote = async (
   scenarioId: string,
   content: string,
 ): Promise<NoteOutput> => {
-  const endpoint = withStrapiBasePath(
+  const endpoint = withStrapiApiPath(
     `/risk-scenarios/${sanitizeId(scenarioId)}/notes`,
   );
 
@@ -163,7 +130,7 @@ export const createNoteWithAttachment = async (
   scenarioId: string,
   formData: FormData,
 ): Promise<NoteOutput> => {
-  const endpoint = withStrapiBasePath(
+  const endpoint = withStrapiApiPath(
     `/risk-scenarios/${sanitizeId(scenarioId)}/notes-with-attachment`,
   );
   const { data } = await client.post<NoteOutput>(endpoint, formData, {
@@ -179,7 +146,7 @@ export const downloadAttachment = async (
   scenarioId: string,
   attachmentId: string,
 ): Promise<Blob> => {
-  const endpoint = withStrapiBasePath(
+  const endpoint = withStrapiApiPath(
     `/risk-scenarios/${sanitizeId(scenarioId)}/attachments/download`,
   );
   const { data } = await client.get<Blob>(endpoint, {
@@ -193,7 +160,9 @@ export const requestPredefinedScenario = async (
   client: AxiosInstance,
   payload: Record<string, unknown> = {},
 ): Promise<{ message: string }> => {
-  const endpoint = withStrapiBasePath('/risk-scenarios/request-pre-defined-scenario');
+  const endpoint = withStrapiApiPath(
+    '/risk-scenarios/request-pre-defined-scenario',
+  );
   const { data } = await client.post<{ message: string }>(endpoint, payload);
   return (data as any)?.data ?? data;
 };
@@ -202,7 +171,7 @@ export const getRiskScenarioMetricsHistory = async (
   client: AxiosInstance,
   scenarioId: string,
 ): Promise<ScenarioMetricsHistory> => {
-  const endpoint = withStrapiBasePath(
+  const endpoint = withStrapiApiPath(
     `/risk-scenarios/${sanitizeId(scenarioId)}/metrics-history`,
   );
   const { data } = await client.get<ScenarioMetricsHistory>(endpoint);
@@ -213,13 +182,15 @@ export const getRiskScenarioControls = async (
   client: AxiosInstance,
   scenarioId: string,
 ): Promise<unknown> => {
-  const endpoint = withStrapiBasePath(`/risk-scenarios/${sanitizeId(scenarioId)}/controls`);
+  const endpoint = withStrapiApiPath(
+    `/risk-scenarios/${sanitizeId(scenarioId)}/controls`,
+  );
   const { data } = await client.get(endpoint);
   return (data as any)?.data ?? data;
 };
 
 export const exportRiskScenarios = async (client: AxiosInstance) => {
-  const endpoint = withStrapiBasePath('/risk-scenarios/export');
+  const endpoint = withStrapiApiPath('/risk-scenarios/export');
   const response = await client.get(endpoint, {
     responseType: 'blob',
   });
@@ -230,7 +201,7 @@ export const updateCrqScenario = async (
   client: AxiosInstance,
   scenarioId: string,
 ): Promise<RiskRegisterResponse> => {
-  const endpoint = withStrapiBasePath(
+  const endpoint = withStrapiApiPath(
     `/risk-scenarios/crq/${sanitizeId(scenarioId)}/update-crq`,
   );
   const { data } = await client.post<RiskRegisterResponse>(endpoint);

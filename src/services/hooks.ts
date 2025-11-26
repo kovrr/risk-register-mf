@@ -1,7 +1,24 @@
 import type { InvitationFormValues } from '@/components/molecules/form-config';
+import { getGroups, getGroupsWithCreatePermission } from '@/services/groups';
+import {
+  createRiskScenario as createRiskScenarioRequest,
+  createNote as createScenarioNote,
+  createNoteWithAttachment as createScenarioNoteWithAttachment,
+  deleteRiskScenario as deleteRiskScenarioRequest,
+  downloadAttachment,
+  exportRiskScenarios,
+  getRiskScenarioById,
+  getRiskScenarioControls,
+  getRiskScenarioMetricsHistory,
+  getRiskScenarios as getRiskScenariosRequest,
+  requestPredefinedScenario as requestPredefinedScenarioRequest,
+  updateCrqScenario as updateCrqScenarioRequest,
+  updateRiskScenario as updateRiskScenarioRequest,
+} from '@/services/riskScenarios';
 import { useAxiosInstance } from '@/state/HttpClientContext';
 import type { CompanyApiResponseItem, CompanyData } from '@/types/companyForm';
 import type { FrameworkResponseList } from '@/types/frameworkType';
+import type { GroupListResponse } from '@/types/group';
 import type { QuantificationData } from '@/types/quantificationData';
 import {
   type CRQScenarioCreateRequest,
@@ -17,21 +34,6 @@ import {
   type SimpleScenarioUpdateRequest,
   scenarioTypes,
 } from '@/types/riskRegister';
-import {
-  createNote as createScenarioNote,
-  createNoteWithAttachment as createScenarioNoteWithAttachment,
-  createRiskScenario as createRiskScenarioRequest,
-  deleteRiskScenario as deleteRiskScenarioRequest,
-  downloadAttachment,
-  exportRiskScenarios,
-  getRiskScenarioById,
-  getRiskScenarioControls,
-  getRiskScenarioMetricsHistory,
-  getRiskScenarios as getRiskScenariosRequest,
-  requestPredefinedScenario as requestPredefinedScenarioRequest,
-  updateRiskScenario as updateRiskScenarioRequest,
-  updateCrqScenario as updateCrqScenarioRequest,
-} from '@/services/riskScenarios';
 import {
   type UseMutationOptions,
   type UseQueryOptions,
@@ -52,6 +54,7 @@ export const QUERY_KEYS = {
   DOCUMENTS: ['DOCUMENTS'],
   FQ: ['FQ'], // Financial Quantification
   FRAMEWORKS: `FRAMEWORKS`,
+  GROUPS: ['GROUPS'],
 };
 
 // Resolve API base depending on mock mode:
@@ -71,7 +74,10 @@ const resolveApiBaseUrl = (): string => {
   }
 
   // If env var exists and contains http:// or https://, append /api
-  if (envBaseUrl && (envBaseUrl.startsWith('http://') || envBaseUrl.startsWith('https://'))) {
+  if (
+    envBaseUrl &&
+    (envBaseUrl.startsWith('http://') || envBaseUrl.startsWith('https://'))
+  ) {
     // Remove trailing slash if present, then append /api
     const cleaned = envBaseUrl.replace(/\/+$/, '');
     return `${cleaned}/api`;
@@ -101,22 +107,18 @@ const buildScenarioRequestBody = (
   payload: ScenarioPayload,
   fallbackScenarioType: ScenarioType,
 ) => {
-  const {
-    customer_scenario_id,
-    name,
-    description,
-    group_id,
-    ...scenarioData
-  } = payload;
+  const { customer_scenario_id, name, description, group_id, ...scenarioData } =
+    payload;
 
   const scenarioType =
     'scenario_type' in payload && payload.scenario_type
       ? payload.scenario_type
       : fallbackScenarioType;
 
-  const { scenario_type: _ignored, ...sanitizedScenarioData } = scenarioData as typeof scenarioData & {
-    scenario_type?: ScenarioType;
-  };
+  const { scenario_type: _ignored, ...sanitizedScenarioData } =
+    scenarioData as typeof scenarioData & {
+      scenario_type?: ScenarioType;
+    };
 
   return {
     group_id: group_id ?? DEFAULT_GROUP_ID,
@@ -165,14 +167,20 @@ export interface CreateGenericNoteParams {
 // SUPPORTING HOOKS (Dependencies for Risk Register)
 // ============================================================================
 
-type StrippedQueryOptions<TQueryFnData, TError = AxiosError, TData = TQueryFnData> =
-  Omit<UseQueryOptions<TQueryFnData, TError, TData>, 'queryKey' | 'queryFn'> & {
-    /**
-     * React Query v5 removed `keepPreviousData`, but we allow it for backward compatibility.
-     * It is ignored at runtime by the underlying library.
-     */
-    keepPreviousData?: boolean;
-  };
+type StrippedQueryOptions<
+  TQueryFnData,
+  TError = AxiosError,
+  TData = TQueryFnData,
+> = Omit<
+  UseQueryOptions<TQueryFnData, TError, TData>,
+  'queryKey' | 'queryFn'
+> & {
+  /**
+   * React Query v5 removed `keepPreviousData`, but we allow it for backward compatibility.
+   * It is ignored at runtime by the underlying library.
+   */
+  keepPreviousData?: boolean;
+};
 
 /**
  * Fetch paginated list of companies
@@ -187,18 +195,27 @@ export const useCompanies = (
     fields?: string[];
     id?: string;
   },
-  _options?: StrippedQueryOptions<{ items: CompanyApiResponseItem[]; total: number }>,
+  _options?: StrippedQueryOptions<{
+    items: CompanyApiResponseItem[];
+    total: number;
+  }>,
 ) => {
   // No-op implementation - returns empty data without making API calls
   return {
-    data: { items: [], total: 0 } as { items: CompanyApiResponseItem[]; total: number },
+    data: { items: [], total: 0 } as {
+      items: CompanyApiResponseItem[];
+      total: number;
+    },
     isLoading: false,
     isPending: false,
     isError: false,
     error: null,
     refetch: async () => {
       return {
-        data: { items: [], total: 0 } as { items: CompanyApiResponseItem[]; total: number },
+        data: { items: [], total: 0 } as {
+          items: CompanyApiResponseItem[];
+          total: number;
+        },
       };
     },
   };
@@ -318,7 +335,10 @@ export const useCreateRiskScenario = (
       };
       return createRiskScenarioRequest(
         client,
-        buildScenarioRequestBody(scenarioWithDefaultGroup, scenarioTypes.MANUAL),
+        buildScenarioRequestBody(
+          scenarioWithDefaultGroup,
+          scenarioTypes.MANUAL,
+        ),
       );
     },
     ...options,
@@ -368,6 +388,7 @@ export const useRiskScenarios = (
     fields?: string[];
     sort_by?: string;
     sort_order?: string;
+    groupId?: string;
   },
   options?: StrippedQueryOptions<RiskRegisterScenarioPaginatedResponse>,
 ) => {
@@ -380,6 +401,7 @@ export const useRiskScenarios = (
     fields,
     sort_by: sortByParam,
     sort_order: sortOrderParam,
+    groupId,
   } = params;
   const normalizedSortBy = sortByParam ?? 'updated_at';
   const normalizedSortOrder = sortOrderParam ?? 'desc';
@@ -393,6 +415,7 @@ export const useRiskScenarios = (
       fields,
       normalizedSortBy,
       normalizedSortOrder,
+      groupId ?? null,
     ],
     queryFn: () =>
       getRiskScenariosRequest(client, {
@@ -402,6 +425,7 @@ export const useRiskScenarios = (
         fields,
         sort_by: normalizedSortBy,
         sort_order: normalizedSortOrder,
+        groupId,
       }),
     ...options,
   });
@@ -558,11 +582,7 @@ export const useUpdateRiskScenarioField = (
   const { data: scenario, isError, refetch } = useRiskScenario(scenarioId);
 
   return useMutation<RiskRegisterResponse, AxiosError, UpdateFieldParams>({
-    mutationKey: [
-      QUERY_KEYS.RISK_SCENARIO,
-      'updateField',
-      scenarioId,
-    ],
+    mutationKey: [QUERY_KEYS.RISK_SCENARIO, 'updateField', scenarioId],
     mutationFn: async (data) => {
       let scenarioData = scenario;
       let scenarioHasError = isError;
@@ -640,11 +660,7 @@ export const useUpdateRiskScenario = (
     AxiosError<{ detail: string }>,
     UpdateFieldParams
   >({
-    mutationKey: [
-      QUERY_KEYS.RISK_SCENARIO,
-      'updateField',
-      scenarioId,
-    ],
+    mutationKey: [QUERY_KEYS.RISK_SCENARIO, 'updateField', scenarioId],
     mutationFn: async (data) => {
       const { data: scenario, isError } = await refetch();
       if (!scenario || isError) throw new Error('Scenario not loaded');
@@ -683,8 +699,7 @@ export const useUpdateRiskScenario = (
         ai_assets: data.ai_assets || scenario.scenario_data.ai_assets,
         tactics: data.tactics || scenario.scenario_data.tactics,
         event_types: data.event_types || scenario.scenario_data.event_types,
-        impact_types:
-          data.impact_types || scenario.scenario_data.impact_types,
+        impact_types: data.impact_types || scenario.scenario_data.impact_types,
         data_exposure:
           data.data_exposure || scenario.scenario_data.data_exposure,
         impact_distribution:
@@ -801,12 +816,20 @@ export const useUpdateCRQScenario = (
  */
 export const useRequestPredefinedScenario = (
   options?: Omit<
-    UseMutationOptions<{ message: string }, AxiosError, Record<string, unknown> | void>,
+    UseMutationOptions<
+      { message: string },
+      AxiosError,
+      Record<string, unknown> | void
+    >,
     'mutationFn'
   >,
 ) => {
   const client = useAxiosInstance();
-  return useMutation<{ message: string }, AxiosError, Record<string, unknown> | void>({
+  return useMutation<
+    { message: string },
+    AxiosError,
+    Record<string, unknown> | void
+  >({
     mutationFn: (payload) =>
       requestPredefinedScenarioRequest(client, payload ?? {}),
     ...options,
@@ -998,7 +1021,11 @@ export const useDownloadAttachment = (
   >,
 ) => {
   const client = useAxiosInstance();
-  return useMutation<Blob, AxiosError, { scenarioId: string; attachmentId: string }>({
+  return useMutation<
+    Blob,
+    AxiosError,
+    { scenarioId: string; attachmentId: string }
+  >({
     mutationFn: ({ scenarioId, attachmentId }) =>
       downloadAttachment(client, scenarioId, attachmentId),
     ...options,
@@ -1033,6 +1060,67 @@ export const useFrameworks = (
   return useQuery<FrameworkResponseList, AxiosError>({
     queryKey: [QUERY_KEYS.FRAMEWORKS],
     queryFn: () => client.get(`${API_URL.FRAMEWORKS}`).then(({ data }) => data),
+    ...options,
+  });
+};
+
+export const useGroups = (
+  params: {
+    page?: number;
+    pageSize?: number;
+    sort?: string;
+    search?: string;
+  } = {},
+  options?: StrippedQueryOptions<GroupListResponse, AxiosError>,
+) => {
+  const client = useAxiosInstance();
+  const { page = 1, pageSize = 10, sort = 'name:ASC', search } = params;
+
+  return useQuery<GroupListResponse, AxiosError>({
+    queryKey: [QUERY_KEYS.GROUPS, page, pageSize, sort, search ?? ''],
+    queryFn: () =>
+      getGroups(client, {
+        page,
+        pageSize,
+        sort,
+        search: search?.trim() || undefined,
+      }),
+    ...options,
+  });
+};
+
+export const useGroupsWithCreatePermission = (
+  params: {
+    page?: number;
+    pageSize?: number;
+    sort?: string;
+    active_group_id?: string;
+  } = {},
+  options?: StrippedQueryOptions<GroupListResponse, AxiosError>,
+) => {
+  const client = useAxiosInstance();
+  const {
+    page = 1,
+    pageSize = 100,
+    sort = 'name:ASC',
+    active_group_id,
+  } = params;
+
+  return useQuery<GroupListResponse, AxiosError>({
+    queryKey: [
+      'GROUPS_WITH_CREATE_PERMISSION',
+      page,
+      pageSize,
+      sort,
+      active_group_id ?? '',
+    ],
+    queryFn: () =>
+      getGroupsWithCreatePermission(client, {
+        page,
+        pageSize,
+        sort,
+        active_group_id: active_group_id || undefined,
+      }),
     ...options,
   });
 };
