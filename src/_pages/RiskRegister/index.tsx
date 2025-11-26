@@ -1,9 +1,17 @@
-import React from 'react';
 import ScenarioTopBarNoSearch from '@/_pages/RiskRegister/components/ScenarioTopBarNoSearch';
-import RiskRegisterTable from './RiskRegisterTable';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Box, Flex } from '@chakra-ui/react';
-import RiskRegisterVisualization from './visualization';
+import {
+  Box,
+  Flex,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from '@chakra-ui/react';
+import type React from 'react';
 import KovrrInsights from './insights';
+import RiskRegisterTable from './RiskRegisterTable';
+import RiskRegisterVisualization from './visualization';
 
 const LAYOUT_CONTAINER_PROPS = {
   maxW: '1440px',
@@ -20,7 +28,7 @@ const PANEL_CONTAINER_PROPS = {
 
 const RiskRegister: React.FC = () => {
   return (
-    <Box bg='#F7F8FA' minH='100vh'>
+    <Box minH='100vh'>
       <Box {...LAYOUT_CONTAINER_PROPS} py={{ base: '24px', md: '32px' }}>
         <Flex direction='column' gap='24px'>
           <ScenarioTopBarNoSearch />
