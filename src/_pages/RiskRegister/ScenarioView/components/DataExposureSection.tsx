@@ -8,7 +8,8 @@ type Props = {
 export const DataExposureSection: React.FC<Props> = ({ scenario }) => {
   const { t } = useTranslation('riskRegister');
 
-  const dataExposure = scenario?.scenario_data.data_exposure;
+  // Be defensive: scenario or scenario_data can be null/undefined for some records
+  const dataExposure = scenario?.scenario_data?.data_exposure ?? undefined;
 
   const exposureItems = [
     {
@@ -47,7 +48,7 @@ export const DataExposureSection: React.FC<Props> = ({ scenario }) => {
             </h4>
             <p className='text-xs text-text-base-secondary'>{item.description}</p>
             <p className='text-lg font-bold text-text-base-primary'>
-              {item.value !== undefined ? (
+              {typeof item.value === 'number' ? (
                 item.value.toLocaleString()
               ) : (
                 <span className='text-sm italic text-text-base-secondary'>
