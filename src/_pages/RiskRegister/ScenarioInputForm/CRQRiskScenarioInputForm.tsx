@@ -120,20 +120,36 @@ export const CRQRiskScenarioInputForm: FC<Props> = ({
           ),
         },
       }
-      : {
-        scenario_type: scenarioTypes.CRQ,
-        customer_scenario_id: '',
-        name: '',
-        description: '',
-        group_id: undefined,
-        likelihood: undefined,
-        impact: undefined,
-        crq_data: {
-          fq_id: '',
-          company_id: '',
-          filters: {},
-        },
-      };
+      : (() => {
+        // Get default group_id from localStorage if available
+        let defaultGroupId: string | undefined;
+        try {
+          const savedGroupId = localStorage.getItem('active_group_id');
+          if (savedGroupId) {
+            defaultGroupId = savedGroupId;
+          }
+        } catch (error) {
+          console.warn(
+            'Failed to read active_group_id from localStorage:',
+            error,
+          );
+        }
+
+        return {
+          scenario_type: scenarioTypes.CRQ,
+          customer_scenario_id: '',
+          name: '',
+          description: '',
+          group_id: defaultGroupId,
+          likelihood: undefined,
+          impact: undefined,
+          crq_data: {
+            fq_id: '',
+            company_id: '',
+            filters: {},
+          },
+        };
+      })();
   }, [scenario]);
 
   const form = useForm<CRQScenarioFormValues>({

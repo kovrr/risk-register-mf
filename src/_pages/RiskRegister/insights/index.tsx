@@ -9,9 +9,13 @@ type ChatMessage = {
   content: string;
 };
 
-function KovrrInsights() {
+type KovrrInsightsProps = {
+  groupId?: string | null;
+};
+
+function KovrrInsights({ groupId }: KovrrInsightsProps) {
   const client = useAxiosInstance();
-  const { data } = useRiskScenarios({ page: 1, size: 100 });
+  const { data } = useRiskScenarios({ page: 1, size: 100, groupId: groupId ?? undefined });
   const scenarios = data?.items ?? [];
 
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>('');
@@ -160,5 +164,3 @@ function KovrrInsights() {
 }
 
 export default KovrrInsights;
-
-

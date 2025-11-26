@@ -25,7 +25,11 @@ import { TableActions } from './Cells/TableActions';
 import { PriorityDropdownMutate } from '../components/PriorityDropdownMutate';
 import { RiskOwnerDropdownMutate } from '../components/RiskOwner';
 
-const RiskRegisterTable = () => {
+type RiskRegisterTableProps = {
+  groupId?: string | null;
+};
+
+const RiskRegisterTable: React.FC<RiskRegisterTableProps> = ({ groupId }) => {
   const [searchInput, setSearchInput] = useState<string>('');
   const [search, setSearch] = useState<string>('');
 
@@ -34,7 +38,7 @@ const RiskRegisterTable = () => {
     return () => clearTimeout(id);
   }, [searchInput]);
 
-  const { table } = useRiskRegisterTable({ search });
+  const { table } = useRiskRegisterTable({ search, groupId });
 
   const { track: trackEvent } = useMixpanel();
 
