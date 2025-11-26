@@ -176,7 +176,7 @@ export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) 
             <div className="relative">
               <Textarea
                 placeholder={t('scenarioDrillDown.notes.notePlaceholder')}
-                className="min-h-[120px] resize-none border-gray-200 pr-10"
+                className="min-h-[120px] resize-none border-gray-200 pl-10"
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
               />
@@ -191,7 +191,7 @@ export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) 
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute bottom-2 right-2 h-8 w-8 text-gray-400 transition-colors hover:bg-gray-100"
+                className="absolute bottom-2 left-2 h-8 w-8 text-gray-400 transition-colors hover:bg-gray-100"
                 onClick={() => document.getElementById('file-upload')?.click()}
               >
                 <PaperClip width={13.6} height={15.96} />

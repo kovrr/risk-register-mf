@@ -31,7 +31,7 @@ type RiskManagementFormProps = {
   scenario: RiskRegisterResponse;
 };
 
-const labelClassName = 'text-sm font-normal text-text-base-primary min-w-[140px]';
+const labelClassName = 'text-sm font-bold text-text-base-primary min-w-[140px]';
 const valueClassName = 'text-sm text-text-base-primary';
 
 const urlSchema = z.union([
@@ -198,7 +198,7 @@ export default function RiskManagementForm({
   const riskSubcategories = scenario.scenario_data.risk_subcategory || [];
 
   return (
-    <Card className='flex flex-col gap-6 p-6 shadow-sm'>
+    <Card className='flex flex-col gap-6 rounded-none bg-transparent p-0 shadow-none'>
       <div className='space-y-6'>
         {/* Risk Priority */}
         <div className='flex items-start gap-4'>
