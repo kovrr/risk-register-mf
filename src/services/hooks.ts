@@ -553,6 +553,7 @@ export const useUpdateRiskScenarioRow = (
 				peer_base_rate: scenario.scenario_data.peer_base_rate,
 				relevant_controls: scenario.scenario_data.relevant_controls,
 				ticket: scenario.scenario_data.ticket,
+				custom_fields: scenario.scenario_data.custom_fields,
 				scenario_type: scenario.scenario_type,
 				crq_data: (() => {
 					const baseCrqData = scenario.scenario_data.crq_data;
@@ -643,6 +644,7 @@ export const useUpdateRiskScenarioField = (
 				peer_base_rate: scenarioData.scenario_data.peer_base_rate,
 				relevant_controls: scenarioData.scenario_data.relevant_controls,
 				ticket: scenarioData.scenario_data.ticket,
+				custom_fields: scenarioData.scenario_data.custom_fields,
 				crq_data: (() => {
 					const baseCrqData = scenarioData.scenario_data.crq_data;
 					if (!baseCrqData) return baseCrqData;
@@ -745,6 +747,8 @@ export const useUpdateRiskScenario = (
 				relevant_controls:
 					data.relevant_controls ?? scenario.scenario_data.relevant_controls,
 				ticket: data.ticket ?? scenario.scenario_data.ticket,
+				custom_fields:
+					data.custom_fields ?? scenario.scenario_data.custom_fields,
 				scenario_type: scenario.scenario_type,
 				...restOfPayload,
 			};

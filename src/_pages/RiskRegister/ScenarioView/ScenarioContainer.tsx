@@ -27,7 +27,7 @@ export const ScenarioContainer: React.FC<Props> = ({ children }) => {
           <MasGenericTabs
             defaultTab='risk-management'
             testIdPrefix='risk-management'
-            tabsContentClassName='max-h-[calc(100vh-200px)] overflow-y-auto p-4'
+            tabsContentClassName='overflow-y-auto p-4'
             tabsClassName='flex flex-col'
             tabs={[
               {
