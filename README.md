@@ -1,373 +1,196 @@
-# Risk-register-mf Microfrontend
+# Risk Register Microfrontend
 
-A comprehensive Module Federation template built with Rsbuild, React, and TypeScript for micro-frontend architecture.
+Standalone risk register experience built with Rsbuild, React 18, TypeScript, and Module Federation. This README consolidates every previous guide (setup, migration, and API docs) into one reference.
 
-## 🚀 Features
+## Feature Highlights
 
-- **Module Federation 2.0** - Modern micro-frontend architecture
-- **React 18** with TypeScript support
-- **Extensible Authentication Hooks** - ready for SSO integration
-- **TanStack Query** - Powerful data fetching and caching
-- **Tailwind CSS** - Utility-first CSS framework
-- **shadcn/ui Components** - Beautiful, accessible UI components
-- **Cypress Testing** - Component and E2E testing
-- **Biome** - Fast linting and formatting
-- **NPM Package** - Publishable as a reusable micro-frontend module
-- **GitHub Actions CI/CD** - Automated testing, building, and publishing
+- **Risk Register UI**: Scenario table, drill-down views, CRQ workflows, notes, controls, and damage types.
+- **Group-aware filtering**: The Risk Register table always reflects the selected group and persists the active selection in `localStorage` under `active_group_id`, so users return to the same context.
+- **API-first design**: Axios client + TanStack Query hooks cover scenarios, notes, groups, companies, tenants, and risk owners.
+- **Mock-friendly**: MSW handlers mimic the Risk Register Service API, including mock `/me` data—no Frontegg dependency remains.
+- **Module Federation remote**: Exposes `RemoteApp` (providers + routes) for host shells and can be published as an npm package.
+- **Modern tooling**: Tailwind, shadcn/ui, Chakra UI (legacy pieces), Radix primitives, Biome, Cypress, and GitHub Actions CI/CD.
 
-## 📋 Prerequisites
+## Architecture & Tech Stack
 
-- Node.js 18+
-- Yarn 4.6.0+
-- Docker (optional, for local development)
-
-## 🛠️ Setup
-
-1. **Clone the template**
-   ```bash
-   git clone https://github.com/kovrr/mf-rspack-template.git
-   cd mf-rspack-template
-   ```
-
-2. **Install dependencies**
-   ```bash
-   yarn install
-   ```
-
-3. **Install Biome (Required)**
-
-   **Option 1: Install Biome extension in VS Code**
-   - Open VS Code
-   - Go to Extensions (Ctrl+Shift+X / Cmd+Shift+X)
-   - Search for "Biome" by Biome
-   - Install the extension
-
-   **Option 2: Install Biome globally**
-   ```bash
-   npm install -g @biomejs/biome
-   # or
-   yarn global add @biomejs/biome
-   ```
-
-4. **Configure environment variables**
-   ```bash
-   cp env.example .env
-   # Edit .env with your configuration
-   ```
-
-5. **Start development server**
-   ```bash
-   yarn dev
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env` file based on `env.example`:
-
-```bash
-# Development
-RUNNING_IN_CYPRESS=false
-
-# API Configuration
-API_BASE_URL=https://api.your-domain.com
-
-# Module Federation
-REMOTE_ENTRY_URL=http://localhost:3003/remoteEntry.js
-```
-
-### Biome Configuration
-
-The project includes a pre-configured `biome.json` with:
-- Tab indentation
-- Single quotes for strings
-- Automatic import organization
-- Recommended linting rules
-- Format on save (VS Code extension)
-
-### shadcn/ui Configuration
-
-The template includes shadcn/ui components with:
-- New York style variant
-- Neutral color scheme
-- CSS variables for theming
-- Lucide React icons
-- Pre-configured component aliases
-
-### Module Federation Configuration
-
-The template exposes two modules:
-- `./Provider` - Main component with authentication wrapper
-- `./remoteRoutes` - Route configuration for the shell app
-
-## 📦 Available Scripts
-
-```bash
-# Development
-yarn dev          # Start development server
-yarn build        # Build for production
-yarn preview      # Preview production build
-yarn start        # Start production server on port 3003
-
-# Code Quality
-yarn lint         # Run linter
-yarn lint:fix     # Fix linting issues
-yarn lint:ci      # CI linting with warnings as errors
-yarn format       # Format code
-yarn format:check # Check code formatting
-
-# Testing
-yarn test         # Run all Cypress tests
-yarn test:open    # Open Cypress UI
-yarn test:component # Run component tests
-yarn test:e2e     # Run E2E tests
-yarn test:ci      # Run tests in CI mode
-
-# Utilities
-yarn clean        # Clean build artifacts
-```
-
-## 🏗️ Project Structure
+- **Framework**: React 18 + Rsbuild with Module Federation 2.0.
+- **State/Data**: TanStack Query, React Hook Form, Zod validation.
+- **UI**: shadcn/ui components, Chakra UI for legacy layouts, Radix primitives, Tailwind CSS.
+- **Mocking & Testing**: MSW, Cypress component/E2E suites, Jest-ready utilities.
+- **Languages & Types**: Strict TypeScript, consolidated risk register types (`src/types/riskRegister.ts`) plus enums for AI lifecycle, risk origin, and stakeholder types.
 
 ```
 src/
-├── components/           # Reusable UI components
-│   ├── atoms/           # Basic components (Button, Card)
-│   ├── molecules/       # Composite components
-│   └── wrappers/        # Context providers and wrappers
-├── exposes/             # Module Federation exposed components
-├── services/            # API and business logic
-├── state/               # Global state management
-├── types/               # TypeScript type definitions
-└── hooks/               # Custom React hooks
+├── _pages/RiskRegister/         # Core feature (table, forms, drill-down, etc.)
+├── components/                  # Shared atoms/molecules (shadcn-style)
+├── contexts/                    # DemoExperience, Instance providers
+├── services/                    # Axios client, React Query hooks, feature toggles
+├── types/                       # Domain models (risk register, permissions, tenant)
+├── options/                     # CIS/NIST control catalogs and constants
+├── hooks/                       # Helpers like use-toast, use-debounce, useLocalStorage
+└── exposes/RemoteApp.tsx        # Module Federation entry point
 ```
 
-## 🔌 Module Federation
+## Prerequisites
 
-### Exposed Modules
+- Node.js 20.18.x (matches `.nvmrc`)
+- Yarn 4.6.0+ (Berry)
+- Optional: Docker (backend) and Biome CLI or VS Code extension
 
-1. **Provider Component** (`./Provider`)
-   - Includes authentication wrapper
-   - Ready-to-use component for shell apps
-
-2. **Remote Routes** (`./remoteRoutes`)
-   - Route configuration for integration
-   - Supports dynamic routing
-
-### Shared Dependencies
-
-The following dependencies are shared across the federation:
-- `react` & `react-dom`
-- `react-router-dom`
-
-## 🧪 Testing
-
-### Component Testing
-```bash
-yarn test:component
-```
-
-### E2E Testing
-```bash
-yarn test:e2e
-```
-
-### Test Structure
-- `cypress/component/` - Component tests
-- `cypress/e2e/` - End-to-end tests
-- `cypress/support/` - Test utilities and commands
-
-## 🎨 UI Components
-
-The template includes shadcn/ui components with:
-- **Button** - Versatile button component with variants
-- **Card** - Container component for content
-- **ProviderComponent** - Main component with authentication
-
-### Adding New Components
-
-To add new shadcn/ui components:
-```bash
-npx shadcn@latest add <component-name>
-```
-
-## 📚 Integration Guide
-
-### For Shell Applications
-
-1. **Install the micro-frontend module**
-   ```bash
-   npm install risk-register-mf
-   ```
-
-2. **Configure Module Federation**
-   ```typescript
-   // In your shell app's webpack config
-   new ModuleFederationPlugin({
-     remotes: {
-       'mf-template': 'mfTemplate@https://storage.googleapis.com/sme-shared-mf-assets/mf-rspack-template/latest/remoteEntry.js',
-     },
-   })
-   ```
-
-3. **Use the remote component**
-   ```typescript
-   import RemoteProvider from 'mf-template/Provider';
-   import remoteRoutes from 'mf-template/remoteRoutes';
-   ```
-
-### Development Setup
-
-For local development, you can link the package:
-```bash
-# In the template directory
-npm link
-
-# In your shell application
-npm link risk-register-mf
-```
-
-### Production Usage
-
-For production, the micro-frontend is automatically deployed to GCS bucket:
-- **Latest version**: `https://storage.googleapis.com/sme-shared-mf-assets/mf-rspack-template/latest/remoteEntry.js`
-- **Specific version**: `https://storage.googleapis.com/sme-shared-mf-assets/mf-rspack-template/{version}/remoteEntry.js`
-- **Version info**: `https://storage.googleapis.com/sme-shared-mf-assets/mf-rspack-template/latest/version.json`
-
-## 🔒 Security
-
-- Environment variables for sensitive configuration
-- Shared JWT token management utilities for host/remote apps
-- Secure API communication with axios interceptors
-
-## 🚀 Publishing
-
-### Build for Production
-```bash
-yarn build
-```
-
-### Semantic Versioning
-
-The project uses semantic versioning with automatic releases based on commit messages:
-
-#### Commit Message Format
-```bash
-# Patch release (1.0.0 -> 1.0.1)
-fix: resolve authentication issue
-
-# Minor release (1.0.0 -> 1.1.0)
-feat: add new component
-
-# Major release (1.0.0 -> 2.0.0)
-feat!: breaking change in API
-
-# No release
-docs: update README
-```
-
-#### Automatic Release Process
-- **Main branch** - Automatically releases on push
-- **Version bump** - Based on commit message prefixes
-- **Changelog** - Automatically generated
-- **NPM publish** - Automatic publishing to NPM
-- **GitHub release** - Automatic GitHub release creation
-
-### Manual Release
-```bash
-yarn release
-```
-
-### Install in Other Projects
-```bash
-npm install risk-register-mf
-```
-
-## 🔄 CI/CD Pipeline
-
-The project includes a comprehensive GitHub Actions CI/CD pipeline with the following features:
-
-### Pipeline Stages
-
-1. **Branch Check** - Validates branch naming conventions
-2. **Pre-commit Checks** - Runs lint-staged, formatting, and linting checks
-3. **Cypress Testing** - Parallel E2E and component testing with timing optimization
-4. **Build & Deploy** - Builds the application and uploads to GCS bucket for Module Federation
-5. **Semantic Release** - Automatic versioning and NPM publishing based on commit messages
-6. **Quality Assurance** - Comprehensive code quality checks
-
-### Required Secrets
-
-Configure the following secrets in your GitHub repository:
+## Getting Started
 
 ```bash
-# Authentication
-SA_TOKEN=your-service-account-token
-GCP_SHARED_KEY=your-gcp-service-account-key
-
-# NPM Publishing
-NPM_TOKEN=your-npm-auth-token
-
-# Testing Environment
-MF_RSPACK_TEMPLATE_TESTING_USER_EMAIL=test@example.com
-MF_RSPACK_TEMPLATE_TESTING_USER_PASSWORD=test-password
-
-# Notifications
-SLACK_WEBHOOK=your-slack-webhook-url
-```
-
-### Workflow Files
-
-- `.github/workflows/ci.yml` - Main CI/CD pipeline
-- `.github/workflows/cypress-split.yml` - Parallel Cypress testing with timing optimization
-- `.github/workflows/slack-notify.yml` - Slack notifications for test failures
-
-### Local Development
-
-For local development without the full CI pipeline:
-
-```bash
-# Run tests
-yarn test:ci
-
-# Build and start for CI
-yarn build
-yarn start:ci
-
-# Lint and format
-yarn lint:ci
-yarn format:check
-
-# Install pre-commit hooks (requires Node.js 18+)
+git clone git@github.com:kovrr/risk-register-mf.git
+cd risk-register-mf
 yarn install
-yarn prepare
+cp env.example .env     # edit values
+yarn dev                # http://localhost:3004
 ```
 
-### Pre-commit Hooks
+> Tip: install the Biome VS Code extension or `npm i -g @biomejs/biome` for on-save formatting aligned with `biome.json`.
 
-The project includes pre-commit hooks that automatically:
-- ✅ **Lint staged files** using `yarn lint:fix`
-- ✅ **Format code** using `yarn format`
-- ✅ **Validate commit messages** for semantic versioning
-- ✅ **Check for errors** before commits
+## Environment Configuration
 
-**Note**: Pre-commit hooks require Node.js 18+ for local development. The CI pipeline runs these checks automatically using the existing yarn commands.
+`env.example` documents every toggle. Key variables:
 
-## 🤝 Contributing
+- `VITE_USE_MOCKS`, `NEXT_PUBLIC_USE_MOCKS`: enable MSW in dev.
+- `VITE_DEV_*`: demo tenant/application defaults.
+- `VITE_FEATURE_*`: feature flags (CRQ, template, reorganize, product tour).
+- `VITE_API_BASE_URL` / `NEXT_PUBLIC_API_BASE_URL`: point to backend (`http://localhost:8000/api` for dev).
+- `RUNNING_IN_CYPRESS`: disables React Query retries during E2E tests.
 
-1. Follow the existing code style (Biome configuration)
-2. Write tests for new features
-3. Update documentation as needed
-4. Ensure all tests pass before submitting
+## Running Against the Backend
 
-## 📄 License
+### Backend Expectations
 
-[Your Company License]
+- Risk Register Service on port `8000` (Python/FastAPI reference implementation).
+- MongoDB running locally or via Docker (see backend repo).
+- CORS open for development.
 
-## 🆘 Support
+### Mock Authentication
 
-For questions and support:
-- Create an issue in the repository
-- Contact the development team
-- Check the documentation wiki
+No Frontegg. Backend injects a mock user (ID, tenant_id, default group). Frontend requests omit auth headers. MSW mimics the same payloads so UI works offline.
+
+### API Base URL
+
+```
+http://localhost:8000/api/risk-register
+```
+
+Use `VITE_API_BASE_URL` to change environments. Axios client lives in `src/services/configureAxiosInstance.ts`, and React Query hooks in `src/services/hooks.ts`.
+
+## Primary API Endpoints
+
+| Endpoint | Description |
+| --- | --- |
+| `GET /api/risk-scenarios` | Paginated scenario list (latest versions only). |
+| `POST /api/risk-scenarios` | Create manual scenario (group_id required). |
+| `PATCH /api/risk-scenarios/{scenario_id}` | Update scenario (new version created). |
+| `DELETE /api/risk-scenarios/{scenario_id}` | Soft delete / archive. |
+| `GET /api/risk-scenarios/{scenario_id}` | Full scenario (notes, metrics). |
+| `POST /api/risk-scenarios/{scenario_id}/notes` | Add note (optional doc metadata). |
+| `POST /api/risk-scenarios/{scenario_id}/notes-with-attachment` | File upload via multipart FormData. |
+| `GET /api/risk-scenarios/{scenario_id}/attachments/download` | Download attachments. |
+| `POST /api/risk-scenarios/request-pre-defined-scenario` | Email request (uses mock user context). |
+| `GET /api/groups/with-risk-scenarios-permission-create` | Fetch groups with scenario permissions (used by `useGroups`). |
+
+> Creation & edit payloads place new fields (`entity`, `risk_origin`, `ai_lifecycle`, `stakeholders_affected`, `scenario_category`, `response_plan`, etc.) inside `scenario_data`. Hooks like `useCreateRiskScenario` and `useUpdateRiskScenario` already handle this.
+
+## Group Selection & Persistence
+
+- Group dropdown on the Risk Register page is powered by the Strapi groups endpoint and our `useGroups` hook (search + pagination).
+- Selecting a group sets the active filter for table/query hooks and writes `localStorage.setItem('active_group_id', groupId)` so refreshes or new sessions stay scoped.
+- Scenario forms default to the persisted group; edit mode renders the group field read-only beside the scenario ID for clarity.
+- Scenario header shows `ID`, `Group`, and `Entity` inline.
+
+## Development Workflow
+
+### Scripts
+
+```bash
+yarn dev             # Run app with MSW
+yarn build           # Production build
+yarn preview         # Preview build locally
+yarn lint            # Biome lint
+yarn lint:fix        # Auto-fix
+yarn format          # Format via Biome
+yarn test            # Cypress run mode
+yarn test:open       # Cypress UI
+yarn test:component  # Component tests
+yarn test:e2e        # E2E tests
+yarn clean           # Remove dist artifacts
+```
+
+### Testing Notes
+
+- Cypress folders: `cypress/component`, `cypress/e2e`, `cypress/support`.
+- MSW auto-starts in dev; disable with `VITE_USE_MOCKS=false`.
+- React Query retries are disabled when `RUNNING_IN_CYPRESS=true`.
+
+## Module Federation & Integration
+
+- Remote exposes:
+  - `RemoteApp` (providers + routing + layout).
+  - `RemoteRoutes` for host-level routing.
+- Shared deps: `react`, `react-dom`, `react-router-dom`.
+- Example webpack snippet:
+
+```ts
+new ModuleFederationPlugin({
+  name: 'riskRegister',
+  filename: 'remoteEntry.js',
+  exposes: {
+    './RemoteApp': './src/exposes/RemoteApp',
+    './remoteRoutes': './src/exposes/remoteRoutes',
+  },
+  shared: {
+    react: { singleton: true, requiredVersion: '^18.0.0' },
+    'react-dom': { singleton: true, requiredVersion: '^18.0.0' },
+    'react-router-dom': { singleton: true },
+  },
+});
+```
+
+## Migration & Extraction Guide (Condensed)
+
+| Phase | Focus | Highlights |
+| --- | --- | --- |
+| 1. Repo Setup | Next.js/Rsbuild baseline | Align Node/Yarn versions, configure tsconfig paths and Module Federation. |
+| 2. Copy Core Feature | `_pages/RiskRegister` → `src/_pages/RiskRegister` | Includes table, forms, drill-down, notes, utilities. |
+| 3. Shared Components | `newComponents` → `src/components` | shadcn-style atoms/molecules, DataTable, AsyncSelect, etc. |
+| 4. Types & Options | `src/types`, `src/options` | Risk register types, enums, CIS/NIST catalogs. |
+| 5. Services & Hooks | Axios client, React Query | Implement `useRiskRegisterScenarios`, `useGroups`, risk owner hooks, feature toggles. |
+| 6. Permissions & Demo Context | Simplified hooks | `useIsGuestUser`, demo modal helpers (currently no-op). |
+| 7. Routing & Providers | `RemoteApp`, QueryClient, MSW | BrowserRouter, TanStack Query provider, DemoExperience context. |
+| 8. Testing & QA | Cypress + manual | Table flows, scenario CRUD, notes, CRQ, permissions, mock vs real API. |
+| 9. Documentation & Handoff | This README | Setup, environment, migration strategy, API notes. |
+
+> Original multi-document plan (COPY, FRONTEND, SETUP, MIGRATION) is now represented by the sections above.
+
+## CI/CD & Deployment
+
+- GitHub Actions pipelines (`.github/workflows/*.yml`) cover linting, Cypress (parallel split), build, semantic release, and GCS upload for Module Federation assets.
+- Required secrets: `SA_TOKEN`, `GCP_SHARED_KEY`, `NPM_TOKEN`, Slack webhook, and test credentials.
+- Semantic Release rules follow commit prefixes (`feat`, `fix`, `feat!`, etc.).
+- Production build: `yarn build` → deploy `dist` or publish to npm / remote storage.
+
+## Troubleshooting & Tips
+
+- **MSW not intercepting**: Verify `VITE_USE_MOCKS=true` and check console for `MSW worker started`.
+- **Group dropdown blank**: Ensure `/api/groups/with-risk-scenarios-permission-create` is reachable or mocks enabled.
+- **Permission checks**: Hooks default to permissive behavior until real auth is wired.
+- **Type errors**: Run `yarn tsc --noEmit` to find missing imports or enums.
+- **Backend auth**: Do not send auth headers; backend supplies mock identity.
+
+## Contributing
+
+1. Follow Biome formatting and linting rules.
+2. Update tests or add new ones for behavioral changes.
+3. Document new environment variables, API fields, or UX behaviors here.
+4. Ensure group persistence continues to set/read `active_group_id`.
+
+## Support
+
+- Open an issue or reach out to the Risk Register team.
+- Backend Swagger docs available at `http://localhost:8000/docs`.
+- For module federation host integration questions, contact platform engineering.

@@ -333,10 +333,12 @@ export const useCreateRiskScenario = (
 				...scenario,
 				group_id: scenario.group_id ?? DEFAULT_GROUP_ID,
 			};
-			console.log(
-				'[RiskRegister] creating scenario with group_id:',
-				scenarioWithDefaultGroup.group_id,
-			);
+			if (process.env.NODE_ENV !== 'production') {
+				console.log(
+					'[RiskRegister] creating scenario with group_id:',
+					scenarioWithDefaultGroup.group_id,
+				);
+			}
 			return createRiskScenarioRequest(
 				client,
 				buildScenarioRequestBody(
