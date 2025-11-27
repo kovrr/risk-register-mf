@@ -6,7 +6,7 @@ A comprehensive Module Federation template built with Rsbuild, React, and TypeSc
 
 - **Module Federation 2.0** - Modern micro-frontend architecture
 - **React 18** with TypeScript support
-- **Frontegg Authentication** - Enterprise-grade auth integration
+- **Extensible Authentication Hooks** - ready for SSO integration
 - **TanStack Query** - Powerful data fetching and caching
 - **Tailwind CSS** - Utility-first CSS framework
 - **shadcn/ui Components** - Beautiful, accessible UI components
@@ -17,7 +17,7 @@ A comprehensive Module Federation template built with Rsbuild, React, and TypeSc
 
 ## 📋 Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - Yarn 4.6.0+
 - Docker (optional, for local development)
 
@@ -35,13 +35,13 @@ A comprehensive Module Federation template built with Rsbuild, React, and TypeSc
    ```
 
 3. **Install Biome (Required)**
-   
+
    **Option 1: Install Biome extension in VS Code**
    - Open VS Code
    - Go to Extensions (Ctrl+Shift+X / Cmd+Shift+X)
    - Search for "Biome" by Biome
    - Install the extension
-   
+
    **Option 2: Install Biome globally**
    ```bash
    npm install -g @biomejs/biome
@@ -67,10 +67,6 @@ A comprehensive Module Federation template built with Rsbuild, React, and TypeSc
 Create a `.env` file based on `env.example`:
 
 ```bash
-# Frontegg Authentication
-FRONTEGG_AUTH_URL=https://your-tenant.frontegg.com
-FRONTEGG_APPLICATION_ID=your-application-id
-
 # Development
 RUNNING_IN_CYPRESS=false
 
@@ -164,7 +160,6 @@ src/
 The following dependencies are shared across the federation:
 - `react` & `react-dom`
 - `react-router-dom`
-- `@frontegg/react`
 
 ## 🧪 Testing
 
@@ -243,7 +238,7 @@ For production, the micro-frontend is automatically deployed to GCS bucket:
 ## 🔒 Security
 
 - Environment variables for sensitive configuration
-- JWT token management through Frontegg
+- Shared JWT token management utilities for host/remote apps
 - Secure API communication with axios interceptors
 
 ## 🚀 Publishing

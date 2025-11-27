@@ -73,7 +73,7 @@ This is a microfrontend application for Risk Register management, built with Rea
 The application uses MSW for API mocking in development. MSW is automatically enabled in development mode.
 
 **Mock Configuration:**
-- Mock handlers are defined in `src/mocks/data-handlers.ts` and `src/mocks/frontegg-handlers.ts`
+- Mock handlers are defined in `src/mocks/data-handlers.ts`
 - MSW intercepts API calls to `http://localhost:8000` and returns mock responses
 - Mock data includes tenant information, risk register scenarios, and user authentication
 
@@ -120,7 +120,6 @@ Main microfrontend component with all necessary providers:
 
 #### Mock Handlers (`src/mocks/`)
 - **data-handlers.ts**: Main API endpoints (tenant, scenarios, etc.)
-- **frontegg-handlers.ts**: Authentication-related endpoints
 - **integrationHandlers.ts**: Third-party integration endpoints
 
 ## Module Federation Configuration

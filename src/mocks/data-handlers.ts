@@ -4,7 +4,6 @@ import { applicationTypes } from '@/types/applicationTypes';
 import { QuantificationStatus } from '@/types/quantificationData';
 import type { RiskOwner } from '@/types/riskRegister';
 import { rest } from 'msw';
-import { fronteggAuthServerUrl } from './fronteggAuthServerUrl';
 
 // Using environment variable instead of urls-defs
 const getBaseApiUrl = () =>
@@ -244,25 +243,6 @@ export const handlers = [
     }),
   ),
   getMock(`${getBaseApiUrl()}/api/events/token`, { token: 'newToken' }),
-  getMock(
-    `${fronteggAuthServerUrl}/frontegg/identity/resources/configurations/sessions/v1`,
-    {},
-  ),
-  getMock(`${fronteggAuthServerUrl}/frontegg/flags`, {}),
-  getMock(`${fronteggAuthServerUrl}/frontegg/vendors/public`, {}),
-  getMock(
-    `${fronteggAuthServerUrl}/frontegg/identity/resources/configurations/v1/auth/strategies/public`,
-    {},
-  ),
-  getMock(
-    `${fronteggAuthServerUrl}/frontegg/identity/resources/configurations/v1/public`,
-    {},
-  ),
-  getMock(`${fronteggAuthServerUrl}/frontegg/identity/resources/sso/v2`, {}),
-  getMock(
-    `${fronteggAuthServerUrl}/frontegg/team/resources/sso/v2/configurations/public`,
-    {},
-  ),
   rest.get(`${getBaseApiUrl()}/api/companies`, (req, res, ctx) => {
     const searchParams = new URLSearchParams(req.url.searchParams);
     const id = searchParams.get('id');

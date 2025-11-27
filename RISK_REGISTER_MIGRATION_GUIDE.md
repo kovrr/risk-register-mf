@@ -101,7 +101,6 @@ cd risk-register-mf
 2. **Install core dependencies:**
 ```bash
 yarn add \
-  @frontegg/react@^7.0.13 \
   react-query@^3.34.7 \
   @tanstack/react-table@^8.5.13 \
   react-hook-form@^7.54.2 \
@@ -193,8 +192,6 @@ yarn add -D \
 7. **Set up environment variables (.env.local):**
 ```bash
 NEXT_PUBLIC_API_URL=https://your-api-url.com
-NEXT_PUBLIC_FRONTEGG_APP_URL=https://your-frontegg-app.frontegg.com
-NEXT_PUBLIC_FRONTEGG_CLIENT_ID=your-client-id
 ```
 
 ---
@@ -437,17 +434,19 @@ This includes:
 
 ```typescript
 import axios, { AxiosInstance } from 'axios';
-import { useAuth } from '@frontegg/react';
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-export const createApiClient = (accessToken?: string): AxiosInstance => {
-  const client = axios.create({
-    baseURL,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-    },
+export const createApiClient = (getToken: () => string): AxiosInstance => {
+  const client = axios.create({ baseURL });
+
+  client.interceptors.request.use((config) => {
+    const token = getToken();
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
   });
 
   return client;
@@ -455,10 +454,8 @@ export const createApiClient = (accessToken?: string): AxiosInstance => {
 
 // Hook to get authenticated axios instance
 export const useAxiosInstance = () => {
-  const { user } = useAuth();
-  const accessToken = user?.accessToken;
-
-  return createApiClient(accessToken);
+  const getToken = () => localStorage.getItem('auth_tokens_v1') ?? '';
+  return createApiClient(getToken);
 };
 
 // For Next.js API routes (server-side)
@@ -950,20 +947,12 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
 
 ```typescript
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
-import { FronteggProvider } from '@frontegg/react';
 
 function App() {
   return (
-    <FronteggProvider
-      contextOptions={{
-        baseUrl: process.env.NEXT_PUBLIC_FRONTEGG_APP_URL,
-        clientId: process.env.NEXT_PUBLIC_FRONTEGG_CLIENT_ID,
-      }}
-    >
-      <ReactQueryProvider>
-        {/* Your app routes */}
-      </ReactQueryProvider>
-    </FronteggProvider>
+    <ReactQueryProvider>
+      {/* Your app routes */}
+    </ReactQueryProvider>
   );
 }
 ```
@@ -1088,8 +1077,6 @@ Create `.env.local`:
 
 \`\`\`
 NEXT_PUBLIC_API_URL=https://api.example.com
-NEXT_PUBLIC_FRONTEGG_APP_URL=https://app.frontegg.com
-NEXT_PUBLIC_FRONTEGG_CLIENT_ID=your-client-id
 \`\`\`
 
 ## Development
@@ -1120,7 +1107,6 @@ yarn build
 - TypeScript 4.9.5
 - React Query 3.34.7
 - Tailwind CSS
-- Frontegg Authentication
 \`\`\`
 
 **2. API.md** - Document API endpoints and data flow
@@ -1151,7 +1137,6 @@ yarn build
 ### NPM Dependencies
 
 **Production:**
-- [ ] `@frontegg/react@^7.0.13`
 - [ ] `react-query@^3.34.7`
 - [ ] `@tanstack/react-table@^8.5.13`
 - [ ] `react-hook-form@^7.54.2`
@@ -1200,10 +1185,6 @@ yarn build
 ```bash
 # API Configuration
 NEXT_PUBLIC_API_URL=https://api.your-domain.com
-
-# Frontegg Authentication
-NEXT_PUBLIC_FRONTEGG_APP_URL=https://your-app.frontegg.com
-NEXT_PUBLIC_FRONTEGG_CLIENT_ID=your-client-id
 
 # Feature Flags (Optional - can be managed via API)
 NEXT_PUBLIC_FEATURE_CRQ=true
@@ -1332,8 +1313,6 @@ Build and run:
 docker build -t risk-register-mf .
 docker run -p 3000:3000 \
   -e NEXT_PUBLIC_API_URL=https://api.example.com \
-  -e NEXT_PUBLIC_FRONTEGG_APP_URL=https://app.frontegg.com \
-  -e NEXT_PUBLIC_FRONTEGG_CLIENT_ID=your-client-id \
   risk-register-mf
 ```
 
@@ -1480,7 +1459,6 @@ Update values for Risk Register microfrontend.
 ### Documentation Links:
 - Next.js: https://nextjs.org/docs
 - React Query: https://tanstack.com/query/v3/docs/react/overview
-- Frontegg: https://docs.frontegg.com/
 - Radix UI: https://www.radix-ui.com/
 - Tailwind CSS: https://tailwindcss.com/docs
 

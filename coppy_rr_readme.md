@@ -166,11 +166,8 @@ export const DemoExperienceContextProvider: React.FC<{children: React.ReactNode}
 
 ```typescript
 // src/permissions/use-permissions.ts
-import { useProfileState } from '@frontegg/react';
-
 const useHasPermissions = (requiredPermissions: string[]) => {
-  const { profile } = useProfileState();
-  const permissions = profile?.permissions || [];
+  const permissions: { key: string }[] = [];
   const permissionKeys = permissions.map((permission) => permission.key);
   return requiredPermissions.every((permission) =>
     permissionKeys.includes(permission),
@@ -187,14 +184,13 @@ export const useIsRiskRegisterLimitedUser = () =>
   useHasPermissions(['riskRegisterLimitedUser']);
 ```
 
-**Time Estimate:** 4 hours
+**Time Estimate:** 2 hours
 
-- 1.5 hours: Implement permission hooks using Frontegg
-- 1 hour: Define permission keys that match parent app
-- 1 hour: Test permission behavior
-- 30 min: Document permission setup requirements
+- 30 min: Implement no-op permission hooks for the microfrontend
+- 30 min: Wire hooks into existing components
+- 1 hour: Smoke-test feature gates
 
-**Reasoning:** Frontegg is in your boilerplate, so we can use it. Need to align permission keys with parent application. Testing required to ensure gates work correctly.
+**Reasoning:** Remote does not integrate with a host auth provider yet, so hooks are simple stubs that always allow access. Update when real permissions are available.
 
 ---
 
