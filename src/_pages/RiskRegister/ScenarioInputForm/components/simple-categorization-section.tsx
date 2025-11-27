@@ -92,6 +92,51 @@ export function SimpleCategorizationSection({
         }
         data-testid='simple-impact-types-select'
       />
+
+      <MultiSelectField
+        control={control}
+        name='risk_origin'
+        label='Risk Origin'
+        placeholder='Select risk origins'
+        options={(enums.RiskOrigin ?? []).map((value) => ({
+          label: value,
+          value,
+        }))}
+        info={
+          <InfoPopover content='Identify the sources contributing to this risk.' />
+        }
+        data-testid='simple-risk-origin-select'
+      />
+
+      <MultiSelectField
+        control={control}
+        name='ai_lifecycle'
+        label='AI Lifecycle Phase'
+        placeholder='Select lifecycle phases'
+        options={(enums.AILifecyclePhase ?? []).map((value) => ({
+          label: value,
+          value,
+        }))}
+        info={
+          <InfoPopover content='Indicate the AI lifecycle phases impacted by this scenario.' />
+        }
+        data-testid='simple-ai-lifecycle-select'
+      />
+
+      <MultiSelectField
+        control={control}
+        name='stakeholders_affected'
+        label='Stakeholders Affected'
+        placeholder='Select stakeholders'
+        options={(enums.StakeholderType ?? []).map((value) => ({
+          label: value,
+          value,
+        }))}
+        info={
+          <InfoPopover content='Select the stakeholders impacted if the scenario occurs.' />
+        }
+        data-testid='simple-stakeholders-select'
+      />
     </div>
   );
 }

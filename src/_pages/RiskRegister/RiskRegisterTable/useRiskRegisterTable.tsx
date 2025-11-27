@@ -11,6 +11,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ResponsePlanDropdownMutate } from '../components/ResponsePlanDropdownMutate';
 import { RiskOwnerDropdownMutate } from '../components/RiskOwner';
 import { LikelihoodBadge } from '@/components/molecules/LikelihoodBadge';
 import { Impact } from './Cells/Impact';
@@ -69,6 +70,17 @@ const useColumns = () => {
       columnHelper.accessor('status', {
         cell: (info) => <StatusBadge status={String(info.getValue())} />,
         header: () => <TableHeaderCell title='Status' />,
+        enableSorting: true,
+      }),
+      columnHelper.accessor('responsePlan', {
+        cell: (info) => (
+          <ResponsePlanDropdownMutate
+            value={info.getValue()}
+            rowData={info.row.original}
+            key={`${info.row.original.scenarioId}-responsePlan`}
+          />
+        ),
+        header: () => <TableHeaderCell title='Response Plan' />,
         enableSorting: true,
       }),
       columnHelper.accessor('owner', {

@@ -51,6 +51,50 @@ export const riskRegisterResponsePlans = {
 
 export type RiskRegisterResponsePlan = keyof typeof riskRegisterResponsePlans;
 
+export const riskRegisterRiskOrigins = {
+  TrainingData: 'Training Data',
+  ModelArchitecture: 'Model Architecture',
+  DevelopmentProcess: 'Development Process',
+  DeploymentEnvironment: 'Deployment Environment',
+  UserInteraction: 'User Interaction',
+  ThirdParty: 'Third-Party',
+  ExternalThreatActors: 'External Threat Actors',
+  OrganizationalProcesses: 'Organizational Processes',
+  RegulatoryChanges: 'Regulatory Changes',
+  TechnologyLimitations: 'Technology Limitations',
+  HumanError: 'Human Error',
+} as const;
+
+export type RiskOrigin = keyof typeof riskRegisterRiskOrigins;
+
+export const riskRegisterAILifecyclePhases = {
+  PlanningAndDesign: 'Planning & Design',
+  DataCollectionAndPreparation: 'Data Collection & Preparation',
+  ModelDevelopmentAndTraining: 'Model Development & Training',
+  ValidationAndTesting: 'Validation & Testing',
+  Deployment: 'Deployment',
+  OperationAndMonitoring: 'Operation & Monitoring',
+  MaintenanceAndUpdates: 'Maintenance & Updates',
+  Decommissioning: 'Decommissioning',
+} as const;
+
+export type AILifecyclePhase = keyof typeof riskRegisterAILifecyclePhases;
+
+export const riskRegisterStakeholderTypes = {
+  EndUsers: 'End Users (Prospects and Customers)',
+  Employees: 'Employees',
+  Organization: 'Organization / Company',
+  VulnerableGroups: 'Vulnerable Groups',
+  ChildrenMinors: 'Children/Minors',
+  SocietyAtLarge: 'Society at Large',
+  Environment: 'Environment',
+  Shareholders: 'Shareholders',
+  Regulators: 'Regulators',
+  ThirdPartyPartners: 'Third-Party Partners',
+} as const;
+
+export type StakeholderType = keyof typeof riskRegisterStakeholderTypes;
+
 export type RiskOwner = {
   id: string;
   email: string;
@@ -227,6 +271,10 @@ export type ScenarioData = {
     pci?: number;
     phi?: number;
   };
+  entity?: string;
+  risk_origin?: string[];
+  ai_lifecycle?: string[];
+  stakeholders_affected?: string[];
 };
 
 export const scenarioStatus = {
@@ -324,6 +372,10 @@ export type ScenarioCreateRequest = {
     pci?: number;
     phi?: number;
   };
+  entity?: string;
+  risk_origin?: string[];
+  ai_lifecycle?: string[];
+  stakeholders_affected?: string[];
 };
 
 export type CRQScenarioCreateRequest = ScenarioCreateRequest & {

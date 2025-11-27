@@ -196,6 +196,9 @@ export default function RiskManagementForm({
   const eventTypes = scenario.scenario_data.event_types || [];
   const impactTypes = scenario.scenario_data.impact_types || [];
   const riskSubcategories = scenario.scenario_data.risk_subcategory || [];
+  const riskOrigins = scenario.scenario_data.risk_origin || [];
+  const aiLifecycles = scenario.scenario_data.ai_lifecycle || [];
+  const stakeholdersAffected = scenario.scenario_data.stakeholders_affected || [];
 
   return (
     <Card className='flex flex-col gap-6 rounded-none bg-transparent p-0 shadow-none'>
@@ -313,6 +316,72 @@ export default function RiskManagementForm({
                   className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
                 >
                   {subcategory}
+                </Badge>
+              ))
+            ) : (
+              <span className={cn(valueClassName, 'italic text-gray-500')}>
+                Not set
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Risk Origin */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>Risk Origin</Label>
+          <div className='flex flex-1 flex-wrap gap-2'>
+            {riskOrigins.length > 0 ? (
+              riskOrigins.map((origin, index) => (
+                <Badge
+                  key={index}
+                  variant='secondary'
+                  className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                >
+                  {origin}
+                </Badge>
+              ))
+            ) : (
+              <span className={cn(valueClassName, 'italic text-gray-500')}>
+                Not set
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* AI Lifecycle */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>AI Lifecycle</Label>
+          <div className='flex flex-1 flex-wrap gap-2'>
+            {aiLifecycles.length > 0 ? (
+              aiLifecycles.map((lifecycle, index) => (
+                <Badge
+                  key={index}
+                  variant='secondary'
+                  className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                >
+                  {lifecycle}
+                </Badge>
+              ))
+            ) : (
+              <span className={cn(valueClassName, 'italic text-gray-500')}>
+                Not set
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Stakeholders Affected */}
+        <div className='flex items-start gap-4'>
+          <Label className={labelClassName}>Stakeholders Affected</Label>
+          <div className='flex flex-1 flex-wrap gap-2'>
+            {stakeholdersAffected.length > 0 ? (
+              stakeholdersAffected.map((stakeholder, index) => (
+                <Badge
+                  key={index}
+                  variant='secondary'
+                  className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'
+                >
+                  {stakeholder}
                 </Badge>
               ))
             ) : (

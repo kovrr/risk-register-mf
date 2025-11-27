@@ -110,6 +110,22 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
 
       <FormField<T>
         control={control}
+        name={'entity' as FieldPath<T>}
+        render={({ field }) => (
+          <FormItem className='col-span-4'>
+            <FormLabel className='text-text-base-primary'>
+              {t('labels.entity', { defaultValue: 'Entity' })}
+            </FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField<T>
+        control={control}
         name={'group_id' as FieldPath<T>}
         render={({ field }) => (
           <FormItem className='col-span-4'>

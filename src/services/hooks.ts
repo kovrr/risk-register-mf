@@ -532,6 +532,16 @@ export const useUpdateRiskScenarioRow = (
         response_plan: data.responsePlan,
         risk_owner: data.owner,
         risk_priority: data.priority,
+        scenario_category: scenario.scenario_data.scenario_category,
+        ai_assets: scenario.scenario_data.ai_assets,
+        tactics: scenario.scenario_data.tactics,
+        event_types: scenario.scenario_data.event_types,
+        impact_types: scenario.scenario_data.impact_types,
+        data_exposure: scenario.scenario_data.data_exposure,
+        entity: scenario.scenario_data.entity,
+        risk_origin: scenario.scenario_data.risk_origin,
+        ai_lifecycle: scenario.scenario_data.ai_lifecycle,
+        stakeholders_affected: scenario.scenario_data.stakeholders_affected,
         impact_distribution: scenario.scenario_data.impact_distribution,
         methodology_insights: scenario.scenario_data.methodology_insights,
         peer_base_rate: scenario.scenario_data.peer_base_rate,
@@ -612,6 +622,16 @@ export const useUpdateRiskScenarioField = (
         response_plan: scenarioData.scenario_data.response_plan,
         risk_owner: scenarioData.scenario_data.risk_owner,
         risk_priority: scenarioData.scenario_data.risk_priority,
+        scenario_category: scenarioData.scenario_data.scenario_category,
+        ai_assets: scenarioData.scenario_data.ai_assets,
+        tactics: scenarioData.scenario_data.tactics,
+        event_types: scenarioData.scenario_data.event_types,
+        impact_types: scenarioData.scenario_data.impact_types,
+        data_exposure: scenarioData.scenario_data.data_exposure,
+        entity: scenarioData.scenario_data.entity,
+        risk_origin: scenarioData.scenario_data.risk_origin,
+        ai_lifecycle: scenarioData.scenario_data.ai_lifecycle,
+        stakeholders_affected: scenarioData.scenario_data.stakeholders_affected,
         impact_distribution: scenarioData.scenario_data.impact_distribution,
         methodology_insights: scenarioData.scenario_data.methodology_insights,
         peer_base_rate: scenarioData.scenario_data.peer_base_rate,
@@ -695,24 +715,31 @@ export const useUpdateRiskScenario = (
         risk_priority:
           data.risk_priority || scenario.scenario_data.risk_priority,
         scenario_category:
-          data.scenario_category || scenario.scenario_data.scenario_category,
-        ai_assets: data.ai_assets || scenario.scenario_data.ai_assets,
-        tactics: data.tactics || scenario.scenario_data.tactics,
-        event_types: data.event_types || scenario.scenario_data.event_types,
-        impact_types: data.impact_types || scenario.scenario_data.impact_types,
+          data.scenario_category ?? scenario.scenario_data.scenario_category,
+        ai_assets: data.ai_assets ?? scenario.scenario_data.ai_assets,
+        tactics: data.tactics ?? scenario.scenario_data.tactics,
+        event_types: data.event_types ?? scenario.scenario_data.event_types,
+        impact_types: data.impact_types ?? scenario.scenario_data.impact_types,
         data_exposure:
-          data.data_exposure || scenario.scenario_data.data_exposure,
+          data.data_exposure ?? scenario.scenario_data.data_exposure,
+        entity: data.entity ?? scenario.scenario_data.entity,
+        risk_origin: data.risk_origin ?? scenario.scenario_data.risk_origin,
+        ai_lifecycle:
+          data.ai_lifecycle ?? scenario.scenario_data.ai_lifecycle,
+        stakeholders_affected:
+          data.stakeholders_affected ??
+          scenario.scenario_data.stakeholders_affected,
         impact_distribution:
-          data.impact_distribution ||
+          data.impact_distribution ??
           scenario.scenario_data.impact_distribution,
         methodology_insights:
-          data.methodology_insights ||
+          data.methodology_insights ??
           scenario.scenario_data.methodology_insights,
         peer_base_rate:
-          data.peer_base_rate || scenario.scenario_data.peer_base_rate,
+          data.peer_base_rate ?? scenario.scenario_data.peer_base_rate,
         relevant_controls:
-          data.relevant_controls || scenario.scenario_data.relevant_controls,
-        ticket: data.ticket || scenario.scenario_data.ticket,
+          data.relevant_controls ?? scenario.scenario_data.relevant_controls,
+        ticket: data.ticket ?? scenario.scenario_data.ticket,
         scenario_type: scenario.scenario_type,
         ...restOfPayload,
       };

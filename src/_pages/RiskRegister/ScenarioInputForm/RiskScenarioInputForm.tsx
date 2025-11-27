@@ -133,6 +133,10 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
           pci: scenario.scenario_data.data_exposure?.pci || undefined,
           phi: scenario.scenario_data.data_exposure?.phi || undefined,
         },
+        entity: scenario.scenario_data.entity || undefined,
+        risk_origin: scenario.scenario_data.risk_origin || [],
+        ai_lifecycle: scenario.scenario_data.ai_lifecycle || [],
+        stakeholders_affected: scenario.scenario_data.stakeholders_affected || [],
       }
       : (() => {
         // Get default group_id from localStorage if available
@@ -179,6 +183,10 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
             pci: undefined,
             phi: undefined,
           },
+          entity: undefined,
+          risk_origin: [],
+          ai_lifecycle: [],
+          stakeholders_affected: [],
         };
       })();
   }, [scenario]);
