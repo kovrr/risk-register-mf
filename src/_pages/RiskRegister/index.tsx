@@ -156,13 +156,15 @@ const RiskRegister = () => {
             </Flex>
           </Flex>
           <Tabs variant='unstyled'>
-            <TabList justifyContent='center' gap='16px'>
+            <TabList w='100%'>
               <Tab
+                flex='1'
                 px='24px'
                 py='16px'
                 borderRadius='0'
                 bg='#F2F4F7'
                 color='gray.600'
+                textAlign='center'
                 _selected={{
                   bg: 'white',
                   color: 'gray.800',
@@ -173,11 +175,13 @@ const RiskRegister = () => {
                 Risk Register Table
               </Tab>
               <Tab
+                flex='1'
                 px='24px'
                 py='16px'
                 borderRadius='0'
                 bg='#F2F4F7'
                 color='gray.600'
+                textAlign='center'
                 _selected={{
                   bg: 'white',
                   color: 'gray.800',
@@ -188,11 +192,13 @@ const RiskRegister = () => {
                 Risk Register Visualization
               </Tab>
               <Tab
+                flex='1'
                 px='24px'
                 py='16px'
                 borderRadius='0'
                 bg='#F2F4F7'
                 color='gray.600'
+                textAlign='center'
                 _selected={{
                   bg: 'white',
                   color: 'gray.800',
