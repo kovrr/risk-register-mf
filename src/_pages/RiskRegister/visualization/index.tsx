@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem, Text } from '@chakra-ui/react';
+import { Box, Flex, Grid, GridItem, Text, Tooltip } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useRiskScenarios } from '@/services/hooks';
 import { type RiskRegisterImpact } from '@/types/riskRegister';
@@ -191,8 +191,18 @@ function RiskRegisterVisualization() {
                       padding='8px 10px'
                       sx={{ boxSizing: 'border-box' }}
                     >
-                      {count > 0 ? (
-                        <>
+                      {count > 0 && (
+                        <Tooltip
+                          label={ids.join(', ')}
+                          bg="#1E293B"
+                          color="white"
+                          fontSize="12px"
+                          borderRadius="8px"
+                          px="10px"
+                          py="6px"
+                          hasArrow
+                          placement="top-end"
+                        >
                           <Text
                             position='absolute'
                             top='6px'
@@ -204,20 +214,12 @@ function RiskRegisterVisualization() {
                             borderRadius='999px'
                             px='6px'
                             py='2px'
+                            cursor="pointer"
                           >
                             {count}
                           </Text>
-                          <Text
-                            fontSize='11px'
-                            mt='4px'
-                            color='#475569'
-                            fontWeight='500'
-                            noOfLines={2}
-                          >
-                            {ids.join(', ')}
-                          </Text>
-                        </>
-                      ) : null}
+                        </Tooltip>
+                      )}
                     </Box>
                   </GridItem>
                 );
