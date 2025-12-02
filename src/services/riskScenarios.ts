@@ -109,36 +109,45 @@ export const deleteRiskScenario = async (
   await client.delete(endpoint);
 };
 
+export type CreateNoteResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    scenario_id: string;
+    user_email: string;
+  };
+};
+
 export const createNote = async (
   client: AxiosInstance,
   scenarioId: string,
   content: string,
-): Promise<NoteOutput> => {
+): Promise<CreateNoteResponse> => {
   const endpoint = withStrapiApiPath(
     `/risk-scenarios/${sanitizeId(scenarioId)}/notes`,
   );
 
-  const { data } = await client.post<NoteOutput>(endpoint, {
+  const { data } = await client.post<CreateNoteResponse>(endpoint, {
     content,
   });
 
-  return (data as any)?.data ?? data;
+  return data;
 };
 
 export const createNoteWithAttachment = async (
   client: AxiosInstance,
   scenarioId: string,
   formData: FormData,
-): Promise<NoteOutput> => {
+): Promise<CreateNoteResponse> => {
   const endpoint = withStrapiApiPath(
     `/risk-scenarios/${sanitizeId(scenarioId)}/notes-with-attachment`,
   );
-  const { data } = await client.post<NoteOutput>(endpoint, formData, {
+  const { data } = await client.post<CreateNoteResponse>(endpoint, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return (data as any)?.data ?? data;
+  return data;
 };
 
 export const downloadAttachment = async (

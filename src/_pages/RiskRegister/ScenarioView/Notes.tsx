@@ -240,12 +240,19 @@ export const Notes: React.FC<{ includeHeader?: boolean }> = ({ includeHeader }) 
                   }
                 : undefined;
 
+            const userEmail = typeof note.user === 'string' ? note.user : note.user.email;
+            const userDisplayName = typeof note.user === 'string'
+              ? note.user
+              : note.user.firstname && note.user.lastname
+              ? `${note.user.firstname} ${note.user.lastname}`
+              : note.user.email;
+
             return (
               <NoteItem
                 key={note.id}
                 noteId={note.id}
-                avatar={note.user}
-                email={note.user}
+                avatar={userDisplayName}
+                email={userEmail}
                 date={note.created_at}
                 content={note.content}
                 attachment={attachment}

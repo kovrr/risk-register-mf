@@ -1,5 +1,6 @@
 import { getGroups, getGroupsWithCreatePermission } from '@/services/groups';
 import {
+	type CreateNoteResponse,
 	createRiskScenario as createRiskScenarioRequest,
 	createNote as createScenarioNote,
 	createNoteWithAttachment as createScenarioNoteWithAttachment,
@@ -1080,7 +1081,7 @@ export const useNotes = (scenarioId: string) => {
 export const useCreateNote = (
 	options?: Omit<
 		UseMutationOptions<
-			Note,
+			CreateNoteResponse,
 			AxiosError,
 			{ scenarioId: string; content: string },
 			unknown
@@ -1092,7 +1093,7 @@ export const useCreateNote = (
 	const queryClient = useQueryClient();
 
 	return useMutation<
-		Note,
+		CreateNoteResponse,
 		AxiosError,
 		{ scenarioId: string; content: string },
 		unknown
@@ -1117,7 +1118,7 @@ export const useCreateNote = (
 export const useCreateNoteWithAttachment = (
 	options?: Omit<
 		UseMutationOptions<
-			Note,
+			CreateNoteResponse,
 			AxiosError,
 			{ scenarioId: string; file: File; content: string },
 			unknown
@@ -1129,7 +1130,7 @@ export const useCreateNoteWithAttachment = (
 	const queryClient = useQueryClient();
 
 	return useMutation<
-		Note,
+		CreateNoteResponse,
 		AxiosError,
 		{ scenarioId: string; file: File; content: string },
 		unknown

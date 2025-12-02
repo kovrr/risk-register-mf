@@ -404,13 +404,25 @@ export type CRQScenarioUpdateRequest = {
 export type DocumentOutput = {
   id: string;
   filename: string;
+  file_path?: string;
+  content_type?: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
+export type UserInfo = {
+  documentId?: string | null;
+  email: string;
+  firstname?: string | null;
+  id: number;
+  lastname?: string | null;
 };
 
 export type NoteOutput = {
   id: string;
   content: string;
-  user: string;
+  user: UserInfo;
   created_at: string;
-  updated_at: string;
+  updated_at: string | null;
   documents: DocumentOutput[];
 };

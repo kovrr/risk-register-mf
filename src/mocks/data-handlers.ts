@@ -471,6 +471,41 @@ export const handlers = [
       return res(ctx.json(buildRiskRegisterResponse()));
     },
   ),
+  // Risk Scenarios Notes API
+  rest.post(
+    `${riskScenariosBasePath}/:scenarioId/notes`,
+    (req, res, ctx) => {
+      const body = req.body as any;
+      return res(
+        ctx.status(200),
+        ctx.json({
+          success: true,
+          message: 'Note added to scenario successfully',
+          data: {
+            scenario_id: req.params.scenarioId,
+            user_email: 'user@example.com',
+          },
+        }),
+      );
+    },
+  ),
+  rest.post(
+    `${riskScenariosBasePath}/:scenarioId/notes-with-attachment`,
+    (req, res, ctx) => {
+      const body = req.body as any;
+      return res(
+        ctx.status(200),
+        ctx.json({
+          success: true,
+          message: 'Note added to scenario successfully',
+          data: {
+            scenario_id: req.params.scenarioId,
+            user_email: 'user@example.com',
+          },
+        }),
+      );
+    },
+  ),
   // Unified Notes API
   rest.get(`${apiBasePath}/notes`, (req, res, ctx) => {
     return res(
