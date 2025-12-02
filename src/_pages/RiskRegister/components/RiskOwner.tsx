@@ -77,27 +77,6 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
   const { showDemoModal } = useContext(DemoExperienceContext);
   const { t } = useTranslation('riskRegister');
 
-  // Debug logs
-  useEffect(() => {
-    console.log('[RiskOwner] ============================================');
-    console.log(
-      '[RiskOwner] Component rendered for scenarioId:',
-      rowData.scenarioId,
-    );
-    console.log('[RiskOwner] value prop (from table):', value);
-    console.log('[RiskOwner] currentValue state:', currentValue);
-    console.log('[RiskOwner] rowData.owner:', rowData.owner);
-    console.log(
-      '[RiskOwner] rowData object:',
-      JSON.stringify(rowData, null, 2),
-    );
-    console.log(
-      '[RiskOwner] Will render:',
-      currentValue ? `Email: "${currentValue}"` : 'Assign',
-    );
-    console.log('[RiskOwner] ============================================');
-  }, [value, currentValue, rowData]);
-
   // Get active group ID from localStorage
   useEffect(() => {
     try {
@@ -249,12 +228,12 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
           hideChevron={!!currentValue}
           fetcher={async (query) => {
             const owners = await getRiskOwners(query);
-            console.log('[RiskOwner] Fetched owners:', owners);
-            console.log('[RiskOwner] Looking for value:', currentValue);
-            const found = owners.find((o) => o.email === currentValue);
-            console.log('[RiskOwner] Found owner for currentValue:', found);
             // If we have a currentValue that's not in the list, add it as a synthetic option
-            if (currentValue && !found && currentValue.includes('@')) {
+            if (
+              currentValue &&
+              !owners.find((o) => o.email === currentValue) &&
+              currentValue.includes('@')
+            ) {
               const syntheticOwner: RiskOwner = {
                 id: currentValue,
                 email: currentValue,
@@ -266,17 +245,8 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
             return owners;
           }}
           renderOption={(owner) => <OwnerView owner={owner} />}
-          getOptionValue={(owner) => {
-            console.log('[RiskOwner] getOptionValue called with:', owner.email);
-            return owner.email;
-          }}
-          getDisplayValue={(owner) => {
-            console.log(
-              '[RiskOwner] getDisplayValue called with:',
-              owner.email,
-            );
-            return <OwnerView owner={owner} />;
-          }}
+          getOptionValue={(owner) => owner.email}
+          getDisplayValue={(owner) => <OwnerView owner={owner} />}
           label='Owner'
           placeholder='Assign'
           value={currentValue}
