@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/atoms/dialog';
-import { type FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { InvitationFormValues } from './components/form-config';
 import { UserInvitationForm } from './UserInvitationForm';
@@ -27,7 +27,7 @@ export const InvitationFormModal: FC<Props> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className='mb-[25px] mt-[75px] max-h-[739px] max-w-[522px] overflow-y-auto'
+        className='mb-[25px] mt-[75px] max-h-[739px] max-w-[522px] min-w-[400px] overflow-y-auto'
         overlayClassName='fixed inset-0 grid items-center '
       >
         <div className='space-y-[20px]'>

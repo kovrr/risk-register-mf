@@ -1,4 +1,3 @@
-import type { InvitationFormValues } from '@/components/molecules/form-config';
 import { getGroups, getGroupsWithCreatePermission } from '@/services/groups';
 import {
 	createRiskScenario as createRiskScenarioRequest,
@@ -15,6 +14,7 @@ import {
 	updateCrqScenario as updateCrqScenarioRequest,
 	updateRiskScenario as updateRiskScenarioRequest,
 } from '@/services/riskScenarios';
+import { withStrapiApiPath } from '@/services/strapi';
 import { useAxiosInstance } from '@/state/HttpClientContext';
 import type { CompanyApiResponseItem, CompanyData } from '@/types/companyForm';
 import type { FrameworkResponseList } from '@/types/frameworkType';
@@ -41,7 +41,7 @@ import {
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query';
-import type { AxiosError } from 'axios';
+import type { AxiosError, AxiosInstance } from 'axios';
 import { useParams } from 'react-router-dom';
 
 // Query Keys - Risk Register specific
@@ -55,6 +55,7 @@ export const QUERY_KEYS = {
 	FQ: ['FQ'], // Financial Quantification
 	FRAMEWORKS: `FRAMEWORKS`,
 	GROUPS: ['GROUPS'],
+	USER_GROUP: 'user-group',
 };
 
 // Resolve API base depending on mock mode:
@@ -873,13 +874,73 @@ export const useRequestPredefinedScenario = (
 };
 
 // ============================================================================
+// USER GROUP HOOKS
+// ============================================================================
+
+/**
+ * Type for user from the API response
+ */
+export type ApiUser = {
+	id: number;
+	documentId: string;
+	email: string;
+	firstname: string;
+	lastname: string;
+	username: string;
+	createdAt: number;
+	updatedAt: number;
+};
+
+/**
+ * Type for user group response from /api/user/group/{groupId}
+ */
+export type UserGroupResponse = {
+	success: boolean;
+	data: ApiUser[];
+	error: null | unknown;
+};
+
+/**
+ * Service function to fetch user group data
+ */
+const getUserGroup = async (
+	client: AxiosInstance,
+	groupId: string | number,
+): Promise<UserGroupResponse> => {
+	const endpoint = withStrapiApiPath(`/user/group/${groupId}`);
+	const { data } = await client.get<UserGroupResponse>(endpoint);
+	return data;
+};
+
+/**
+ * Fetch user group data by group ID
+ */
+export const useUserGroup = (
+	groupId: string | number | null | undefined,
+	options?: StrippedQueryOptions<UserGroupResponse, AxiosError>,
+) => {
+	const client = useAxiosInstance();
+	return useQuery<UserGroupResponse, AxiosError>({
+		queryKey: [QUERY_KEYS.USER_GROUP, groupId],
+		queryFn: () => {
+			if (!groupId) {
+				throw new Error('groupId is required');
+			}
+			return getUserGroup(client, groupId);
+		},
+		enabled: Boolean(groupId) && options?.enabled !== false,
+		...options,
+	});
+};
+
 // RISK OWNER HOOKS
 // ============================================================================
 
 /**
  * Fetch list of risk owners (users who can be assigned to scenarios)
+ * If groupId is provided, fetches owners from the group endpoint
  */
-let mockRiskOwners: RiskOwner[] = [
+const mockRiskOwners: RiskOwner[] = [
 	{
 		id: 'mock-owner-1',
 		email: 'risk.owner@example.com',
@@ -901,13 +962,61 @@ let mockRiskOwners: RiskOwner[] = [
 ];
 
 export const useRiskOwners = (
+	groupId?: string | number | null,
 	options?: StrippedQueryOptions<RiskOwner[], AxiosError>,
 ) => {
+	const client = useAxiosInstance();
+
+	// Always call useQuery, but conditionally enable it and use different query keys/functions
 	return useQuery<RiskOwner[], AxiosError>({
-		queryKey: [QUERY_KEYS.RISK_OWNER],
-		queryFn: async () => mockRiskOwners,
+		queryKey: groupId
+			? [QUERY_KEYS.RISK_OWNER, groupId]
+			: [QUERY_KEYS.RISK_OWNER],
+		queryFn: async () => {
+			if (groupId) {
+				const groupData = await getUserGroup(client, groupId);
+				// Map API users to RiskOwner format
+				return (groupData.data ?? []).map(
+					(user): RiskOwner => ({
+						id: user.documentId || String(user.id),
+						email: user.email,
+						active_tenant: '',
+						tenant_ids: [],
+					}),
+				);
+			}
+			return mockRiskOwners;
+		},
+		enabled: options?.enabled !== false, // Allow disabling via options
 		...options,
 	});
+};
+
+/**
+ * Type for invitation API response
+ */
+export type InvitationResponse = {
+	ok: boolean;
+	token: string;
+	data: {
+		documentId: string;
+		email: string;
+		token: string;
+		expiresAt: string;
+		consumed: boolean;
+	};
+};
+
+/**
+ * Service function to create an invitation
+ */
+const createInvitation = async (
+	client: AxiosInstance,
+	payload: { email: string; groupId: string; roleType: string },
+): Promise<InvitationResponse> => {
+	const endpoint = withStrapiApiPath('/invitations');
+	const { data } = await client.post<InvitationResponse>(endpoint, payload);
+	return data;
 };
 
 /**
@@ -915,30 +1024,31 @@ export const useRiskOwners = (
  */
 export const useCreateRiskOwner = (
 	options?: Omit<
-		UseMutationOptions<RiskOwner, AxiosError, InvitationFormValues>,
+		UseMutationOptions<
+			InvitationResponse,
+			AxiosError,
+			{ email: string; groupId: string }
+		>,
 		'mutationFn'
 	>,
 ) => {
 	const queryClient = useQueryClient();
+	const client = useAxiosInstance();
 
 	return useMutation({
-		mutationFn: async (userDetails: InvitationFormValues) => {
-			const id =
-				typeof globalThis.crypto?.randomUUID === 'function'
-					? globalThis.crypto.randomUUID()
-					: `mock-owner-${Date.now()}`;
-			const newOwner: RiskOwner = {
-				id,
+		mutationFn: async (userDetails: { email: string; groupId: string }) => {
+			if (!userDetails.groupId) {
+				throw new Error('Group ID is required');
+			}
+			return createInvitation(client, {
 				email: userDetails.email,
-				active_tenant: '',
-				tenant_ids: [],
-			};
-			mockRiskOwners = [...mockRiskOwners, newOwner];
-			return newOwner;
+				groupId: userDetails.groupId,
+				roleType: 'group_viewer', // Hard coded as requested
+			});
 		},
 		...options,
 		onSuccess: (data, variables, onMutateResult, context) => {
-			// Invalidate the risk owners query
+			// Invalidate the risk owners query to refresh the list
 			void queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RISK_OWNER] });
 
 			// Call the original onSuccess if it exists

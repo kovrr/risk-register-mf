@@ -8,11 +8,11 @@ import {
   useRiskOwners,
 } from '@/services/hooks';
 import type { RiskOwner, RiskRegisterRow } from '@/types/riskRegister';
+import { useQueryClient } from '@tanstack/react-query';
 import { UserRound } from 'lucide-react';
 import { useIsGuestUser } from 'permissions/use-permissions';
 import { type FC, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import type { InvitationFormValues } from '../InvitationForm/components/form-config';
 import { InvitationFormModal } from '../InvitationForm/InvitationFormModal';
@@ -41,6 +41,20 @@ const OwnerView = ({ owner }: { owner: RiskOwner }) => {
   );
 };
 
+// Display component for email string (when value is email directly but not in owners list)
+const EmailDisplay = ({ email }: { email: string }) => {
+  return (
+    <div className='flex items-center gap-2'>
+      <OwnerAvatar />
+      <div className='flex flex-col'>
+        <div className='text-ellipsis text-sm text-text-base-primary'>
+          {email}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 type Props = {
   value?: string;
   rowData: RiskRegisterRow;
@@ -57,27 +71,79 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
   const [isInvitationFormOpen, setIsInvitationFormOpen] = useState(false);
   const [invitationFormInitialValue, setInvitationFormInitialValue] =
     useState<string>('');
+  const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
 
   const isGuestUser = useIsGuestUser();
   const { showDemoModal } = useContext(DemoExperienceContext);
   const { t } = useTranslation('riskRegister');
 
-  const { refetch: _getRiskOwners } = useRiskOwners();
+  // Debug logs
+  useEffect(() => {
+    console.log('[RiskOwner] ============================================');
+    console.log(
+      '[RiskOwner] Component rendered for scenarioId:',
+      rowData.scenarioId,
+    );
+    console.log('[RiskOwner] value prop (from table):', value);
+    console.log('[RiskOwner] currentValue state:', currentValue);
+    console.log('[RiskOwner] rowData.owner:', rowData.owner);
+    console.log(
+      '[RiskOwner] rowData object:',
+      JSON.stringify(rowData, null, 2),
+    );
+    console.log(
+      '[RiskOwner] Will render:',
+      currentValue ? `Email: "${currentValue}"` : 'Assign',
+    );
+    console.log('[RiskOwner] ============================================');
+  }, [value, currentValue, rowData]);
+
+  // Get active group ID from localStorage
+  useEffect(() => {
+    try {
+      const savedGroupId = localStorage.getItem('active_group_id');
+      setActiveGroupId(savedGroupId);
+    } catch (error) {
+      console.warn('Failed to read active_group_id from localStorage:', error);
+    }
+  }, []);
+
+  // Use the hook directly to get data immediately
+  const { data: ownersData = [], refetch: _getRiskOwners } =
+    useRiskOwners(activeGroupId);
+
   const getRiskOwners = useCallback(
     async (_query?: string): Promise<RiskOwner[]> => {
+      // Return cached data immediately if available, otherwise refetch
+      if (ownersData.length > 0 && !_query) {
+        return ownersData;
+      }
       const { data } = await _getRiskOwners();
       return data ?? [];
     },
-    [_getRiskOwners],
+    [_getRiskOwners, ownersData],
   );
 
+  // Update currentValue when value prop changes
+  useEffect(() => {
+    if (value !== currentValue) {
+      setCurrentValue(value ?? '');
+    }
+  }, [value, currentValue]);
+
+  // Check if currentValue is an email that exists in owners list
+  const foundOwner = ownersData.find((o) => o.email === currentValue);
+  const isEmailValue = currentValue?.includes('@') ?? false;
+
   const { mutateAsync: createRiskOwner } = useCreateRiskOwner({
-    onSuccess: async (riskOwner) => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.RISK_OWNER,
       });
       setIsInvitationFormOpen(false);
-      await handleChange(riskOwner.id);
+      // Refresh the owners list to show the newly invited user
+      await _getRiskOwners();
+      toast.success('Invitation sent successfully');
     },
     onError: (error) => {
       const errorData = error.response?.data as {
@@ -97,7 +163,10 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
       showDemoModal({ title: t('demo.editRiskOwner') });
       return;
     }
-    await createRiskOwner(userDetails);
+    await createRiskOwner({
+      email: userDetails.email,
+      groupId: userDetails.groupId,
+    });
   };
 
   const {
@@ -124,7 +193,8 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
   useEffect(() => {
     if (isGuestUser && value) {
       void getRiskOwners().then((owners) => {
-        const owner = owners.find((o) => o.id === value);
+        // Value is now email, so find by email
+        const owner = owners.find((o) => o.email === value);
         setCurrentOwner(owner || null);
       });
     } else {
@@ -154,34 +224,67 @@ export const RiskOwnerDropdownMutate: FC<Props> = ({
 
   return (
     <>
-      <AsyncSelect
-        key={currentValue}
-        preload
-        onCreateOption={(inputValue) => {
-          setInvitationFormInitialValue(inputValue);
-          setIsInvitationFormOpen(true);
-        }}
-        filterFn={(owner, input) =>
-          owner.email.toLowerCase().includes(input.toLowerCase())
-        }
-        triggerVariant={!currentValue ? 'outline' : 'ghost'}
-        triggerClassName={
-          !currentValue
-            ? 'h-[30px] text-text-base-secondary font-bold border-2 border-stroke-base-1'
-            : 'h-[30px]'
-        }
-        hideChevron={!!currentValue}
-        fetcher={getRiskOwners}
-        renderOption={(owner) => <OwnerView owner={owner} />}
-        getOptionValue={(owner) => owner.id}
-        getDisplayValue={(owner) => <OwnerView owner={owner} />}
-        label='Owner'
-        placeholder='Assign'
-        value={currentValue}
-        onChange={handleChange}
-        disabled={isMutating || isLoading || disabled}
-        data-testid='risk-owner-dropdown'
-      />
+      {currentValue && isEmailValue && !foundOwner ? (
+        // Display email directly when value exists but not in owners list
+        <div className='flex items-center gap-2 h-[30px]'>
+          <EmailDisplay email={currentValue} />
+        </div>
+      ) : (
+        <AsyncSelect
+          key={currentValue}
+          preload
+          onCreateOption={(inputValue) => {
+            setInvitationFormInitialValue(inputValue);
+            setIsInvitationFormOpen(true);
+          }}
+          filterFn={(owner, input) =>
+            owner.email.toLowerCase().includes(input.toLowerCase())
+          }
+          triggerVariant={!currentValue ? 'outline' : 'ghost'}
+          triggerClassName={
+            !currentValue
+              ? 'h-[30px] text-text-base-secondary font-bold border-2 border-stroke-base-1'
+              : 'h-[30px]'
+          }
+          hideChevron={!!currentValue}
+          fetcher={async (query) => {
+            const owners = await getRiskOwners(query);
+            console.log('[RiskOwner] Fetched owners:', owners);
+            console.log('[RiskOwner] Looking for value:', currentValue);
+            const found = owners.find((o) => o.email === currentValue);
+            console.log('[RiskOwner] Found owner for currentValue:', found);
+            // If we have a currentValue that's not in the list, add it as a synthetic option
+            if (currentValue && !found && currentValue.includes('@')) {
+              const syntheticOwner: RiskOwner = {
+                id: currentValue,
+                email: currentValue,
+                active_tenant: '',
+                tenant_ids: [],
+              };
+              return [syntheticOwner, ...owners];
+            }
+            return owners;
+          }}
+          renderOption={(owner) => <OwnerView owner={owner} />}
+          getOptionValue={(owner) => {
+            console.log('[RiskOwner] getOptionValue called with:', owner.email);
+            return owner.email;
+          }}
+          getDisplayValue={(owner) => {
+            console.log(
+              '[RiskOwner] getDisplayValue called with:',
+              owner.email,
+            );
+            return <OwnerView owner={owner} />;
+          }}
+          label='Owner'
+          placeholder='Assign'
+          value={currentValue}
+          onChange={handleChange}
+          disabled={isMutating || isLoading || disabled}
+          data-testid='risk-owner-dropdown'
+        />
+      )}
       <InvitationFormModal
         open={isInvitationFormOpen}
         onOpenChange={setIsInvitationFormOpen}
