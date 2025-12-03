@@ -24,6 +24,7 @@ import { ScenarioDetails } from './Cells/ScenarioDetails';
 import { TableActions } from './Cells/TableActions';
 import { PriorityDropdownMutate } from '../components/PriorityDropdownMutate';
 import { RiskOwnerDropdownMutate } from '../components/RiskOwner';
+import { ResponsePlanDropdownMutate } from '../components/ResponsePlanDropdownMutate';
 
 type RiskRegisterTableProps = {
   groupId?: string | null;
@@ -81,6 +82,7 @@ const RiskRegisterTable: React.FC<RiskRegisterTableProps> = ({ groupId }) => {
                 'Impact',
                 'Likelihood',
                 'Status',
+                'Response Plan',
                 'Owner',
                 '',
               ].map((h) => (
@@ -140,6 +142,9 @@ const RiskRegisterTable: React.FC<RiskRegisterTableProps> = ({ groupId }) => {
                   </Td>
                   <Td paddingLeft='16px'>
                     <StatusBadge status={String(d.status)} />
+                  </Td>
+                  <Td paddingLeft='16px'>
+                    <ResponsePlanDropdownMutate value={d.responsePlan} rowData={d} />
                   </Td>
                   <Td paddingLeft='16px' color='gray.700'>
                     <RiskOwnerDropdownMutate value={d.owner} rowData={d} />
