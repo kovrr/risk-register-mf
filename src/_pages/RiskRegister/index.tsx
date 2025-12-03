@@ -1,112 +1,74 @@
 import ScenarioTopBarNoSearch from '@/_pages/RiskRegister/components/ScenarioTopBarNoSearch';
-import {
-  Box,
-  Flex,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react';
-import type React from 'react';
+import React, { useState } from 'react';
 import KovrrInsights from './insights';
 import RiskRegisterTable from './RiskRegisterTable';
 import RiskRegisterVisualization from './visualization';
 
-const LAYOUT_CONTAINER_PROPS = {
-  maxW: '1440px',
-  mx: 'auto',
-  px: { base: '20px', md: '32px' },
-  width: '100%',
-};
-
-const PANEL_CONTAINER_PROPS = {
-  ...LAYOUT_CONTAINER_PROPS,
-  py: { base: '24px', md: '32px' },
-  minH: 'calc(100vh - 160px)',
-};
+type TabKey = 'table' | 'visualization' | 'insights';
 
 const RiskRegister: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<TabKey>('table');
+
+  const tabClasses = (key: TabKey) =>
+    [
+      'flex-1 px-6 py-4 text-center text-sm font-bold border-b-2 transition-colors',
+      activeTab === key
+        ? 'bg-white text-gray-800 border-[#6E56CF]'
+        : 'bg-[#F2F4F7] text-gray-600 border-transparent',
+    ].join(' ');
+
   return (
-    <Box minH='100vh'>
-      <Box {...LAYOUT_CONTAINER_PROPS} py={{ base: '24px', md: '32px' }}>
-        <Flex direction='column' gap='24px'>
+    <div className='min-h-screen'>
+      <div className='mx-auto w-full max-w-[1440px] px-5 py-6 md:px-8 md:py-8'>
+        <div className='flex flex-col gap-6'>
           <ScenarioTopBarNoSearch />
-          <Tabs variant='unstyled'>
-            <TabList w='100%'>
-              <Tab
-                flex='1'
-                px='24px'
-                py='16px'
-                borderRadius='0'
-                bg='#F2F4F7'
-                color='gray.600'
-                textAlign='center'
-                _selected={{
-                  bg: 'white',
-                  color: 'gray.800',
-                  fontWeight: 700,
-                  borderBottom: '2px solid #6E56CF',
-                }}
-              >
-                Risk Register Table
-              </Tab>
-              <Tab
-                flex='1'
-                px='24px'
-                py='16px'
-                borderRadius='0'
-                bg='#F2F4F7'
-                color='gray.600'
-                textAlign='center'
-                _selected={{
-                  bg: 'white',
-                  color: 'gray.800',
-                  fontWeight: 700,
-                  borderBottom: '2px solid #6E56CF',
-                }}
-              >
-                Risk Register Visualization
-              </Tab>
-              <Tab
-                flex='1'
-                px='24px'
-                py='16px'
-                borderRadius='0'
-                bg='#F2F4F7'
-                color='gray.600'
-                textAlign='center'
-                _selected={{
-                  bg: 'white',
-                  color: 'gray.800',
-                  fontWeight: 700,
-                  borderBottom: '2px solid #6E56CF',
-                }}
-              >
-                Kovrr Insights
-              </Tab>
-            </TabList>
-            <TabPanels mt='24px'>
-              <TabPanel padding='0'>
-                <Box {...PANEL_CONTAINER_PROPS}>
-                  <RiskRegisterTable />
-                </Box>
-              </TabPanel>
-              <TabPanel padding='0'>
-                <Box {...PANEL_CONTAINER_PROPS}>
-                  <RiskRegisterVisualization />
-                </Box>
-              </TabPanel>
-              <TabPanel padding='0'>
-                <Box {...PANEL_CONTAINER_PROPS}>
-                  <KovrrInsights />
-                </Box>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Flex>
-      </Box>
-    </Box>
+
+          {/* Tabs */}
+          <div className='flex w-full border-b border-slate-200'>
+            <button
+              type='button'
+              className={tabClasses('table')}
+              onClick={() => setActiveTab('table')}
+            >
+              Risk Register Table
+            </button>
+            <button
+              type='button'
+              className={tabClasses('visualization')}
+              onClick={() => setActiveTab('visualization')}
+            >
+              Risk Register Visualization
+            </button>
+            <button
+              type='button'
+              className={tabClasses('insights')}
+              onClick={() => setActiveTab('insights')}
+            >
+              Kovrr Insights
+            </button>
+          </div>
+
+          {/* Panels */}
+          <div className='mt-6 min-h-[calc(100vh-160px)]'>
+            {activeTab === 'table' && (
+              <div className='mx-auto max-w-[1440px]'>
+                <RiskRegisterTable />
+              </div>
+            )}
+            {activeTab === 'visualization' && (
+              <div className='mx-auto max-w-[1440px]'>
+                <RiskRegisterVisualization />
+              </div>
+            )}
+            {activeTab === 'insights' && (
+              <div className='mx-auto max-w-[1440px]'>
+                <KovrrInsights />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

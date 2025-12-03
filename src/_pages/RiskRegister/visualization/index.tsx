@@ -1,4 +1,3 @@
-import { Box, Flex, Grid, GridItem, Text, Tooltip } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useRiskScenarios } from '@/services/hooks';
 import { type RiskRegisterImpact } from '@/types/riskRegister';
@@ -122,232 +121,178 @@ function RiskRegisterVisualization() {
   }, [items]);
 
   return (
-    <Flex gap='24px' alignItems='flex-start'>
+    <div className='flex items-start gap-6'>
       {/* 5x5 Matrix (left) */}
-      <Box>
-        <Text fontSize='17px' fontWeight='700' mb='12px'>
+      <div>
+        <h2 className='mb-3 text-[17px] font-bold text-slate-800'>
           Risk Prioritization Matrix (5×5)
-        </Text>
-        <Grid templateColumns='96px repeat(5, 140px)' gap='4px'> {/* padding between cells */}
+        </h2>
+        <div
+          className='grid gap-1'
+          style={{ gridTemplateColumns: '96px repeat(5, 140px)' }}
+        >
           {/* Header Row (blank + X-axis labels) */}
-          <GridItem />
+          <div />
           {likelihoodLabels.map((lbl) => (
-            <GridItem key={lbl}>
-              <Box
-                bg='#F8FAFC'
-                color='#475569'
-                height='30px'
-                display='flex'
-                alignItems='center'
-                justifyContent='center'
-                sx={{ boxSizing: 'border-box' }}
-              >
-                <Text
-                  fontWeight='700'
-                  fontSize='14px'
-                  textTransform='uppercase'
-                >
-                  {lbl}
-                </Text>
-              </Box>
-            </GridItem>
+            <div
+              key={lbl}
+              className='flex h-[30px] items-center justify-center bg-[#F8FAFC] text-[#475569] box-border'
+            >
+              <span className='text-[14px] font-bold uppercase'>{lbl}</span>
+            </div>
           ))}
 
           {/* Rows */}
           {impactLabels.map((impactLabel) => (
-            <GridItem key={impactLabel} colSpan={6} display='contents'>
-              <GridItem>
-                <Box
-                  bg='#F1F5F9'
-                  color='#475569'
-                  height='80px'
-                  display='flex'
-                  alignItems='center'
-                  justifyContent='flex-start'
-                  pl='8px'
-                  sx={{ boxSizing: 'border-box' }}
-                >
-                  <Text
-                    fontWeight='700'
-                    fontSize='14px'
-                    textTransform='uppercase'
-                  >
-                    {impactLabel}
-                  </Text>
-                </Box>
-              </GridItem>
+            <div key={impactLabel} className='contents'>
+              <div className='flex h-20 items-center bg-[#F1F5F9] pl-2 text-[#475569] box-border'>
+                <span className='text-[14px] font-bold uppercase'>
+                  {impactLabel}
+                </span>
+              </div>
               {likelihoodLabels.map((likelihoodLabel) => {
                 const key = `${likelihoodLabel}|${impactLabel}`;
                 const cell = matrix[key];
                 const ids = cell?.ids ?? [];
                 const count = ids.length;
-                const bg = cellColorMap[impactLabel]?.[likelihoodLabel] || '#F8FAFC';
+                const bg =
+                  cellColorMap[impactLabel]?.[likelihoodLabel] || '#F8FAFC';
                 return (
-                  <GridItem key={key}>
-                    <Box
-                      bg={bg}
-                      height='80px'
-                      position='relative'
-                      padding='8px 10px'
-                      sx={{ boxSizing: 'border-box' }}
+                  <div key={key}>
+                    <div
+                      className='group relative h-20 px-2 py-2'
+                      style={{ backgroundColor: bg, boxSizing: 'border-box' }}
                     >
                       {count > 0 && (
-                        <Tooltip
-                          label={ids.join(', ')}
-                          bg="#1E293B"
-                          color="white"
-                          fontSize="12px"
-                          borderRadius="8px"
-                          px="10px"
-                          py="6px"
-                          hasArrow
-                          placement="top-end"
-                        >
-                          <Text
-                            position='absolute'
-                            top='6px'
-                            right='8px'
-                            fontWeight='700'
-                            fontSize='11px'
-                            bg='#6366F1'
-                            color='white'
-                            borderRadius='999px'
-                            px='6px'
-                            py='2px'
-                            cursor="pointer"
-                          >
+                        <>
+                          <span className='absolute right-2 top-1 rounded-full bg-[#6366F1] px-2 py-[2px] text-[11px] font-bold text-white'>
                             {count}
-                          </Text>
-                        </Tooltip>
+                          </span>
+                          <div className='pointer-events-none absolute bottom-full right-2 mb-1 hidden max-w-[220px] whitespace-pre-wrap rounded-md bg-slate-900 px-2 py-1 text-[11px] text-white shadow-lg group-hover:block'>
+                            {ids.join(', ')}
+                          </div>
+                        </>
                       )}
-                    </Box>
-                  </GridItem>
+                    </div>
+                  </div>
                 );
               })}
-            </GridItem>
+            </div>
           ))}
-        </Grid>
-      </Box>
+        </div>
+      </div>
 
       {/* Metrics sidebar (right) */}
-      <Flex direction='column' gap='16px' minW='360px' flex='1'>
-        <Box className='p-4 rounded-2xl bg-white shadow-sm'>
-          <Text fontSize='16px' fontWeight='700' mb='12px'>
+      <div className='flex min-w-[360px] flex-1 flex-col gap-4'>
+        <div className='rounded-2xl bg-white p-4 shadow-sm'>
+          <h3 className='mb-3 text-[16px] font-bold text-slate-800'>
             Top AI Assets by Risk Count
-          </Text>
-          <Flex direction='column' gap='6px'>
+          </h3>
+          <div className='flex flex-col gap-1.5'>
             {metrics.topAssets.map(([asset, n], idx) => {
               const isLast = idx === metrics.topAssets.length - 1;
               return (
-                <Flex
+                <div
                   key={asset}
-                  alignItems='center'
-                  justifyContent='space-between'
-                  pb={isLast ? 0 : '6px'}
-                  mb={isLast ? 0 : '6px'}
-                  borderBottom={isLast ? 'none' : '1px solid #E2E8F0'}
+                  className={`flex items-center justify-between ${
+                    isLast ? '' : 'mb-1.5 border-b border-slate-200 pb-1.5'
+                  }`}
                 >
-                  <Text>{asset}</Text>
-                  <Text color='#2563EB' fontWeight='600'>
+                  <span className='text-sm text-slate-800'>{asset}</span>
+                  <span className='text-sm font-semibold text-[#2563EB]'>
                     {n} {n === 1 ? 'risk' : 'risks'}
-                  </Text>
-                </Flex>
+                  </span>
+                </div>
               );
             })}
             {metrics.topAssets.length === 0 && (
-              <Text color='gray.500'>No data</Text>
+              <span className='text-sm text-gray-500'>No data</span>
             )}
-          </Flex>
-        </Box>
+          </div>
+        </div>
 
-        <Box className='p-4 rounded-2xl bg-white shadow-sm'>
-          <Text fontSize='16px' fontWeight='700' mb='12px'>
+        <div className='rounded-2xl bg-white p-4 shadow-sm'>
+          <h3 className='mb-3 text-[16px] font-bold text-slate-800'>
             Most Common MITRE ATLAS Tactics
-          </Text>
-          <Flex direction='column' gap='6px'>
+          </h3>
+          <div className='flex flex-col gap-1.5'>
             {metrics.commonTactics.map(([tactic, n], idx) => {
               const isLast = idx === metrics.commonTactics.length - 1;
               return (
-                <Flex
+                <div
                   key={tactic}
-                  alignItems='center'
-                  justifyContent='space-between'
-                  pb={isLast ? 0 : '6px'}
-                  mb={isLast ? 0 : '6px'}
-                  borderBottom={isLast ? 'none' : '1px solid #E2E8F0'}
+                  className={`flex items-center justify-between ${
+                    isLast ? '' : 'mb-1.5 border-b border-slate-200 pb-1.5'
+                  }`}
                 >
-                  <Text>{tactic}</Text>
-                  <Text color='#2563EB' fontWeight='600'>
+                  <span className='text-sm text-slate-800'>{tactic}</span>
+                  <span className='text-sm font-semibold text-[#2563EB]'>
                     {n}
-                  </Text>
-                </Flex>
+                  </span>
+                </div>
               );
             })}
             {metrics.commonTactics.length === 0 && (
-              <Text color='gray.500'>No data</Text>
+              <span className='text-sm text-gray-500'>No data</span>
             )}
-          </Flex>
-        </Box>
+          </div>
+        </div>
 
-        <Box className='p-4 rounded-2xl bg-white shadow-sm'>
-          <Text fontSize='16px' fontWeight='700' mb='12px'>
+        <div className='rounded-2xl bg-white p-4 shadow-sm'>
+          <h3 className='mb-3 text-[16px] font-bold text-slate-800'>
             Impact Type Distribution
-          </Text>
-          <Flex direction='column' gap='6px'>
+          </h3>
+          <div className='flex flex-col gap-1.5'>
             {metrics.impactTypes.map(([it, n], idx) => {
               const isLast = idx === metrics.impactTypes.length - 1;
               return (
-                <Flex
+                <div
                   key={it}
-                  alignItems='center'
-                  justifyContent='space-between'
-                  pb={isLast ? 0 : '6px'}
-                  mb={isLast ? 0 : '6px'}
-                  borderBottom={isLast ? 'none' : '1px solid #E2E8F0'}
+                  className={`flex items-center justify-between ${
+                    isLast ? '' : 'mb-1.5 border-b border-slate-200 pb-1.5'
+                  }`}
                 >
-                  <Text>{it}</Text>
-                  <Text color='#2563EB' fontWeight='600'>
+                  <span className='text-sm text-slate-800'>{it}</span>
+                  <span className='text-sm font-semibold text-[#2563EB]'>
                     {n}
-                  </Text>
-                </Flex>
+                  </span>
+                </div>
               );
             })}
             {metrics.impactTypes.length === 0 && (
-              <Text color='gray.500'>No data</Text>
+              <span className='text-sm text-gray-500'>No data</span>
             )}
-          </Flex>
-        </Box>
+          </div>
+        </div>
 
-        <Box className='p-4 rounded-2xl bg-white shadow-sm'>
-          <Text fontSize='16px' fontWeight='700' mb='12px'>
+        <div className='rounded-2xl bg-white p-4 shadow-sm'>
+          <h3 className='mb-3 text-[16px] font-bold text-slate-800'>
             Controls Mapped to Multiple Scenarios
-          </Text>
-          <Flex direction='column' gap='6px'>
+          </h3>
+          <div className='flex flex-col gap-1.5'>
             {metrics.multiScenarioControls.map(([ctrl, n], idx) => {
               const isLast = idx === metrics.multiScenarioControls.length - 1;
               return (
-                <Flex
+                <div
                   key={ctrl}
-                  alignItems='center'
-                  justifyContent='space-between'
-                  pb={isLast ? 0 : '6px'}
-                  mb={isLast ? 0 : '6px'}
-                  borderBottom={isLast ? 'none' : '1px solid #E2E8F0'}
+                  className={`flex items-center justify-between ${
+                    isLast ? '' : 'mb-1.5 border-b border-slate-200 pb-1.5'
+                  }`}
                 >
-                  <Text>{ctrl}</Text>
-                  <Text color='#2563EB' fontWeight='600'>
+                  <span className='text-sm text-slate-800'>{ctrl}</span>
+                  <span className='text-sm font-semibold text-[#2563EB]'>
                     {n} {n === 1 ? 'scenario' : 'scenarios'}
-                  </Text>
-                </Flex>
+                  </span>
+                </div>
               );
             })}
             {metrics.multiScenarioControls.length === 0 && (
-              <Text color='gray.500'>No data</Text>
+              <span className='text-sm text-gray-500'>No data</span>
             )}
-          </Flex>
-        </Box>
-      </Flex>
-    </Flex>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
