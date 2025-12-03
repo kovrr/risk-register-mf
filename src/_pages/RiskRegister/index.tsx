@@ -24,18 +24,7 @@ import KovrrInsights from './insights';
 import RiskRegisterTable from './RiskRegisterTable';
 import RiskRegisterVisualization from './visualization';
 
-const LAYOUT_CONTAINER_PROPS = {
-  maxW: '1440px',
-  mx: 'auto',
-  px: { base: '20px', md: '32px' },
-  width: '100%',
-};
-
-const PANEL_CONTAINER_PROPS = {
-  ...LAYOUT_CONTAINER_PROPS,
-  py: { base: '24px', md: '32px' },
-  minH: 'calc(100vh - 160px)',
-};
+type TabKey = 'table' | 'visualization' | 'insights';
 
 const RiskRegister = () => {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
@@ -83,9 +72,9 @@ const RiskRegister = () => {
   };
 
   return (
-    <Box minH='100vh'>
-      <Box {...LAYOUT_CONTAINER_PROPS} py={{ base: '24px', md: '32px' }}>
-        <Flex direction='column' gap='24px'>
+    <div className='min-h-screen'>
+      <div className='mx-auto w-full max-w-[1440px] px-5 py-6 md:px-8 md:py-8'>
+        <div className='flex flex-col gap-6'>
           <ScenarioTopBarNoSearch />
           <Flex justifyContent='flex-start'>
             <Flex alignItems='center' gap='12px'>
