@@ -11,7 +11,7 @@
 ## how to run SYSTEM TESTS (full e2e on staging env with live server)
 
 - note: no need to setup the server since we are working with everything in sme testing
-- add a `cypress.env.json` file with the following format, if you can't find a user/password you can just create one in the frontegg dashboard...:
+- add a `cypress.env.json` file with the following format (use any valid test credentials provided by your admin):
 
 ```json
 {

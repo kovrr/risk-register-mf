@@ -43,11 +43,16 @@ const cellColorMap: Record<string, Record<string, string>> = {
   },
 };
 
-function RiskRegisterVisualization() {
+type RiskRegisterVisualizationProps = {
+  groupId?: string | null;
+};
+
+function RiskRegisterVisualization({ groupId }: RiskRegisterVisualizationProps) {
   // Fetch a large page to aggregate. If backend provides viz endpoints later, we can swap.
   const { data } = useRiskScenarios({
     page: 1,
     size: 250,
+    groupId: groupId ?? undefined,
   });
 
   const items = Array.isArray(data?.items) ? data.items : [];

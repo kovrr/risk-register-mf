@@ -1,21 +1,26 @@
 // @ts-nocheck
 
 import { applicationTypes } from '@/types/applicationTypes';
+import type { Group } from '@/types/group';
 import { QuantificationStatus } from '@/types/quantificationData';
 import type { RiskOwner } from '@/types/riskRegister';
+// TODO: Migrate from MSW v1 (rest) to MSW v2 (http)
+// Current handlers use v1 API - need to convert to v2 format
+// Example: rest.get(url, (req, res, ctx) => ...) becomes http.get(url, ({ request }) => HttpResponse.json(...))
 import { rest } from 'msw';
-import { fronteggAuthServerUrl } from './fronteggAuthServerUrl';
 
-// Using environment variable instead of urls-defs
+// Use relative base so MSW matches same-origin requests from the app
+// All handlers should use relative paths starting with /api
+const getApiBasePath = () => `/api`;
+const apiBasePath = getApiBasePath();
+const riskScenariosBasePath = `${apiBasePath}/risk-scenarios`;
+
+// Legacy function - use apiBasePath instead for MSW handlers
+// Only used for non-MSW endpoints like external APIs
 const getBaseApiUrl = () =>
   import.meta.env.VITE_API_URL ||
   import.meta.env.NEXT_PUBLIC_API_URL ||
   'http://localhost:8000';
-
-// Use relative base so MSW matches same-origin requests from the app
-const getApiBasePath = () => `/api`;
-const apiBasePath = getApiBasePath();
-const riskScenariosBasePath = `${apiBasePath}/risk-scenarios`;
 
 import { chance } from './builders/buildingUtils';
 import {
@@ -83,7 +88,7 @@ const tenantId =
   APPLICATION_TYPE === applicationTypes.ROCI ? 'roci-tenant-id' : chance.guid();
 
 export const handlers = [
-  getMock(`${getBaseApiUrl()}/api/tenant`, {
+  getMock(`${apiBasePath}/tenant`, {
     id: tenantId,
     name: 'Kovrr Test Tenant',
     feature_toggles: [
@@ -122,15 +127,15 @@ export const handlers = [
       { name: 'enable.selfAssessment', value: true },
     ],
   }),
-  getMock(`${getBaseApiUrl()}/api/tenant_application_details`, {
+  getMock(`${apiBasePath}/tenant_application_details`, {
     application_type: APPLICATION_TYPE,
     application_sub_type: APPLICATION_SUBTYPE,
   }),
-  getMock(`${getBaseApiUrl()}/api/tenant/remaining_licenses`, {
+  getMock(`${apiBasePath}/tenant/remaining_licenses`, {
     remaining_licenses_amount: chance.integer({ min: 2, max: 12 }),
   }),
   getMock(
-    `${getBaseApiUrl()}/api/fq/finished-fq-id`,
+    `${apiBasePath}/fq/finished-fq-id`,
     buildQuantification({
       id: 'finished-fq-id',
       results: nistResultsFQ,
@@ -138,7 +143,7 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/finished-cis-fq-id`,
+    `${apiBasePath}/fq/finished-cis-fq-id`,
     buildQuantification({
       id: 'finished-cis-fq-id',
       results_narrative: cisResultsFQNewSchema,
@@ -147,7 +152,7 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/finished-second-cis-fq-id`,
+    `${apiBasePath}/fq/finished-second-cis-fq-id`,
     buildQuantification({
       id: 'finished-second-cis-fq-id',
       results_narrative: cisResultsFQNewSchema,
@@ -165,7 +170,7 @@ export const handlers = [
 
   postMock(`http://localhost:3000/next-api/log`, {}),
   getMock(
-    `${getBaseApiUrl()}/api/fq/running-fq-id`,
+    `${apiBasePath}/fq/running-fq-id`,
     buildQuantification({
       id: 'running-fq-id',
       input_data: mockCisInputData,
@@ -173,7 +178,7 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/cis-fq-id`,
+    `${apiBasePath}/fq/cis-fq-id`,
     buildQuantification({
       id: 'cis-fq-id',
       results: cisResultsFQ,
@@ -181,7 +186,7 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/nist-fq-id`,
+    `${apiBasePath}/fq/nist-fq-id`,
     buildQuantification({
       id: 'nist-fq-id',
       results: nistResultsFQ,
@@ -189,7 +194,7 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/new-schema-cis-fq-id`,
+    `${apiBasePath}/fq/new-schema-cis-fq-id`,
     buildQuantification({
       id: 'cis-fq-id',
       results_narrative: cisResultsFQNewSchema,
@@ -198,7 +203,7 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/new-schema-cis-v8-fq-id`,
+    `${apiBasePath}/fq/new-schema-cis-v8-fq-id`,
     buildQuantification({
       id: 'cis-v8-fq-id',
       results_narrative: cisV8ResultsFQNewSchema,
@@ -207,7 +212,7 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/new-schema-iso-fq-id`,
+    `${apiBasePath}/fq/new-schema-iso-fq-id`,
     buildQuantification({
       id: 'new-schema-iso-fq-id',
       results_narrative: iso27001ResultsFQNewSchema,
@@ -216,7 +221,7 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/new-schema-nist-fq-id`,
+    `${apiBasePath}/fq/new-schema-nist-fq-id`,
     buildQuantification({
       id: 'nist-fq-id',
       results_narrative: nistResultsFQNewSchema,
@@ -225,45 +230,26 @@ export const handlers = [
     }),
   ),
   getMock(
-    `${getBaseApiUrl()}/api/fq/legacy-fq-id`,
+    `${apiBasePath}/fq/legacy-fq-id`,
     buildQuantification({
       id: 'legacy-fq-id',
       results: resultsLegacy,
       input_data: mockNoAGLevelInputDSata,
     }),
   ),
-  rest.get(`${getBaseApiUrl()}/api/fq/nearest*`, (req, res, ctx) => {
+  rest.get(`${apiBasePath}/fq/nearest*`, (req, res, ctx) => {
     return res(ctx.json(pastRuns('nist').items[0]));
   }),
   getMock(
-    `${getBaseApiUrl()}/api/fq/:fqId`,
+    `${apiBasePath}/fq/:fqId`,
     buildQuantification({
       id: 'old-fq-id',
       results: resultsLegacy,
       input_data: mockNoAGLevelInputDSata,
     }),
   ),
-  getMock(`${getBaseApiUrl()}/api/events/token`, { token: 'newToken' }),
-  getMock(
-    `${fronteggAuthServerUrl}/frontegg/identity/resources/configurations/sessions/v1`,
-    {},
-  ),
-  getMock(`${fronteggAuthServerUrl}/frontegg/flags`, {}),
-  getMock(`${fronteggAuthServerUrl}/frontegg/vendors/public`, {}),
-  getMock(
-    `${fronteggAuthServerUrl}/frontegg/identity/resources/configurations/v1/auth/strategies/public`,
-    {},
-  ),
-  getMock(
-    `${fronteggAuthServerUrl}/frontegg/identity/resources/configurations/v1/public`,
-    {},
-  ),
-  getMock(`${fronteggAuthServerUrl}/frontegg/identity/resources/sso/v2`, {}),
-  getMock(
-    `${fronteggAuthServerUrl}/frontegg/team/resources/sso/v2/configurations/public`,
-    {},
-  ),
-  rest.get(`${getBaseApiUrl()}/api/companies`, (req, res, ctx) => {
+  getMock(`${apiBasePath}/events/token`, { token: 'newToken' }),
+  rest.get(`${apiBasePath}/companies`, (req, res, ctx) => {
     const searchParams = new URLSearchParams(req.url.searchParams);
     const id = searchParams.get('id');
     const page = parseInt(searchParams.get('page') || '1');
@@ -284,18 +270,18 @@ export const handlers = [
       }),
     );
   }),
-  // getPaginatedMock(`${getBaseApiUrl()}/api/companies`, companiesResults),
+  // getPaginatedMock(`${apiBasePath}/companies`, companiesResults),
   getMockWithStatus(
-    `${getBaseApiUrl()}/api/companies/latest`,
+    `${apiBasePath}/companies/latest`,
     latestCompanyBody,
     latestCompanyStatus,
   ),
   getPaginatedMock(
-    `${getBaseApiUrl()}/api/companies/:companyId/assets`,
+    `${apiBasePath}/companies/:companyId/assets`,
     assetsResults,
   ),
 
-  rest.get(`${getBaseApiUrl()}/api/search-hazard`, (req, res, ctx) => {
+  rest.get(`${apiBasePath}/search-hazard`, (req, res, ctx) => {
     const searchParams = new URLSearchParams(req.url.searchParams);
     const vendor = (searchParams.get('vendor') || '').toLowerCase();
     const product = (searchParams.get('product') || '').toLowerCase();
@@ -309,7 +295,7 @@ export const handlers = [
       ),
     );
   }),
-  rest.get(`${getBaseApiUrl()}/api/companies/:companyId`, (req, res, ctx) => {
+  rest.get(`${apiBasePath}/companies/:companyId`, (req, res, ctx) => {
     return res(
       ctx.json(
         companiesResults.find((item) => item.id === req.params.companyId),
@@ -317,7 +303,7 @@ export const handlers = [
     );
   }),
   rest.get(
-    `${getBaseApiUrl()}/api/companies/:companyId/minimal_input`,
+    `${apiBasePath}/companies/:companyId/minimal_input`,
     (req, res, ctx) => {
       return res(
         ctx.json({
@@ -330,14 +316,14 @@ export const handlers = [
     },
   ),
 
-  rest.post(`${getBaseApiUrl()}/api/fq`, (req, res, ctx) => {
+  rest.post(`${apiBasePath}/fq`, (req, res, ctx) => {
     return res(ctx.json({ id: 'new-fq-id' }));
   }),
-  rest.post(`${getBaseApiUrl()}/api/companies`, (req, res, ctx) => {
+  rest.post(`${apiBasePath}/companies`, (req, res, ctx) => {
     return res(ctx.json({ id: 'new-company-id' }));
   }),
   rest.patch(
-    `${getBaseApiUrl()}/api/companies/:companyId`,
+    `${apiBasePath}/companies/:companyId`,
     async (req, res, ctx) => {
       const { inputSphere } = await req.json();
       return res(
@@ -350,7 +336,7 @@ export const handlers = [
     },
   ),
   rest.patch(
-    `${getBaseApiUrl()}/api/integrations/panorays/:companyId/refresh_posture`,
+    `${apiBasePath}/integrations/panorays/:companyId/refresh_posture`,
     async (req, res, ctx) => {
       return res(
         ctx.json({
@@ -360,84 +346,84 @@ export const handlers = [
     },
   ),
   rest.get(
-    `${getBaseApiUrl()}/api/companies/685ae1e0-2b50-46d7-8078-7f4a02531d84/past-quantifications*`,
+    `${apiBasePath}/companies/685ae1e0-2b50-46d7-8078-7f4a02531d84/past-quantifications*`,
     (req, res, ctx) => {
       return res(ctx.json(pastRuns('cis')));
     },
   ),
   rest.get(
-    `${getBaseApiUrl()}/api/companies/685ae1e0-2b50-46d7-8078-7f4a02531d82/past-quantifications*`,
+    `${apiBasePath}/companies/685ae1e0-2b50-46d7-8078-7f4a02531d82/past-quantifications*`,
     (req, res, ctx) => {
       return res(ctx.json(pastRuns('nist')));
     },
   ),
   rest.get(
-    `${getBaseApiUrl()}/api/companies/685ae1e0-2b50-46d7-7777-7f4a02531d844/past-quantifications*`,
+    `${apiBasePath}/companies/685ae1e0-2b50-46d7-7777-7f4a02531d844/past-quantifications*`,
     (req, res, ctx) => {
       return res(ctx.json(pastRuns('iso27001')));
     },
   ),
   rest.get(
-    `${getBaseApiUrl()}/api/companies/68599999-2b50-46d7-8078-7f4a02531d84/past-quantifications*`,
+    `${apiBasePath}/companies/68599999-2b50-46d7-8078-7f4a02531d84/past-quantifications*`,
     (req, res, ctx) => {
       return res(ctx.json(pastRunsFirstResultNarrativeSecondOld('cis')));
     },
   ),
   rest.get(
-    `${getBaseApiUrl()}/api/companies/:companyId/past-quantifications*`,
+    `${apiBasePath}/companies/:companyId/past-quantifications*`,
     (req, res, ctx) => {
       return res(ctx.json(pastRuns('nist')));
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/companies/new-company-id/custom-hazard-signed-url`,
+    `${apiBasePath}/companies/new-company-id/custom-hazard-signed-url`,
     (req, res, ctx) => {
       return res(
-        ctx.json({ upload_url: `${getBaseApiUrl()}/dummy-upload-url` }),
+        ctx.json({ upload_url: `${apiBasePath}/dummy-upload-url` }),
       );
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/companies/new-company-id/hazard`,
+    `${apiBasePath}/companies/new-company-id/hazard`,
     (req, res, ctx) => {
       return res(
-        ctx.json({ upload_url: `${getBaseApiUrl()}/dummy-upload-url` }),
+        ctx.json({ upload_url: `${apiBasePath}/dummy-upload-url` }),
       );
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/companies/new-company-id/custom-hazard-uploaded`,
+    `${apiBasePath}/companies/new-company-id/custom-hazard-uploaded`,
     (req, res, ctx) => {
       return res();
     },
   ),
-  rest.put(`${getBaseApiUrl()}/dummy-upload-url`, (req, res, ctx) => {
+  rest.put(`${apiBasePath}/dummy-upload-url`, (req, res, ctx) => {
     return res();
   }),
 
-  rest.get(`${getBaseApiUrl()}/api/cis_mappings`, (req, res, ctx) => {
+  rest.get(`${apiBasePath}/cis_mappings`, (req, res, ctx) => {
     return res(ctx.json(cisToOtherFrameworks));
   }),
   rest.get(
-    `${getBaseApiUrl()}/api/fq/:fqId/transparency`,
+    `${apiBasePath}/fq/:fqId/transparency`,
 
     (req, res, ctx) => {
       return res(ctx.json(transparency));
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/integrations/securityscorecard/portfolios`,
+    `${apiBasePath}/integrations/securityscorecard/portfolios`,
     (req, res, ctx) => {
       return res(ctx.json(buildSecurityScorecardPortfoliosApiResponse(10)));
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/integrations/securityscorecard/portfolios/:portfolio_id/companies`,
+    `${apiBasePath}/integrations/securityscorecard/portfolios/:portfolio_id/companies`,
     (req, res, ctx) => {
       return res(ctx.json(buildSecurityScorecardCompanyApiResponse(10)));
     },
   ),
-  rest.get(`${riskScenariosBasePath}/`, (req, res, ctx) => {
+  rest.get(`${riskScenariosBasePath}`, (req, res, ctx) => {
     const page = parseInt(req.url.searchParams.get('page') || '1');
     const size = parseInt(req.url.searchParams.get('size') || '10');
     const allScenarios = buildMixedRiskRegisterList(25);
@@ -485,8 +471,43 @@ export const handlers = [
       return res(ctx.json(buildRiskRegisterResponse()));
     },
   ),
+  // Risk Scenarios Notes API
+  rest.post(
+    `${riskScenariosBasePath}/:scenarioId/notes`,
+    (req, res, ctx) => {
+      const body = req.body as any;
+      return res(
+        ctx.status(200),
+        ctx.json({
+          success: true,
+          message: 'Note added to scenario successfully',
+          data: {
+            scenario_id: req.params.scenarioId,
+            user_email: 'user@example.com',
+          },
+        }),
+      );
+    },
+  ),
+  rest.post(
+    `${riskScenariosBasePath}/:scenarioId/notes-with-attachment`,
+    (req, res, ctx) => {
+      const body = req.body as any;
+      return res(
+        ctx.status(200),
+        ctx.json({
+          success: true,
+          message: 'Note added to scenario successfully',
+          data: {
+            scenario_id: req.params.scenarioId,
+            user_email: 'user@example.com',
+          },
+        }),
+      );
+    },
+  ),
   // Unified Notes API
-  rest.get(`${getBaseApiUrl()}/api/notes`, (req, res, ctx) => {
+  rest.get(`${apiBasePath}/notes`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
@@ -497,7 +518,7 @@ export const handlers = [
       }),
     );
   }),
-  rest.post(`${getBaseApiUrl()}/api/notes`, (req, res, ctx) => {
+  rest.post(`${apiBasePath}/notes`, (req, res, ctx) => {
     const body = req.body as any;
     return res(
       ctx.status(201),
@@ -511,7 +532,7 @@ export const handlers = [
       }),
     );
   }),
-  rest.patch(`${getBaseApiUrl()}/api/notes/:noteId`, (req, res, ctx) => {
+  rest.patch(`${apiBasePath}/notes/:noteId`, (req, res, ctx) => {
     const body = req.body as any;
     return res(
       ctx.status(200),
@@ -523,10 +544,10 @@ export const handlers = [
       }),
     );
   }),
-  rest.delete(`${getBaseApiUrl()}/api/notes/:noteId`, (req, res, ctx) => {
+  rest.delete(`${apiBasePath}/notes/:noteId`, (req, res, ctx) => {
     return res(ctx.status(204));
   }),
-  rest.get(`${getBaseApiUrl()}/api/documents/:documentId`, (req, res, ctx) => {
+  rest.get(`${apiBasePath}/documents/:documentId`, (req, res, ctx) => {
     return res(ctx.json([]));
   }),
   rest.get(
@@ -541,6 +562,91 @@ export const handlers = [
       ctx.json({
         id: 'mock-tenant',
         name: 'Mock Tenant',
+      }),
+    );
+  }),
+  // Groups endpoints
+  rest.get(`${apiBasePath}/groups/with-risk-scenarios-permission`, (req, res, ctx) => {
+    const mockGroups: Group[] = [
+      {
+        id: 1,
+        documentId: 'group-1',
+        name: 'Engineering',
+        superUser: false,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 2,
+        documentId: 'group-2',
+        name: 'Security',
+        superUser: false,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 3,
+        documentId: 'group-3',
+        name: 'Operations',
+        superUser: false,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ];
+    return res(
+      ctx.json({
+        success: true,
+        data: {
+          groups: mockGroups,
+        },
+      }),
+    );
+  }),
+  rest.get(`${apiBasePath}/groups/with-risk-scenarios-permission-create`, (req, res, ctx) => {
+    const mockGroups: Group[] = [
+      {
+        id: 1,
+        documentId: 'group-1',
+        name: 'Engineering',
+        superUser: false,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 2,
+        documentId: 'group-2',
+        name: 'Security',
+        superUser: false,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: 3,
+        documentId: 'group-3',
+        name: 'Operations',
+        superUser: false,
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    ];
+    return res(
+      ctx.json({
+        success: true,
+        data: mockGroups,
+        meta: {
+          pagination: {
+            page: 1,
+            pageSize: 100,
+            pageCount: 1,
+            total: mockGroups.length,
+          },
+        },
       }),
     );
   }),
@@ -583,19 +689,19 @@ export const handlers = [
     );
   }),
   rest.get(
-    `${getBaseApiUrl()}/api/components/fq_menu_items`,
+    `${apiBasePath}/components/fq_menu_items`,
     (req, res, ctx) => {
       return res(ctx.json(allVisibleMenuItemsMock));
     },
   ),
   rest.get(
-    `${getBaseApiUrl()}/api/components/fq_menu_items_v1`,
+    `${apiBasePath}/components/fq_menu_items_v1`,
     (req, res, ctx) => {
       return res(ctx.json(allVisibleMenuItemsV1Mock));
     },
   ),
   rest.post(
-    `${getBaseApiUrl()}/api/tenant/upgrade-to-full-plan`,
+    `${apiBasePath}/tenant/upgrade-to-full-plan`,
     (req, res, ctx) => {
       return res(ctx.json({ message: 'Upgrade request sent' }));
     },
@@ -612,7 +718,7 @@ export const handlers = [
       return res(ctx.json({ message: 'Request sent successfully' }));
     },
   ),
-  rest.post(`${getBaseApiUrl()}/api/report/ask-for-report`, (req, res, ctx) => {
+  rest.post(`${apiBasePath}/report/ask-for-report`, (req, res, ctx) => {
     return res(ctx.json({ message: 'Request sent successfully' }));
   }),
   // DELETE scenario endpoint
@@ -640,14 +746,14 @@ export const handlers = [
     },
   ),
   // POST tenant invite endpoint
-  rest.post(`${getBaseApiUrl()}/api/tenant/invite`, (req, res, ctx) => {
+  rest.post(`${apiBasePath}/tenant/invite`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({ message: 'Invitation sent successfully' }),
     );
   }),
   // GET frameworks endpoint
-  getMock(`${getBaseApiUrl()}/api/self-assessment/frameworks`, [
+  getMock(`${apiBasePath}/self-assessment/frameworks`, [
     {
       id: '550e8400-e29b-41d4-a716-446655440001',
       framework_name: 'CIS',

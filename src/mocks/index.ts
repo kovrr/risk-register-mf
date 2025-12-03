@@ -1,36 +1,24 @@
-// @ts-nocheck
-let mocksInitialized = false;
-
 async function initMocks() {
-  if (mocksInitialized) {
-    return;
-  }
-
-  if (typeof window === 'undefined') {
-    // In the microfrontend we never run MSW in Node (only browser mode).
-    // Skip initializing the server to avoid bundling msw/lib/node which depends on Node builtins.
-    return;
-  }
-
-  const { worker } = await import('./browser');
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  worker.start({
-    onUnhandledRequest: 'bypass', // Allow unhandled requests to pass through
-    serviceWorker: {
-      url: '/mockServiceWorker.js',
-    },
-  });
-  mocksInitialized = true;
+	if (typeof window === 'undefined') {
+		// Server-side: you can add server setup here if needed
+		console.log('[MSW] Server environment detected');
+	} else {
+		// Browser-side: start the worker
+		try {
+			const { worker } = await import('./browser');
+			await worker.start({
+				onUnhandledRequest: 'bypass', // Let unhandled requests pass through
+			});
+			console.log('[MSW] ✅ Mock service worker started successfully');
+			console.log('[MSW] Worker will intercept requests to:', window.location.origin);
+		} catch (error) {
+			console.error('[MSW] ❌ Failed to start worker:', error);
+		}
+	}
 }
 
-// Enable mocks only when explicitly requested via env
-const shouldUseMocks =
-  import.meta.env.VITE_USE_MOCKS === 'true' ||
-  import.meta.env.NEXT_PUBLIC_USE_MOCKS === 'true';
+// Initialize mocks when this file is imported
+console.log('[MSW] Initializing mock service worker...');
+initMocks();
 
-if (shouldUseMocks) {
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  initMocks();
-}
-
-export { };
+export {};

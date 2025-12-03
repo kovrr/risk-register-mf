@@ -1,6 +1,8 @@
 import { configureAxiosInstance } from '@/services/configureAxiosInstance';
 import { getAccessToken } from '@/services/tokens';
 import { HttpClientContext } from '@/state/HttpClientContext';
+import { isMockMode } from '@/lib/env';
+import { resolveApiBaseUrl } from '@/lib/apiConfig';
 import type { AxiosInstance } from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -10,14 +12,18 @@ type Props = {
 };
 
 export const InstanceWrapper = ({ children, instance }: Props) => {
-  // Get API base URL from environment
-  const apiBaseURL =
-    import.meta.env.VITE_API_BASE_URL ||
-    import.meta.env.REACT_APP_API_BASE_URL ||
-    import.meta.env.NEXT_PUBLIC_API_BASE_URL ||
-    import.meta.env.VITE_API_URL ||
-    import.meta.env.NEXT_PUBLIC_API_URL ||
-    'http://localhost:1337/api';
+  const mockMode = isMockMode();
+  const shouldUseAuth = !mockMode;
+  const frameworkBaseUrl = resolveApiBaseUrl();
+
+  // In mock mode, set baseURL to empty string so requests go to /api/* (same origin)
+  // In non-mock mode, use the full baseURL (e.g., http://localhost:1337/api)
+  const axiosBaseUrl = mockMode ? '' : frameworkBaseUrl;
+
+  if (mockMode) {
+    console.log('[InstanceWrapper] Mock mode active - setting axios baseURL to empty string');
+    console.log('[InstanceWrapper] Requests will go to:', axiosBaseUrl || '(empty - relative paths)');
+  }
 
   // Function to get current token (reads from localStorage on each call)
   // This is called by the axios interceptor on every request, so it always gets fresh token
@@ -26,10 +32,19 @@ export const InstanceWrapper = ({ children, instance }: Props) => {
   };
 
   // Create axios instance with token getter
-  // The interceptor will call getToken() on every request, so it always reads fresh from localStorage
-  const axiosRef = React.useRef<AxiosInstance>(
-    instance || configureAxiosInstance(getToken, apiBaseURL, true), // useAuth = true
-  );
+  // Recreate if mock mode changes (though it shouldn't change after mount)
+  const axiosRef = React.useRef<AxiosInstance | null>(null);
+
+  if (!axiosRef.current || instance) {
+    axiosRef.current = instance || configureAxiosInstance(getToken, axiosBaseUrl, shouldUseAuth);
+    console.log('[InstanceWrapper] Created axios instance with baseURL:', axiosRef.current.defaults.baseURL || '(empty)');
+  } else {
+    // Update baseURL if mock mode changed (shouldn't happen, but just in case)
+    if (axiosRef.current.defaults.baseURL !== axiosBaseUrl) {
+      console.log('[InstanceWrapper] Updating axios baseURL from', axiosRef.current.defaults.baseURL, 'to', axiosBaseUrl || '(empty)');
+      axiosRef.current.defaults.baseURL = axiosBaseUrl;
+    }
+  }
 
   // State to force re-render when token changes (for components that need to react)
   const [, setTokenUpdate] = useState(0);

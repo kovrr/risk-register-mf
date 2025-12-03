@@ -181,6 +181,50 @@ export const scenarioEnums = {
     { name: 'AI21_LABS_JURASSIC_2_MID', value: 'AI21 Labs - Jurassic-2 Mid' },
     { name: 'AI21_LABS_JURASSIC_2_LIGHT', value: 'AI21 Labs - Jurassic-2 Light' },
   ],
+  riskOrigin: [
+    { name: 'TRAINING_DATA', value: 'Training Data' },
+    { name: 'MODEL_ARCHITECTURE', value: 'Model Architecture' },
+    { name: 'DEVELOPMENT_PROCESS', value: 'Development Process' },
+    { name: 'DEPLOYMENT_ENVIRONMENT', value: 'Deployment Environment' },
+    { name: 'USER_INTERACTION', value: 'User Interaction' },
+    { name: 'THIRD_PARTY', value: 'Third-Party' },
+    { name: 'EXTERNAL_THREAT_ACTORS', value: 'External Threat Actors' },
+    { name: 'ORGANIZATIONAL_PROCESSES', value: 'Organizational Processes' },
+    { name: 'REGULATORY_CHANGES', value: 'Regulatory Changes' },
+    { name: 'TECHNOLOGY_LIMITATIONS', value: 'Technology Limitations' },
+    { name: 'HUMAN_ERROR', value: 'Human Error' },
+  ],
+  aiLifecyclePhase: [
+    { name: 'PLANNING_AND_DESIGN', value: 'Planning & Design' },
+    {
+      name: 'DATA_COLLECTION_AND_PREPARATION',
+      value: 'Data Collection & Preparation',
+    },
+    {
+      name: 'MODEL_DEVELOPMENT_AND_TRAINING',
+      value: 'Model Development & Training',
+    },
+    { name: 'VALIDATION_AND_TESTING', value: 'Validation & Testing' },
+    { name: 'DEPLOYMENT', value: 'Deployment' },
+    { name: 'OPERATION_AND_MONITORING', value: 'Operation & Monitoring' },
+    { name: 'MAINTENANCE_AND_UPDATES', value: 'Maintenance & Updates' },
+    { name: 'DECOMMISSIONING', value: 'Decommissioning' },
+  ],
+  stakeholderType: [
+    {
+      name: 'END_USERS',
+      value: 'End Users (Prospects and Customers)',
+    },
+    { name: 'EMPLOYEES', value: 'Employees' },
+    { name: 'ORGANIZATION', value: 'Organization / Company' },
+    { name: 'VULNERABLE_GROUPS', value: 'Vulnerable Groups' },
+    { name: 'CHILDREN_MINORS', value: 'Children/Minors' },
+    { name: 'SOCIETY_AT_LARGE', value: 'Society at Large' },
+    { name: 'ENVIRONMENT', value: 'Environment' },
+    { name: 'SHAREHOLDERS', value: 'Shareholders' },
+    { name: 'REGULATORS', value: 'Regulators' },
+    { name: 'THIRD_PARTY_PARTNERS', value: 'Third-Party Partners' },
+  ],
 } as const;
 
 export type ScenarioEnums = typeof scenarioEnums;
@@ -195,8 +239,9 @@ export const scenarioFieldEnumValues = {
   Impact: scenarioEnums.impact.map((item) => item.value),
   RiskPriority: scenarioEnums.riskPriority.map((item) => item.value),
   ResponsePlan: scenarioEnums.responsePlan.map((item) => item.value),
+  RiskOrigin: scenarioEnums.riskOrigin.map((item) => item.value),
+  AILifecyclePhase: scenarioEnums.aiLifecyclePhase.map((item) => item.value),
+  StakeholderType: scenarioEnums.stakeholderType.map((item) => item.value),
 } as const;
 
 export type ScenarioFieldEnumValues = typeof scenarioFieldEnumValues;
-
-

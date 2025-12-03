@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { ErrorDialog } from '../components/ErrorDialog';
 import { useUpdateRiskRegisterQueries } from '../RiskRegisterTable/useUpdateRiskRegisterQueries';
 import BasicScenarioInfo from './components/basic-scenario-info';
+import { DataExposureFields } from './components/data-exposure-fields';
 import {
   type SimpleScenarioFormValues,
   simpleScenarioFormSchema,
@@ -33,7 +34,6 @@ import ImpactDistributionInputs from './components/impact-distribution-inputs';
 import QualitativeMetrics from './components/qualitative-metrics';
 import QuantitativeMetrics from './components/quantitative-metrics';
 import { SimpleCategorizationSection } from './components/simple-categorization-section';
-import { DataExposureFields } from './components/data-exposure-fields';
 
 type Props = {
   scenario?: RiskRegisterResponse;
@@ -133,38 +133,62 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
           pci: scenario.scenario_data.data_exposure?.pci || undefined,
           phi: scenario.scenario_data.data_exposure?.phi || undefined,
         },
+        entity: scenario.scenario_data.entity || undefined,
+        risk_origin: scenario.scenario_data.risk_origin || [],
+        ai_lifecycle: scenario.scenario_data.ai_lifecycle || [],
+        stakeholders_affected: scenario.scenario_data.stakeholders_affected || [],
       }
-      : {
-        scenario_type: scenarioTypes.MANUAL,
-        customer_scenario_id: '',
-        name: '',
-        description: '',
-        group_id: undefined,
-        likelihood: '',
-        impact: '',
-        company_id: undefined,
-        annual_likelihood: undefined,
-        peer_base_rate: undefined,
-        average_loss: undefined,
-        average_loss_currency: 'USD',
-        scenario_category: [],
-        ai_assets: [],
-        tactics: [],
-        event_types: [],
-        impact_types: [],
-        impact_distribution: {
-          one: undefined,
-          twenty_five: undefined,
-          fifty: undefined,
-          seventy_five: undefined,
-          ninety_nine: undefined,
-        },
-        data_exposure: {
-          pii: undefined,
-          pci: undefined,
-          phi: undefined,
-        },
-      };
+      : (() => {
+        // Get default group_id from localStorage if available
+        let defaultGroupId: string | undefined;
+        try {
+          const savedGroupId = localStorage.getItem('active_group_id');
+          if (savedGroupId) {
+            defaultGroupId = savedGroupId;
+          }
+        } catch (error) {
+          console.warn(
+            'Failed to read active_group_id from localStorage:',
+            error,
+          );
+        }
+
+        return {
+          scenario_type: scenarioTypes.MANUAL,
+          customer_scenario_id: '',
+          name: '',
+          description: '',
+          group_id: defaultGroupId,
+          likelihood: '',
+          impact: '',
+          company_id: undefined,
+          annual_likelihood: undefined,
+          peer_base_rate: undefined,
+          average_loss: undefined,
+          average_loss_currency: 'USD',
+          scenario_category: [],
+          ai_assets: [],
+          tactics: [],
+          event_types: [],
+          impact_types: [],
+          impact_distribution: {
+            one: undefined,
+            twenty_five: undefined,
+            fifty: undefined,
+            seventy_five: undefined,
+            ninety_nine: undefined,
+          },
+          data_exposure: {
+            pii: undefined,
+            pci: undefined,
+            phi: undefined,
+          },
+          entity: undefined,
+          risk_origin: [],
+          ai_lifecycle: [],
+          stakeholders_affected: [],
+        };
+      })();
   }, [scenario]);
 
   const form = useForm<SimpleScenarioFormValues>({
@@ -197,9 +221,7 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
     }
 
     if (isEditMode) {
-      return await updateRiskScenario(
-        values as SimpleScenarioUpdateRequest,
-      );
+      return await updateRiskScenario(values as SimpleScenarioUpdateRequest);
     }
     return await createRiskScenario(values as ScenarioCreateRequest);
   }
@@ -236,12 +258,8 @@ export const RiskScenarioInputForm: FC<Props> = ({ scenario, onSuccess }) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className='flex flex-col gap-10'>
-
           <section className='space-y-6'>
-              <BasicScenarioInfo
-                control={form.control}
-                isEditMode={isEditMode}
-              />
+            <BasicScenarioInfo control={form.control} isEditMode={isEditMode} />
           </section>
 
           <section className='space-y-6'>

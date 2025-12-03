@@ -3,7 +3,8 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import moduleFederationConfig from "./module-federation.config";
 
-const useMocks = process.env.VITE_USE_MOCKS === "true";
+// Read USE_MOCKS from environment
+const useMocks = process.env.USE_MOCKS || process.env.VITE_USE_MOCKS;
 
 export default defineConfig({
 	plugins: [pluginReact(), pluginModuleFederation(moduleFederationConfig, {})],
@@ -28,10 +29,12 @@ export default defineConfig({
 	source: {
 		// Enable environment variable injection
 		define: {
-			// This allows you to use process.env variables in your code
-			"import.meta.env.VITE_USE_MOCKS": JSON.stringify(
-				process.env.VITE_USE_MOCKS,
-			),
+			// Inject USE_MOCKS as both import.meta.env and globalThis
+			"import.meta.env.USE_MOCKS": JSON.stringify(useMocks || ''),
+			"import.meta.env.VITE_USE_MOCKS": JSON.stringify(process.env.VITE_USE_MOCKS || ''),
+			"import.meta.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+			// Global constant for build-time detection
+			"globalThis.__USE_MOCKS_BUILD_TIME__": JSON.stringify(useMocks || ''),
 			"import.meta.env.NEXT_PUBLIC_USE_MOCKS": JSON.stringify(
 				process.env.NEXT_PUBLIC_USE_MOCKS,
 			),

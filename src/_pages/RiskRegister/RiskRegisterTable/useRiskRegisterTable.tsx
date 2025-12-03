@@ -10,7 +10,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ResponsePlanDropdownMutate } from '../components/ResponsePlanDropdownMutate';
 import { RiskOwnerDropdownMutate } from '../components/RiskOwner';
 import { LikelihoodBadge } from '@/components/molecules/LikelihoodBadge';
 import { Impact } from './Cells/Impact';
@@ -71,6 +72,17 @@ const useColumns = () => {
         header: () => <TableHeaderCell title='Status' />,
         enableSorting: true,
       }),
+      columnHelper.accessor('responsePlan', {
+        cell: (info) => (
+          <ResponsePlanDropdownMutate
+            value={info.getValue()}
+            rowData={info.row.original}
+            key={`${info.row.original.scenarioId}-responsePlan`}
+          />
+        ),
+        header: () => <TableHeaderCell title='Response Plan' />,
+        enableSorting: true,
+      }),
       columnHelper.accessor('owner', {
         cell: (info) => (
           <RiskOwnerDropdownMutate
@@ -111,12 +123,13 @@ const mapColumnToApiField = (columnId: string): string => {
 
 type UseRiskRegisterTableParams = {
   search?: string;
+  groupId?: string | null;
 };
 
 const useData = (params: UseRiskRegisterTableParams) => {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const { search } = params;
+  const { search, groupId } = params;
 
   const [sorting, setSortingState] = useState<{ id: string; desc: boolean }[]>([
     { id: 'lastUpdated', desc: true }, // Default sorting
@@ -143,7 +156,12 @@ const useData = (params: UseRiskRegisterTableParams) => {
     name: search && search.length > 0 ? search : undefined,
     sort_by: sortBy,
     sort_order: sortOrder,
+    groupId: groupId ?? undefined,
   });
+
+  useEffect(() => {
+    setPageIndex(0);
+  }, [groupId]);
 
   const data = useMemo(() => {
     if (!scenarios || !scenarios.items || !Array.isArray(scenarios.items))

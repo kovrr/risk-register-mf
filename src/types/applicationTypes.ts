@@ -38,7 +38,7 @@ export type TenantApplicationData =
       application_sub_type: ROCIApplicationSubType;
     };
 
-// used by the frontegg tenant hook
+// used by the tenant metadata hook
 export type TenantMetadata = {
   parent_id: string;
 } & TenantApplicationData;

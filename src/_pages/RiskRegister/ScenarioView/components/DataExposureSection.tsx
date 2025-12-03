@@ -1,14 +1,18 @@
 import type { RiskRegisterResponse } from '@/types/riskRegister';
 import { useTranslation } from 'react-i18next';
+import { ScenarioMetricCard } from '../../ScenarioDrillDown/DataBreachDuePhishing/components/ScenarioMetricCard';
 
 type Props = {
   scenario?: RiskRegisterResponse;
 };
 
 export const DataExposureSection: React.FC<Props> = ({ scenario }) => {
-  const { t } = useTranslation('riskRegister');
+  const { t } = useTranslation('riskRegister', {
+    keyPrefix: 'scenarioDrillDown.dataBreachPhishing',
+  });
 
-  const dataExposure = scenario?.scenario_data.data_exposure;
+  // Be defensive: scenario or scenario_data can be null/undefined for some records
+  const dataExposure = scenario?.scenario_data?.data_exposure ?? undefined;
 
   const exposureItems = [
     {
@@ -32,33 +36,34 @@ export const DataExposureSection: React.FC<Props> = ({ scenario }) => {
   ];
 
   return (
-    <div className='flex flex-col gap-4'>
-      <h3 className='text-base font-semibold text-text-base-primary'>
-        Data Exposure
-      </h3>
-      <div className='grid grid-cols-3 gap-4'>
+    <ScenarioMetricCard
+      title={t('dataExposureTitle', { defaultValue: 'Data Exposure' })}
+      description={t('dataExposureDescription', {
+        defaultValue:
+          'Estimated number of records exposed by data type in this scenario.',
+      })}
+    >
+      <div className='grid gap-4 md:grid-cols-3'>
         {exposureItems.map((item) => (
-          <div
-            key={item.key}
-            className='flex flex-col gap-2 rounded-lg border border-gray-200 bg-gray-50 p-4'
-          >
+          <div key={item.key} className='flex flex-col gap-1'>
             <h4 className='text-sm font-semibold text-text-base-primary'>
               {item.title}
             </h4>
-            <p className='text-xs text-text-base-secondary'>{item.description}</p>
-            <p className='text-lg font-bold text-text-base-primary'>
-              {item.value !== undefined ? (
+            <p className='text-xs text-text-base-secondary'>
+              {item.description}
+            </p>
+            <p className='text-xl font-bold text-text-base-primary'>
+              {typeof item.value === 'number' ? (
                 item.value.toLocaleString()
               ) : (
                 <span className='text-sm italic text-text-base-secondary'>
-                  Not set
+                  {t('notSet', { defaultValue: 'Not set' })}
                 </span>
               )}
             </p>
           </div>
         ))}
       </div>
-    </div>
+    </ScenarioMetricCard>
   );
 };
-

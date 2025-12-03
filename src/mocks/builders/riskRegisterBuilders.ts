@@ -1133,11 +1133,20 @@ export const buildNoteOutput = (
   overrides: Partial<NoteOutput> = {},
 ): NoteOutput => {
   const timestamp = new Date().toISOString();
+  const firstName = chance.first();
+  const lastName = chance.last();
+  const email = chance.email();
 
   return {
     id: chance.guid(),
     content: chance.paragraph(),
-    user: chance.name(),
+    user: {
+      documentId: chance.guid(),
+      email: email,
+      firstname: firstName,
+      id: chance.integer({ min: 1, max: 1000 }),
+      lastname: lastName,
+    },
     created_at: timestamp,
     updated_at: timestamp,
     documents: Array.from({ length: chance.integer({ min: 0, max: 3 }) }, () =>
@@ -1156,10 +1165,16 @@ export const buildNotesOutputs = (
 
 export const buildNoteItemProps = (overrides = {}) => {
   const note = buildNoteOutput();
+  const userEmail = typeof note.user === 'string' ? note.user : note.user.email;
+  const userDisplayName = typeof note.user === 'string'
+    ? note.user
+    : note.user.firstname && note.user.lastname
+    ? `${note.user.firstname} ${note.user.lastname}`
+    : note.user.email;
   return {
     noteId: note.id,
-    avatar: note.user,
-    email: note.user,
+    avatar: userDisplayName,
+    email: userEmail,
     date: note.created_at,
     content: note.content,
     attachment: note.documents[0]
