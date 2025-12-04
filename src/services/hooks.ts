@@ -16,6 +16,12 @@ import {
 	updateRiskScenario as updateRiskScenarioRequest,
 } from '@/services/riskScenarios';
 import { withStrapiApiPath } from '@/services/strapi';
+import {
+	createTag as createTagRequest,
+	deleteTag as deleteTagRequest,
+	getTags as getTagsRequest,
+	updateTag as updateTagRequest,
+} from '@/services/tags';
 import { useAxiosInstance } from '@/state/HttpClientContext';
 import type { CompanyApiResponseItem, CompanyData } from '@/types/companyForm';
 import type { FrameworkResponseList } from '@/types/frameworkType';
@@ -35,6 +41,12 @@ import {
 	type SimpleScenarioUpdateRequest,
 	scenarioTypes,
 } from '@/types/riskRegister';
+import type {
+	CreateTagRequest,
+	Tag,
+	TagListParams,
+	UpdateTagRequest,
+} from '@/types/tag';
 import {
 	type UseMutationOptions,
 	type UseQueryOptions,
@@ -57,6 +69,7 @@ export const QUERY_KEYS = {
 	FRAMEWORKS: `FRAMEWORKS`,
 	GROUPS: ['GROUPS'],
 	USER_GROUP: 'user-group',
+	TAGS: ['TAGS'],
 };
 
 // Resolve API base depending on mock mode:
@@ -109,20 +122,56 @@ const buildScenarioRequestBody = (
 	payload: ScenarioPayload,
 	fallbackScenarioType: ScenarioType,
 ) => {
-	const { customer_scenario_id, name, description, group_id, ...scenarioData } =
-		payload;
+	const {
+		customer_scenario_id,
+		name,
+		description,
+		group_id,
+		tag_ids,
+		...scenarioData
+	} = payload;
 
 	const scenarioType =
 		'scenario_type' in payload && payload.scenario_type
 			? payload.scenario_type
 			: fallbackScenarioType;
 
-	const { scenario_type: _ignored, ...sanitizedScenarioData } =
-		scenarioData as typeof scenarioData & {
-			scenario_type?: ScenarioType;
-		};
+	const {
+		scenario_type: _ignored,
+		tag_ids: _tagIdsIgnored,
+		...restScenarioData
+	} = scenarioData as typeof scenarioData & {
+		scenario_type?: ScenarioType;
+		tag_ids?: string[];
+	};
 
-	return {
+	// Remove tag_ids from scenario_data if it exists there
+	const sanitizedScenarioData = restScenarioData as Record<string, unknown>;
+	if (
+		'scenario_data' in sanitizedScenarioData &&
+		sanitizedScenarioData.scenario_data &&
+		typeof sanitizedScenarioData.scenario_data === 'object'
+	) {
+		const scenarioDataObj = sanitizedScenarioData.scenario_data as Record<
+			string,
+			unknown
+		>;
+		if ('tag_ids' in scenarioDataObj) {
+			const { tag_ids: _scenarioDataTagIds, ...cleanScenarioData } =
+				scenarioDataObj;
+			sanitizedScenarioData.scenario_data = cleanScenarioData;
+		}
+	}
+
+	const requestBody: {
+		group_id: string;
+		customer_scenario_id?: string;
+		name?: string;
+		description?: string;
+		scenario_type: ScenarioType;
+		scenario_data: Record<string, unknown>;
+		tag_ids?: string[];
+	} = {
 		group_id: group_id ?? DEFAULT_GROUP_ID,
 		customer_scenario_id,
 		name,
@@ -130,6 +179,13 @@ const buildScenarioRequestBody = (
 		scenario_type: scenarioType,
 		scenario_data: sanitizedScenarioData,
 	};
+
+	// Add tag_ids at top level if provided
+	if (tag_ids !== undefined) {
+		requestBody.tag_ids = tag_ids;
+	}
+
+	return requestBody;
 };
 
 // API URLs - Risk Register specific
@@ -397,6 +453,7 @@ export const useRiskScenarios = (
 		sort_by?: string;
 		sort_order?: string;
 		groupId?: string;
+		tag_ids?: string[];
 	},
 	options?: StrippedQueryOptions<RiskRegisterScenarioPaginatedResponse>,
 ) => {
@@ -410,6 +467,7 @@ export const useRiskScenarios = (
 		sort_by: sortByParam,
 		sort_order: sortOrderParam,
 		groupId,
+		tag_ids,
 	} = params;
 	const normalizedSortBy = sortByParam ?? 'updated_at';
 	const normalizedSortOrder = sortOrderParam ?? 'desc';
@@ -424,6 +482,7 @@ export const useRiskScenarios = (
 			normalizedSortBy,
 			normalizedSortOrder,
 			groupId ?? null,
+			tag_ids ?? null,
 		],
 		queryFn: () =>
 			getRiskScenariosRequest(client, {
@@ -434,6 +493,7 @@ export const useRiskScenarios = (
 				sort_by: normalizedSortBy,
 				sort_order: normalizedSortOrder,
 				groupId,
+				tag_ids,
 			}),
 		...options,
 	});
@@ -546,7 +606,6 @@ export const useUpdateRiskScenarioRow = (
 				event_types: scenario.scenario_data.event_types,
 				impact_types: scenario.scenario_data.impact_types,
 				data_exposure: scenario.scenario_data.data_exposure,
-				entity: scenario.scenario_data.entity,
 				risk_origin: scenario.scenario_data.risk_origin,
 				ai_lifecycle: scenario.scenario_data.ai_lifecycle,
 				stakeholders_affected: scenario.scenario_data.stakeholders_affected,
@@ -637,7 +696,6 @@ export const useUpdateRiskScenarioField = (
 				event_types: scenarioData.scenario_data.event_types,
 				impact_types: scenarioData.scenario_data.impact_types,
 				data_exposure: scenarioData.scenario_data.data_exposure,
-				entity: scenarioData.scenario_data.entity,
 				risk_origin: scenarioData.scenario_data.risk_origin,
 				ai_lifecycle: scenarioData.scenario_data.ai_lifecycle,
 				stakeholders_affected: scenarioData.scenario_data.stakeholders_affected,
@@ -679,18 +737,102 @@ export const useUpdateRiskScenario = (
 	options: UseMutationOptions<
 		RiskRegisterResponse,
 		AxiosError<{ detail: string }>,
-		UpdateFieldParams
+		UpdateFieldParams,
+		{ previousScenario?: RiskRegisterResponse }
 	>,
 ) => {
 	const client = useAxiosInstance();
+	const queryClient = useQueryClient();
 	const { refetch } = useRiskScenario(scenarioId, { enabled: false });
 
 	return useMutation<
 		RiskRegisterResponse,
 		AxiosError<{ detail: string }>,
-		UpdateFieldParams
+		UpdateFieldParams,
+		{ previousScenario?: RiskRegisterResponse }
 	>({
 		mutationKey: [QUERY_KEYS.RISK_SCENARIO, 'updateField', scenarioId],
+		onMutate: async (newData) => {
+			// Cancel any outgoing refetches to avoid overwriting optimistic update
+			await queryClient.cancelQueries({
+				queryKey: [QUERY_KEYS.RISK_SCENARIO, scenarioId],
+			});
+
+			// Snapshot the previous value
+			const previousScenario = queryClient.getQueryData<RiskRegisterResponse>([
+				QUERY_KEYS.RISK_SCENARIO,
+				scenarioId,
+			]);
+
+			// Optimistically update if tag_ids is being updated
+			if (newData.tag_ids !== undefined && previousScenario) {
+				// Get all tags to match with tag_ids
+				const groupId = previousScenario.group_id;
+				if (groupId) {
+					try {
+						const tagsResponse = await getTagsRequest(client, {
+							group_ids: [groupId],
+							limit: 200,
+						});
+						const allTags = tagsResponse.tags || [];
+						const matchedTags = allTags.filter((tag) =>
+							newData.tag_ids?.includes(tag.id),
+						);
+
+						queryClient.setQueryData<RiskRegisterResponse>(
+							[QUERY_KEYS.RISK_SCENARIO, scenarioId],
+							(old) => {
+								if (!old) return old;
+								return {
+									...old,
+									tag_ids: newData.tag_ids || [],
+									tags: matchedTags,
+								} as RiskRegisterResponse;
+							},
+						);
+					} catch {
+						// If fetching tags fails, still update tag_ids optimistically
+						queryClient.setQueryData<RiskRegisterResponse>(
+							[QUERY_KEYS.RISK_SCENARIO, scenarioId],
+							(old) => {
+								if (!old) return old;
+								return {
+									...old,
+									tag_ids: newData.tag_ids || [],
+									tags: [],
+								} as RiskRegisterResponse;
+							},
+						);
+					}
+				}
+			}
+
+			// Return context with the snapshotted value
+			return { previousScenario: previousScenario ?? undefined };
+		},
+		onError: (err, newData, context) => {
+			// If the mutation fails, use the context returned from onMutate to roll back
+			if (context?.previousScenario) {
+				queryClient.setQueryData(
+					[QUERY_KEYS.RISK_SCENARIO, scenarioId],
+					context.previousScenario,
+				);
+			}
+			// Call the error handler from options if provided
+			if (options.onError) {
+				options.onError(err, newData, context);
+			}
+		},
+		onSettled: (data, error, variables, context) => {
+			// Always refetch after error or success to ensure we have the latest data
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.RISK_SCENARIO, scenarioId],
+			});
+			// Call the settled handler from options if provided
+			if (options.onSettled) {
+				options.onSettled(data, error, variables, context);
+			}
+		},
 		mutationFn: async (data) => {
 			const { data: scenario, isError } = await refetch();
 			if (!scenario || isError) throw new Error('Scenario not loaded');
@@ -732,7 +874,6 @@ export const useUpdateRiskScenario = (
 				impact_types: data.impact_types ?? scenario.scenario_data.impact_types,
 				data_exposure:
 					data.data_exposure ?? scenario.scenario_data.data_exposure,
-				entity: data.entity ?? scenario.scenario_data.entity,
 				risk_origin: data.risk_origin ?? scenario.scenario_data.risk_origin,
 				ai_lifecycle: data.ai_lifecycle ?? scenario.scenario_data.ai_lifecycle,
 				stakeholders_affected:
@@ -751,6 +892,7 @@ export const useUpdateRiskScenario = (
 				ticket: data.ticket ?? scenario.scenario_data.ticket,
 				custom_fields:
 					data.custom_fields ?? scenario.scenario_data.custom_fields,
+				tag_ids: data.tag_ids ?? (scenario as any).tag_ids,
 				scenario_type: scenario.scenario_type,
 				...restOfPayload,
 			};
@@ -1268,6 +1410,100 @@ export const useGroupsWithCreatePermission = (
 				sort,
 				active_group_id: active_group_id || undefined,
 			}),
+		...options,
+	});
+};
+
+// ============================================================================
+// TAG HOOKS
+// ============================================================================
+
+/**
+ * Fetch tags list with optional filtering
+ */
+export const useTags = (
+	params: TagListParams,
+	options?: StrippedQueryOptions<
+		{ tags: Tag[]; total_count: number; group_ids: string[] },
+		AxiosError
+	>,
+) => {
+	const client = useAxiosInstance();
+	const hasGroupIds = params.group_ids.length > 0;
+	const enabled =
+		options?.enabled !== undefined
+			? options.enabled && hasGroupIds
+			: hasGroupIds;
+	return useQuery<
+		{ tags: Tag[]; total_count: number; group_ids: string[] },
+		AxiosError
+	>({
+		queryKey: [
+			'TAGS',
+			params.group_ids,
+			params.name,
+			params.skip,
+			params.limit,
+		],
+		queryFn: () => getTagsRequest(client, params),
+		enabled,
+		...options,
+	});
+};
+
+/**
+ * Create a new tag
+ */
+export const useCreateTag = (
+	options?: Omit<
+		UseMutationOptions<Tag, AxiosError, CreateTagRequest, unknown>,
+		'mutationFn'
+	>,
+) => {
+	const client = useAxiosInstance();
+	return useMutation<Tag, AxiosError, CreateTagRequest>({
+		mutationFn: (tag) => createTagRequest(client, tag),
+		...options,
+	});
+};
+
+/**
+ * Update an existing tag
+ */
+export const useUpdateTag = (
+	options?: Omit<
+		UseMutationOptions<
+			Tag,
+			AxiosError,
+			{ tagId: string; data: UpdateTagRequest },
+			unknown
+		>,
+		'mutationFn'
+	>,
+) => {
+	const client = useAxiosInstance();
+	return useMutation<
+		Tag,
+		AxiosError,
+		{ tagId: string; data: UpdateTagRequest }
+	>({
+		mutationFn: ({ tagId, data }) => updateTagRequest(client, tagId, data),
+		...options,
+	});
+};
+
+/**
+ * Delete a tag
+ */
+export const useDeleteTag = (
+	options?: Omit<
+		UseMutationOptions<void, AxiosError, string, unknown>,
+		'mutationFn'
+	>,
+) => {
+	const client = useAxiosInstance();
+	return useMutation<void, AxiosError, string>({
+		mutationFn: (tagId) => deleteTagRequest(client, tagId),
 		...options,
 	});
 };

@@ -1,24 +1,67 @@
-import { Badge, Box, Flex, Grid, GridItem, Text } from '@chakra-ui/react';
-import { useMemo } from 'react';
 import { useRiskScenarios } from '@/services/hooks';
-import { type RiskRegisterImpact } from '@/types/riskRegister';
+import type { RiskRegisterImpact } from '@/types/riskRegister';
+import { useMemo } from 'react';
 
-const likelihoodLabels = ['Expected', 'Possible', 'Unlikely', 'Rare', 'Very Rare'];
-const impactLabels = ['Severe', 'Significant', 'Moderate', 'Minor', 'Negligible'];
+const likelihoodLabels = [
+  'Expected',
+  'Likely',
+  'Possible',
+  'Unlikely',
+  'Rare',
+] as const;
+const impactLabels = [
+  'Severe',
+  'Significant',
+  'Moderate',
+  'Minor',
+  'Negligible',
+] as const;
 
-const impactBgMap: Record<string, string> = {
-  Severe: 'bg-viz-impact-tags-severe',
-  Significant: 'bg-viz-impact-tags-significant',
-  Moderate: 'bg-viz-impact-tags-moderate',
-  Minor: 'bg-viz-impact-tags-minor',
-  Negligible: 'bg-viz-impact-tags-negligible',
+const cellColorMap: Record<string, Record<string, string>> = {
+  Severe: {
+    Expected: 'rgba(255, 77, 79, 0.65)',
+    Likely: 'rgba(255, 99, 97, 0.6)',
+    Possible: 'rgba(255, 99, 97, 0.6)',
+    Unlikely: 'rgba(255, 171, 145, 0.45)',
+    Rare: 'rgba(255, 171, 145, 0.4)',
+  },
+  Significant: {
+    Expected: 'rgba(255, 120, 117, 0.55)',
+    Likely: 'rgba(255, 160, 122, 0.5)',
+    Possible: 'rgba(255, 178, 132, 0.45)',
+    Unlikely: 'rgba(255, 193, 158, 0.4)',
+    Rare: 'rgba(144, 238, 144, 0.35)',
+  },
+  Moderate: {
+    Expected: 'rgba(255, 160, 122, 0.45)',
+    Likely: 'rgba(255, 178, 132, 0.4)',
+    Possible: 'rgba(255, 193, 158, 0.4)',
+    Unlikely: 'rgba(255, 235, 156, 0.5)',
+    Rare: 'rgba(144, 238, 144, 0.45)',
+  },
+  Minor: {
+    Expected: 'rgba(255, 193, 158, 0.35)',
+    Likely: 'rgba(255, 220, 130, 0.45)',
+    Possible: 'rgba(255, 235, 156, 0.55)',
+    Unlikely: 'rgba(255, 235, 156, 0.6)',
+    Rare: 'rgba(144, 238, 144, 0.55)',
+  },
+  Negligible: {
+    Expected: 'rgba(144, 238, 144, 0.55)',
+    Likely: 'rgba(144, 238, 144, 0.45)',
+    Possible: 'rgba(144, 238, 144, 0.55)',
+    Unlikely: 'rgba(144, 238, 144, 0.65)',
+    Rare: 'rgba(144, 238, 144, 0.75)',
+  },
 };
 
 type RiskRegisterVisualizationProps = {
   groupId?: string | null;
 };
 
-function RiskRegisterVisualization({ groupId }: RiskRegisterVisualizationProps) {
+function RiskRegisterVisualization({
+  groupId,
+}: RiskRegisterVisualizationProps) {
   // Fetch a large page to aggregate. If backend provides viz endpoints later, we can swap.
   const { data } = useRiskScenarios({
     page: 1,
@@ -29,7 +72,10 @@ function RiskRegisterVisualization({ groupId }: RiskRegisterVisualizationProps) 
   const items = Array.isArray(data?.items) ? data.items : [];
 
   const matrix = useMemo(() => {
-    const byCell: Record<string, { ids: string[]; impact: RiskRegisterImpact }> = {};
+    const byCell: Record<
+      string,
+      { ids: string[]; impact: RiskRegisterImpact }
+    > = {};
     for (const it of items) {
       const likelihood = it.scenario_data.likelihood as string;
       const impact = it.scenario_data.impact as RiskRegisterImpact;
@@ -97,140 +143,336 @@ function RiskRegisterVisualization({ groupId }: RiskRegisterVisualizationProps) 
   }, [items]);
 
   return (
-    <Flex gap='24px' alignItems='flex-start'>
+    <div className='flex flex-col gap-8 lg:flex-row lg:items-start'>
       {/* 5x5 Matrix (left) */}
-      <Box>
-        <Text fontSize='17px' fontWeight='700' mb='12px'>
-          Risk Prioritization Matrix (5×5)
-        </Text>
-        <Grid templateColumns='80px repeat(5, 120px)' gap='8px'>
-          {/* Header Row (blank + X-axis labels) */}
-          <GridItem />
-          {likelihoodLabels.map((lbl) => (
-            <GridItem key={lbl}>
-              <Text fontWeight='700' fontSize='14px'>
-                {lbl}
-              </Text>
-            </GridItem>
-          ))}
+      <div className='flex-1'>
+        <div className='mb-4'>
+          <h2 className='text-2xl font-bold text-gray-900 mb-1'>
+            Risk Prioritization Matrix
+          </h2>
+          <p className='text-sm text-gray-500'>
+            Visualize risk distribution across likelihood and impact dimensions
+          </p>
+        </div>
 
-          {/* Rows */}
-          {impactLabels.map((impactLabel) => (
-            <GridItem key={impactLabel} colSpan={6} display='contents'>
-              <GridItem alignSelf='center'>
-                <Text fontWeight='700' fontSize='14px'>
-                  {impactLabel}
-                </Text>
-              </GridItem>
-              {likelihoodLabels.map((likelihoodLabel) => {
-                const key = `${likelihoodLabel}|${impactLabel}`;
-                const cell = matrix[key];
-                const count = cell?.ids.length ?? 0;
-                const bg =
-                  impactBgMap[impactLabel] || 'bg-fill-specific-secondary-02';
-                return (
-                  <GridItem key={key}>
-                    <Box
-                      className={`${bg}`}
-                      borderRadius='6px'
-                      height='72px'
-                      position='relative'
-                    >
-                      {count > 0 ? (
-                        <Text
-                          position='absolute'
-                          top='6px'
-                          left='8px'
-                          fontWeight='700'
-                          fontSize='12px'
-                        >
-                          {count}
-                        </Text>
-                      ) : null}
-                    </Box>
-                  </GridItem>
-                );
-              })}
-            </GridItem>
-          ))}
-        </Grid>
-      </Box>
+        <div className='bg-white rounded-xl border border-gray-200 shadow-sm p-6 overflow-x-auto'>
+          <div
+            className='grid gap-[2px]'
+            style={{ gridTemplateColumns: '100px repeat(5, 150px)' }}
+          >
+            {/* Header Row (blank + X-axis labels) */}
+            <div className='bg-transparent' />
+            {likelihoodLabels.map((lbl) => (
+              <div
+                key={lbl}
+                className='flex h-12 items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-t-md text-gray-700 transition-all duration-200'
+              >
+                <span className='text-xs font-bold uppercase tracking-wider'>
+                  {lbl}
+                </span>
+              </div>
+            ))}
+
+            {/* Rows */}
+            {impactLabels.map((impactLabel) => (
+              <div key={impactLabel} className='contents'>
+                <div className='flex h-24 items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-l-md px-3 text-gray-700'>
+                  <span className='text-xs font-bold uppercase tracking-wider text-center leading-tight'>
+                    {impactLabel}
+                  </span>
+                </div>
+                {likelihoodLabels.map((likelihoodLabel) => {
+                  const key = `${likelihoodLabel}|${impactLabel}`;
+                  const cell = matrix[key];
+                  const ids = cell?.ids ?? [];
+                  const count = ids.length;
+                  const bg =
+                    cellColorMap[impactLabel]?.[likelihoodLabel] || '#F8FAFC';
+                  return (
+                    <div key={key} className='relative'>
+                      <div
+                        className='group relative h-24 border border-gray-200 rounded-md transition-all duration-200 hover:shadow-md hover:scale-[1.02] hover:z-10 cursor-pointer'
+                        style={{ backgroundColor: bg }}
+                      >
+                        {count > 0 && (
+                          <>
+                            <div className='absolute -top-2 -right-2 flex items-center justify-center min-w-[28px] h-7 rounded-full bg-gradient-to-r from-indigo-600 to-indigo-700 px-2.5 py-1 shadow-lg border-2 border-white'>
+                              <span className='text-xs font-bold text-white'>
+                                {count}
+                              </span>
+                            </div>
+                            <div className='pointer-events-none absolute bottom-full right-0 mb-2 hidden max-w-[280px] whitespace-pre-wrap rounded-lg bg-gray-900 px-3 py-2 text-xs text-white shadow-2xl group-hover:block z-20 border border-gray-700'>
+                              <div className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900'></div>
+                              <div className='font-semibold mb-1 text-indigo-300'>
+                                Scenarios:
+                              </div>
+                              <div className='text-gray-200'>
+                                {ids.join(', ')}
+                              </div>
+                            </div>
+                          </>
+                        )}
+                        {count === 0 && (
+                          <div className='absolute inset-0 flex items-center justify-center'>
+                            <div className='w-1 h-1 rounded-full bg-gray-300 opacity-40'></div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Metrics sidebar (right) */}
-      <Flex direction='column' gap='16px' minW='360px' flex='1'>
-        <Box className='p-4 rounded-md bg-background'>
-          <Text fontSize='16px' fontWeight='700' mb='8px'>
-            Top AI Assets by Risk Count
-          </Text>
-          <Flex direction='column' gap='6px'>
-            {metrics.topAssets.map(([asset, n]) => (
-              <Flex key={asset} alignItems='center' justifyContent='space-between'>
-                <Text>{asset}</Text>
-                <Badge>{n}</Badge>
-              </Flex>
-            ))}
-            {metrics.topAssets.length === 0 && (
-              <Text color='gray.500'>No data</Text>
+      <div className='flex flex-col gap-6 lg:min-w-[400px] lg:max-w-[400px]'>
+        {/* Top AI Assets */}
+        <div className='bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200'>
+          <div className='bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4 border-b border-gray-200'>
+            <h3 className='text-lg font-bold text-gray-900 flex items-center gap-2'>
+              <div className='w-2 h-2 rounded-full bg-blue-500'></div>
+              Top AI Assets by Risk Count
+            </h3>
+            <p className='text-xs text-gray-500 mt-1'>
+              Most frequently affected assets
+            </p>
+          </div>
+          <div className='p-6'>
+            {metrics.topAssets.length > 0 ? (
+              <div className='space-y-4'>
+                {metrics.topAssets.map(([asset, n], idx) => (
+                  <div
+                    key={asset}
+                    className='flex items-center justify-between group hover:bg-gray-50 -mx-2 px-2 py-2 rounded-lg transition-colors duration-150'
+                  >
+                    <div className='flex items-center gap-3 flex-1 min-w-0'>
+                      <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center'>
+                        <span className='text-xs font-bold text-blue-600'>
+                          {idx + 1}
+                        </span>
+                      </div>
+                      <span className='text-sm font-medium text-gray-800 truncate'>
+                        {asset}
+                      </span>
+                    </div>
+                    <div className='flex-shrink-0 ml-4'>
+                      <span className='inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-blue-50 text-blue-700 border border-blue-200'>
+                        {n} {n === 1 ? 'risk' : 'risks'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className='text-center py-8'>
+                <div className='text-gray-400 mb-2'>
+                  <svg
+                    className='w-12 h-12 mx-auto'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={1.5}
+                      d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                    />
+                  </svg>
+                </div>
+                <span className='text-sm text-gray-500'>No data available</span>
+              </div>
             )}
-          </Flex>
-        </Box>
+          </div>
+        </div>
 
-        <Box className='p-4 rounded-md bg-background'>
-          <Text fontSize='16px' fontWeight='700' mb='8px'>
-            Most Common MITRE ATLAS Tactics
-          </Text>
-          <Flex direction='column' gap='6px'>
-            {metrics.commonTactics.map(([tactic, n]) => (
-              <Flex
-                key={tactic}
-                alignItems='center'
-                justifyContent='space-between'
-              >
-                <Text>{tactic}</Text>
-                <Badge>{n}</Badge>
-              </Flex>
-            ))}
-            {metrics.commonTactics.length === 0 && (
-              <Text color='gray.500'>No data</Text>
+        {/* MITRE ATLAS Tactics */}
+        <div className='bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200'>
+          <div className='bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-gray-200'>
+            <h3 className='text-lg font-bold text-gray-900 flex items-center gap-2'>
+              <div className='w-2 h-2 rounded-full bg-purple-500'></div>
+              Most Common MITRE ATLAS Tactics
+            </h3>
+            <p className='text-xs text-gray-500 mt-1'>
+              Frequently observed attack patterns
+            </p>
+          </div>
+          <div className='p-6'>
+            {metrics.commonTactics.length > 0 ? (
+              <div className='space-y-4'>
+                {metrics.commonTactics.map(([tactic, n], idx) => (
+                  <div
+                    key={tactic}
+                    className='flex items-center justify-between group hover:bg-gray-50 -mx-2 px-2 py-2 rounded-lg transition-colors duration-150'
+                  >
+                    <div className='flex items-center gap-3 flex-1 min-w-0'>
+                      <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center'>
+                        <span className='text-xs font-bold text-purple-600'>
+                          {idx + 1}
+                        </span>
+                      </div>
+                      <span className='text-sm font-medium text-gray-800 truncate'>
+                        {tactic}
+                      </span>
+                    </div>
+                    <div className='flex-shrink-0 ml-4'>
+                      <span className='inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-purple-50 text-purple-700 border border-purple-200'>
+                        {n}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className='text-center py-8'>
+                <div className='text-gray-400 mb-2'>
+                  <svg
+                    className='w-12 h-12 mx-auto'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={1.5}
+                      d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+                    />
+                  </svg>
+                </div>
+                <span className='text-sm text-gray-500'>No data available</span>
+              </div>
             )}
-          </Flex>
-        </Box>
+          </div>
+        </div>
 
-        <Box className='p-4 rounded-md bg-background'>
-          <Text fontSize='16px' fontWeight='700' mb='8px'>
-            Impact Type Distribution
-          </Text>
-          <Flex direction='column' gap='6px'>
-            {metrics.impactTypes.map(([it, n]) => (
-              <Flex key={it} alignItems='center' justifyContent='space-between'>
-                <Text>{it}</Text>
-                <Badge>{n}</Badge>
-              </Flex>
-            ))}
-            {metrics.impactTypes.length === 0 && (
-              <Text color='gray.500'>No data</Text>
+        {/* Impact Type Distribution */}
+        <div className='bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200'>
+          <div className='bg-gradient-to-r from-orange-50 to-amber-50 px-6 py-4 border-b border-gray-200'>
+            <h3 className='text-lg font-bold text-gray-900 flex items-center gap-2'>
+              <div className='w-2 h-2 rounded-full bg-orange-500'></div>
+              Impact Type Distribution
+            </h3>
+            <p className='text-xs text-gray-500 mt-1'>
+              Distribution across impact categories
+            </p>
+          </div>
+          <div className='p-6'>
+            {metrics.impactTypes.length > 0 ? (
+              <div className='space-y-4'>
+                {metrics.impactTypes.map(([it, n], idx) => (
+                  <div
+                    key={it}
+                    className='flex items-center justify-between group hover:bg-gray-50 -mx-2 px-2 py-2 rounded-lg transition-colors duration-150'
+                  >
+                    <div className='flex items-center gap-3 flex-1 min-w-0'>
+                      <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center'>
+                        <span className='text-xs font-bold text-orange-600'>
+                          {idx + 1}
+                        </span>
+                      </div>
+                      <span className='text-sm font-medium text-gray-800 truncate'>
+                        {it}
+                      </span>
+                    </div>
+                    <div className='flex-shrink-0 ml-4'>
+                      <span className='inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-orange-50 text-orange-700 border border-orange-200'>
+                        {n}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className='text-center py-8'>
+                <div className='text-gray-400 mb-2'>
+                  <svg
+                    className='w-12 h-12 mx-auto'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={1.5}
+                      d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'
+                    />
+                  </svg>
+                </div>
+                <span className='text-sm text-gray-500'>No data available</span>
+              </div>
             )}
-          </Flex>
-        </Box>
+          </div>
+        </div>
 
-        <Box className='p-4 rounded-md bg-background'>
-          <Text fontSize='16px' fontWeight='700' mb='8px'>
-            Controls Mapped to Multiple Scenarios
-          </Text>
-          <Flex direction='column' gap='6px'>
-            {metrics.multiScenarioControls.map(([ctrl, n]) => (
-              <Flex key={ctrl} alignItems='center' justifyContent='space-between'>
-                <Text>{ctrl}</Text>
-                <Badge>{n}</Badge>
-              </Flex>
-            ))}
-            {metrics.multiScenarioControls.length === 0 && (
-              <Text color='gray.500'>No data</Text>
+        {/* Controls Mapped to Multiple Scenarios */}
+        <div className='bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200'>
+          <div className='bg-gradient-to-r from-emerald-50 to-teal-50 px-6 py-4 border-b border-gray-200'>
+            <h3 className='text-lg font-bold text-gray-900 flex items-center gap-2'>
+              <div className='w-2 h-2 rounded-full bg-emerald-500'></div>
+              Controls Mapped to Multiple Scenarios
+            </h3>
+            <p className='text-xs text-gray-500 mt-1'>
+              Controls covering multiple risks
+            </p>
+          </div>
+          <div className='p-6'>
+            {metrics.multiScenarioControls.length > 0 ? (
+              <div className='space-y-4 max-h-[400px] overflow-y-auto'>
+                {metrics.multiScenarioControls.map(([ctrl, n], idx) => (
+                  <div
+                    key={ctrl}
+                    className='flex items-center justify-between group hover:bg-gray-50 -mx-2 px-2 py-2 rounded-lg transition-colors duration-150'
+                  >
+                    <div className='flex items-center gap-3 flex-1 min-w-0'>
+                      <div className='flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center'>
+                        <span className='text-xs font-bold text-emerald-600'>
+                          {idx + 1}
+                        </span>
+                      </div>
+                      <span
+                        className='text-sm font-medium text-gray-800 truncate'
+                        title={ctrl}
+                      >
+                        {ctrl}
+                      </span>
+                    </div>
+                    <div className='flex-shrink-0 ml-4'>
+                      <span className='inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200'>
+                        {n} {n === 1 ? 'scenario' : 'scenarios'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className='text-center py-8'>
+                <div className='text-gray-400 mb-2'>
+                  <svg
+                    className='w-12 h-12 mx-auto'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={1.5}
+                      d='M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'
+                    />
+                  </svg>
+                </div>
+                <span className='text-sm text-gray-500'>No data available</span>
+              </div>
             )}
-          </Flex>
-        </Box>
-      </Flex>
-    </Flex>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

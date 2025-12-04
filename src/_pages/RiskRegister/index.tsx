@@ -24,19 +24,6 @@ import KovrrInsights from './insights';
 import RiskRegisterTable from './RiskRegisterTable';
 import RiskRegisterVisualization from './visualization';
 
-const LAYOUT_CONTAINER_PROPS = {
-  maxW: '1440px',
-  mx: 'auto',
-  px: { base: '20px', md: '32px' },
-  width: '100%',
-};
-
-const PANEL_CONTAINER_PROPS = {
-  ...LAYOUT_CONTAINER_PROPS,
-  py: { base: '24px', md: '32px' },
-  minH: 'calc(100vh - 160px)',
-};
-
 const RiskRegister = () => {
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -83,9 +70,9 @@ const RiskRegister = () => {
   };
 
   return (
-    <Box minH='100vh'>
-      <Box {...LAYOUT_CONTAINER_PROPS} py={{ base: '24px', md: '32px' }}>
-        <Flex direction='column' gap='24px'>
+    <div className='min-h-screen'>
+      <div className='mx-auto w-full max-w-[1440px] px-5 py-6 md:px-8 md:py-8'>
+        <div className='flex flex-col gap-6'>
           <ScenarioTopBarNoSearch />
           <Flex justifyContent='flex-start'>
             <Flex alignItems='center' gap='12px'>
@@ -155,75 +142,77 @@ const RiskRegister = () => {
               </Popover>
             </Flex>
           </Flex>
-          <Tabs variant='unstyled'>
-            <TabList justifyContent='center' gap='16px'>
-              <Tab
-                px='24px'
-                py='16px'
-                borderRadius='0'
-                bg='#F2F4F7'
-                color='gray.600'
-                _selected={{
-                  bg: 'white',
-                  color: 'gray.800',
-                  fontWeight: 700,
-                  borderBottom: '2px solid #6E56CF',
-                }}
-              >
-                Risk Register Table
-              </Tab>
-              <Tab
-                px='24px'
-                py='16px'
-                borderRadius='0'
-                bg='#F2F4F7'
-                color='gray.600'
-                _selected={{
-                  bg: 'white',
-                  color: 'gray.800',
-                  fontWeight: 700,
-                  borderBottom: '2px solid #6E56CF',
-                }}
-              >
-                Risk Register Visualization
-              </Tab>
-              <Tab
-                px='24px'
-                py='16px'
-                borderRadius='0'
-                bg='#F2F4F7'
-                color='gray.600'
-                _selected={{
-                  bg: 'white',
-                  color: 'gray.800',
-                  fontWeight: 700,
-                  borderBottom: '2px solid #6E56CF',
-                }}
-              >
-                Kovrr Insights
-              </Tab>
-            </TabList>
-            <TabPanels mt='24px'>
-              <TabPanel padding='0'>
-                <Box {...PANEL_CONTAINER_PROPS}>
-                  <RiskRegisterTable groupId={selectedGroupId} />
-                </Box>
-              </TabPanel>
-              <TabPanel padding='0'>
-                <Box {...PANEL_CONTAINER_PROPS}>
-                  <RiskRegisterVisualization groupId={selectedGroupId} />
-                </Box>
-              </TabPanel>
-              <TabPanel padding='0'>
-                <Box {...PANEL_CONTAINER_PROPS}>
-                  <KovrrInsights groupId={selectedGroupId} />
-                </Box>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Flex>
-      </Box>
-    </Box>
+          <Box bg='white' borderRadius='lg' p='24px'>
+            <Tabs variant='unstyled'>
+              <TabList justifyContent='center' gap='16px'>
+                <Tab
+                  px='24px'
+                  py='16px'
+                  borderRadius='0'
+                  bg='white'
+                  color='gray.600'
+                  _selected={{
+                    bg: '#F2F4F7',
+                    color: 'gray.800',
+                    fontWeight: 700,
+                    borderBottom: '2px solid #6E56CF',
+                  }}
+                >
+                  Risk Register Table
+                </Tab>
+                <Tab
+                  px='24px'
+                  py='16px'
+                  borderRadius='0'
+                  bg='white'
+                  color='gray.600'
+                  _selected={{
+                    bg: '#F2F4F7',
+                    color: 'gray.800',
+                    fontWeight: 700,
+                    borderBottom: '2px solid #6E56CF',
+                  }}
+                >
+                  Risk Register Visualization
+                </Tab>
+                <Tab
+                  px='24px'
+                  py='16px'
+                  borderRadius='0'
+                  bg='white'
+                  color='gray.600'
+                  _selected={{
+                    bg: '#F2F4F7',
+                    color: 'gray.800',
+                    fontWeight: 700,
+                    borderBottom: '2px solid #6E56CF',
+                  }}
+                >
+                  Kovrr Insights
+                </Tab>
+              </TabList>
+              <TabPanels mt='24px'>
+                <TabPanel padding='0'>
+                  <Box>
+                    <RiskRegisterTable groupId={selectedGroupId} />
+                  </Box>
+                </TabPanel>
+                <TabPanel padding='0'>
+                  <Box>
+                    <RiskRegisterVisualization groupId={selectedGroupId} />
+                  </Box>
+                </TabPanel>
+                <TabPanel padding='0'>
+                  <Box>
+                    <KovrrInsights groupId={selectedGroupId} />
+                  </Box>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Box>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -51,12 +51,6 @@ const urlSchema = z.union([
 export const registerToRowData: (
   scenario: RiskRegisterResponse,
 ) => RiskRegisterRow = (scenario) => {
-  // Get company_id for both CRQ and naive scenarios
-  const entityId: string | undefined =
-    scenario.scenario_type === scenarioTypes.CRQ
-      ? scenario.scenario_data.crq_data?.company_id
-      : scenario.scenario_data.company_id;
-
   return {
     id: scenario.scenario_id,
     scenarioId: scenario.scenario_id,
@@ -65,7 +59,6 @@ export const registerToRowData: (
     scenario: null,
     scenarioTitle: scenario.name,
     scenarioDescription: scenario.description,
-    entity: entityId,
     company_id: scenario.scenario_data.company_id,
     company_name: scenario.company_name,
     likelihood: scenario.scenario_data.likelihood,

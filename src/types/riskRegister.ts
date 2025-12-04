@@ -12,6 +12,7 @@ import type {
   ImplementationLevel,
   ISO27001ImplementationLevel,
 } from './sphereForm';
+import type { Tag } from './tag';
 
 export const riskRegisterLikelihoods = {
   Expected: 'Expected',
@@ -110,10 +111,10 @@ export type RiskRegisterRow = {
   scenario: null;
   scenarioTitle: string;
   scenarioDescription: string;
-  entity?: string;
   company_id?: string;
   company_name?: string | null;
   category?: string | null;
+  tags?: Tag[];
   likelihood: RiskRegisterLikelihood;
   impact: RiskRegisterImpact;
   annualLikelihood?: number;
@@ -271,7 +272,6 @@ export type ScenarioData = {
     pci?: number;
     phi?: number;
   };
-  entity?: string;
   risk_origin?: string[];
   ai_lifecycle?: string[];
   stakeholders_affected?: string[];
@@ -302,6 +302,18 @@ export type RiskRegisterResponse = {
   scenario_type: ScenarioType;
   status: ScenarioStatus;
   company_name?: string | null;
+  tag_ids?: string[];
+  tags?: Array<{
+    id: string;
+    name: string;
+    group_id: string;
+    description?: string;
+    color: string;
+    tag_type?: string;
+    usage_count: number;
+    created_at: string;
+    updated_at: string;
+  }>;
 };
 
 export interface MetricDataPoint {
@@ -372,10 +384,10 @@ export type ScenarioCreateRequest = {
     pci?: number;
     phi?: number;
   };
-  entity?: string;
   risk_origin?: string[];
   ai_lifecycle?: string[];
   stakeholders_affected?: string[];
+  tag_ids?: string[];
 };
 
 export type CRQScenarioCreateRequest = ScenarioCreateRequest & {
@@ -390,6 +402,7 @@ export type BaseScenarioUpdateRequest = {
   methodology_insights?: string;
   relevant_controls?: ControlsFrameworkLevelsServer;
   custom_fields?: CustomField[];
+  tag_ids?: string[];
 } & ScenarioCreateRequest;
 
 export type SimpleScenarioUpdateRequest = BaseScenarioUpdateRequest & {

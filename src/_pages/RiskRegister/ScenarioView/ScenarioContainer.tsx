@@ -6,6 +6,7 @@ import ControlsPreview from '../ScenarioDrillDown/ControlsModal/ControlsPreview'
 import RiskManagement from '../ScenarioDrillDown/RiskManagement/RiskManagementForm';
 import { MasGenericTabs } from './MASView/MasGenericTabs';
 import { Notes } from './Notes';
+import { Tags } from './Tags';
 
 type Props = {
   children: React.ReactNode;
@@ -56,6 +57,23 @@ export const ScenarioContainer: React.FC<Props> = ({ children }) => {
                 label: 'Notes',
                 key: 'notes',
                 content: <Notes />,
+              },
+              {
+                label: 'Tags',
+                key: 'tags',
+                content:
+                  isLoading || !scenario ? (
+                    <div className='flex flex-col gap-4'>
+                      {Array.from({ length: 2 }).map((_, index) => (
+                        <Skeleton
+                          key={index}
+                          className='mb-10 h-[100px] w-full rounded-lg '
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <Tags />
+                  ),
               },
             ]}
           />

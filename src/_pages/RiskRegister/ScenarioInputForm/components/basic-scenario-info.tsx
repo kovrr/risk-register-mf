@@ -14,11 +14,13 @@ import {
   SelectValue,
 } from '@/components/atoms/select';
 import { Textarea } from '@/components/atoms/textarea';
+import InfoPopover from '@/components/molecules/info-popover';
 import { useGroupsWithCreatePermission } from '@/services/hooks';
 import { useEffect, useState } from 'react';
 import type { Control, FieldPath } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import type { BaseScenarioFormValues } from './form-config';
+import { IMPACT_OPTIONS, LIKELIHOOD_OPTIONS } from './form-config';
 
 interface BasicScenarioInfoProps<T extends BaseScenarioFormValues> {
   control: Control<T>;
@@ -110,26 +112,10 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
 
       <FormField<T>
         control={control}
-        name={'entity' as FieldPath<T>}
-        render={({ field }) => (
-          <FormItem className='col-span-4'>
-            <FormLabel className='text-text-base-primary'>
-              {t('labels.entity', { defaultValue: 'Entity' })}
-            </FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField<T>
-        control={control}
         name={'group_id' as FieldPath<T>}
         render={({ field }) => (
           <FormItem className='col-span-4'>
-            <FormLabel className='text-text-base-primary'>
+            <FormLabel required className='text-text-base-primary'>
               {t('labels.group', { defaultValue: 'Group' })}
             </FormLabel>
             <FormControl>
@@ -164,6 +150,70 @@ export default function BasicScenarioInfo<T extends BaseScenarioFormValues>({
           </FormItem>
         )}
       />
+
+      <div className='grid gap-6 md:grid-cols-2'>
+        <FormField
+          control={control}
+          name={'likelihood' as FieldPath<T>}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel
+                required
+                info={<InfoPopover content={t('labels.likelihoodInformation')} />}
+                className='text-text-base-primary'
+              >
+                {t('labels.likelihood')}
+              </FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger data-testid='likelihood-select'>
+                    <SelectValue placeholder={t('select.placeholder')} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent data-testid='likelihood-select-content'>
+                  {LIKELIHOOD_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {t(option.label)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={control}
+          name={'impact' as FieldPath<T>}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel
+                required
+                info={<InfoPopover content={t('labels.impactInformation')} />}
+                className='text-text-base-primary'
+              >
+                {t('labels.impact')}
+              </FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger data-testid='impact-select'>
+                    <SelectValue placeholder={t('select.placeholder')} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent data-testid='impact-select-content'>
+                  {IMPACT_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {t(option.label)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
   );
 }

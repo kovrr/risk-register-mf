@@ -23,6 +23,7 @@ export function SimpleCategorizationSection({
         name='scenario_category'
         label='Scenario Category'
         placeholder='Select categories'
+        required
         options={enums.ScenarioCategory.map((value) => ({
           label: value,
           value,

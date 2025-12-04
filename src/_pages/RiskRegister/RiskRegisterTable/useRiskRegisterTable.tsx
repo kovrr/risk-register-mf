@@ -46,6 +46,11 @@ const useColumns = () => {
         header: () => <TableHeaderCell title='Category' />,
         enableSorting: true,
       }),
+      columnHelper.accessor('tags', {
+        cell: ({ row }) => <TagsCell tags={row.original.tags || []} />,
+        header: () => <TableHeaderCell title='Tags' />,
+        enableSorting: false,
+      }),
       columnHelper.accessor('priority', {
         cell: (info) =>
           info.getValue() ? (
@@ -110,7 +115,6 @@ const mapColumnToApiField = (columnId: string): string => {
   const mappings: Record<string, string> = {
     customerScenarioId: 'customer_scenario_id',
     scenario: 'name',
-    entity: 'company_name', // Map entity column to company_name for sorting
     likelihood: 'likelihood', // Combined column uses likelihood for sorting
     annualLikelihood: 'annual_likelihood', // Combined column uses annual_likelihood for sorting
     priority: 'risk_priority',
@@ -124,12 +128,13 @@ const mapColumnToApiField = (columnId: string): string => {
 type UseRiskRegisterTableParams = {
   search?: string;
   groupId?: string | null;
+  tagIds?: string[];
 };
 
 const useData = (params: UseRiskRegisterTableParams) => {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const { search, groupId } = params;
+  const { search, groupId, tagIds } = params;
 
   const [sorting, setSortingState] = useState<{ id: string; desc: boolean }[]>([
     { id: 'lastUpdated', desc: true }, // Default sorting
@@ -157,11 +162,12 @@ const useData = (params: UseRiskRegisterTableParams) => {
     sort_by: sortBy,
     sort_order: sortOrder,
     groupId: groupId ?? undefined,
+    tag_ids: tagIds && tagIds.length > 0 ? tagIds : undefined,
   });
 
   useEffect(() => {
     setPageIndex(0);
-  }, [groupId]);
+  }, [groupId, tagIds]);
 
   const data = useMemo(() => {
     if (!scenarios || !scenarios.items || !Array.isArray(scenarios.items))
@@ -171,11 +177,6 @@ const useData = (params: UseRiskRegisterTableParams) => {
       customerScenarioId: scenario.customer_scenario_id,
       scenarioTitle: scenario.name,
       scenarioDescription: scenario.description,
-      // entity stores company_id for both CRQ and naive scenarios
-      entity:
-        scenario.scenario_type === scenarioTypes.CRQ
-          ? scenario.scenario_data.crq_data?.company_id
-          : scenario.scenario_data.company_id,
       company_id: scenario.scenario_data.company_id,
       company_name: scenario.company_name,
       likelihood: scenario.scenario_data.likelihood,
@@ -190,6 +191,7 @@ const useData = (params: UseRiskRegisterTableParams) => {
       category: Array.isArray(scenario.scenario_data.scenario_category)
         ? scenario.scenario_data.scenario_category[0] ?? null
         : null,
+      tags: (scenario as any).tags || [],
       scenario: null,
       tableOptions: null,
       scenarioId: scenario.scenario_id,
