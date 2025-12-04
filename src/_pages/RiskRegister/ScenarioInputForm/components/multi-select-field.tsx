@@ -52,6 +52,7 @@ type MultiSelectFieldProps<TFieldValues extends FieldValues> = {
   searchPlaceholder?: string;
   popoverProps?: ComponentPropsWithoutRef<typeof PopoverContent>;
   maxTagCount?: number;
+  required?: boolean;
   'data-testid'?: string;
 };
 
@@ -70,6 +71,7 @@ export const MultiSelectField = <TFieldValues extends FieldValues>({
   searchPlaceholder = 'Search…',
   popoverProps,
   maxTagCount = 3,
+  required = false,
   'data-testid': dataTestId,
 }: MultiSelectFieldProps<TFieldValues>) => {
   const [open, setOpen] = useState(false);
@@ -143,7 +145,7 @@ export const MultiSelectField = <TFieldValues extends FieldValues>({
         return (
           <FormItem className='space-y-2'>
             <div className='flex items-center gap-2'>
-              <FormLabel className='text-sm font-medium text-text-base-primary'>
+              <FormLabel required={required} className='text-sm font-medium text-text-base-primary'>
                 {label}
                 {info && <span className='ml-2'>{info}</span>}
               </FormLabel>
@@ -273,4 +275,3 @@ export const MultiSelectField = <TFieldValues extends FieldValues>({
     />
   );
 };
-

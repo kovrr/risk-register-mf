@@ -36,13 +36,6 @@ export const ScenarioHeader: FC<Props> = ({ scenario }) => {
                 <span className='text-text-brand-primary'>
                   ID: {scenario.customer_scenario_id}
                 </span>
-                <span className='text-text-base-tertiary'>|</span>
-                <span>
-                  Entity:{' '}
-                  <span className='text-text-base-secondary'>
-                    {scenario.scenario_data.entity ?? '—'}
-                  </span>
-                </span>
               </div>
               <div className='space-y-2'>
                 <h1 className='text-[20px] font-[700] text-text-base-primary'>

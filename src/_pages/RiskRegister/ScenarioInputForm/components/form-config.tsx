@@ -11,7 +11,7 @@ const baseScenarioSchema = z.object({
   description: z.string().min(1, 'Description is required'),
   likelihood: z.string().min(1, 'Likelihood is required'),
   impact: z.string().min(1, 'Impact is required'),
-  group_id: z.string().optional(),
+  group_id: z.string().min(1, 'Group is required'),
 });
 
 export const simpleScenarioFormSchema = baseScenarioSchema.extend({
@@ -21,8 +21,7 @@ export const simpleScenarioFormSchema = baseScenarioSchema.extend({
   peer_base_rate: z.number().optional(),
   average_loss: z.number().optional(),
   average_loss_currency: z.string(),
-  scenario_category: z.array(z.string()),
-  entity: z.string().optional(),
+  scenario_category: z.array(z.string()).min(1, 'At least one Scenario Category is required'),
   ai_assets: z.array(z.string()).optional(),
   tactics: z.array(z.string()).optional(),
   event_types: z.array(z.string()).optional(),

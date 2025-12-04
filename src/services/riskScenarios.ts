@@ -26,6 +26,7 @@ export type RiskScenarioListParams = {
   sort_by: string;
   sort_order: string;
   groupId?: string;
+  tag_ids?: string[];
 };
 
 const sanitizeId = (value: string): string => value?.replace(/\/+$/, '') ?? '';
@@ -48,6 +49,12 @@ export const getRiskScenarios = async (
 
   if (params.groupId) {
     searchParams.append('groupid', params.groupId);
+  }
+
+  if (params.tag_ids?.length) {
+    params.tag_ids.forEach((tagId) => {
+      searchParams.append('tag_ids', tagId);
+    });
   }
 
   const endpoint = `${withStrapiApiPath('/risk-scenarios')}?${searchParams.toString()}`;
